@@ -1766,6 +1766,10 @@ app.use((req, res) => {
 });
 
 // Start Server
-app.listen(PORT, () => {
-  console.log(`Uzair AI Studio server running at http://localhost:${PORT}`);
-});
+if (!process.env.VERCEL) {
+  app.listen(PORT, () => {
+    console.log(`Uzair AI Studio server running at http://localhost:${PORT}`);
+  });
+}
+
+module.exports = app;
