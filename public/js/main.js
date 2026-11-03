@@ -1395,10 +1395,6 @@ function initInternshipModule() {
       if (parsed.candidateId) return parsed.candidateId.trim().toUpperCase();
     } catch (e) {}
 
-    // Direct regex match for candidate ID
-    const match = text.match(/UZ-INT-[A-Z0-9]+/i);
-    if (match) return match[0].toUpperCase();
-
     // URL format parsing
     try {
       if (text.startsWith('http://') || text.startsWith('https://')) {
@@ -1407,11 +1403,16 @@ function initInternshipModule() {
         if (idParam) return idParam.trim().toUpperCase();
         const parts = u.pathname.split('/').filter(Boolean);
         const last = parts[parts.length - 1];
-        if (last && last.toUpperCase().startsWith('UZ-INT-')) {
+        if (last && /^UZ-[A-Z0-9_-]+$/i.test(last)) {
           return last.toUpperCase();
         }
       }
     } catch (e) {}
+
+    // Direct regex match for any Uzair AI Studio ID (e.g. UZ-INT-..., UZ-EXP-...)
+    const match = text.match(/UZ-[A-Z0-9_-]+/i);
+    if (match) return match[0].toUpperCase();
+
     return text;
   }
 
@@ -1734,6 +1735,24 @@ function initInternshipModule() {
         }
       }
 
+      // Strategy 3D-2: Document Bottom-Center Crop (Optimized for Certificates)
+      {
+        const sx = Math.floor(origW * 0.25);
+        const sy = Math.floor(origH * 0.50);
+        const sw = Math.floor(origW * 0.50);
+        const sh = origH - sy;
+        const imgInfo = extractImageData(img, sx, sy, sw, sh, sw, sh, 24);
+        decodedData = tryScanData(imgInfo.data, imgInfo.width, imgInfo.height);
+        if (decodedData) return decodedData;
+        if (typeof ZXing !== 'undefined') {
+          try {
+            const zx = new ZXing.BrowserQRCodeReader();
+            const zr = await zx.decodeFromImageElement(imgInfo.cvs);
+            if (zr && zr.getText()) return zr.getText();
+          } catch (e) {}
+        }
+      }
+
       // Strategy 3E: Wide Center 70% Crop
       {
         const sx = Math.floor(origW * 0.15);
@@ -1922,6 +1941,7 @@ function initInternshipModule() {
         // STRICT RULE: Only shown / unlocked after completing the full internship duration!
         let certButtonHtml = '';
         let lorButtonHtml = '';
+        let expButtonHtml = '';
         if (isCompleted) {
           certButtonHtml = `
             <a href="/certificate/${encodeURIComponent(app.id)}" target="_blank" class="btn btn-primary btn-sm" style="background:linear-gradient(135deg, #F59E0B, #D97706); border:none; box-shadow:0 4px 12px rgba(245, 158, 11, 0.35);">
@@ -1931,6 +1951,11 @@ function initInternshipModule() {
           lorButtonHtml = `
             <a href="/recommendation-letter/${encodeURIComponent(app.id)}" target="_blank" class="btn btn-outline btn-sm" style="border-color:#2563EB; color:#1D4ED8;">
               <span>📜 View Letter of Recommendation</span>
+            </a>
+          `;
+          expButtonHtml = `
+            <a href="/experience-letter/${encodeURIComponent(app.id)}" target="_blank" class="btn btn-outline btn-sm" style="border-color:#8B5CF6; color:#6D28D9;">
+              <span>💼 View Experience Letter</span>
             </a>
           `;
         }
@@ -1982,6 +2007,7 @@ function initInternshipModule() {
                 <span>🛡️ Verified Credential Page</span>
               </a>
               ${lorButtonHtml}
+              ${expButtonHtml}
               <button type="button" class="btn btn-outline btn-sm" id="btnStatusDownloadBadge" style="border-color:#2563EB; color:#1D4ED8; font-weight:700;">
                 <span>🖼️ Save QR Badge (PNG)</span>
               </button>

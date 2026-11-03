@@ -449,6 +449,9 @@
         <a id="btnViewLor" href="#" target="_blank" class="btn btn-outline" style="border-color:#2563EB; color:#1D4ED8;">
           <span>📜 View Recommendation</span>
         </a>
+        <a id="btnViewExpLetter" href="#" target="_blank" class="btn btn-outline" style="display:none; border-color:#8B5CF6; color:#6D28D9;">
+          <span>💼 View Experience Letter</span>
+        </a>
         <a id="btnWhatsAppCoord" href="https://wa.me/923433885835?text=Hello%20Uzair%20AI%20Studio,%20I%20am%20verifying%20intern%20credential" target="_blank" class="btn btn-whatsapp">
           <span>💬 Coordinator WhatsApp</span>
         </a>
@@ -771,7 +774,7 @@
           if (decodedData) return decodedData;
         }
 
-        // Pass 3E: Bottom-Right Quadrant Crop (Optimized for PDF certificates & letters)
+        // Pass 3E: Bottom-Right Quadrant Crop (Optimized for Offer, Recommendation & Experience Letters)
         {
           const sx = Math.floor(origW * 0.38);
           const sy = Math.floor(origH * 0.38);
@@ -782,7 +785,18 @@
           if (decodedData) return decodedData;
         }
 
-        // Pass 3F: Bottom-Left Quadrant Crop
+        // Pass 3F: Bottom-Center Crop (Optimized for Certificates)
+        {
+          const sx = Math.floor(origW * 0.25);
+          const sy = Math.floor(origH * 0.50);
+          const sw = Math.floor(origW * 0.50);
+          const sh = origH - sy;
+          const imgInfo = extractImageData(img, sx, sy, sw, sh, sw, sh, 24);
+          decodedData = tryScanData(imgInfo.data, imgInfo.width, imgInfo.height);
+          if (decodedData) return decodedData;
+        }
+
+        // Pass 3G: Bottom-Left Quadrant Crop
         {
           const sx = 0;
           const sy = Math.floor(origH * 0.40);
@@ -794,14 +808,36 @@
         }
       }
 
+      // TIER 4: Server-Side Optical Decoding Fallback
+      if (dataUrl) {
+        try {
+          const srvRes = await fetch('/api/internship/scan-qr-image', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ image: dataUrl })
+          });
+          const srvJson = await srvRes.json();
+          if (srvJson && srvJson.success && srvJson.text) {
+            return srvJson.text;
+          }
+        } catch (srvErr) {}
+      }
+
       return null;
     }
 
     function parseCandidateId(text) {
       if (!text) return '';
       const str = text.trim();
-      const match = str.match(/UZ-INT-[A-Z0-9]+/i);
-      if (match) return match[0].toUpperCase();
+
+      // JSON format
+      try {
+        const parsed = JSON.parse(str);
+        if (parsed.id) return parsed.id.trim().toUpperCase();
+        if (parsed.candidateId) return parsed.candidateId.trim().toUpperCase();
+      } catch (e) {}
+
+      // URL format
       try {
         if (str.startsWith('http://') || str.startsWith('https://')) {
           const u = new URL(str);
@@ -809,9 +845,14 @@
           if (p) return p.trim().toUpperCase();
           const parts = u.pathname.split('/').filter(Boolean);
           const last = parts[parts.length - 1];
-          if (last && last.toUpperCase().startsWith('UZ-INT-')) return last.toUpperCase();
+          if (last && /^UZ-[A-Z0-9_-]+$/i.test(last)) return last.toUpperCase();
         }
       } catch (e) {}
+
+      // Regex match any Uzair AI Studio ID (e.g. UZ-INT-..., UZ-EXP-...)
+      const match = str.match(/UZ-[A-Z0-9_-]+/i);
+      if (match) return match[0].toUpperCase();
+
       return str;
     }
 
@@ -873,6 +914,16 @@
           e.preventDefault();
           alert(`🔒 Letter of Recommendation Policy:\n\nUzair AI Studio issues official Letters of Recommendation exclusively upon completion of your full 2-month internship curriculum.\n\n• Candidate: ${d.fullName} (${d.id})\n• Completion Date: ${d.completionDate}\n• Days Remaining: ${daysLeft} Days\n\nYour Official Offer Letter is ready and available to view now!`);
         };
+      }
+
+      const btnExp = document.getElementById('btnViewExpLetter');
+      if (btnExp) {
+        if (isCompleted) {
+          btnExp.style.display = 'inline-flex';
+          btnExp.href = `/experience-letter/${encodeURIComponent(d.id)}`;
+        } else {
+          btnExp.style.display = 'none';
+        }
       }
       
       const waCoord = document.getElementById('btnWhatsAppCoord');

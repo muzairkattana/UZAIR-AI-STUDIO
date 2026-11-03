@@ -531,6 +531,7 @@ function filterAndRenderInterns() {
             <a href="/certificate?id=${i.id}" target="_blank" class="btn-act cert" style="background:#F59E0B; color:#FFFFFF;" title="View & Print Official Completion Certificate">🎓 Cert</a>
             <a href="/offer-letter?id=${i.id}" target="_blank" class="btn-act primary" title="View & Print Official Offer Letter">📄 Offer</a>
             <a href="/recommendation-letter?id=${i.id}" target="_blank" class="btn-act lor" title="View & Print Official Recommendation Letter">📜 LOR</a>
+            <a href="/experience-letter?id=${i.id}" target="_blank" class="btn-act" style="background:#8B5CF6; color:#FFFFFF;" title="View & Print Official Experience Letter">💼 Exp</a>
             <a href="/verify?id=${i.id}" target="_blank" class="btn-act" title="Live QR Credential Verification">🛡️ QR</a>
             <button type="button" class="btn-act wa" onclick="openCandidateWhatsApp('${i.id}')" title="Send Official Links to Candidate via WhatsApp">💬 WA</button>
             <button type="button" class="btn-act" onclick="openEditModal('${i.id}')" title="Edit candidate records & dates">✏️</button>
@@ -594,6 +595,7 @@ function filterAndRenderInterns() {
             <a href="/certificate?id=${i.id}" target="_blank" class="btn-act cert" style="background:#F59E0B; color:#FFFFFF;" title="View & Print Official Completion Certificate">🎓 Cert</a>
             <a href="/offer-letter?id=${i.id}" target="_blank" class="btn-act primary" title="View & Print Official Offer Letter">📄 Offer</a>
             <a href="/recommendation-letter?id=${i.id}" target="_blank" class="btn-act lor" title="View & Print Official Recommendation Letter">📜 LOR</a>
+            <a href="/experience-letter?id=${i.id}" target="_blank" class="btn-act" style="background:#8B5CF6; color:#FFFFFF;" title="View & Print Official Experience Letter">💼 Exp</a>
             <a href="/verify?id=${i.id}" target="_blank" class="btn-act" title="Live QR Credential Verification">🛡️ QR</a>
             <button type="button" class="btn-act wa" onclick="openCandidateWhatsApp('${i.id}')" title="Send Official Links to Candidate via WhatsApp">💬 WA</button>
             <button type="button" class="btn-act" onclick="openEditModal('${i.id}')" title="Edit candidate records & dates">✏️ Edit</button>
@@ -665,7 +667,7 @@ window.openCandidateWhatsApp = function(id) {
 
   const origin = window.location.origin;
   const isCompleted = (intern.status || '').toLowerCase().includes('completed');
-  const certLine = isCompleted ? `🎓 Certificate of Completion: ${origin}/certificate?id=${intern.id}\n` : '';
+  const certLine = isCompleted ? `🎓 Certificate of Completion: ${origin}/certificate?id=${intern.id}\n💼 Experience Letter: ${origin}/experience-letter?id=${intern.id}\n` : '';
 
   const msg = 
     `Dear ${intern.fullName},\n\n` +
@@ -704,6 +706,8 @@ window.openEditModal = function(id) {
   if (modalCert) modalCert.href = `/certificate?id=${intern.id}`;
   document.getElementById('modalOfferLink').href = `/offer-letter?id=${intern.id}`;
   document.getElementById('modalLorLink').href = `/recommendation-letter?id=${intern.id}`;
+  const modalExp = document.getElementById('modalExpLink');
+  if (modalExp) modalExp.href = `/experience-letter?id=${intern.id}`;
   document.getElementById('modalVerifyLink').href = `/verify?id=${intern.id}`;
 
   document.getElementById('editInternModal').style.display = 'flex';

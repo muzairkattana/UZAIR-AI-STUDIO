@@ -471,7 +471,7 @@ function decodeQrFromImageBuffer(buffer) {
     if (text) return text;
   }
 
-  // Pass 3: Bottom-Right 45% crop (for Offer & Recommendation Letters)
+  // Pass 3: Bottom-Right 45% crop (for Offer, Recommendation & Experience Letters)
   {
     const sx = Math.floor(W * 0.45), sy = Math.floor(H * 0.45);
     const sw = W - sx, sh = H - sy;
@@ -485,6 +485,46 @@ function decodeQrFromImageBuffer(buffer) {
     }
     text = scanBuf(crop, sw, sh);
     if (text) return text;
+  }
+
+  // Pass 4: Bottom-Center Crop (Optimized for Certificates)
+  {
+    const sx = Math.floor(W * 0.25), sy = Math.floor(H * 0.50);
+    const sw = Math.floor(W * 0.50), sh = Math.floor(H * 0.48);
+    const crop = new Uint8ClampedArray(sw * sh * 4);
+    for (let y = 0; y < sh; y++) {
+      for (let x = 0; x < sw; x++) {
+        const sIdx = (((sy + y) * W) + (sx + x)) * 4;
+        const dIdx = ((y * sw) + x) * 4;
+        crop[dIdx] = data[sIdx]; crop[dIdx + 1] = data[sIdx + 1]; crop[dIdx + 2] = data[sIdx + 2]; crop[dIdx + 3] = data[sIdx + 3];
+      }
+    }
+    text = scanBuf(crop, sw, sh);
+    if (text) return text;
+  }
+
+  // Pass 5: Downscaled Half-Resolution Pass (Reduces high-frequency noise from smartphone camera shots)
+  if (W >= 600 && H >= 600) {
+    const scale = Math.min(720 / W, 720 / H);
+    if (scale < 0.9) {
+      const sW = Math.round(W * scale);
+      const sH = Math.round(H * scale);
+      const scaled = new Uint8ClampedArray(sW * sH * 4);
+      for (let dy = 0; dy < sH; dy++) {
+        const sy = Math.min(H - 1, Math.floor(dy / scale));
+        for (let dx = 0; dx < sW; dx++) {
+          const sx = Math.min(W - 1, Math.floor(dx / scale));
+          const sIdx = (sy * W + sx) * 4;
+          const dIdx = (dy * sW + dx) * 4;
+          scaled[dIdx] = data[sIdx];
+          scaled[dIdx + 1] = data[sIdx + 1];
+          scaled[dIdx + 2] = data[sIdx + 2];
+          scaled[dIdx + 3] = 255;
+        }
+      }
+      text = scanBuf(scaled, sW, sH);
+      if (text) return text;
+    }
   }
 
   return null;
@@ -880,6 +920,112 @@ app.get('/api/internship/certificate/:id', async (req, res) => {
       instructorSignatureUrl: '/assets/saad_signature.png',
       logoUrl: '/assets/uzairaistudio.png',
       status: found.status,
+      verificationUrl: `/verify.html?id=${found.id}`
+    }
+  });
+});
+
+// API: Get Official Experience Letter Data (Strictly protected for completed candidates or admins)
+app.get('/api/internship/experience-letter/:id', async (req, res) => {
+  const id = (req.params.id || '').trim().toUpperCase();
+  const internships = readJsonFile(INTERNSHIPS_FILE);
+  const found = internships.find(app => app.id && app.id.toUpperCase() === id);
+
+  // If not found in internships, support default employee record
+  if (!found) {
+    if (id === 'UZ-EXP-2026-0001' || id === 'DEFAULT' || id === 'UAS-EXP-2026-0001' || id === 'MUHAMMAD-UZAIR') {
+      return res.json({
+        success: true,
+        letter: {
+          id: 'UZ-EXP-2026-0001',
+          fullName: 'MUHAMMAD UZAIR',
+          role: 'Web Developer',
+          formattedStartDate: '1 January 2026',
+          formattedEndDate: '30 September 2026',
+          formattedIssueDate: 'October 01, 2026',
+          duration: '9 Months',
+          pronouns: { subject: 'He', possessive: 'His', possessiveLower: 'his', object: 'him' },
+          founderName: 'Muhammad Uzair',
+          founderTitle: 'Owner & Founder',
+          studioName: 'UZAIR AI STUDIO',
+          studioEmail: 'kmuzairkhan123@gmail.com',
+          verificationUrl: `/verify.html?id=UZ-EXP-2026-0001`
+        }
+      });
+    }
+    return res.status(404).json({
+      success: false,
+      message: 'Record not found for Experience Letter issuance.'
+    });
+  }
+
+  const settings = readSettings();
+  const start = new Date(found.startDate || found.createdAt);
+  const end = new Date(found.completionDate || (start.getTime() + 60 * 24 * 60 * 60 * 1000));
+  const now = new Date();
+  const daysRemaining = Math.max(0, Math.ceil((end - now) / (1000 * 60 * 60 * 24)));
+  const isCompleted = (found.status || '').toLowerCase().includes('completed') || daysRemaining === 0;
+
+  // Check if caller is an authenticated administrator
+  const authHeader = req.headers['authorization'] || '';
+  const token = authHeader.startsWith('Bearer ') ? authHeader.slice(7).trim() : req.headers['x-admin-token'] || (req.query && req.query.admin_token);
+  const isAdmin = token ? await verifyAdminAuthToken(token) : false;
+
+  // STRICT ACCESS RULE: Experience Letter is locked until tenure is complete
+  if (!isCompleted && !isAdmin) {
+    return res.status(403).json({
+      success: false,
+      locked: true,
+      message: `Experience Letter is locked. It will be released upon completion of your tenure on ${found.completionDate || end.toISOString().split('T')[0]}.`,
+      completionDate: found.completionDate || end.toISOString().split('T')[0],
+      daysRemaining,
+      offerLetterUrl: `/offer-letter?id=${found.id}`,
+      intern: {
+        id: found.id,
+        fullName: found.fullName,
+        domain: found.domain,
+        startDate: found.startDate,
+        completionDate: found.completionDate,
+        daysRemaining
+      }
+    });
+  }
+
+  const isFemale = (found.gender || '').toLowerCase().includes('female');
+  const pronouns = {
+    subject: isFemale ? 'She' : 'He',
+    possessive: isFemale ? 'Her' : 'His',
+    possessiveLower: isFemale ? 'her' : 'his',
+    object: isFemale ? 'her' : 'him'
+  };
+
+  const domainRoles = {
+    'Web Development': 'Web Developer',
+    'Data Science': 'Data Scientist',
+    'Generative AI': 'Generative AI Engineer',
+    'Python Development': 'Python Developer',
+    'Front-End Development': 'Front-End Developer'
+  };
+
+  const formatDateLong = (dateObj) => {
+    return dateObj.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: '2-digit' });
+  };
+
+  return res.json({
+    success: true,
+    letter: {
+      id: found.id,
+      fullName: found.fullName,
+      role: domainRoles[found.domain] || `${found.domain} Developer`,
+      formattedStartDate: found.formattedStartDate || `1 ${start.toLocaleDateString('en-US', { month: 'long' })} ${start.getFullYear()}`,
+      formattedEndDate: found.formattedEndDate || `30 ${end.toLocaleDateString('en-US', { month: 'long' })} ${end.getFullYear()}`,
+      formattedIssueDate: found.experienceDate || formatDateLong(end),
+      duration: found.duration || '8 weeks',
+      pronouns,
+      founderName: 'Muhammad Uzair',
+      founderTitle: 'Owner & Founder',
+      studioName: 'UZAIR AI STUDIO',
+      studioEmail: settings.studioEmail || 'kmuzairkhan123@gmail.com',
       verificationUrl: `/verify.html?id=${found.id}`
     }
   });
@@ -1601,6 +1747,13 @@ app.get('/certificate', (req, res) => {
 });
 app.get('/certificate/:id', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'certificate.html'));
+});
+
+app.get('/experience-letter', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'experience-letter.html'));
+});
+app.get('/experience-letter/:id', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'experience-letter.html'));
 });
 
 app.get('/preview-internship', (req, res) => {
