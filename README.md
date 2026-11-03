@@ -78,3 +78,4 @@ The platform combines a client-facing digital showroom with a production-grade E
 ## 📄 License & Attribution
 &copy; 2026 **Uzair AI Studio**. All rights reserved.  
 Endorsed by **Muhammad Uzair** (Founder & Lead Architect).
+"# UZAIR-AI-STUDIO" 
