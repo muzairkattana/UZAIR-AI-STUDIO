@@ -1403,14 +1403,14 @@ function initInternshipModule() {
         if (idParam) return idParam.trim().toUpperCase();
         const parts = u.pathname.split('/').filter(Boolean);
         const last = parts[parts.length - 1];
-        if (last && /^UZ-[A-Z0-9_-]+$/i.test(last)) {
+        if (last && /^(UAIS|UZ)-[A-Z0-9_-]+$/i.test(last)) {
           return last.toUpperCase();
         }
       }
     } catch (e) {}
 
-    // Direct regex match for any Uzair AI Studio ID (e.g. UZ-INT-..., UZ-EXP-...)
-    const match = text.match(/UZ-[A-Z0-9_-]+/i);
+    // Direct regex match for any Uzair AI Studio ID (e.g. UAIS-INT-..., UZ-INT-..., UAIS-EXP-...)
+    const match = text.match(/(UAIS|UZ)-[A-Z0-9_-]+/i);
     if (match) return match[0].toUpperCase();
 
     return text;

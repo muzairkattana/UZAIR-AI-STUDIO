@@ -106,7 +106,7 @@ function hashPassword(pw) {
 const activeInternSessions = new Map();
 
 function generateInternToken(id) {
-  return `UZ-INT-SES-${id}-${Date.now()}-${crypto.randomBytes(8).toString('hex')}`;
+  return `UAIS-INT-SES-${id}-${Date.now()}-${crypto.randomBytes(8).toString('hex')}`;
 }
 
 function sanitizeInternForClient(found) {
@@ -394,7 +394,7 @@ app.post('/api/internship/apply', (req, res) => {
   const completionDateStr = completionDate.toISOString().split('T')[0];
 
   const newInternship = {
-    id: 'UZ-INT-' + Date.now().toString(36).toUpperCase(),
+    id: 'UAIS-INT-' + Date.now().toString(36).toUpperCase(),
     fullName: formattedName,
     rawNameEntered: fullName.trim(),
     email: normalizedEmail,
@@ -510,7 +510,7 @@ app.post('/api/intern-portal/register', (req, res) => {
   const cleanPassword = password.trim();
 
   const newIntern = {
-    id: 'UZ-INT-' + Date.now().toString(36).toUpperCase(),
+    id: 'UAIS-INT-' + Date.now().toString(36).toUpperCase(),
     fullName: formattedName,
     rawNameEntered: fullName.trim(),
     email: normalizedEmail,
@@ -1063,17 +1063,72 @@ app.get('/api/internship/offer-letter/:id', (req, res) => {
 // ============================================================
 // SECURITY & ADMINISTRATOR AUTHENTICATION MIDDLEWARE
 // ============================================================
-const activeAdminSessions = new Map();
+
+// Master admin credentials (stateless — no in-memory session store needed)
+const MASTER_ADMIN_CREDENTIALS = [
+  { email: 'kmuzairkhan123@gmail.com', password: 'MUKattana123@' },
+  { email: 'uzair@gmail.com',          password: 'MUKattana123@' },
+  { email: 'uzair@admin.com',          password: 'uzairaistudio2026' },
+  { email: 'uzair@uzairaistudio.com',  password: 'uzairaistudio2026' },
+  { email: 'admin',                    password: 'uzairaistudio2026' },
+  { email: 'uzair',                    password: 'uzairaistudio2026' },
+  { email: 'admin',                    password: 'admin123' },
+  { email: 'uzair',                    password: 'admin123' }
+];
+
+// JWT-like secret for signing stateless tokens (env override supported)
+const ADMIN_TOKEN_SECRET = process.env.ADMIN_TOKEN_SECRET || 'UAIS-ADM-SECRET-2026-UZAIR-AI-STUDIO';
+
+// Stateless token format: UZ-ADM-<base64(email:timestamp)>-<checksum>
+function createStatelessAdminToken(email) {
+  const payload = Buffer.from(`${email}:${Date.now()}`).toString('base64').replace(/=/g, '');
+  const checksum = Buffer.from(ADMIN_TOKEN_SECRET + payload).toString('base64').substring(0, 8).toUpperCase();
+  return `UZ-ADM-${payload}-${checksum}`;
+}
+
+function verifyStatelessAdminToken(token) {
+  if (!token || !token.startsWith('UZ-ADM-')) return null;
+  try {
+    // Format: UZ-ADM-<payload>-<checksum>
+    const withoutPrefix = token.slice(7); // remove 'UZ-ADM-'
+    const lastDash = withoutPrefix.lastIndexOf('-');
+    if (lastDash < 5) return null;
+    const payload = withoutPrefix.slice(0, lastDash);
+    const checksum = withoutPrefix.slice(lastDash + 1);
+    // Verify checksum
+    const expectedChecksum = Buffer.from(ADMIN_TOKEN_SECRET + payload).toString('base64').substring(0, 8).toUpperCase();
+    if (checksum !== expectedChecksum) return null;
+    // Decode payload
+    const decoded = Buffer.from(payload, 'base64').toString('utf8');
+    const [email, timestamp] = decoded.split(':');
+    if (!email || !timestamp) return null;
+    // Tokens valid for 24 hours
+    const age = Date.now() - parseInt(timestamp, 10);
+    if (age > 24 * 60 * 60 * 1000) return null;
+    return {
+      user: {
+        name: email === 'kmuzairkhan123@gmail.com' || email === 'uzair@gmail.com' ? 'Muhammad Uzair' : email.split('@')[0],
+        role: 'Founder & Lead Solutions Architect',
+        email: email,
+        avatar: '/assets/uzairaistudio.png'
+      },
+      createdAt: parseInt(timestamp, 10)
+    };
+  } catch (e) {
+    return null;
+  }
+}
 
 async function verifyAdminAuthToken(token) {
   if (!token) return null;
   const cleanToken = token.trim();
-  if (activeAdminSessions.has(cleanToken)) {
-    return activeAdminSessions.get(cleanToken);
-  }
-  // Master emergency token format
+
+  // Primary: Stateless UZ-ADM- token (works on serverless/Vercel)
   if (cleanToken.startsWith('UZ-ADM-')) {
-    const session = {
+    const session = verifyStatelessAdminToken(cleanToken);
+    if (session) return session;
+    // Legacy format fallback (old tokens without checksum)
+    return {
       user: {
         name: 'Muhammad Uzair',
         role: 'Founder & Lead Solutions Architect',
@@ -1082,15 +1137,14 @@ async function verifyAdminAuthToken(token) {
       },
       createdAt: Date.now()
     };
-    activeAdminSessions.set(cleanToken, session);
-    return session;
   }
-  // Firebase ID token (JWT)
+
+  // Firebase ID token (JWT — starts with eyJ)
   if (cleanToken.startsWith('eyJ')) {
     if (firebaseAdmin) {
       try {
         const decoded = await firebaseAdmin.auth().verifyIdToken(cleanToken);
-        const session = {
+        return {
           user: {
             name: decoded.name || (decoded.email ? decoded.email.split('@')[0] : 'Administrator'),
             email: decoded.email,
@@ -1100,15 +1154,13 @@ async function verifyAdminAuthToken(token) {
           },
           createdAt: Date.now()
         };
-        activeAdminSessions.set(cleanToken, session);
-        return session;
       } catch (e) {}
     }
     try {
       const tRes = await fetch(`https://oauth2.googleapis.com/tokeninfo?id_token=${cleanToken}`);
       if (tRes.ok) {
         const tData = await tRes.json();
-        const session = {
+        return {
           user: {
             name: tData.email ? tData.email.split('@')[0] : 'Administrator',
             email: tData.email,
@@ -1118,11 +1170,10 @@ async function verifyAdminAuthToken(token) {
           },
           createdAt: Date.now()
         };
-        activeAdminSessions.set(cleanToken, session);
-        return session;
       }
     } catch (e) {}
   }
+
   return null;
 }
 
@@ -1476,17 +1527,18 @@ app.get('/api/admin/firebase-status', (req, res) => {
   });
 });
 
-// Admin Login (Firebase Authentication + Master Fallback)
+// Admin Login (Stateless — Vercel-compatible)
 app.post('/api/admin/login', async (req, res) => {
   const { username, email, password, idToken } = req.body;
-  const inputEmail = (email || username || '').trim();
+  const inputEmail = (email || username || '').trim().toLowerCase();
 
-  // Scenario 1: ID Token provided directly from Firebase client SDK
+  // Scenario 1: Firebase ID Token provided directly from client SDK
   if (idToken) {
     if (firebaseAdmin) {
       try {
         const decoded = await firebaseAdmin.auth().verifyIdToken(idToken);
         const userEmail = decoded.email || inputEmail || 'admin@firebase.local';
+        const token = createStatelessAdminToken(userEmail);
         const user = {
           name: decoded.name || userEmail.split('@')[0],
           email: userEmail,
@@ -1494,13 +1546,7 @@ app.post('/api/admin/login', async (req, res) => {
           role: 'Administrator',
           avatar: '/assets/uzairaistudio.png'
         };
-        activeAdminSessions.set(idToken, { user, createdAt: Date.now() });
-        return res.json({
-          success: true,
-          authMethod: 'firebase-admin-token',
-          token: idToken,
-          user
-        });
+        return res.json({ success: true, authMethod: 'firebase-admin-token', token, user });
       } catch (tokenErr) {
         console.warn('[Firebase Auth] Admin token verification error:', tokenErr.message);
       }
@@ -1509,20 +1555,16 @@ app.post('/api/admin/login', async (req, res) => {
         const tRes = await fetch(`https://oauth2.googleapis.com/tokeninfo?id_token=${idToken}`);
         if (tRes.ok) {
           const tData = await tRes.json();
+          const userEmail = tData.email || inputEmail;
+          const token = createStatelessAdminToken(userEmail);
           const user = {
             name: tData.email ? tData.email.split('@')[0] : 'Administrator',
-            email: tData.email || inputEmail,
+            email: userEmail,
             uid: tData.sub || tData.user_id,
             role: 'Administrator',
             avatar: '/assets/uzairaistudio.png'
           };
-          activeAdminSessions.set(idToken, { user, createdAt: Date.now() });
-          return res.json({
-            success: true,
-            authMethod: 'firebase-token',
-            token: idToken,
-            user
-          });
+          return res.json({ success: true, authMethod: 'firebase-token', token, user });
         }
       } catch (fetchErr) {
         console.warn('[Firebase Auth] Tokeninfo check error:', fetchErr.message);
@@ -1530,29 +1572,36 @@ app.post('/api/admin/login', async (req, res) => {
     }
   }
 
-  // Scenario 2: Email & Password provided
   if (!inputEmail || !password) {
-    return res.status(400).json({
-      success: false,
-      message: 'Please provide administrator email and password.'
-    });
+    return res.status(400).json({ success: false, message: 'Please provide administrator email and password.' });
   }
 
-  // Attempt A: Verify with Google Firebase Authentication via Identity Toolkit REST API
+  // Attempt A: Master Credentials (stateless, works on Vercel serverless)
+  const masterMatch = MASTER_ADMIN_CREDENTIALS.find(c =>
+    c.email.toLowerCase() === inputEmail && c.password === password
+  );
+  if (masterMatch) {
+    const token = createStatelessAdminToken(masterMatch.email);
+    const user = {
+      name: 'Muhammad Uzair',
+      role: 'Founder & Lead Solutions Architect',
+      email: masterMatch.email === 'uzair' || masterMatch.email === 'admin' ? 'kmuzairkhan123@gmail.com' : masterMatch.email,
+      avatar: '/assets/uzairaistudio.png'
+    };
+    return res.json({ success: true, authMethod: 'master-stateless', token, user });
+  }
+
+  // Attempt B: Firebase REST API (email & password via Identity Toolkit)
   let firebaseErrorMessage = null;
   try {
     const fbRes = await fetch(`https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${FIREBASE_API_KEY}`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        email: inputEmail,
-        password: password,
-        returnSecureToken: true
-      })
+      body: JSON.stringify({ email: inputEmail, password: password, returnSecureToken: true })
     });
-
     const fbData = await fbRes.json();
     if (fbRes.ok && fbData.idToken) {
+      const token = createStatelessAdminToken(fbData.email || inputEmail);
       const user = {
         name: fbData.displayName || (fbData.email ? fbData.email.split('@')[0] : 'Administrator'),
         email: fbData.email,
@@ -1560,13 +1609,7 @@ app.post('/api/admin/login', async (req, res) => {
         role: 'Administrator',
         avatar: '/assets/uzairaistudio.png'
       };
-      activeAdminSessions.set(fbData.idToken, { user, createdAt: Date.now() });
-      return res.json({
-        success: true,
-        authMethod: 'firebase-auth',
-        token: fbData.idToken,
-        user
-      });
+      return res.json({ success: true, authMethod: 'firebase-auth', token, user });
     } else if (fbData.error && fbData.error.message) {
       firebaseErrorMessage = fbData.error.message;
     }
@@ -1574,29 +1617,7 @@ app.post('/api/admin/login', async (req, res) => {
     console.warn('[Firebase Auth] Request error:', netErr.message);
   }
 
-  // Attempt B: Master Emergency Fallback (ensures Owner is never locked out)
-  const cleanUser = inputEmail.toLowerCase();
-  const validMasterUser = cleanUser === 'uzair' || cleanUser === 'uzair@admin.com' || cleanUser === 'uzair@uzairaistudio.com' || cleanUser === 'admin';
-  const validMasterPass = password === 'uzairaistudio2026' || password === 'admin123';
-
-  if (validMasterUser && validMasterPass) {
-    const token = 'UZ-ADM-' + Date.now().toString(36).toUpperCase() + '-' + Math.random().toString(36).substring(2, 8).toUpperCase();
-    const user = {
-      name: 'Muhammad Uzair',
-      role: 'Founder & Lead Solutions Architect',
-      email: 'kmuzairkhan123@gmail.com',
-      avatar: '/assets/uzairaistudio.png'
-    };
-    activeAdminSessions.set(token, { user, createdAt: Date.now() });
-    return res.json({
-      success: true,
-      authMethod: 'master-override',
-      token: token,
-      user
-    });
-  }
-
-  // Explanatory error feedback for security credentials
+  // Error feedback
   let displayError = 'Invalid administrator credentials. Access denied.';
   if (firebaseErrorMessage === 'INVALID_LOGIN_CREDENTIALS') {
     displayError = 'Invalid email or password. Please verify your administrator credentials.';
@@ -1610,10 +1631,7 @@ app.post('/api/admin/login', async (req, res) => {
     displayError = 'Too many failed login attempts. Access temporarily restricted. Please try again later.';
   }
 
-  return res.status(401).json({
-    success: false,
-    message: displayError
-  });
+  return res.status(401).json({ success: false, message: displayError });
 });
 
 // Admin: Verify Active Session Token
