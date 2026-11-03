@@ -1,0 +1,1887 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+  <title>Uzair AI Studio | Premier Software House, Mobile Apps & AI Engineering</title>
+  
+  <meta name="description" content="Uzair AI Studio, founded by Muhammad Uzair in Mardan, KPK, Pakistan, engineers custom enterprise software, mobile applications, modern web platforms, and intelligent AI automation.">
+  <meta name="keywords" content="Uzair AI Studio, Muhammad Uzair, Software House Mardan, Mobile App Development, Web Development, AI Automation, Flutter, React, Next.js, Python">
+  <meta name="author" content="Muhammad Uzair - Uzair AI Studio">
+  
+  <!-- Open Graph / Meta -->
+  <meta property="og:title" content="Uzair AI Studio - Next-Gen Software & AI Studio">
+  <meta property="og:description" content="Custom software, cross-platform mobile apps, and autonomous AI systems built by Muhammad Uzair and senior engineering squads.">
+  <meta property="og:image" content="/assets/facebook_page_cover_photo.png">
+  <meta property="og:type" content="website">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="/assets/uzairaistudio.png">
+  
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+
+  <!-- Ambient Light Mesh Background -->
+  <div class="bg-mesh-canvas">
+    <div class="mesh-orb orb-1"></div>
+    <div class="mesh-orb orb-2"></div>
+    <div class="mesh-orb orb-3"></div>
+    <canvas id="particlesCanvas" style="position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;"></canvas>
+  </div>
+
+  <!-- Main Sticky Header (Clean Top - No Announcement Ribbon) -->
+  <header class="site-header">
+    <div class="container nav-wrapper">
+      <!-- Brand Logo -->
+      <a href="#" class="brand-logo" aria-label="Uzair AI Studio Home">
+        <img src="/assets/uzairaistudio.png" alt="Uzair AI Studio Official Logo" class="brand-icon">
+        <div class="brand-text-block">
+          <span class="brand-name">Uzair <span>AI Studio</span></span>
+          <span class="brand-sub">Software House & AI Lab</span>
+        </div>
+      </a>
+
+      <!-- Desktop Navigation Menu (Streamlined, 6 Core Links, Zero Wrapping) -->
+      <ul class="nav-menu">
+        <li><a href="#services" class="nav-link">Capabilities</a></li>
+        <li><a href="#planner" class="nav-link">Sprint Planner</a></li>
+        <li><a href="#portfolio" class="nav-link">Case Studies</a></li>
+        <li><a href="#internship" class="nav-link nav-intern-link"><span class="intern-dot"></span>Internship <span class="nav-intern-tag">2-Mo</span></a></li>
+        <li><a href="#process" class="nav-link">Process</a></li>
+        <li><a href="#contact" class="nav-link">Contact</a></li>
+      </ul>
+
+      <!-- Action Buttons -->
+      <div class="nav-actions">
+        <!-- Desktop Primary CTA -->
+        <a href="#contact" class="btn btn-primary btn-sm btn-nav-cta">Start Project</a>
+        
+        <!-- Desktop WhatsApp CTA -->
+        <a href="https://wa.me/923433885835?text=Hi%20Muhammad%20Uzair,%20I%20want%20to%20discuss%20a%20project" target="_blank" class="btn btn-whatsapp btn-sm btn-nav-wa" aria-label="Chat with Muhammad Uzair on WhatsApp">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766 0-3.18-2.588-5.771-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.299.045-.677.063-1.092-.069-.252-.08-.575-.187-.988-.365-1.739-.751-2.874-2.502-2.961-2.617-.087-.116-.708-.94-.708-1.793s.448-1.273.607-1.446c.159-.173.346-.217.462-.217l.332.007c.106.005.249-.04.39.299.144.35.49 1.196.533 1.284.043.088.072.191.014.306-.058.115-.087.188-.173.289l-.26.303c-.087.087-.177.181-.076.355.101.173.449.741.963 1.2 0.662.591 1.221.774 1.394.861.174.086.275.072.376-.044.102-.115.434-.506.549-.68.116-.173.232-.144.39-.086.159.058 1.011.477 1.184.564.173.086.289.13.332.202.043.072.043.419-.101.824z"/></svg>
+          <span>WhatsApp</span>
+        </a>
+
+        <!-- Mobile WhatsApp Circular Button -->
+        <a href="https://wa.me/923433885835?text=Hi%20Muhammad%20Uzair,%20I%20want%20to%20discuss%20a%20project" target="_blank" class="mobile-wa-icon-btn" aria-label="Chat with Muhammad Uzair on WhatsApp">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766 0-3.18-2.588-5.771-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.299.045-.677.063-1.092-.069-.252-.08-.575-.187-.988-.365-1.739-.751-2.874-2.502-2.961-2.617-.087-.116-.708-.94-.708-1.793s.448-1.273.607-1.446c.159-.173.346-.217.462-.217l.332.007c.106.005.249-.04.39.299.144.35.49 1.196.533 1.284.043.088.072.191.014.306-.058.115-.087.188-.173.289l-.26.303c-.087.087-.177.181-.076.355.101.173.449.741.963 1.2 0.662.591 1.221.774 1.394.861.174.086.275.072.376-.044.102-.115.434-.506.549-.68.116-.173.232-.144.39-.086.159.058 1.011.477 1.184.564.173.086.289.13.332.202.043.072.043.419-.101.824z"/></svg>
+        </a>
+
+        <!-- Hamburger Menu Button -->
+        <button class="mobile-toggle" id="mobileToggle" aria-label="Toggle Navigation Menu">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <line x1="3" y1="12" x2="21" y2="12"></line>
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+            <line x1="3" y1="18" x2="21" y2="18"></line>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Mobile Drawer Menu -->
+  <div class="mobile-nav-drawer" id="mobileDrawer">
+    <div class="mobile-drawer-header">
+      <div class="drawer-brand">
+        <img src="/assets/uzairaistudio.png" alt="Uzair AI Studio Logo" style="width:34px; height:34px; border-radius:8px;">
+        <div>
+          <strong style="font-size:1.05rem; display:block; line-height:1.2; color:var(--text-primary);">Uzair <span class="text-gradient">AI Studio</span></strong>
+          <span style="font-size:0.65rem; text-transform:uppercase; letter-spacing:0.06em; color:var(--primary); font-weight:700;">Software House & AI Lab</span>
+        </div>
+      </div>
+    </div>
+
+    <ul class="mobile-nav-links">
+      <li><a href="#services"><span class="drawer-num">01</span> Capabilities</a></li>
+      <li><a href="#planner"><span class="drawer-num">02</span> Sprint & Architecture Planner</a></li>
+      <li><a href="#portfolio"><span class="drawer-num">03</span> Featured Case Studies</a></li>
+      <li><a href="#internship"><span class="drawer-num">04</span> 🎓 2-Month Internship Program <span class="badge-new-pill">Open</span></a></li>
+      <li><a href="#process"><span class="drawer-num">05</span> Agile Delivery Process</a></li>
+      <li><a href="#contact"><span class="drawer-num">06</span> Contact Muhammad Uzair</a></li>
+    </ul>
+
+    <div class="drawer-cta-actions">
+      <a href="#planner" class="btn btn-primary btn-block">🚀 Plan Architecture Sprints</a>
+      <a href="https://wa.me/923433885835?text=Hello%20Muhammad%20Uzair,%20I%20am%20interested%20in%20Uzair%20AI%20Studio%20services" target="_blank" class="btn btn-whatsapp btn-block">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766 0-3.18-2.588-5.771-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.299.045-.677.063-1.092-.069-.252-.08-.575-.187-.988-.365-1.739-.751-2.874-2.502-2.961-2.617-.087-.116-.708-.94-.708-1.793s.448-1.273.607-1.446c.159-.173.346-.217.462-.217l.332.007c.106.005.249-.04.39.299.144.35.49 1.196.533 1.284.043.088.072.191.014.306-.058.115-.087.188-.173.289l-.26.303c-.087.087-.177.181-.076.355.101.173.449.741.963 1.2 0.662.591 1.221.774 1.394.861.174.086.275.072.376-.044.102-.115.434-.506.549-.68.116-.173.232-.144.39-.086.159.058 1.011.477 1.184.564.173.086.289.13.332.202.043.072.043.419-.101.824z"/></svg>
+        WhatsApp: +92 343 3885835
+      </a>
+      <div class="drawer-founder-sub">
+        Founder & Lead Solutions Architect: <strong>Muhammad Uzair</strong><br>
+        Headquarters: Mardan, KPK, Pakistan • kmuzairkah123@gmail.com
+      </div>
+    </div>
+  </div>
+
+  <!-- HERO SECTION -->
+  <section class="hero-section" id="hero">
+    <div class="container hero-grid">
+      
+      <!-- Left Content -->
+      <div class="hero-left">
+        <div class="hero-badge-pill" id="heroBadgePill">
+          <span class="pulse-dot"></span>
+          <span class="hero-badge-text">Next-Gen Software House & AI Lab</span>
+          <span class="badge-arrow">&rarr;</span>
+        </div>
+
+        <h1 class="hero-title">
+          Engineering The Future of <span class="text-gradient">Intelligent Software</span>, Mobile Apps & Scaled Cloud Systems.
+        </h1>
+
+        <p class="hero-subtitle">
+          Founded and directed by <strong>Muhammad Uzair</strong> in Mardan, KPK, Pakistan. We partner with ambitious startups and enterprises worldwide to architect, code, and deploy resilient digital products.
+        </p>
+
+        <!-- CTA Buttons (Modern 10px Squircles with Radiant Elevation) -->
+        <div class="hero-cta-group">
+          <a href="#planner" class="btn btn-primary btn-lg">
+            <span>🚀 Plan Architecture & Sprints</span>
+          </a>
+          <a href="https://wa.me/923433885835?text=Hi%20Muhammad%20Uzair,%20I%20would%20like%20to%20discuss%20a%20new%20project" target="_blank" class="btn btn-whatsapp btn-lg" aria-label="Chat with Muhammad Uzair on WhatsApp">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766 0-3.18-2.588-5.771-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.299.045-.677.063-1.092-.069-.252-.08-.575-.187-.988-.365-1.739-.751-2.874-2.502-2.961-2.617-.087-.116-.708-.94-.708-1.793s.448-1.273.607-1.446c.159-.173.346-.217.462-.217l.332.007c.106.005.249-.04.39.299.144.35.49 1.196.533 1.284.043.088.072.191.014.306-.058.115-.087.188-.173.289l-.26.303c-.087.087-.177.181-.076.355.101.173.449.741.963 1.2 0.662.591 1.221.774 1.394.861.174.086.275.072.376-.044.102-.115.434-.506.549-.68.116-.173.232-.144.39-.086.159.058 1.011.477 1.184.564.173.086.289.13.332.202.043.072.043.419-.101.824z"/></svg>
+            <span>Chat With Founder</span>
+          </a>
+        </div>
+
+        <!-- Micro Direct Channel Note -->
+        <div class="hero-channel-note">
+          <span class="note-bullet">⚡</span>
+          <span>Guaranteed 2-Hour Response • Direct Access to Muhammad Uzair • 100% IP Handover</span>
+        </div>
+
+        <!-- Trust Proof Bar -->
+        <div class="hero-proof-bar">
+          <div class="proof-item">
+            <div class="proof-icon">★</div>
+            <div class="proof-text">
+              <strong>4.9 / 5.0 Rating</strong>
+              <span>Verified Client Satisfaction</span>
+            </div>
+          </div>
+          <div class="proof-item">
+            <div class="proof-icon">⚡</div>
+            <div class="proof-text">
+              <strong>99.8% On-Time</strong>
+              <span>Bi-Weekly Agile Sprints</span>
+            </div>
+          </div>
+          <div class="proof-item">
+            <div class="proof-icon">🛡️</div>
+            <div class="proof-text">
+              <strong>100% IP Ownership</strong>
+              <span>Protected by Strict NDA</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right Visual Interactive Command Center with Multi-Tab Switcher & Code Flip -->
+      <div class="hero-right">
+        <div class="hero-visual-card" id="heroInteractiveCard">
+          
+          <!-- Ambient Glow Layer -->
+          <div class="hero-card-glow"></div>
+
+          <!-- Topbar -->
+          <div class="visual-card-topbar">
+            <div class="window-dots">
+              <span></span><span></span><span></span>
+            </div>
+            
+            <div class="hero-view-toggles">
+              <button type="button" class="view-toggle-btn active" id="btnViewVisual" title="Switch to 3D Interface View">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>
+                <span>Preview</span>
+              </button>
+              <button type="button" class="view-toggle-btn" id="btnViewCode" title="Inspect Clean Architecture Code">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg>
+                <span>Code</span>
+              </button>
+            </div>
+
+            <div class="status-badge-live">
+              <span class="pulse-dot" style="width:6px; height:6px;"></span>
+              <span>Sprint Active</span>
+            </div>
+          </div>
+
+          <!-- Capability Switcher Tabs -->
+          <div class="hero-tabs-nav" id="heroTabsNav">
+            <button type="button" class="hero-tab-pill active" data-tab="saas">
+              <span>⚡ Cloud SaaS</span>
+            </button>
+            <button type="button" class="hero-tab-pill" data-tab="mobile">
+              <span>📱 Mobile Apps</span>
+            </button>
+            <button type="button" class="hero-tab-pill" data-tab="ai">
+              <span>🤖 AI Neural Core</span>
+            </button>
+          </div>
+
+          <!-- Mode 1: Visual Interactive Stage -->
+          <div class="hero-stage-view" id="heroVisualStage">
+            <div class="dashboard-hero-image">
+              <img id="heroStageImage" src="/assets/cloud_analytics_dashboard_1793620361024.jpg" alt="Uzair AI Studio Architecture">
+              <div class="image-gradient-overlay"></div>
+              <div class="image-floating-label" id="heroStageLabel">Enterprise SaaS Telemetry</div>
+            </div>
+
+            <!-- Dynamic Telemetry Metrics Row -->
+            <div class="live-metrics-row" id="heroMetricsRow">
+              <div class="metric-mini-card">
+                <span class="metric-mini-val" id="metricVal1">99.98%</span>
+                <span class="metric-mini-lbl" id="metricLbl1">Uptime SLA</span>
+              </div>
+              <div class="metric-mini-card">
+                <span class="metric-mini-val" id="metricVal2">&lt; 1.2s</span>
+                <span class="metric-mini-lbl" id="metricLbl2">Load Velocity</span>
+              </div>
+              <div class="metric-mini-card">
+                <span class="metric-mini-val" id="metricVal3">3.4x</span>
+                <span class="metric-mini-lbl" id="metricLbl3">Conversion Lift</span>
+              </div>
+            </div>
+
+            <!-- Dynamic Tech Stack Cloud -->
+            <div>
+              <div class="hero-tech-label">Architecture Stack</div>
+              <div class="tech-tags-cloud" id="heroTechTags">
+                <span class="tech-tag">▲ Next.js 15 & React 19</span>
+                <span class="tech-tag">☁️ Cloud Native AWS</span>
+                <span class="tech-tag">🐘 PostgreSQL</span>
+                <span class="tech-tag">🐳 Docker CI/CD</span>
+                <span class="tech-tag">🛡️ SOC2 Security</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Mode 2: Clean Code Terminal Stage -->
+          <div class="hero-code-view" id="heroCodeStage" style="display:none;">
+            <div class="terminal-body">
+              <div class="terminal-header-line">
+                <span class="terminal-lang">TypeScript • Next.js 15 Clean Architecture</span>
+                <button type="button" class="btn-copy-code" id="btnCopyHeroCode">Copy</button>
+              </div>
+              <pre class="terminal-code-block" id="heroCodeSnippet"><code><span class="c-keyword">import</span> { <span class="c-type">AIService</span>, <span class="c-type">CloudSLA</span> } <span class="c-keyword">from</span> <span class="c-str">'@uzair-ai/core'</span>;
+
+<span class="c-comment">// Production Architecture by Muhammad Uzair</span>
+<span class="c-keyword">export async function</span> <span class="c-func">deploySprintModule</span>() {
+  <span class="c-keyword">const</span> studio = <span class="c-keyword">new</span> <span class="c-type">UzairAIStudio</span>({
+    leadArchitect: <span class="c-str">'Muhammad Uzair'</span>,
+    location: <span class="c-str">'Mardan, KPK, Pakistan'</span>,
+    telemetrySLA: <span class="c-str">'99.98%'</span>,
+    biWeeklyDelivery: <span class="c-keyword">true</span>
+  });
+
+  <span class="c-keyword">return await</span> studio.<span class="c-func">shipCleanCode</span>({
+    ipOwnership: <span class="c-str">'100% Client Transferred'</span>,
+    warranty: <span class="c-str">'180 Days Active SLA'</span>
+  });
+}</code></pre>
+            </div>
+          </div>
+
+          <!-- Floating Verified Founder Badge -->
+          <div class="floating-card-pill">
+            <img src="/assets/uzairaistudio.png" alt="Uzair AI Studio Official Icon" style="width:28px; height:28px; border-radius:6px; flex-shrink:0;">
+            <div>
+              <strong style="font-size:0.8rem; display:block; line-height:1.2;">Muhammad Uzair</strong>
+              <span style="font-size:0.7rem; color:#10B981; font-weight:700;">● Active Engineering Sprint</span>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+    </div>
+  </section>
+
+  <!-- LIVE STUDIO STATS COUNTER -->
+  <section class="stats-bar-section">
+    <div class="container stats-grid">
+      <div class="stat-box">
+        <div class="stat-number" data-target="120" data-suffix="+">0</div>
+        <div class="stat-label">Delivered Projects Worldwide</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-number" data-target="99.4" data-suffix="%">0</div>
+        <div class="stat-label">Client Satisfaction Score</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-number" data-target="18" data-suffix="+">0</div>
+        <div class="stat-label">Modern Frameworks Mastered</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-number" data-target="24" data-suffix="/7">0</div>
+        <div class="stat-label">Dedicated Technical SLA</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CAPABILITIES & SOLUTIONS (STREAMLINED BENTO GRID - 4 CORE PILLARS) -->
+  <section class="section" id="services">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-badge">Full-Stack Digital Engineering</span>
+        <h2 class="section-title">Core Engineering Capabilities</h2>
+        <p class="section-desc">
+          Turnkey digital engineering executed with clean architectures, high-throughput microservices, and dedicated post-launch warranties.
+        </p>
+      </div>
+
+      <div class="services-grid bento-services-grid">
+        
+        <!-- Pillar 1: Custom Software Engineering & Enterprise SaaS -->
+        <div class="service-card bento-card-large">
+          <div class="service-card-thumb">
+            <span class="service-pill-tag">Enterprise SaaS</span>
+            <img src="/assets/custom_software_saas_1793621103014.jpg" alt="Custom Enterprise Software SaaS Engineering">
+          </div>
+          <div class="service-card-body">
+            <div class="service-title-row">
+              <div class="service-icon-box">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>
+              </div>
+              <h3 class="service-title">Custom Software Engineering & Scalable SaaS</h3>
+            </div>
+            <p class="service-description">
+              Tailor-made enterprise software, CRM systems, SaaS platforms, and secure APIs built with modular clean-code architectures that handle high-throughput operations seamlessly.
+            </p>
+            <div class="service-tags-row">
+              <span class="mini-tag">Microservices</span>
+              <span class="mini-tag">PostgreSQL</span>
+              <span class="mini-tag">REST & GraphQL</span>
+              <span class="mini-tag">SOC2 Security</span>
+            </div>
+            <div class="service-card-action">
+              <a href="#planner" class="btn-link-action">Plan Software Sprint &rarr;</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Pillar 2: Cross-Platform Mobile Apps -->
+        <div class="service-card">
+          <div class="service-card-thumb">
+            <span class="service-pill-tag">iOS & Android</span>
+            <img src="/assets/mobile_app_showcase_1793620252805.jpg" alt="Cross-Platform iOS & Android Mobile Apps">
+          </div>
+          <div class="service-card-body">
+            <div class="service-title-row">
+              <div class="service-icon-box">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"></rect><line x1="12" y1="18" x2="12.01" y2="18"></line></svg>
+              </div>
+              <h3 class="service-title">Mobile App Development</h3>
+            </div>
+            <p class="service-description">
+              Fluid, feature-rich iOS and Android apps engineered with Flutter, React Native, Swift, and Kotlin for 60fps native performance, biometrics, and offline caching.
+            </p>
+            <div class="service-tags-row">
+              <span class="mini-tag">Flutter</span>
+              <span class="mini-tag">React Native</span>
+              <span class="mini-tag">iOS / Android</span>
+              <span class="mini-tag">Store Publishing</span>
+            </div>
+            <div class="service-card-action">
+              <a href="#planner" class="btn-link-action">Plan Mobile Sprint &rarr;</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Pillar 3: AI Solutions & Autonomous Agents -->
+        <div class="service-card">
+          <div class="service-card-thumb">
+            <span class="service-pill-tag">AI & Neural LLM</span>
+            <img src="/assets/ai_neural_core_1793620332731.jpg" alt="AI Solutions & Autonomous Agents">
+          </div>
+          <div class="service-card-body">
+            <div class="service-title-row">
+              <div class="service-icon-box">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="4" width="16" height="16" rx="2"></rect><rect x="9" y="9" width="6" height="6"></rect><line x1="9" y1="1" x2="9" y2="4"></line><line x1="15" y1="1" x2="15" y2="4"></line><line x1="9" y1="20" x2="9" y2="23"></line><line x1="15" y1="20" x2="15" y2="23"></line><line x1="20" y1="9" x2="23" y2="9"></line><line x1="20" y1="14" x2="23" y2="14"></line><line x1="1" y1="9" x2="4" y2="9"></line><line x1="1" y1="14" x2="4" y2="14"></line></svg>
+              </div>
+              <h3 class="service-title">AI Solutions & Automation</h3>
+            </div>
+            <p class="service-description">
+              Custom LLM integrations, autonomous customer intelligence agents, automated document processing, and RAG pipelines powered by OpenAI, Gemini, and Anthropic.
+            </p>
+            <div class="service-tags-row">
+              <span class="mini-tag">Custom Agents</span>
+              <span class="mini-tag">RAG Pipelines</span>
+              <span class="mini-tag">FastAPI</span>
+              <span class="mini-tag">Vector DB</span>
+            </div>
+            <div class="service-card-action">
+              <a href="#planner" class="btn-link-action">Plan AI Roadmap &rarr;</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Pillar 4: Modern Web Platforms & Cloud DevOps -->
+        <div class="service-card bento-card-large">
+          <div class="service-card-thumb">
+            <span class="service-pill-tag">Next.js & Cloud DevOps</span>
+            <img src="/assets/developer_workspace_1793620393269.jpg" alt="Modern Web Platforms & Cloud DevOps">
+          </div>
+          <div class="service-card-body">
+            <div class="service-title-row">
+              <div class="service-icon-box">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>
+              </div>
+              <h3 class="service-title">High-Velocity Web Platforms & Cloud DevOps</h3>
+            </div>
+            <p class="service-description">
+              Blazing fast web applications built with Next.js 15 and React 19, paired with production AWS/GCP cloud architectures, automated CI/CD pipelines, and 99.98% uptime SLAs.
+            </p>
+            <div class="service-tags-row">
+              <span class="mini-tag">Next.js 15 SSR</span>
+              <span class="mini-tag">AWS Cloud</span>
+              <span class="mini-tag">Docker CI/CD</span>
+              <span class="mini-tag">99.98% SLA</span>
+            </div>
+            <div class="service-card-action">
+              <a href="#planner" class="btn-link-action">Plan Web & Cloud Sprint &rarr;</a>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- INTERACTIVE ARCHITECTURE & SPRINT PLANNER (EXECUTIVE ENGINE) -->
+  <section class="section" id="planner" style="background:var(--bg-surface-subtle);">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-badge">Sprint & Architecture Engine</span>
+        <h2 class="section-title">Interactive Project Architecture Planner</h2>
+        <p class="section-desc">
+          Plan your technical roadmap from rapid MVP to enterprise scale with complete architectural transparency. Select your required digital capabilities, fine-tune tech stack specifications, and instantly dispatch your project brief.
+        </p>
+      </div>
+
+      <div class="estimator-wrapper" id="projectEstimator">
+        
+        <!-- Mode Switcher Bar -->
+        <div class="planner-mode-bar">
+          <div class="planner-mode-toggle">
+            <button type="button" class="planner-mode-btn active" id="btnModeQuick" data-mode="quick">
+              <span>⚡ Standard Blueprint</span>
+            </button>
+            <button type="button" class="planner-mode-btn" id="btnModeAdvanced" data-mode="advanced">
+              <span>🛠️ Deep Enterprise Stack</span>
+            </button>
+          </div>
+          <div class="planner-mode-hint">
+            <span>💡 All parameters are completely optional & flexible &bull; Zero forced restrictions</span>
+          </div>
+        </div>
+
+        <!-- Step 1: Project Type -->
+        <div style="margin-bottom:24px;">
+          <div class="planner-step-header">
+            <h3 class="planner-step-title">
+              <span>1. Select Core System Platform</span>
+            </h3>
+            <span class="planner-step-badge">Single Choice</span>
+          </div>
+          <div class="estimator-grid-selection">
+            <div class="select-card type-select-card selected" data-type="web">
+              <div class="card-icon-svg">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>
+              </div>
+              <div class="select-card-title">Web Platform / SaaS</div>
+              <div class="select-card-desc">Next.js 15, React, Scaled APIs</div>
+            </div>
+            <div class="select-card type-select-card" data-type="mobile">
+              <div class="card-icon-svg">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"></rect><line x1="12" y1="18" x2="12.01" y2="18"></line></svg>
+              </div>
+              <div class="select-card-title">Mobile Application</div>
+              <div class="select-card-desc">iOS, Android, Flutter & Swift</div>
+            </div>
+            <div class="select-card type-select-card" data-type="ai">
+              <div class="card-icon-svg">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="4" width="16" height="16" rx="2"></rect><rect x="9" y="9" width="6" height="6"></rect><line x1="9" y1="1" x2="9" y2="4"></line><line x1="15" y1="1" x2="15" y2="4"></line><line x1="9" y1="20" x2="9" y2="23"></line><line x1="15" y1="20" x2="15" y2="23"></line></svg>
+              </div>
+              <div class="select-card-title">Autonomous AI & Agents</div>
+              <div class="select-card-desc">Custom LLMs, Swarms & RAG</div>
+            </div>
+            <div class="select-card type-select-card" data-type="software">
+              <div class="card-icon-svg">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>
+              </div>
+              <div class="select-card-title">Enterprise Software / ERP</div>
+              <div class="select-card-desc">Distributed Cloud Microservices</div>
+            </div>
+            <div class="select-card type-select-card" data-type="fullsuite">
+              <div class="card-icon-svg">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"></path><path d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"></path></svg>
+              </div>
+              <div class="select-card-title">Full Digital Ecosystem</div>
+              <div class="select-card-desc">Web + Mobile + AI Neural Squad</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Step 2: Key Features Selection -->
+        <div style="margin-bottom:24px;">
+          <div class="planner-step-header">
+            <h3 class="planner-step-title">
+              <span>2. Choose Desired Architecture Modules</span>
+            </h3>
+            <span class="planner-step-badge">Multi-Select Toggle</span>
+          </div>
+          <div class="estimator-grid-selection">
+            <div class="select-card feature-select-card selected" data-feature="auth">
+              <div class="card-icon-svg">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+              </div>
+              <div class="select-card-title">User Auth & RBAC</div>
+              <div class="select-card-desc">OAuth 2.0, Roles & Multi-Tenancy</div>
+            </div>
+            <div class="select-card feature-select-card" data-feature="payment">
+              <div class="card-icon-svg">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"></rect><line x1="1" y1="10" x2="23" y2="10"></line></svg>
+              </div>
+              <div class="select-card-title">Global Payments & Billing</div>
+              <div class="select-card-desc">Stripe, Subscriptions & Invoicing</div>
+            </div>
+            <div class="select-card feature-select-card selected" data-feature="ai_agent">
+              <div class="card-icon-svg">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+              </div>
+              <div class="select-card-title">Custom AI Copilot / Agent</div>
+              <div class="select-card-desc">Fine-Tuned LLMs & Tool Calling</div>
+            </div>
+            <div class="select-card feature-select-card" data-feature="realtime_chat">
+              <div class="card-icon-svg">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+              </div>
+              <div class="select-card-title">Real-Time Data Sync</div>
+              <div class="select-card-desc">WebSockets, Live Streams & Alerts</div>
+            </div>
+            <div class="select-card feature-select-card selected" data-feature="admin_dashboard">
+              <div class="card-icon-svg">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><ellipse cx="12" cy="5" rx="9" ry="3"></ellipse><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"></path><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"></path></svg>
+              </div>
+              <div class="select-card-title">Executive Admin & Telemetry</div>
+              <div class="select-card-desc">Live KPI Visualizers & Auditing</div>
+            </div>
+            <div class="select-card feature-select-card" data-feature="cloud_devops">
+              <div class="card-icon-svg">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"></path></svg>
+              </div>
+              <div class="select-card-title">CI/CD & Cloud DevOps</div>
+              <div class="select-card-desc">Docker, AWS/GCP Zero-Downtime</div>
+            </div>
+            <div class="select-card feature-select-card" data-feature="vector_rag">
+              <div class="card-icon-svg">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+              </div>
+              <div class="select-card-title">Vector Search & RAG</div>
+              <div class="select-card-desc">Pinecone, ChromaDB & Semantic AI</div>
+            </div>
+            <div class="select-card feature-select-card" data-feature="security_audit">
+              <div class="card-icon-svg">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+              </div>
+              <div class="select-card-title">Security & Compliance</div>
+              <div class="select-card-desc">End-to-End Encryption, GDPR Ready</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Step 3: Advanced Architecture Specifications (Collapsible / Advanced Mode) -->
+        <div class="planner-advanced-tray" id="plannerAdvancedTray" style="display:none;">
+          <div class="advanced-tray-header" id="btnToggleAdvancedTray">
+            <h4 class="advanced-tray-title">
+              <span>🛠️ Advanced Technical Stack & Infrastructure Specifications</span>
+            </h4>
+            <span class="advanced-toggle-indicator" id="advancedToggleText">Expand All Specs ▾</span>
+          </div>
+
+          <div class="advanced-tray-body" id="advancedTrayContent">
+            <!-- AI Engine -->
+            <div class="advanced-group-box">
+              <label>AI Model Foundation</label>
+              <div class="planner-chip-group" data-stack-group="aiModel">
+                <span class="planner-chip selected" data-value="OpenAI GPT-4o">OpenAI GPT-4o</span>
+                <span class="planner-chip" data-value="Claude 3.5 Sonnet">Claude 3.5</span>
+                <span class="planner-chip" data-value="Gemini 1.5 Pro">Gemini 1.5 Pro</span>
+                <span class="planner-chip" data-value="Local Llama 3">Local Llama 3</span>
+                <span class="planner-chip" data-value="None">No AI Needed</span>
+              </div>
+            </div>
+
+            <!-- Primary Database -->
+            <div class="advanced-group-box">
+              <label>Primary Database Engine</label>
+              <div class="planner-chip-group" data-stack-group="database">
+                <span class="planner-chip selected" data-value="PostgreSQL / Supabase">PostgreSQL / Supabase</span>
+                <span class="planner-chip" data-value="MongoDB Atlas">MongoDB Atlas</span>
+                <span class="planner-chip" data-value="Redis In-Memory">Redis Cache</span>
+                <span class="planner-chip" data-value="Vector Embeddings DB">Vector DB</span>
+                <span class="planner-chip" data-value="Flexible">Studio Recommended</span>
+              </div>
+            </div>
+
+            <!-- Cloud Infrastructure -->
+            <div class="advanced-group-box">
+              <label>Cloud & Hosting Provider</label>
+              <div class="planner-chip-group" data-stack-group="cloud">
+                <span class="planner-chip selected" data-value="Amazon Web Services (AWS)">Amazon AWS</span>
+                <span class="planner-chip" data-value="Google Cloud Platform (GCP)">Google Cloud</span>
+                <span class="planner-chip" data-value="Microsoft Azure">Microsoft Azure</span>
+                <span class="planner-chip" data-value="Vercel & Cloudflare">Vercel / Cloudflare</span>
+                <span class="planner-chip" data-value="Private Dedicated VPS">Private VPS</span>
+              </div>
+            </div>
+
+            <!-- Design & Wireframe Status -->
+            <div class="advanced-group-box">
+              <label>Design & Asset Readiness</label>
+              <div class="planner-chip-group" data-stack-group="design">
+                <span class="planner-chip selected" data-value="Figma Ready">Figma Designs Ready</span>
+                <span class="planner-chip" data-value="Wireframes Only">Rough Wireframes</span>
+                <span class="planner-chip" data-value="Brand Identity Exists">Brand Assets Only</span>
+                <span class="planner-chip" data-value="Design From Scratch">Full UI/UX From Scratch</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Step 4: Velocity & Cadence -->
+        <div style="margin-bottom:24px;">
+          <div class="planner-step-header">
+            <h3 class="planner-step-title">
+              <span>3. Target Velocity & Sprint Cadence</span>
+            </h3>
+            <span class="planner-step-badge">Pacing Model</span>
+          </div>
+          <div class="planner-speed-grid">
+            <label class="speed-option-card selected">
+              <input type="radio" name="timelineSpeed" value="standard" checked>
+              <div>
+                <div class="speed-title">Standard Agile Cadence</div>
+                <div class="speed-sub">Balanced bi-weekly sprints, staging access & continuous code reviews.</div>
+              </div>
+            </label>
+            <label class="speed-option-card">
+              <input type="radio" name="timelineSpeed" value="express">
+              <div>
+                <div class="speed-title">⚡ Express Fast-Track</div>
+                <div class="speed-sub">Dedicated engineering squad allocated exclusively for rapid milestone release.</div>
+              </div>
+            </label>
+            <label class="speed-option-card">
+              <input type="radio" name="timelineSpeed" value="relaxed">
+              <div>
+                <div class="speed-title">Phased Milestone Roadmapping</div>
+                <div class="speed-sub">Multi-stage architecture rollout for complex corporate or enterprise governance.</div>
+              </div>
+            </label>
+          </div>
+        </div>
+
+        <!-- Step 5: Real-Time Architecture Cockpit & Client Brief Submission (Compact & Powerful) -->
+        <div class="planner-cockpit-card">
+          <!-- Top Live KPI Summary Strip -->
+          <div class="cockpit-top-summary">
+            <div class="cockpit-kpi-item">
+              <span class="cockpit-kpi-label">Architecture Complexity</span>
+              <span class="cockpit-kpi-val" id="calcArchitectureTier">Growth Ready</span>
+              <span class="cockpit-kpi-sub" id="calcSquad">Lead Full-Stack + UI/UX + QA</span>
+            </div>
+            <div class="cockpit-kpi-item">
+              <span class="cockpit-kpi-label">Estimated Delivery</span>
+              <span class="cockpit-kpi-val" id="calcTimeline">4 Weeks (2 Sprints)</span>
+              <span class="cockpit-kpi-sub">Bi-weekly live demo builds &amp; staging access</span>
+            </div>
+            <div class="cockpit-kpi-item" style="text-align:right;">
+              <span class="cockpit-kpi-label">IP Transfer &amp; Warranty</span>
+              <span class="cockpit-kpi-val" style="font-size:0.95rem; color:#A7F3D0;">100% Client Ownership</span>
+              <span class="cockpit-kpi-sub">6 Months Post-Launch Warranty SLA</span>
+            </div>
+          </div>
+
+          <!-- Active Modules Cloud Strip -->
+          <div class="cockpit-modules-cloud" id="calcModulesCloud">
+            <span class="cockpit-module-tag">🔐 User Auth</span>
+            <span class="cockpit-module-tag">🧠 Custom AI Copilot</span>
+            <span class="cockpit-module-tag">📊 Admin Telemetry</span>
+          </div>
+
+          <!-- Integrated Client Brief Intake (Non-Restrictive / Optional) -->
+          <div class="cockpit-form-wrap">
+            <div class="cockpit-form-title">
+              <span>🚀 Dispatch Architecture Brief Directly to Founder</span>
+            </div>
+            <div class="cockpit-form-desc">
+              Provide your details below to receive a formal statement of work and custom engineering blueprint. All fields are completely optional &mdash; fill what you wish!
+            </div>
+
+            <form id="plannerClientForm">
+              <div class="cockpit-form-grid">
+                <div class="cockpit-input-group">
+                  <label for="plannerClientName">Full Name (Optional)</label>
+                  <input type="text" id="plannerClientName" class="cockpit-input" placeholder="e.g. Alex Morgan">
+                </div>
+                <div class="cockpit-input-group">
+                  <label for="plannerClientContact">Email Address or WhatsApp Number</label>
+                  <input type="text" id="plannerClientContact" class="cockpit-input" placeholder="e.g. alex@startup.com or +1 234 567 890">
+                </div>
+                <div class="cockpit-input-group">
+                  <label for="plannerClientCompany">Company / Project Name (Optional)</label>
+                  <input type="text" id="plannerClientCompany" class="cockpit-input" placeholder="e.g. Nexus AI Health">
+                </div>
+                <div class="cockpit-input-group">
+                  <label for="plannerBudgetTier">Target Investment Tier (Optional)</label>
+                  <select id="plannerBudgetTier" class="cockpit-input">
+                    <option value="Flexible / Custom Scope" selected>Flexible / Discuss with Founder</option>
+                    <option value="Rapid Prototype / Startup MVP">Rapid Prototype / Startup MVP</option>
+                    <option value="Scaling Product / Commercial Growth">Scaling Product / Growth</option>
+                    <option value="Enterprise Digital Transformation">Enterprise Digital Transformation</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="cockpit-input-group">
+                <label for="plannerClientNotes">Project Vision &amp; Specific Requirements (Optional)</label>
+                <textarea id="plannerClientNotes" class="cockpit-textarea" placeholder="Mention any specific third-party integrations, target launch timeline, or key feature requirements..."></textarea>
+              </div>
+
+              <!-- Action Buttons Row -->
+              <div class="cockpit-actions-row">
+                <button type="submit" class="btn-cockpit-submit" id="btnPlannerSubmit">
+                  <span>🚀 Submit Architecture Brief</span>
+                </button>
+                <button type="button" class="btn-cockpit-wa" id="btnPlannerWhatsApp">
+                  <span>💬 Discuss on WhatsApp</span>
+                </button>
+                <button type="button" class="btn-cockpit-copy" id="btnPlannerCopy">
+                  <span>📋 Copy Blueprint Specs</span>
+                </button>
+                <button type="button" class="btn btn-outline btn-sm" id="btnApplyEstimate" style="padding:10px 14px; font-size:0.82rem;">
+                  <span>🎯 Fill Full Form Below &darr;</span>
+                </button>
+              </div>
+            </form>
+
+            <!-- Success Confirmation Card (Hidden Initially) -->
+            <div id="plannerSuccessBox" class="cockpit-success-card" style="display:none;">
+              <div style="font-size:1.8rem; margin-bottom:4px;">🎉</div>
+              <h4 style="color:#065F46; font-size:1.15rem; margin:0 0 4px; font-weight:800;">Architecture Blueprint Dispatched Successfully!</h4>
+              <p id="plannerSuccessMsg" style="color:#047857; font-size:0.875rem; margin:0 0 12px; line-height:1.4;">
+                Your project specification has been delivered directly to Founder Muhammad Uzair. Reference ID: <strong id="plannerSuccessRefId">-</strong>
+              </p>
+              <div style="display:flex; justify-content:center; gap:10px; flex-wrap:wrap;">
+                <button type="button" class="btn-cockpit-wa" id="btnSuccessWaChat" style="padding:8px 18px; font-size:0.85rem;">
+                  💬 Open WhatsApp with Reference ID
+                </button>
+                <button type="button" class="btn-cockpit-copy" id="btnResetPlannerForm" style="padding:8px 16px; font-size:0.82rem;">
+                  Edit Architecture Specifications
+                </button>
+              </div>
+            </div>
+
+            <!-- Trust Signals Strip -->
+            <div class="cockpit-trust-strip">
+              <span>🛡️ 100% Complete Client IP Ownership</span>
+              <span>🔒 Mutual NDA Protected</span>
+              <span>⚡ Guaranteed 2-Hour Response from Lead Architect Muhammad Uzair</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- FEATURED PORTFOLIO & CASE STUDIES (TOP 4 FLAGSHIP PROJECTS) -->
+  <section class="section" id="portfolio">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-badge">Proven Results</span>
+        <h2 class="section-title">Case Studies & Digital Impact</h2>
+        <p class="section-desc">
+          Flagship products engineered by Uzair AI Studio that drive real valuation, user engagement, and market authority.
+        </p>
+      </div>
+
+      <!-- Filter Tabs -->
+      <div class="portfolio-filter-tabs">
+        <button class="tab-btn active" data-filter="all">All Projects</button>
+        <button class="tab-btn" data-filter="mobile">Mobile Apps</button>
+        <button class="tab-btn" data-filter="web">Web & SaaS</button>
+        <button class="tab-btn" data-filter="ai">AI & Automation</button>
+      </div>
+
+      <!-- Portfolio Grid -->
+      <div class="portfolio-grid">
+        
+        <!-- Case Study 1: Mobile Platform 3D Showcase -->
+        <div class="portfolio-card" data-category="mobile">
+          <div class="portfolio-thumb">
+            <span class="portfolio-badge">Mobile Engineering</span>
+            <img src="/assets/mobile_app_showcase_1793620252805.jpg" alt="Uzair AI Studio 3D Mobile App Interface">
+          </div>
+          <div class="portfolio-body">
+            <h3 class="portfolio-title">Next-Gen FinTech Mobile App</h3>
+            <p class="portfolio-summary">
+              Cross-platform iOS and Android mobile app engineered with Flutter, real-time backend syncing, biometric authentication, instant payments, and offline wallet storage.
+            </p>
+            <div class="portfolio-kpi-bar">
+              <span>🚀 100K+ Active Installs</span>
+              <span>⭐ 4.9 App Store Rating</span>
+            </div>
+            <div class="portfolio-tech-list">
+              <span class="portfolio-tag">Flutter</span>
+              <span class="portfolio-tag">Node.js</span>
+              <span class="portfolio-tag">Stripe</span>
+              <span class="portfolio-tag">Cloud DB</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Case Study 2: AI Neural Core 3D Showcase -->
+        <div class="portfolio-card" data-category="ai">
+          <div class="portfolio-thumb">
+            <span class="portfolio-badge">AI / Autonomous</span>
+            <img src="/assets/ai_neural_core_1793620332731.jpg" alt="Uzair AI Studio 3D AI Neural Core">
+          </div>
+          <div class="portfolio-body">
+            <h3 class="portfolio-title">Autonomous Enterprise AI Concierge</h3>
+            <p class="portfolio-summary">
+              Autonomous customer intelligence and lead qualification engine automating 85% of tier-1 support queries with human-level accuracy and CRM synchronization.
+            </p>
+            <div class="portfolio-kpi-bar">
+              <span>⚡ -70% Response Latency</span>
+              <span>🤖 85% Auto-Resolution</span>
+            </div>
+            <div class="portfolio-tech-list">
+              <span class="portfolio-tag">OpenAI API</span>
+              <span class="portfolio-tag">Python</span>
+              <span class="portfolio-tag">FastAPI</span>
+              <span class="portfolio-tag">Vector DB</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Case Study 3: Cloud Analytics Dashboard 3D Showcase -->
+        <div class="portfolio-card" data-category="web">
+          <div class="portfolio-thumb">
+            <span class="portfolio-badge">Cloud SaaS Platform</span>
+            <img src="/assets/cloud_analytics_dashboard_1793620361024.jpg" alt="Enterprise Cloud Analytics Dashboard">
+          </div>
+          <div class="portfolio-body">
+            <h3 class="portfolio-title">Enterprise Analytics & Telemetry Platform</h3>
+            <p class="portfolio-summary">
+              Real-time portfolio management and financial intelligence platform processing live telemetry with WebSocket data streams and automated reporting.
+            </p>
+            <div class="portfolio-kpi-bar">
+              <span>📊 Multi-Tenant Cloud</span>
+              <span>⚡ &lt; 70ms Query Speed</span>
+            </div>
+            <div class="portfolio-tech-list">
+              <span class="portfolio-tag">Next.js 15</span>
+              <span class="portfolio-tag">TypeScript</span>
+              <span class="portfolio-tag">AWS Cloud</span>
+              <span class="portfolio-tag">PostgreSQL</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Case Study 4: Verified Mobile Architecture -->
+        <div class="portfolio-card" data-category="mobile">
+          <div class="portfolio-thumb">
+            <span class="portfolio-badge">Mobile Health</span>
+            <img src="/assets/1.png" alt="Uzair AI Studio Mobile Platform Architecture">
+          </div>
+          <div class="portfolio-body">
+            <h3 class="portfolio-title">HealthSync Wellness Ecosystem</h3>
+            <p class="portfolio-summary">
+              AI-driven health application with wearable device synchronization, habit tracking, streak rewards, and in-app subscription monetization with native iOS & Android support.
+            </p>
+            <div class="portfolio-kpi-bar">
+              <span>❤️ 50K+ Monthly Active</span>
+              <span>💎 4.9 App Store</span>
+            </div>
+            <div class="portfolio-tech-list">
+              <span class="portfolio-tag">React Native</span>
+              <span class="portfolio-tag">GraphQL</span>
+              <span class="portfolio-tag">RevenueCat</span>
+              <span class="portfolio-tag">Node</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       INTERNSHIP & TRAINING PROGRAM SECTION - 2 MONTHS
+       ============================================================ -->
+  <section class="section" id="internship" style="background:var(--bg-surface-subtle); position:relative; overflow:hidden;">
+    <div class="container">
+      
+      <!-- Section Header -->
+      <div class="section-header" style="text-align:center;">
+        <span class="section-badge"><span class="pulse-dot"></span> Official Uzair AI Studio Initiative</span>
+        <h2 class="section-title">
+          INTERNSHIP & TRAINING PROGRAM <br class="hide-mobile">
+          <span class="text-gradient">REGISTRATION FORM - 2 MONTHS</span>
+        </h2>
+        <p class="section-desc" style="max-width:860px; margin:0 auto 16px;">
+          Greetings from <strong>Uzair AI Studio</strong>! In collaboration with our AI Department, we are organizing an intensive <strong>Internship & Training Program</strong>. This program empowers students, fresh graduates, and tech enthusiasts with real-world project mastery.
+        </p>
+      </div>
+
+      <!-- Key Value Pillars (Perks from Form Screenshot 1) -->
+      <div class="intern-perks-grid">
+        <div class="intern-perk-card">
+          <div class="perk-icon-circle">⚙️</div>
+          <h4>Practical Experience With 4+ Projects</h4>
+          <p>Challenge yourself by applying learned skills to 4+ real-world production projects. Resources for learning are fully provided, so <strong>beginners are encouraged to apply</strong>.</p>
+        </div>
+
+        <div class="intern-perk-card">
+          <div class="perk-icon-circle">⏱️</div>
+          <h4>100% Flexible & Self-Paced Schedule</h4>
+          <p>Timings will be flexible. You may complete the tasks at your own pace from anywhere, provided all milestone deliverables are submitted on time.</p>
+        </div>
+
+        <div class="intern-perk-card">
+          <div class="perk-icon-circle">📜</div>
+          <h4>Verified Certificate & Recommendation</h4>
+          <p>Receive an official <strong>Internship Completion Certificate</strong> and an exclusive <strong>Letter of Recommendation</strong> endorsed by Founder Muhammad Uzair.</p>
+        </div>
+
+        <div class="intern-perk-card mit-highlight">
+          <div class="perk-badge-gold">Special Perk</div>
+          <div class="perk-icon-circle">🏛️</div>
+          <h4>MIT Artificial Intelligence Course</h4>
+          <p>Gain complete access to the <strong>Artificial Intelligence Course from Massachusetts Institute of Technology (MIT)</strong>, Cambridge, USA along with <strong>1080p Recorded Lecture Videos, Slides and Reference Books</strong>.</p>
+        </div>
+      </div>
+
+      <!-- Quick Guidance Banner -->
+      <div class="intern-guidance-banner">
+        <div class="guidance-col">
+          <div class="guidance-tag">📝 How to Register?</div>
+          <p>Simply fill out the form below, and your official <strong>Internship Offer Letter</strong> will be released <strong>within few days</strong>.</p>
+        </div>
+        <div class="guidance-divider"></div>
+        <div class="guidance-col">
+          <div class="guidance-tag">👥 Who Can Apply?</div>
+          <p><strong>Students, fresh graduates, and learners</strong> aiming to gain real-world industry experience and build production portfolio projects.</p>
+        </div>
+      </div>
+
+      <!-- Mode Switcher Tabs (Direct Web Portal vs Google Form vs Status Check) -->
+      <div class="intern-tabs-container">
+        <div class="intern-tab-nav" id="internTabNav">
+          <button type="button" class="intern-tab-btn active" data-tab="direct-portal">
+            <span class="tab-emoji">✨</span>
+            <div class="tab-btn-text">
+              <strong>Apply Directly on Website</strong>
+              <span>Instant Verification • No Google Login Required</span>
+            </div>
+          </button>
+          <button type="button" class="intern-tab-btn" data-tab="google-form">
+            <span class="tab-emoji">📋</span>
+            <div class="tab-btn-text">
+              <strong>Official Google Form</strong>
+              <span>Open in Google Forms or Embedded View</span>
+            </div>
+          </button>
+          <button type="button" class="intern-tab-btn" data-tab="check-status">
+            <span class="tab-emoji">🔍</span>
+            <div class="tab-btn-text">
+              <strong>Check Application Status</strong>
+              <span>Lookup Offer Letter by Ref ID / Email</span>
+            </div>
+          </button>
+        </div>
+      </div>
+
+      <!-- TAB 1: Direct Website Registration Form -->
+      <div class="intern-tab-content active" id="tabDirectPortal">
+        <div class="intern-form-card">
+          
+          <div class="intern-card-header">
+            <div>
+              <span class="intern-card-badge">● Registration Active</span>
+              <h3 style="font-size:1.35rem; font-weight:800; margin-top:4px; color:var(--text-primary);">2-Month Internship Candidate Application</h3>
+              <p style="font-size:0.875rem; color:var(--text-muted); margin-top:4px;">
+                Fill out the required information below to reserve your slot and generate your formal Registration ID.
+              </p>
+            </div>
+            <div class="google-form-shortcut">
+              <a href="https://docs.google.com/forms/d/e/1FAIpQLSeCa6gtGbeSSDzoYAP0JBx3QeHdlBmLsA7EKq9Nv1jqTlv9jg/viewform?usp=sharing&ouid=113245648858304432575" target="_blank" class="btn-text-link">
+                Prefer Google Forms? Open here ↗
+              </a>
+            </div>
+          </div>
+
+          <form id="internshipWebForm" novalidate>
+
+            <!-- 1. Full Name (with exact capitalization instructions and validation) -->
+            <div class="intern-field-block">
+              <div class="field-label-row">
+                <label for="internFullName" class="form-label">
+                  Full Name <span class="required-star">*</span>
+                </label>
+                <div class="caps-status-indicator" id="capsIndicator">
+                  <span class="caps-dot"></span>
+                  <span id="capsIndicatorText">Enter full name with Capital first letters</span>
+                </div>
+              </div>
+
+              <div class="input-with-tools">
+                <input 
+                  type="text" 
+                  id="internFullName" 
+                  class="form-input" 
+                  placeholder="e.g. Ali Ahmed Khan" 
+                  required 
+                  autocomplete="name">
+                <button type="button" class="btn-caps-auto" id="btnAutoCapitalize" title="Automatically capitalize the first letter of each word">
+                  ✨ Auto-Capitalize
+                </button>
+              </div>
+
+              <div class="name-rules-callout">
+                <div class="callout-heading">
+                  <strong>Important Certificate Name Policy:</strong>
+                  <span>Enter your <strong>full name exactly as you want it to appear on the certificate</strong>. This cannot be changed later. Please check spellings, spacing and capitalization carefully. The first letter of your name and every word after a space should begin with a capital letter.</span>
+                </div>
+                <div class="callout-examples-grid">
+                  <div class="ex-box success">
+                    <strong>✅ Correct Examples:</strong>
+                    <span>Ali Ahmed Khan &nbsp;•&nbsp; Maria John Smith</span>
+                  </div>
+                  <div class="ex-box danger">
+                    <strong>❌ Incorrect Examples:</strong>
+                    <span>ali ahmed khan (all small) &nbsp;•&nbsp; ALI AHMED KHAN (all capital) &nbsp;•&nbsp; Ali ahmed khan (only first capitalized)</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- 2. Email Address & 3. WhatsApp Number -->
+            <div class="form-grid-2col" style="margin-top:20px;">
+              <div class="form-group">
+                <label for="internEmail" class="form-label">Email Address <span class="required-star">*</span></label>
+                <input type="email" id="internEmail" class="form-input" placeholder="e.g. yourname@example.com" required autocomplete="email">
+                <span class="field-subtext">Active email address where your Internship Offer Letter will be released.</span>
+              </div>
+
+              <div class="form-group">
+                <label for="internWhatsapp" class="form-label">WhatsApp Number <span class="required-star">*</span></label>
+                <input type="tel" id="internWhatsapp" class="form-input" placeholder="e.g. +92 343 0000000" required autocomplete="tel">
+                <span class="field-subtext">Active WhatsApp number for official coordination & project briefings.</span>
+              </div>
+            </div>
+
+            <!-- 4. Gender, 5. Date of Birth, 6. City -->
+            <div class="form-grid-3col" style="margin-top:20px;">
+              <div class="form-group">
+                <label class="form-label">Gender <span class="required-star">*</span></label>
+                <div class="gender-pill-select">
+                  <label class="gender-option">
+                    <input type="radio" name="internGender" value="Male" required checked>
+                    <span class="gender-box">👨 Male</span>
+                  </label>
+                  <label class="gender-option">
+                    <input type="radio" name="internGender" value="Female" required>
+                    <span class="gender-box">👩 Female</span>
+                  </label>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="internDob" class="form-label">Date of Birth <span class="required-star">*</span></label>
+                <input type="date" id="internDob" class="form-input" required>
+                <span class="field-subtext">Day, month, year</span>
+              </div>
+
+              <div class="form-group">
+                <label for="internCity" class="form-label">City <span class="required-star">*</span></label>
+                <input type="text" id="internCity" class="form-input" placeholder="e.g. Mardan, Peshawar, Islamabad" required>
+                <span class="field-subtext">Current city of residence</span>
+              </div>
+            </div>
+
+            <!-- 7. Highest or Current Academic Qualification -->
+            <div class="intern-field-block" style="margin-top:24px;">
+              <label class="form-label">Highest or Current Academic Qualification <span class="required-star">*</span></label>
+              <div class="qual-options-grid">
+                <label class="qual-choice">
+                  <input type="radio" name="internQualification" value="Matric" required>
+                  <div class="qual-choice-box">
+                    <strong>1. Matric</strong>
+                    <span>Secondary School</span>
+                  </div>
+                </label>
+                <label class="qual-choice">
+                  <input type="radio" name="internQualification" value="Intermediate" required>
+                  <div class="qual-choice-box">
+                    <strong>2. Intermediate</strong>
+                    <span>FSc / FA / ICS / A-Level</span>
+                  </div>
+                </label>
+                <label class="qual-choice">
+                  <input type="radio" name="internQualification" value="Bachelors" checked required>
+                  <div class="qual-choice-box">
+                    <strong>3. Bachelors</strong>
+                    <span>BS / Undergrad Degree</span>
+                  </div>
+                </label>
+                <label class="qual-choice">
+                  <input type="radio" name="internQualification" value="Masters" required>
+                  <div class="qual-choice-box">
+                    <strong>4. Masters</strong>
+                    <span>MS / MPhil / Postgraduate</span>
+                  </div>
+                </label>
+                <label class="qual-choice">
+                  <input type="radio" name="internQualification" value="Any Other" required>
+                  <div class="qual-choice-box">
+                    <strong>5. Any Other</strong>
+                    <span>Associate / Diploma / Other</span>
+                  </div>
+                </label>
+              </div>
+            </div>
+
+            <!-- 8. Institute Name (if any) & 9. Degree Name (if any) -->
+            <div class="form-grid-2col" style="margin-top:20px;">
+              <div class="form-group">
+                <label for="internInstitute" class="form-label">Institute Name (if any) <span class="required-star">*</span></label>
+                <input type="text" id="internInstitute" class="form-input" placeholder="e.g. Abdul Wali Khan University Mardan, NUST, FAST..." required>
+                <span class="field-subtext">University, college, or institute name.</span>
+              </div>
+
+              <div class="form-group">
+                <label for="internDegree" class="form-label">Degree Name (if any) <span class="required-star">*</span></label>
+                <select id="internDegree" class="form-select" required>
+                  <option value="" disabled selected>-- Select Degree Program (All 20 Options) --</option>
+                  <option value="BS Computer Science (BSCS)">1. BS Computer Science (BSCS)</option>
+                  <option value="BS Artificial Intelligence (BSAI)">2. BS Artificial Intelligence (BSAI)</option>
+                  <option value="BS Software Engineering (BSSE)">3. BS Software Engineering (BSSE)</option>
+                  <option value="BS Information Technology (BSIT)">4. BS Information Technology (BSIT)</option>
+                  <option value="BS Data Science (BSDS)">5. BS Data Science (BSDS)</option>
+                  <option value="BS Cyber Security (BS Cyber Security)">6. BS Cyber Security (BS Cyber Security)</option>
+                  <option value="BS Computer Engineering (BSCE)">7. BS Computer Engineering (BSCE)</option>
+                  <option value="BS Information Systems (BSIS)">8. BS Information Systems (BSIS)</option>
+                  <option value="MS Computer Science">9. MS Computer Science</option>
+                  <option value="MS Artificial Intelligence">10. MS Artificial Intelligence</option>
+                  <option value="MS Software Engineering">11. MS Software Engineering</option>
+                  <option value="MS Information Technology">12. MS Information Technology</option>
+                  <option value="MS Data Science">13. MS Data Science</option>
+                  <option value="MS Cyber Security">14. MS Cyber Security</option>
+                  <option value="MS Computer Engineering">15. MS Computer Engineering</option>
+                  <option value="PhD in Computer Science">16. PhD in Computer Science</option>
+                  <option value="PhD in Artificial Intelligence">17. PhD in Artificial Intelligence</option>
+                  <option value="PhD in Software Engineering">18. PhD in Software Engineering</option>
+                  <option value="PhD in Data Science">19. PhD in Data Science</option>
+                  <option value="Any Other">20. Any Other</option>
+                </select>
+                <span class="field-subtext">Select the degree that best describes your major.</span>
+              </div>
+            </div>
+
+            <!-- 10. Select Your Internship Domain -->
+            <div class="intern-field-block" style="margin-top:24px;">
+              <label class="form-label">Select Your Internship Domain <span class="required-star">*</span></label>
+              <div class="domains-choice-grid">
+                <label class="domain-card-item">
+                  <input type="radio" name="internDomain" value="Data Science" required>
+                  <div class="domain-card-box">
+                    <span class="domain-icon">📊</span>
+                    <div>
+                      <strong>Data Science</strong>
+                      <p>Data analytics, machine learning modeling, statistical exploration & visual dashboards.</p>
+                    </div>
+                  </div>
+                </label>
+
+                <label class="domain-card-item">
+                  <input type="radio" name="internDomain" value="Generative AI" checked required>
+                  <div class="domain-card-box">
+                    <span class="domain-icon">🤖</span>
+                    <div>
+                      <strong>Generative AI</strong>
+                      <p>Large language models, autonomous agents, RAG architectures & prompt systems.</p>
+                    </div>
+                  </div>
+                </label>
+
+                <label class="domain-card-item">
+                  <input type="radio" name="internDomain" value="Web Development" required>
+                  <div class="domain-card-box">
+                    <span class="domain-icon">🌐</span>
+                    <div>
+                      <strong>Web Development</strong>
+                      <p>Modern Full-Stack engineering, REST/GraphQL APIs, Next.js, and cloud deployment.</p>
+                    </div>
+                  </div>
+                </label>
+
+                <label class="domain-card-item">
+                  <input type="radio" name="internDomain" value="Python Development" required>
+                  <div class="domain-card-box">
+                    <span class="domain-icon">🐍</span>
+                    <div>
+                      <strong>Python Development</strong>
+                      <p>Core algorithmic programming, automated scripts, backend services & libraries.</p>
+                    </div>
+                  </div>
+                </label>
+
+                <label class="domain-card-item">
+                  <input type="radio" name="internDomain" value="Front-End Development" required>
+                  <div class="domain-card-box">
+                    <span class="domain-icon">💻</span>
+                    <div>
+                      <strong>Front-End Development</strong>
+                      <p>Interactive web interfaces, responsive modern styling, React component design & UX.</p>
+                    </div>
+                  </div>
+                </label>
+              </div>
+            </div>
+
+            <!-- 11. Have you joined our Internship WhatsApp Group? -->
+            <div class="intern-field-block wa-section-wrapper" style="margin-top:24px;">
+              <div class="wa-section-content">
+                <div>
+                  <label class="form-label" style="margin-bottom:4px;">Have you joined our Internship WhatsApp Group? <span class="required-star">*</span></label>
+                  <p style="font-size:0.875rem; color:var(--text-muted); margin-bottom:12px;">
+                    Stay updated with weekly orientation notices, sprint deadlines, and coordinator announcements.
+                  </p>
+                  
+                  <div class="wa-radio-pills">
+                    <label class="wa-radio-label">
+                      <input type="radio" name="internJoinedWa" value="Yes" required>
+                      <span>Yes, I have joined</span>
+                    </label>
+                    <label class="wa-radio-label">
+                      <input type="radio" name="internJoinedWa" value="No" checked required>
+                      <span>No, not yet</span>
+                    </label>
+                  </div>
+                </div>
+
+                <div class="wa-section-cta">
+                  <a href="https://wa.me/923433885835?text=Hello%20Uzair%20AI%20Studio,%20I%20am%20applying%20for%20the%20Internship%20Program%20and%20want%20to%20join%20the%20Official%20Internship%20WhatsApp%20Group" target="_blank" class="btn btn-whatsapp btn-sm">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766 0-3.18-2.588-5.771-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.299.045-.677.063-1.092-.069-.252-.08-.575-.187-.988-.365-1.739-.751-2.874-2.502-2.961-2.617-.087-.116-.708-.94-.708-1.793s.448-1.273.607-1.446c.159-.173.346-.217.462-.217l.332.007c.106.005.249-.04.39.299.144.35.49 1.196.533 1.284.043.088.072.191.014.306-.058.115-.087.188-.173.289l-.26.303c-.087.087-.177.181-.076.355.101.173.449.741.963 1.2 0.662.591 1.221.774 1.394.861.174.086.275.072.376-.044.102-.115.434-.506.549-.68.116-.173.232-.144.39-.086.159.058 1.011.477 1.184.564.173.086.289.13.332.202.043.072.043.419-.101.824z"/></svg>
+                    <span>👉 Click to Join WhatsApp Group</span>
+                  </a>
+                  <span style="font-size:0.75rem; color:var(--text-muted); display:block; text-align:center; margin-top:4px;">
+                    Coordinator: +92 343 3885835
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Strict Note from Google Form Screenshot 5 -->
+            <div class="intern-strict-warning" style="margin-top:24px;">
+              <div class="warning-badge-icon">⚠️</div>
+              <div>
+                <strong style="color:#B91C1C; font-size:0.95rem;">Note: Read this Carefully</strong>
+                <p style="color:#7F1D1D; font-size:0.875rem; margin-top:3px; line-height:1.5;">
+                  Multiple form submissions will be rejected. Recheck your entered data for any errors and correct them before submitting. Thank You!
+                </p>
+              </div>
+            </div>
+
+            <!-- Confirmation Checkbox -->
+            <div class="checkbox-confirm-row" style="margin-top:16px;">
+              <label class="custom-checkbox-container">
+                <input type="checkbox" id="internConfirmPolicy" required>
+                <span class="checkbox-text">
+                  I have verified all my information above, confirm my name capitalization is accurate for the certificate, and understand that multiple submissions will be rejected.
+                </span>
+              </label>
+            </div>
+
+            <!-- Form Message Box -->
+            <div id="internAlertBox" class="intern-alert-container" style="display:none; margin-top:18px;"></div>
+
+            <!-- Submit Button -->
+            <div class="intern-submit-row" style="margin-top:24px;">
+              <button type="submit" class="btn btn-primary btn-lg btn-block" id="btnSubmitInternship">
+                <span>🚀 Submit Official Internship Application</span>
+              </button>
+            </div>
+
+            <div class="intern-footer-helper">
+              <span>Looking for the Google Docs Form? <a href="https://docs.google.com/forms/d/e/1FAIpQLSeCa6gtGbeSSDzoYAP0JBx3QeHdlBmLsA7EKq9Nv1jqTlv9jg/viewform?usp=sharing&ouid=113245648858304432575" target="_blank">Open in Google Forms ↗</a></span>
+            </div>
+
+          </form>
+
+          <!-- Success Registration Card -->
+          <div class="intern-success-receipt" id="internSuccessReceipt" style="display:none;">
+            <div class="receipt-icon-success">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>
+            </div>
+            <h3 style="font-size:1.6rem; font-weight:800; color:var(--text-primary); margin-top:8px;">
+              Registration Confirmed!
+            </h3>
+            <p style="color:var(--text-muted); font-size:0.95rem; max-width:540px; margin:6px auto 20px;">
+              Your application for the <strong>Uzair AI Studio 2-Month Internship & Training Program</strong> has been recorded in our official database.
+            </p>
+
+            <div class="receipt-ticket-box">
+              <div class="ticket-row highlight">
+                <span>Registration Reference ID</span>
+                <strong id="resReceiptId" class="code-id">UZ-INT-XXXXX</strong>
+              </div>
+              <div class="ticket-row">
+                <span>Candidate Name</span>
+                <strong id="resReceiptName">-</strong>
+              </div>
+              <div class="ticket-row">
+                <span>Internship Domain</span>
+                <strong id="resReceiptDomain">-</strong>
+              </div>
+              <div class="ticket-row">
+                <span>Offer Letter Email</span>
+                <strong id="resReceiptEmail">-</strong>
+              </div>
+              <div class="ticket-row">
+                <span>Current Status</span>
+                <span class="badge-status-pending">● Offer Letter Pending Release</span>
+              </div>
+            </div>
+
+            <div class="receipt-milestones-box">
+              <h5 style="font-size:0.95rem; font-weight:700; color:var(--text-primary); margin-bottom:8px;">What Happens Next?</h5>
+              <div class="milestone-item">
+                <span class="milestone-dot">1</span>
+                <div>
+                  <strong>Offer Letter Delivery</strong>
+                  <p>Your official Internship Offer Letter will be released to your email <strong>within a few days</strong>.</p>
+                </div>
+              </div>
+              <div class="milestone-item">
+                <span class="milestone-dot">2</span>
+                <div>
+                  <strong>Join Official WhatsApp Group</strong>
+                  <p>Join fellow interns and coordinator Muhammad Uzair for orientation briefings and project materials.</p>
+                </div>
+              </div>
+              <div class="milestone-item">
+                <span class="milestone-dot">3</span>
+                <div>
+                  <strong>Course & Project Access</strong>
+                  <p>Receive access to the MIT AI Course and your 4+ project milestone specifications.</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="receipt-cta-group">
+              <a id="btnReceiptOfferLetter" href="#" target="_blank" class="btn btn-primary" style="background:#059669; border-color:#059669;">
+                <span>📄 View Offer Letter PDF</span>
+              </a>
+              <a id="btnReceiptVerify" href="#" target="_blank" class="btn btn-outline">
+                <span>🔍 Live QR Badge</span>
+              </a>
+              <button type="button" class="btn btn-outline" id="btnCopyRefId">
+                <span>📋 Copy Reference ID</span>
+              </button>
+              <a href="https://wa.me/923433885835?text=Hello%20Uzair%20AI%20Studio,%20I%20have%20submitted%20my%20Internship%20application" target="_blank" class="btn btn-whatsapp">
+                <span>💬 WhatsApp</span>
+              </a>
+              <button type="button" class="btn btn-outline" id="btnResetInternForm">
+                <span>Back to Form</span>
+              </button>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- TAB 2: Official Google Form View (Embed + External Link) -->
+      <div class="intern-tab-content" id="tabGoogleForm" style="display:none;">
+        <div class="google-form-card">
+          <div class="google-form-header">
+            <div>
+              <span class="google-badge">Official Google Docs Form</span>
+              <h4 style="font-size:1.25rem; font-weight:800; margin-top:6px; color:var(--text-primary);">
+                INTERNSHIP & TRAINING PROGRAM REGISTRATION FORM - 2 MONTHS
+              </h4>
+              <p style="font-size:0.875rem; color:var(--text-muted); margin-top:2px;">
+                Direct Google Form link provided for students wishing to register via Google's cloud system.
+              </p>
+            </div>
+            <div class="google-form-actions">
+              <a href="https://docs.google.com/forms/d/e/1FAIpQLSeCa6gtGbeSSDzoYAP0JBx3QeHdlBmLsA7EKq9Nv1jqTlv9jg/viewform?usp=sharing&ouid=113245648858304432575" target="_blank" class="btn btn-primary btn-sm">
+                <span>↗ Open Form in Google Forms</span>
+              </a>
+            </div>
+          </div>
+
+          <!-- Responsive Google Form Iframe -->
+          <div class="google-iframe-shell">
+            <iframe 
+              src="https://docs.google.com/forms/d/e/1FAIpQLSeCa6gtGbeSSDzoYAP0JBx3QeHdlBmLsA7EKq9Nv1jqTlv9jg/viewform?embedded=true" 
+              width="100%" 
+              height="950" 
+              frameborder="0" 
+              marginheight="0" 
+              marginwidth="0"
+              title="Google Form - Internship & Training Program Registration Form - 2 Months"
+              loading="lazy">
+              Loading Google Form...
+            </iframe>
+          </div>
+
+          <div class="google-form-footer-tip">
+            <p>💡 <strong>Note for applicants:</strong> If Google Forms prompts you for a Google Account sign-in in the embed above, you can simply click <strong>"Open Form in Google Forms"</strong> to open it in your browser, or switch back to the <strong>"Apply Directly on Website"</strong> tab to register immediately without requiring a Google sign-in!</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- TAB 3: Check Application Status -->
+      <div class="intern-tab-content" id="tabCheckStatus" style="display:none;">
+        <div class="status-checker-card">
+          <div class="checker-header">
+            <span class="section-badge">Self-Service Portal</span>
+            <h3 style="font-size:1.4rem; font-weight:800; margin-top:6px; color:var(--text-primary);">
+              Track Your Internship Registration Status
+            </h3>
+            <p style="font-size:0.9rem; color:var(--text-muted); margin-top:4px;">
+              Scan the QR Code on your Offer Letter or Digital Badge, or enter your Registration Reference ID / Email.
+            </p>
+          </div>
+
+          <!-- Dual Quick-Action Modes: Live Camera Scan or Upload QR -->
+          <div class="qr-scanner-toggle-row">
+            <button type="button" class="btn-qr-scan-start" id="btnStartQrScanner">
+              <span class="scan-camera-icon">📷</span>
+              <strong>Scan QR Code with Camera</strong>
+              <span class="live-scan-badge">LIVE SCAN</span>
+            </button>
+            <button type="button" class="btn-qr-upload" id="btnUploadQrImage">
+              <span>🖼️ Upload QR Image</span>
+            </button>
+            <input type="file" id="qrFileInput" accept="image/*" style="display:none;">
+          </div>
+
+          <!-- Optical QR Scanner HUD Viewfinder (Interactive with Laser Beam & Audio Feedback) -->
+          <div id="qrLiveScannerContainer" class="qr-live-scanner-wrap" style="display:none;">
+            <div class="scanner-topbar-hud">
+              <div class="scanner-status-indicator">
+                <span class="scanner-radar-pulse"></span>
+                <strong>Interactive QR Optical Scanner</strong>
+              </div>
+              <div class="scanner-ctrl-buttons">
+                <button type="button" id="btnToggleAudio" class="scanner-close-btn" style="background:rgba(255,255,255,0.12); color:#F1F5F9; border-color:rgba(255,255,255,0.25); margin-right:6px;" title="Toggle Scanner Audio">🔊 Sound: ON</button>
+                <button type="button" id="btnToggleTorch" class="scanner-close-btn" style="background:rgba(250,204,21,0.2); color:#FDE047; border-color:rgba(250,204,21,0.3); margin-right:6px; display:none;" title="Toggle Flashlight / Torch">🔦 Torch</button>
+                <button type="button" id="btnSwitchCamera" class="scanner-close-btn" style="background:rgba(59,130,246,0.2); color:#93C5FD; border-color:rgba(59,130,246,0.3); margin-right:6px; display:none;" title="Switch Camera">🔄 Switch</button>
+                <button type="button" id="btnCloseQrScanner" class="scanner-close-btn" title="Stop & Close Scanner">✕ Close</button>
+              </div>
+            </div>
+
+            <div class="scanner-viewport-box" id="scannerViewport">
+              <video id="qrScannerVideo" playsinline autoplay muted></video>
+              <canvas id="qrScannerCanvas" style="display:none;"></canvas>
+
+              <!-- Futuristic Targeting Reticle & Laser Sweep -->
+              <div class="scanner-reticle-overlay" id="scannerReticleOverlay">
+                <div class="reticle-bracket tl"></div>
+                <div class="reticle-bracket tr"></div>
+                <div class="reticle-bracket bl"></div>
+                <div class="reticle-bracket br"></div>
+                <div class="scanner-laser-line" id="scannerLaserBeam"></div>
+                <div class="scanner-alignment-guide">Align QR Code inside frame</div>
+              </div>
+
+              <!-- Animated Scan Success Pulse Badge -->
+              <div class="scanner-success-badge" id="scannerSuccessBadge" style="display:none;">
+                <div class="success-badge-circle">✓</div>
+                <strong style="font-size:1.15rem;">QR Code Verified!</strong>
+                <span id="scannerDetectedId" style="font-size:0.85rem; color:#A7F3D0; font-family:'JetBrains Mono', monospace; margin-top:4px;">Retrieving credentials...</span>
+              </div>
+            </div>
+
+            <div class="scanner-info-strip">
+              <span>💡 Point camera at QR code or Drag &amp; Drop QR image file here</span>
+            </div>
+          </div>
+
+          <div class="checker-divider-line">
+            <span>OR ENTER REGISTRATION DETAILS MANUALLY</span>
+          </div>
+
+          <form id="statusLookupForm" class="checker-input-row" novalidate>
+            <input 
+              type="text" 
+              id="statusLookupQuery" 
+              class="form-input" 
+              placeholder="Enter Registration ID (e.g. UZ-INT-...) or Email" 
+              required>
+            <button type="submit" class="btn btn-primary" id="btnCheckStatus">
+              <span>🔍 Check Status</span>
+            </button>
+          </form>
+
+          <div id="statusResultContainer" class="status-result-area" style="display:none;"></div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- 4-STEP AGILE ENGINEERING FRAMEWORK -->
+  <section class="section" id="process" style="background:#FFFFFF;">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-badge">How We Deliver Excellence</span>
+        <h2 class="section-title">Our 4-Step Agile Delivery Framework</h2>
+        <p class="section-desc">
+          Predictable sprint timelines, zero technical debt. We take your vision from architecture blueprint to cloud production with complete visibility.
+        </p>
+      </div>
+
+      <div class="process-timeline">
+        
+        <div class="process-step-card">
+          <div class="process-num-circle">1</div>
+          <h3 class="process-step-title">Discovery & Architecture</h3>
+          <p class="process-step-desc">
+            Deep-dive technical scoping, database schema modeling, and an agreed Statement of Work (SOW) with 0% scope creep.
+          </p>
+        </div>
+
+        <div class="process-step-card">
+          <div class="process-num-circle">2</div>
+          <h3 class="process-step-title">Interactive UI/UX Prototyping</h3>
+          <p class="process-step-desc">
+            Pixel-perfect Figma design systems and clickable prototypes. You approve the exact user journey before coding begins.
+          </p>
+        </div>
+
+        <div class="process-step-card">
+          <div class="process-num-circle">3</div>
+          <h3 class="process-step-title">2-Week Agile Sprints</h3>
+          <p class="process-step-desc">
+            Modular, tested code delivered in bi-weekly sprints with direct repository access and staging walkthroughs with Muhammad Uzair.
+          </p>
+        </div>
+
+        <div class="process-step-card">
+          <div class="process-num-circle">4</div>
+          <h3 class="process-step-title">Production Launch & Warranty</h3>
+          <p class="process-step-desc">
+            Store deployment, cloud rollout, 100% intellectual property handover, backed by 6 months of comprehensive SLA warranty.
+          </p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- FREQUENTLY ASKED QUESTIONS (ACCORDION) -->
+  <section class="section" id="faq" style="background:var(--bg-surface-subtle);">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-badge">Client Trust</span>
+        <h2 class="section-title">Frequently Asked Questions</h2>
+        <p class="section-desc">
+          Direct clarity on intellectual property, agreements, sprint speeds, and post-launch warranties.
+        </p>
+      </div>
+
+      <div class="faq-container">
+        
+        <div class="faq-item">
+          <button class="faq-question-btn" type="button">
+            <span>Who owns the source code and intellectual property?</span>
+            <span class="faq-icon-chevron">▾</span>
+          </button>
+          <div class="faq-answer">
+            <p>
+              <strong>You own 100% of the code, designs, and assets.</strong> Upon final milestone delivery, full intellectual property and repository rights are transferred to you with full documentation.
+            </p>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question-btn" type="button">
+            <span>Do you sign a Non-Disclosure Agreement (NDA) before starting?</span>
+            <span class="faq-icon-chevron">▾</span>
+          </button>
+          <div class="faq-answer">
+            <p>
+              Yes, absolutely. We treat your proprietary ideas with bank-grade confidentiality. We execute our mutual NDA or your company's standard agreement before technical discussions.
+            </p>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question-btn" type="button">
+            <span>How fast can Uzair AI Studio complete my project?</span>
+            <span class="faq-icon-chevron">▾</span>
+          </button>
+          <div class="faq-answer">
+            <p>
+              Turnaround depends on scope: Modern web portals take 5 to 7 days. Full-stack MVPs and mobile apps take 2 to 4 weeks. Enterprise systems and AI agent ecosystems take 5 to 8 weeks. Express fast-track is available!
+            </p>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question-btn" type="button">
+            <span>What happens after the product is launched?</span>
+            <span class="faq-icon-chevron">▾</span>
+          </button>
+          <div class="faq-answer">
+            <p>
+              We provide up to 6 months of complimentary SLA bug-fix warranty, cloud monitoring, and performance checkups. Ongoing monthly retainer squads are also available.
+            </p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT & CONSULTATION HUB -->
+  <section class="section" id="contact" style="background:#FFFFFF;">
+    <div class="container" style="max-width:860px;">
+      
+      <!-- Interactive Consultation Form (Centered & Modernized) -->
+      <div class="contact-form-container" style="box-shadow:var(--shadow-md); border:1px solid var(--border-light); border-radius:var(--radius-xl); padding:40px 36px; background:#FFFFFF;">
+        <div style="text-align:center; margin-bottom:28px;">
+          <span class="section-badge">Project Consultation</span>
+          <h2 class="section-title" style="font-size:2.1rem; margin-bottom:8px;">Book Your Free Strategy Session</h2>
+          <p class="section-desc" style="font-size:0.95rem; margin:0 auto; max-width:620px;">
+            Fill out this brief to receive a custom architecture blueprint and milestone roadmap directly from Founder Muhammad Uzair within 2 hours.
+          </p>
+        </div>
+
+        <form id="consultationForm">
+          <div class="form-grid-2col">
+            <div class="form-group">
+              <label for="formName" class="form-label">Your Name *</label>
+              <input type="text" id="formName" class="form-input" placeholder="e.g. Alex Johnson" required>
+            </div>
+            <div class="form-group">
+              <label for="formEmail" class="form-label">Email Address *</label>
+              <input type="email" id="formEmail" class="form-input" placeholder="alex@company.com" required>
+            </div>
+          </div>
+
+          <div class="form-grid-2col">
+            <div class="form-group">
+              <label for="formPhone" class="form-label">WhatsApp / Phone Number</label>
+              <input type="text" id="formPhone" class="form-input" placeholder="+92 343 0000000">
+            </div>
+            <div class="form-group">
+              <label for="formService" class="form-label">Primary Capability Required</label>
+              <select id="formService" class="form-select">
+                <option value="Full Digital Suite">Full Digital Suite (Web + Mobile + AI)</option>
+                <option value="Mobile App Development">Mobile App Development (iOS / Android)</option>
+                <option value="Website & E-Commerce">Website & Modern Web Platform</option>
+                <option value="Custom Software Engineering">Custom Software / SaaS Engineering</option>
+                <option value="AI & Autonomous Agents">AI & Autonomous Agents</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-grid-2col">
+            <div class="form-group">
+              <label for="formProjectScale" class="form-label">Project Scope / Scale</label>
+              <select id="formProjectScale" class="form-select">
+                <option value="Startup / Rapid Prototype">Startup / Rapid MVP Prototype</option>
+                <option value="Scaling Product / Growth" selected>Scaling Product / Growth Platform</option>
+                <option value="Enterprise Transformation">Enterprise Transformation</option>
+                <option value="Dedicated Engineering Retainer">Dedicated Engineering Retainer Squad</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="formTimeline" class="form-label">Target Launch Date</label>
+              <select id="formTimeline" class="form-select">
+                <option value="ASAP (Under 2 Weeks - Fast Track)">ASAP (Under 2 Weeks - Fast Track)</option>
+                <option value="2 to 4 Weeks" selected>2 to 4 Weeks</option>
+                <option value="1 to 2 Months">1 to 2 Months</option>
+                <option value="Flexible Roadmapping">Flexible Roadmapping</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="formMessage" class="form-label">Project Specifications & Goals *</label>
+            <textarea id="formMessage" class="form-textarea" placeholder="Describe your product vision, key features, target platforms, or reference designs..." required></textarea>
+          </div>
+
+          <button type="submit" class="btn btn-primary btn-lg btn-block btn-submit-brief">
+            <span class="btn-text-full">Send Brief & Receive Free Architecture Proposal &rarr;</span>
+            <span class="btn-text-mobile">Send Brief & Get Architecture Proposal &rarr;</span>
+          </button>
+        </form>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- SLEEK ROUNDED FLOATING AI CONCIERGE BUTTON -->
+  <div class="ai-chat-launcher">
+    <button class="btn-ai-chat-round" id="openAiChat" aria-label="Open AI Assistant" title="Chat with Uzair AI Concierge">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+        <circle cx="9" cy="10" r="1" fill="currentColor"></circle>
+        <circle cx="15" cy="10" r="1" fill="currentColor"></circle>
+      </svg>
+      <span class="chat-pulse-badge"></span>
+    </button>
+  </div>
+
+  <!-- AI Chat Drawer -->
+  <div class="ai-chat-drawer" id="aiChatDrawer">
+    <div class="chat-header">
+      <div class="chat-header-info">
+        <img src="/assets/uzairaistudio.png" alt="Uzair AI" class="chat-avatar-img">
+        <div class="chat-header-text">
+          <strong>Uzair AI Concierge</strong>
+          <span>● Online • Lead: Muhammad Uzair</span>
+        </div>
+      </div>
+      <button class="btn-chat-close" id="closeAiChat" aria-label="Close Chat">✕</button>
+    </div>
+
+    <div class="chat-messages-container" id="aiChatMessages">
+      <div class="chat-msg bot">
+        Hello! 👋 Welcome to <strong>Uzair AI Studio</strong>. I am your automated engineering concierge. How can I help you architect your custom software, mobile app, or AI project today?
+        <div class="chat-msg-actions">
+          <button type="button" class="chat-action-chip">What capabilities do you offer?</button>
+          <button type="button" class="chat-action-chip">How fast can you deliver?</button>
+          <button type="button" class="chat-action-chip">Chat with Muhammad Uzair</button>
+          <button type="button" class="chat-action-chip">Open Sprint Planner</button>
+        </div>
+      </div>
+    </div>
+
+    <form class="chat-input-area" id="aiChatForm">
+      <input type="text" id="aiChatInput" class="chat-input-field" placeholder="Ask about tech stack, sprints, or projects..." required>
+      <button type="submit" class="btn-chat-send" aria-label="Send message">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
+      </button>
+    </form>
+  </div>
+
+  <!-- MINIMALIST MODERN FOOTER -->
+  <footer class="site-footer">
+    <div class="container footer-top-grid">
+      <!-- Col 1: Studio Brand & Founder -->
+      <div class="footer-about">
+        <a href="#" class="brand-logo" aria-label="Uzair AI Studio Home">
+          <img src="/assets/uzairaistudio.png" alt="Uzair AI Studio Logo" class="brand-icon">
+          <div class="brand-text-block">
+            <span class="brand-name">Uzair <span>AI Studio</span></span>
+            <span class="brand-sub">Software House & AI Lab</span>
+          </div>
+        </a>
+        <p>
+          Uzair AI Studio is a next-generation software house founded by <strong>Muhammad Uzair</strong> in Mardan, KPK, Pakistan. We engineer high-impact digital solutions: custom software, mobile apps, modern web platforms, and autonomous AI systems.
+        </p>
+        <div style="font-size:0.85rem; line-height:1.6; margin-bottom:16px;">
+          <p>📍 Mardan, KPK, Pakistan</p>
+          <p>📞 WhatsApp / Call: <a href="https://wa.me/923433885835" target="_blank" style="color:var(--primary); font-weight:700;">+92 343 3885835</a></p>
+          <p>✉️ Email: <a href="mailto:kmuzairkah123@gmail.com" style="color:var(--primary); font-weight:700;">kmuzairkah123@gmail.com</a></p>
+        </div>
+        
+        <!-- Official Vector SVG Social Media Buttons -->
+        <div class="social-links">
+          <a href="https://www.linkedin.com" target="_blank" class="social-icon-btn linkedin" aria-label="LinkedIn" title="Uzair AI Studio on LinkedIn">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
+          </a>
+          <a href="https://github.com" target="_blank" class="social-icon-btn github" aria-label="GitHub" title="Uzair AI Studio on GitHub">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/></svg>
+          </a>
+          <a href="https://x.com" target="_blank" class="social-icon-btn twitter" aria-label="X (Twitter)" title="Uzair AI Studio on X">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+          </a>
+          <a href="https://facebook.com" target="_blank" class="social-icon-btn facebook" aria-label="Facebook" title="Uzair AI Studio on Facebook">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+          </a>
+          <a href="https://wa.me/923433885835" target="_blank" class="social-icon-btn whatsapp" aria-label="WhatsApp" title="Direct WhatsApp to Muhammad Uzair">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766 0-3.18-2.588-5.771-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.299.045-.677.063-1.092-.069-.252-.08-.575-.187-.988-.365-1.739-.751-2.874-2.502-2.961-2.617-.087-.116-.708-.94-.708-1.793s.448-1.273.607-1.446c.159-.173.346-.217.462-.217l.332.007c.106.005.249-.04.39.299.144.35.49 1.196.533 1.284.043.088.072.191.014.306-.058.115-.087.188-.173.289l-.26.303c-.087.087-.177.181-.076.355.101.173.449.741.963 1.2 0.662.591 1.221.774 1.394.861.174.086.275.072.376-.044.102-.115.434-.506.549-.68.116-.173.232-.144.39-.086.159.058 1.011.477 1.184.564.173.086.289.13.332.202.043.072.043.419-.101.824z"/></svg>
+          </a>
+          <a href="mailto:kmuzairkah123@gmail.com" class="social-icon-btn email" aria-label="Email" title="Direct Email">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+          </a>
+        </div>
+      </div>
+
+      <!-- Col 2: Navigation Links -->
+      <div>
+        <h4 class="footer-col-title">Capabilities</h4>
+        <ul class="footer-links-list">
+          <li><a href="#services">Custom Software Engineering</a></li>
+          <li><a href="#services">Mobile App Development (iOS/Android)</a></li>
+          <li><a href="#services">Modern Web Platforms & E-Commerce</a></li>
+          <li><a href="#services">AI Models & Autonomous Agents</a></li>
+          <li><a href="#services">Cloud DevOps & AWS Infrastructure</a></li>
+        </ul>
+      </div>
+
+      <!-- Col 3: Company & Direct Contact -->
+      <div>
+        <h4 class="footer-col-title">Studio Links</h4>
+        <ul class="footer-links-list">
+          <li><a href="#internship" style="color:var(--primary); font-weight:700;">🎓 2-Month Internship Program</a></li>
+          <li><a href="/admin" target="_blank" style="color:var(--text-muted); font-size:0.8rem;">🔒 Executive Admin Hub</a></li>
+          <li><a href="#planner">Architecture Sprint Planner</a></li>
+          <li><a href="#portfolio">Featured Case Studies</a></li>
+          <li><a href="#process">Our 4-Step Process</a></li>
+          <li><a href="#faq">Client FAQs</a></li>
+          <li><a href="#contact">Direct Consultation Brief</a></li>
+        </ul>
+      </div>
+
+      <!-- Col 4: Newsletter -->
+      <div>
+        <h4 class="footer-col-title">Studio Newsletter</h4>
+        <p style="font-size:0.875rem; color:var(--text-muted); margin-bottom:14px; line-height:1.5;">
+          Get our monthly breakdown on emerging AI architectures and software design patterns.
+        </p>
+        <form class="newsletter-box" id="newsletterForm">
+          <input type="email" id="newsletterEmail" placeholder="your@email.com" required>
+          <button type="submit" class="btn btn-primary btn-sm">Join</button>
+        </form>
+      </div>
+    </div>
+
+    <!-- Bottom Bar -->
+    <div class="footer-bottom-bar">
+      <div class="container" style="display:flex; justify-content:space-between; align-items:center; width:100%; flex-wrap:wrap; gap:12px;">
+        <p>&copy; 2026 <strong>Uzair AI Studio</strong>. All Rights Reserved. Founded by <strong>Muhammad Uzair</strong>.</p>
+        <div style="display:flex; gap:16px;">
+          <a href="#" style="color:var(--text-muted);">Privacy Policy</a>
+          <a href="#" style="color:var(--text-muted);">Terms of Service</a>
+          <a href="#" style="color:var(--text-muted);">Security & NDA</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="/js/firebase-client.js"></script>
+  <script src="/js/qrcode.js"></script>
+  <script src="/js/jsqr.min.js"></script>
+  <script src="/js/zxing.min.js"></script>
+  <script src="/js/qr-badge-generator.js"></script>
+  <script src="/js/main.js"></script>
+</body>
+</html>

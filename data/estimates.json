@@ -1,0 +1,34 @@
+[
+  {
+    "id": "PLAN-MW0MF69G",
+    "projectType": "AI Solutions & Autonomous Agents",
+    "architectureComplexity": "Growth Ready",
+    "recommendedSquad": "AI/ML Engineer + Backend Architect + QA",
+    "estimatedTimeline": "6 Weeks (Fast-Track Dedicated Cadence)",
+    "sprintCadence": "Bi-Weekly Live Demos & Continuous Deployment",
+    "ipOwnership": "100% Client Transferred with Full NDA",
+    "warranty": "6 Months Comprehensive Post-Launch SLA",
+    "selectedFeatures": [
+      "auth",
+      "ai_agent",
+      "admin_dashboard",
+      "vector_rag"
+    ],
+    "advancedStack": {
+      "aiModel": "Claude 3.5 Sonnet",
+      "database": "PostgreSQL / Supabase",
+      "cloud": "Amazon Web Services (AWS)",
+      "design": "Figma Ready"
+    },
+    "company": "HealthTech AI Corp",
+    "budgetTier": "Scaling Product / Commercial Growth",
+    "notes": "Need HIPAA-compliant RAG system with multi-agent clinical assistance.",
+    "contactInfo": {
+      "name": "Sarah Chen",
+      "email": "sarah@healthtech.ai",
+      "phone": "+1 415 555 2671",
+      "company": "HealthTech AI Corp"
+    },
+    "generatedAt": "2026-11-03T11:45:04.372Z"
+  }
+]

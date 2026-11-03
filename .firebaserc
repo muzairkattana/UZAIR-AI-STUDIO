@@ -1,0 +1,14 @@
+{
+  "projects": {
+    "default": "muhammaduzair-portfolio"
+  },
+  "targets": {
+    "muhammaduzair-portfolio": {
+      "hosting": {
+        "uzairaistudio": [
+          "uzairaistudio"
+        ]
+      }
+    }
+  }
+}

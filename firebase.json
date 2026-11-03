@@ -1,0 +1,45 @@
+{
+  "hosting": {
+    "site": "uzairaistudio",
+    "public": "public",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ],
+    "rewrites": [
+      {
+        "source": "/admin",
+        "destination": "/admin.html"
+      },
+      {
+        "source": "/verify",
+        "destination": "/verify.html"
+      },
+      {
+        "source": "/verify/**",
+        "destination": "/verify.html"
+      },
+      {
+        "source": "/offer-letter",
+        "destination": "/offer-letter.html"
+      },
+      {
+        "source": "/offer-letter/**",
+        "destination": "/offer-letter.html"
+      },
+      {
+        "source": "/recommendation-letter",
+        "destination": "/recommendation-letter.html"
+      },
+      {
+        "source": "/recommendation-letter/**",
+        "destination": "/recommendation-letter.html"
+      },
+      {
+        "source": "**",
+        "destination": "/index.html"
+      }
+    ]
+  }
+}

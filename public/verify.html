@@ -1,0 +1,959 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+  <title>Official Verified Credential | Uzair AI Studio</title>
+  <link rel="icon" type="image/png" href="/assets/uzairaistudio.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+  <style>
+    *, *::before, *::after {
+      box-sizing: border-box;
+    }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      max-width: 100%;
+      overflow-x: hidden;
+      box-sizing: border-box;
+    }
+
+    body.verify-body {
+      background: radial-gradient(ellipse at 50% 0%, rgba(29, 78, 216, 0.08) 0%, #F1F5F9 70%, #E2E8F0 100%);
+      color: #0F172A;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      min-height: 100vh;
+      margin: 0;
+      padding: 32px 14px 48px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      box-sizing: border-box;
+    }
+
+    .verify-container {
+      width: 100%;
+      max-width: 680px;
+      margin: 0 auto;
+      box-sizing: border-box;
+    }
+
+    .credential-card {
+      background: #FFFFFF;
+      border: 1.5px solid #E2E8F0;
+      border-radius: 20px;
+      padding: 32px 24px;
+      box-shadow: 0 20px 45px -10px rgba(15, 23, 42, 0.12);
+      position: relative;
+      overflow: hidden;
+      width: 100%;
+      box-sizing: border-box;
+    }
+
+    .card-top-seal {
+      position: absolute;
+      top: -24px;
+      right: -24px;
+      width: 110px;
+      height: 110px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(16, 185, 129, 0.12) 0%, rgba(16, 185, 129, 0.02) 70%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      pointer-events: none;
+      border: 1px dashed rgba(16, 185, 129, 0.3);
+    }
+
+    .verify-header {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid #F1F5F9;
+      margin-bottom: 22px;
+      flex-wrap: wrap;
+    }
+
+    .verify-header-logo {
+      width: 54px;
+      height: 54px;
+      border-radius: 12px;
+      box-shadow: 0 6px 16px rgba(29, 78, 216, 0.15);
+      flex-shrink: 0;
+    }
+
+    .verified-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: #ECFDF5;
+      color: #065F46;
+      border: 1px solid rgba(16, 185, 129, 0.35);
+      padding: 4px 12px;
+      border-radius: 999px;
+      font-size: 0.75rem;
+      font-weight: 800;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      margin-bottom: 4px;
+    }
+
+    .candidate-name-hero {
+      font-size: 1.75rem;
+      font-weight: 800;
+      color: #0F172A;
+      margin: 0 0 4px;
+      line-height: 1.2;
+      word-break: break-word;
+    }
+
+    .candidate-ref-badge {
+      font-family: 'JetBrains Mono', monospace;
+      color: #1D4ED8;
+      background: #EFF6FF;
+      border: 1px solid #BFDBFE;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: 6px;
+      font-size: 0.85rem;
+      display: inline-block;
+      margin-bottom: 20px;
+      word-break: break-all;
+    }
+    
+    /* Credential Grid */
+    .cred-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      background: #F8FAFC;
+      border: 1px solid #E2E8F0;
+      border-radius: 14px;
+      padding: 18px;
+      margin-bottom: 20px;
+    }
+
+    .cred-item label {
+      display: block;
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: #64748B;
+      margin-bottom: 3px;
+    }
+
+    .cred-item span {
+      font-size: 0.925rem;
+      font-weight: 700;
+      color: #0F172A;
+      word-break: break-word;
+    }
+
+    /* Timeline & Countdown Progress Card */
+    .timeline-card {
+      background: linear-gradient(145deg, #FFFFFF 0%, #F0F9FF 100%);
+      border: 1.5px solid #BAE6FD;
+      border-radius: 14px;
+      padding: 18px;
+      margin-bottom: 20px;
+    }
+
+    .timeline-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 10px;
+      margin-bottom: 12px;
+      flex-wrap: wrap;
+    }
+
+    .countdown-tag {
+      background: #0284C7;
+      color: #FFFFFF;
+      padding: 4px 12px;
+      border-radius: 999px;
+      font-size: 0.775rem;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+
+    .progress-track {
+      background: #E0F2FE;
+      height: 10px;
+      border-radius: 999px;
+      overflow: hidden;
+      margin-bottom: 10px;
+    }
+
+    .progress-fill {
+      background: linear-gradient(90deg, #0284C7 0%, #10B981 100%);
+      height: 100%;
+      border-radius: 999px;
+      transition: width 0.6s ease;
+    }
+
+    .timeline-dates-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 8px;
+      font-size: 0.75rem;
+      color: #64748B;
+      font-weight: 600;
+      flex-wrap: wrap;
+    }
+
+    /* Scannable QR Code Box */
+    .qr-showcase-box {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      background: #FFFFFF;
+      border: 1px solid #E2E8F0;
+      border-radius: 14px;
+      padding: 16px 20px;
+      margin-bottom: 22px;
+      flex-wrap: wrap;
+    }
+
+    .qr-canvas-wrap {
+      flex-shrink: 0;
+      padding: 6px;
+      background: #FFFFFF;
+      border: 1px solid #E2E8F0;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+    }
+
+    .qr-desc {
+      flex: 1;
+      min-width: 220px;
+    }
+
+    .qr-desc strong {
+      display: block;
+      font-size: 0.95rem;
+      color: #0F172A;
+      margin-bottom: 2px;
+    }
+
+    .qr-desc p {
+      font-size: 0.8rem;
+      color: #64748B;
+      margin: 0;
+      line-height: 1.45;
+    }
+
+    /* Action Buttons (Strict Zero-Overflow Layout) */
+    .verify-actions {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+      gap: 10px;
+      width: 100%;
+    }
+
+    .verify-actions .btn {
+      width: 100%;
+      min-height: 44px;
+      padding: 10px 14px;
+      font-size: 0.825rem;
+      white-space: normal;
+      line-height: 1.25;
+      text-align: center;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      box-sizing: border-box;
+      border-radius: 10px;
+    }
+
+    /* Lookup Box */
+    .lookup-box {
+      background: #FFFFFF;
+      border: 1px solid #E2E8F0;
+      border-radius: 20px;
+      padding: 36px 24px;
+      text-align: center;
+      box-shadow: 0 10px 30px rgba(15,23,42,0.06);
+    }
+
+    /* Responsive Adjustments for Mobile & Tablet */
+    @media (max-width: 600px) {
+      body.verify-body {
+        padding: 16px 10px;
+      }
+      .credential-card {
+        padding: 22px 16px;
+        border-radius: 16px;
+      }
+      .candidate-name-hero {
+        font-size: 1.4rem;
+      }
+      .cred-grid {
+        grid-template-columns: 1fr;
+        gap: 10px;
+        padding: 14px;
+      }
+      .timeline-top {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+      }
+      .countdown-tag {
+        align-self: flex-start;
+      }
+      .timeline-dates-row {
+        flex-direction: column;
+        gap: 4px;
+      }
+      .qr-showcase-box {
+        flex-direction: column;
+        text-align: center;
+        gap: 12px;
+        padding: 14px 10px;
+      }
+      .verify-actions {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* Print Precision Styles */
+    @media print {
+      @page {
+        size: A4 portrait;
+        margin: 15mm;
+      }
+      body.verify-body {
+        background: #FFFFFF !important;
+        padding: 0 !important;
+      }
+      .credential-card {
+        border: 2px solid #0F172A !important;
+        box-shadow: none !important;
+        padding: 20px !important;
+      }
+      .verify-actions, .card-top-seal {
+        display: none !important;
+      }
+    }
+  </style>
+</head>
+<body class="verify-body">
+
+  <div class="verify-container">
+
+    <!-- Loading State Feedback (Zero Blank Flash) -->
+    <div id="verifyLoadingState" style="text-align:center; padding:50px 20px; background:#FFFFFF; border:1px solid #E2E8F0; border-radius:20px; box-shadow:0 10px 25px rgba(0,0,0,0.05); display:none;">
+      <div style="width:28px; height:28px; border-radius:50%; background:#2563EB; margin:0 auto 14px; animation:radarBlink 1.2s infinite ease-in-out; box-shadow:0 0 16px rgba(37,99,235,0.6);"></div>
+      <strong style="font-size:1.1rem; color:#0F172A; display:block; margin-bottom:4px;">Verifying Official Credential...</strong>
+      <span style="font-size:0.85rem; color:#64748B;">Querying Uzair AI Studio verified candidate registry...</span>
+    </div>
+
+    <!-- State 1: Verified Candidate Credential Card -->
+    <div class="credential-card" id="credentialCard" style="display:none;">
+      <div class="card-top-seal">
+        <span style="font-size:1.8rem;">🛡️</span>
+      </div>
+
+      <div class="verify-header">
+        <img src="/assets/uzairaistudio.png" alt="Uzair AI Studio Official Logo" class="verify-header-logo">
+        <div>
+          <div class="verified-pill">
+            <span>✓ OFFICIAL VERIFIED CREDENTIAL</span>
+          </div>
+          <div style="font-size:0.8rem; color:#64748B; font-weight:600;">
+            Uzair AI Studio • AI Department Official Registry
+          </div>
+        </div>
+      </div>
+
+      <h1 class="candidate-name-hero" id="vName">-</h1>
+      <span class="candidate-ref-badge" id="vId">-</span>
+
+      <!-- Core Credential Details -->
+      <div class="cred-grid">
+        <div class="cred-item">
+          <label>Internship Domain</label>
+          <span id="vDomain" style="color:#1D4ED8;">-</span>
+        </div>
+        <div class="cred-item">
+          <label>Current Status</label>
+          <span id="vStatus" style="color:#059669;">-</span>
+        </div>
+        <div class="cred-item">
+          <label>Academic Institute</label>
+          <span id="vInstitute">-</span>
+        </div>
+        <div class="cred-item">
+          <label>Qualification / Degree</label>
+          <span id="vDegree">-</span>
+        </div>
+      </div>
+
+      <!-- Timeline & Progress Countdown Card -->
+      <div class="timeline-card">
+        <div class="timeline-top">
+          <div>
+            <strong style="display:block; font-size:0.95rem; color:#0369A1;">2-Month Program Timeline</strong>
+            <span style="font-size:0.775rem; color:#64748B;">Batch: <span id="vBatch">2026 AI Department</span></span>
+          </div>
+          <span class="countdown-tag" id="vCountdown">60 Days Total</span>
+        </div>
+
+        <div class="progress-track">
+          <div class="progress-fill" id="vProgressFill" style="width: 10%;"></div>
+        </div>
+
+        <div class="timeline-dates-row">
+          <span>Started: <strong id="vStartDate">-</strong></span>
+          <span>Target Completion: <strong id="vEndDate">-</strong></span>
+        </div>
+      </div>
+
+      <!-- Scannable QR Code Box -->
+      <div class="qr-showcase-box">
+        <div class="qr-canvas-wrap" id="qrCanvasTarget"></div>
+        <div class="qr-desc">
+          <strong>Digital Authenticity QR Code</strong>
+          <p>Scan with any smartphone camera to verify this certificate on the official Uzair AI Studio registry.</p>
+          <span style="font-size:0.75rem; color:#059669; font-weight:700; margin-top:4px; display:block;">
+            Endorsed by Muhammad Uzair (Founder & Lead Architect) &amp; Engr. Saad (Lead Instructor)
+          </span>
+          <div style="margin-top:10px; display:flex; gap:8px; flex-wrap:wrap;">
+            <button type="button" id="btnDownloadVerifyBadge" class="btn btn-primary btn-sm" style="font-size:0.8rem; padding:6px 14px;">
+              <span>⬇️ Save Official QR Badge (PNG)</span>
+            </button>
+            <button type="button" id="btnCopyVerifyLink" class="btn btn-outline btn-sm" style="font-size:0.8rem; padding:6px 14px; border-color:#CBD5E1; color:#475569;">
+              <span>📋 Copy Link</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Action Buttons (Zero-Overflow Responsive Layout) -->
+      <div class="verify-actions">
+        <a id="btnViewCert" href="#" target="_blank" class="btn btn-primary" style="display:none; background:linear-gradient(135deg, #F59E0B, #D97706); border:none; box-shadow:0 4px 12px rgba(245, 158, 11, 0.35);">
+          <span>🎓 View Certificate of Completion</span>
+        </a>
+        <a id="btnViewOfferLetter" href="#" target="_blank" class="btn btn-primary">
+          <span>📄 View Offer Letter</span>
+        </a>
+        <a id="btnViewLor" href="#" target="_blank" class="btn btn-outline" style="border-color:#2563EB; color:#1D4ED8;">
+          <span>📜 View Recommendation</span>
+        </a>
+        <a id="btnWhatsAppCoord" href="https://wa.me/923433885835?text=Hello%20Uzair%20AI%20Studio,%20I%20am%20verifying%20intern%20credential" target="_blank" class="btn btn-whatsapp">
+          <span>💬 Coordinator WhatsApp</span>
+        </a>
+        <button type="button" onclick="window.print()" class="btn btn-outline">
+          <span>🖨️ Print Credential</span>
+        </button>
+      </div>
+
+      <div style="margin-top:16px; text-align:center;">
+        <a href="/" style="font-size:0.8rem; color:#64748B; font-weight:600; text-decoration:none;">&larr; Return to Uzair AI Studio Homepage</a>
+      </div>
+    </div>
+
+    <!-- State 2: Lookup Box (when no ID is in query, or ID not found) -->
+    <div class="lookup-box" id="lookupBox" style="display:none;">
+      <img src="/assets/uzairaistudio.png" alt="Uzair AI Studio Logo" style="width:52px; height:52px; border-radius:12px; margin-bottom:12px;">
+      <h2 style="font-size:1.35rem; font-weight:800; margin-bottom:6px;">Internship Verification Portal</h2>
+      <p style="font-size:0.875rem; color:#64748B; margin-bottom:24px; line-height:1.5;">
+        Scan your QR code or enter your Registration Reference ID (e.g. <code>UZ-INT-MVZMX46F</code>) below to verify your internship credentials in real time.
+      </p>
+
+      <!-- QR Scanner & Upload Options -->
+      <div style="display:flex; justify-content:center; gap:12px; margin-bottom:20px; flex-wrap:wrap;">
+        <a href="/#check-status?scan=1" class="btn btn-outline" style="padding:10px 18px; font-size:0.875rem; border-color:#2563EB; color:#1D4ED8;">
+          <span>📷 Open Live Camera Scanner</span>
+        </a>
+        <button type="button" id="btnVerifyUploadQr" class="btn btn-outline" style="padding:10px 18px; font-size:0.875rem; border-color:#059669; color:#047857;">
+          <span>🖼️ Upload QR Image</span>
+        </button>
+        <input type="file" id="verifyFileInput" accept="image/*" style="display:none;">
+      </div>
+
+      <div id="lookupAlert" class="intern-alert-container error" style="display:none; margin-bottom:16px;"></div>
+
+      <form id="publicLookupForm" style="display:flex; gap:10px; max-width:480px; margin:0 auto 20px; flex-wrap:wrap;">
+        <input type="text" id="manualRefId" class="form-input" placeholder="e.g. UZ-INT-MVZMX46F" required style="flex:1; min-width:200px; padding:12px 14px; border-radius:8px; border:1.5px solid #CBD5E1;">
+        <button type="submit" class="btn btn-primary" style="padding:12px 20px;">Verify ID</button>
+      </form>
+
+      <a href="/" style="font-size:0.85rem; color:#1D4ED8; font-weight:700; text-decoration:none;">&larr; Return to Uzair AI Studio Home</a>
+    </div>
+
+  </div>
+
+  <script src="/js/qrcode.js"></script>
+  <script src="/js/jsqr.min.js"></script>
+  <script src="/js/zxing.min.js"></script>
+  <script src="/js/qr-badge-generator.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const urlParams = new URLSearchParams(window.location.search);
+      let queryId = urlParams.get('id');
+
+      if (!queryId) {
+        const pathSegments = window.location.pathname.split('/').filter(Boolean);
+        const lastSeg = pathSegments[pathSegments.length - 1];
+        if (lastSeg && !lastSeg.includes('.html') && lastSeg.toUpperCase() !== 'VERIFY') {
+          queryId = lastSeg;
+        }
+      }
+
+      if (window.__PRELOADED_INTERN__) {
+        renderCandidateData(window.__PRELOADED_INTERN__);
+      } else if (queryId) {
+        const loadingEl = document.getElementById('verifyLoadingState');
+        if (loadingEl) loadingEl.style.display = 'block';
+        verifyCandidate(queryId);
+      } else {
+        document.getElementById('lookupBox').style.display = 'block';
+      }
+
+      const lookupForm = document.getElementById('publicLookupForm');
+      if (lookupForm) {
+        lookupForm.addEventListener('submit', (e) => {
+          e.preventDefault();
+          const val = document.getElementById('manualRefId').value.trim();
+          if (val) {
+            window.location.search = `?id=${encodeURIComponent(val)}`;
+          }
+        });
+      }
+
+      // Handle QR Image Upload on Verify Page
+      const btnUpload = document.getElementById('btnVerifyUploadQr');
+      const fileInput = document.getElementById('verifyFileInput');
+      const lookupAlert = document.getElementById('lookupAlert');
+      const manualInput = document.getElementById('manualRefId');
+
+      if (btnUpload && fileInput) {
+        btnUpload.addEventListener('click', () => {
+          if (lookupAlert) lookupAlert.style.display = 'none';
+          fileInput.click();
+        });
+
+        fileInput.addEventListener('change', (e) => {
+          const file = e.target.files && e.target.files[0];
+          if (!file) return;
+
+          if (lookupAlert) {
+            lookupAlert.className = 'intern-alert-container info';
+            lookupAlert.style.display = 'block';
+            lookupAlert.innerHTML = '🔍 Scanning image with multi-tier QR engine...';
+          }
+
+          const reader = new FileReader();
+          reader.onload = (re) => {
+            const dataUrl = re.target.result;
+            const img = new Image();
+            img.onload = async () => {
+              const detected = await decodeQrFromImageElement(img, dataUrl);
+
+              if (detected) {
+                const id = parseCandidateId(detected);
+                if (id) {
+                  if (lookupAlert) {
+                    lookupAlert.className = 'intern-alert-container success';
+                    lookupAlert.style.display = 'block';
+                    lookupAlert.innerHTML = `✅ QR Code detected! Loading credential record for <strong>${id}</strong>...`;
+                  }
+                  window.history.replaceState(null, '', `?id=${encodeURIComponent(id)}`);
+                  setTimeout(() => {
+                    verifyCandidate(id);
+                  }, 400);
+                } else {
+                  if (lookupAlert) {
+                    lookupAlert.className = 'intern-alert-container error';
+                    lookupAlert.style.display = 'block';
+                    lookupAlert.innerHTML = `⚠️ Decoded QR text (<em>${detected}</em>), but no valid Uzair AI Studio Registration ID was identified. Please enter your ID below.`;
+                  }
+                  if (manualInput) {
+                    manualInput.focus();
+                    manualInput.style.boxShadow = '0 0 0 4px rgba(37, 99, 235, 0.35)';
+                    setTimeout(() => { manualInput.style.boxShadow = ''; }, 3000);
+                  }
+                }
+              } else {
+                if (lookupAlert) {
+                  lookupAlert.className = 'intern-alert-container error';
+                  lookupAlert.style.display = 'block';
+                  lookupAlert.innerHTML = `⚠️ No valid QR code could be detected in this image. Please ensure the QR code is clearly visible, or enter your Registration ID below.`;
+                }
+                if (manualInput) {
+                  manualInput.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                  setTimeout(() => {
+                    manualInput.focus();
+                    manualInput.style.boxShadow = '0 0 0 4px rgba(37, 99, 235, 0.35)';
+                    setTimeout(() => { manualInput.style.boxShadow = ''; }, 3500);
+                  }, 300);
+                }
+              }
+              fileInput.value = '';
+            };
+            img.onerror = () => {
+              if (lookupAlert) {
+                lookupAlert.className = 'intern-alert-container error';
+                lookupAlert.style.display = 'block';
+                lookupAlert.innerHTML = '⚠️ Failed to read image file. Please try another image or enter ID manually.';
+              }
+              fileInput.value = '';
+            };
+            img.src = dataUrl;
+          };
+          reader.readAsDataURL(file);
+        });
+      }
+    });
+
+    // Multi-tier Intelligent QR Code Image Decoder (ZXing + Native BarcodeDetector + Multi-Pass jsQR)
+    async function decodeQrFromImageElement(img, dataUrl) {
+      if (!img) return null;
+
+      // TIER 1: Native Hardware BarcodeDetector API (if browser supports it)
+      if ('BarcodeDetector' in window) {
+        try {
+          const detector = new BarcodeDetector({ formats: ['qr_code'] });
+          const barcodes = await detector.detect(img);
+          if (barcodes && barcodes.length > 0 && barcodes[0].rawValue) {
+            return barcodes[0].rawValue;
+          }
+        } catch (bdErr) {}
+      }
+
+      // TIER 2: ZXing Browser Multi-Format & QR Code Engine (Robust Pattern Recognition)
+      if (typeof ZXing !== 'undefined') {
+        try {
+          const hints = new Map();
+          hints.set(ZXing.DecodeHintType.TRY_HARDER, true);
+          hints.set(ZXing.DecodeHintType.POSSIBLE_FORMATS, [ZXing.BarcodeFormat.QR_CODE]);
+          const zxReader = new ZXing.BrowserQRCodeReader(hints);
+
+          // Pass 2A: Direct Image Element
+          try {
+            const zxRes = await zxReader.decodeFromImageElement(img);
+            if (zxRes && zxRes.getText()) return zxRes.getText();
+          } catch (e) {}
+
+          // Pass 2B: Via Data URL
+          if (dataUrl) {
+            try {
+              const zxResUrl = await zxReader.decodeFromImageUrl(dataUrl);
+              if (zxResUrl && zxResUrl.getText()) return zxResUrl.getText();
+            } catch (e) {}
+          }
+        } catch (zxErr) {}
+      }
+
+      // TIER 3: Ultra-Comprehensive Multi-Scale & Multi-Crop jsQR Engine
+      if (typeof jsQR !== 'undefined') {
+        function tryScanData(data, w, h) {
+          if (!data || w < 20 || h < 20) return null;
+
+          // Step A: Flatten alpha transparency - any transparent pixel becomes solid white
+          for (let i = 0; i < data.length; i += 4) {
+            if (data[i + 3] < 200) {
+              data[i] = 255; data[i + 1] = 255; data[i + 2] = 255; data[i + 3] = 255;
+            }
+          }
+
+          // Step B: Standard scan with attemptBoth for normal and inverted modules
+          let res = jsQR(data, w, h, { inversionAttempts: 'attemptBoth' });
+          if (res && res.data) return res.data;
+
+          // Step C: Adaptive Multi-Threshold Binarization (Handles bright daylight, low-light, phone camera glare)
+          const thresholds = [85, 110, 135, 160, 185];
+          for (const thresh of thresholds) {
+            const binData = new Uint8ClampedArray(data.length);
+            for (let i = 0; i < data.length; i += 4) {
+              const lum = (data[i] * 299 + data[i + 1] * 587 + data[i + 2] * 114) / 1000;
+              const val = lum < thresh ? 0 : 255;
+              binData[i] = val; binData[i + 1] = val; binData[i + 2] = val; binData[i + 3] = 255;
+            }
+            res = jsQR(binData, w, h, { inversionAttempts: 'attemptBoth' });
+            if (res && res.data) return res.data;
+          }
+
+          // Step D: Contrast Stretching Pass (Maximizes separation for washed out or dark photos)
+          let minLum = 255, maxLum = 0;
+          const lums = new Uint8Array(data.length / 4);
+          for (let i = 0, j = 0; i < data.length; i += 4, j++) {
+            const lum = Math.round((data[i] * 299 + data[i + 1] * 587 + data[i + 2] * 114) / 1000);
+            lums[j] = lum;
+            if (lum < minLum) minLum = lum;
+            if (lum > maxLum) maxLum = lum;
+          }
+          if (maxLum - minLum > 30) {
+            const range = maxLum - minLum;
+            const binData = new Uint8ClampedArray(data.length);
+            for (let i = 0, j = 0; i < data.length; i += 4, j++) {
+              const normalized = Math.round(((lums[j] - minLum) / range) * 255);
+              const val = normalized < 128 ? 0 : 255;
+              binData[i] = val; binData[i + 1] = val; binData[i + 2] = val; binData[i + 3] = 255;
+            }
+            res = jsQR(binData, w, h, { inversionAttempts: 'attemptBoth' });
+            if (res && res.data) return res.data;
+          }
+
+          return null;
+        }
+
+        function extractImageData(sourceImg, sx, sy, sw, sh, destW, destH, pad) {
+          pad = pad || 0;
+          destW = destW || sw;
+          destH = destH || sh;
+          const cvs = document.createElement('canvas');
+          cvs.width = destW + (pad * 2);
+          cvs.height = destH + (pad * 2);
+          const ctx = cvs.getContext('2d');
+          ctx.fillStyle = '#FFFFFF';
+          ctx.fillRect(0, 0, cvs.width, cvs.height);
+          ctx.drawImage(sourceImg, sx, sy, sw, sh, pad, pad, destW, destH);
+          return {
+            data: ctx.getImageData(0, 0, cvs.width, cvs.height).data,
+            width: cvs.width,
+            height: cvs.height
+          };
+        }
+
+        const origW = img.naturalWidth || img.width;
+        const origH = img.naturalHeight || img.height;
+        let decodedData = null;
+
+        // Pass 3A: Full image with 28px white margin
+        {
+          const maxDim = 1200;
+          const scale = (origW > maxDim || origH > maxDim) ? Math.min(maxDim / origW, maxDim / origH) : 1;
+          const w = Math.round(origW * scale);
+          const h = Math.round(origH * scale);
+          const imgInfo = extractImageData(img, 0, 0, origW, origH, w, h, 28);
+          decodedData = tryScanData(imgInfo.data, imgInfo.width, imgInfo.height);
+          if (decodedData) return decodedData;
+        }
+
+        // Pass 3B: Native resolution
+        if (origW > 1000 || origH > 1000) {
+          const imgInfo = extractImageData(img, 0, 0, origW, origH, origW, origH, 24);
+          decodedData = tryScanData(imgInfo.data, imgInfo.width, imgInfo.height);
+          if (decodedData) return decodedData;
+        }
+
+        // Pass 3C: Downscaled 800px & 500px passes
+        for (const dim of [800, 500]) {
+          if (origW > dim || origH > dim) {
+            const scale = Math.min(dim / origW, dim / origH);
+            const w = Math.round(origW * scale);
+            const h = Math.round(origH * scale);
+            const imgInfo = extractImageData(img, 0, 0, origW, origH, w, h, 20);
+            decodedData = tryScanData(imgInfo.data, imgInfo.width, imgInfo.height);
+            if (decodedData) return decodedData;
+          }
+        }
+
+        // Pass 3D: Center 60% Crop (Optimized for digital verification badges & cards)
+        {
+          const sx = Math.floor(origW * 0.18);
+          const sy = Math.floor(origH * 0.18);
+          const sw = Math.floor(origW * 0.64);
+          const sh = Math.floor(origH * 0.64);
+          const imgInfo = extractImageData(img, sx, sy, sw, sh, sw, sh, 24);
+          decodedData = tryScanData(imgInfo.data, imgInfo.width, imgInfo.height);
+          if (decodedData) return decodedData;
+        }
+
+        // Pass 3E: Bottom-Right Quadrant Crop (Optimized for PDF certificates & letters)
+        {
+          const sx = Math.floor(origW * 0.38);
+          const sy = Math.floor(origH * 0.38);
+          const sw = origW - sx;
+          const sh = origH - sy;
+          const imgInfo = extractImageData(img, sx, sy, sw, sh, sw, sh, 24);
+          decodedData = tryScanData(imgInfo.data, imgInfo.width, imgInfo.height);
+          if (decodedData) return decodedData;
+        }
+
+        // Pass 3F: Bottom-Left Quadrant Crop
+        {
+          const sx = 0;
+          const sy = Math.floor(origH * 0.40);
+          const sw = Math.floor(origW * 0.60);
+          const sh = origH - sy;
+          const imgInfo = extractImageData(img, sx, sy, sw, sh, sw, sh, 24);
+          decodedData = tryScanData(imgInfo.data, imgInfo.width, imgInfo.height);
+          if (decodedData) return decodedData;
+        }
+      }
+
+      return null;
+    }
+
+    function parseCandidateId(text) {
+      if (!text) return '';
+      const str = text.trim();
+      const match = str.match(/UZ-INT-[A-Z0-9]+/i);
+      if (match) return match[0].toUpperCase();
+      try {
+        if (str.startsWith('http://') || str.startsWith('https://')) {
+          const u = new URL(str);
+          const p = u.searchParams.get('id');
+          if (p) return p.trim().toUpperCase();
+          const parts = u.pathname.split('/').filter(Boolean);
+          const last = parts[parts.length - 1];
+          if (last && last.toUpperCase().startsWith('UZ-INT-')) return last.toUpperCase();
+        }
+      } catch (e) {}
+      return str;
+    }
+
+    function renderCandidateData(d) {
+      document.getElementById('vName').textContent = d.fullName;
+      document.getElementById('vId').textContent = d.id;
+      document.getElementById('vDomain').textContent = d.domain;
+      document.getElementById('vStatus').textContent = d.status;
+      document.getElementById('vInstitute').textContent = d.institute;
+      document.getElementById('vDegree').textContent = d.qualification;
+      document.getElementById('vBatch').textContent = d.batch;
+      document.getElementById('vStartDate').textContent = d.startDate;
+      document.getElementById('vEndDate').textContent = d.completionDate;
+
+      const daysLeft = d.daysRemaining;
+      const isCompleted = d.isCompleted || (d.status || '').toLowerCase().includes('completed') || daysLeft === 0;
+
+      if (isCompleted) {
+        document.getElementById('vCountdown').textContent = '🎓 Certified Graduate';
+        document.getElementById('vCountdown').style.background = '#059669';
+        document.getElementById('vProgressFill').style.width = '100%';
+      } else {
+        document.getElementById('vCountdown').textContent = `⏳ ${daysLeft} Days Remaining`;
+        document.getElementById('vProgressFill').style.width = `${Math.max(10, d.progressPercent || 20)}%`;
+      }
+
+      // Document Links
+      document.getElementById('btnViewOfferLetter').href = `/offer-letter/${encodeURIComponent(d.id)}`;
+      
+      const btnCert = document.getElementById('btnViewCert');
+      if (btnCert) {
+        if (isCompleted) {
+          btnCert.style.display = 'inline-flex';
+          btnCert.href = `/certificate/${encodeURIComponent(d.id)}`;
+        } else {
+          btnCert.style.display = 'none';
+        }
+      }
+
+      const btnLor = document.getElementById('btnViewLor');
+      if (isCompleted) {
+        btnLor.href = `/recommendation-letter/${encodeURIComponent(d.id)}`;
+        btnLor.innerHTML = '<span>📜 View Recommendation</span>';
+        btnLor.className = 'btn btn-outline';
+        btnLor.style.borderColor = '#2563EB';
+        btnLor.style.color = '#1D4ED8';
+        btnLor.style.background = '';
+        btnLor.title = 'Official Letter of Recommendation issued';
+        btnLor.onclick = null;
+      } else {
+        btnLor.href = 'javascript:void(0)';
+        btnLor.innerHTML = `<span>🔒 Recommendation (Locked • ${daysLeft}d Left)</span>`;
+        btnLor.className = 'btn btn-outline';
+        btnLor.style.borderColor = '#CBD5E1';
+        btnLor.style.color = '#64748B';
+        btnLor.style.background = '#F8FAFC';
+        btnLor.title = `Letter of Recommendation unlocks upon internship completion on ${d.completionDate}`;
+        btnLor.onclick = (e) => {
+          e.preventDefault();
+          alert(`🔒 Letter of Recommendation Policy:\n\nUzair AI Studio issues official Letters of Recommendation exclusively upon completion of your full 2-month internship curriculum.\n\n• Candidate: ${d.fullName} (${d.id})\n• Completion Date: ${d.completionDate}\n• Days Remaining: ${daysLeft} Days\n\nYour Official Offer Letter is ready and available to view now!`);
+        };
+      }
+      
+      const waCoord = document.getElementById('btnWhatsAppCoord');
+      if (waCoord) {
+        waCoord.href = `https://wa.me/923433885835?text=${encodeURIComponent(`Hello Uzair AI Studio, I am verifying intern credential: ${d.fullName} (${d.id})`)}`;
+      }
+
+      // Generate scannable QR Code
+      const fullVerifyUrl = `${window.location.origin}/verify?id=${encodeURIComponent(d.id)}`;
+      const qrTarget = document.getElementById('qrCanvasTarget');
+      qrTarget.innerHTML = '';
+      new QRCode(qrTarget, {
+        text: fullVerifyUrl,
+        width: 110,
+        height: 110,
+        colorDark: '#0F172A',
+        colorLight: '#FFFFFF',
+        correctLevel: QRCode.CorrectLevel.M
+      });
+
+      // Wire up 1-Click QR Badge Download
+      const btnDlBadge = document.getElementById('btnDownloadVerifyBadge');
+      if (btnDlBadge) {
+        btnDlBadge.onclick = () => {
+          const qrCanvas = qrTarget.querySelector('canvas');
+          if (window.UzairQrBadge) {
+            window.UzairQrBadge.downloadBadge(d, qrCanvas);
+          }
+        };
+      }
+
+      // Wire up Copy Verification Link
+      const btnCopy = document.getElementById('btnCopyVerifyLink');
+      if (btnCopy) {
+        btnCopy.onclick = async () => {
+          try {
+            await navigator.clipboard.writeText(fullVerifyUrl);
+            const originalHtml = btnCopy.innerHTML;
+            btnCopy.innerHTML = `<span>✓ Copied!</span>`;
+            setTimeout(() => { btnCopy.innerHTML = originalHtml; }, 2000);
+          } catch (clipErr) {
+            prompt('Copy this verification URL:', fullVerifyUrl);
+          }
+        };
+      }
+
+      const loadingEl = document.getElementById('verifyLoadingState');
+      if (loadingEl) loadingEl.style.display = 'none';
+
+      document.getElementById('credentialCard').style.display = 'block';
+      document.getElementById('lookupBox').style.display = 'none';
+    }
+
+    async function verifyCandidate(id) {
+      const card = document.getElementById('credentialCard');
+      const lookupBox = document.getElementById('lookupBox');
+      const alertBox = document.getElementById('lookupAlert');
+
+      try {
+        const res = await fetch(`/api/internship/verify/${encodeURIComponent(id)}`);
+        const json = await res.json();
+
+        if (res.ok && json.success) {
+          renderCandidateData(json.data);
+        } else {
+          const loadingEl = document.getElementById('verifyLoadingState');
+          if (loadingEl) loadingEl.style.display = 'none';
+
+          lookupBox.style.display = 'block';
+          alertBox.textContent = `No active registration found matching "${id}". Please double-check your Reference ID.`;
+          alertBox.style.display = 'block';
+        }
+      } catch (err) {
+        const loadingEl = document.getElementById('verifyLoadingState');
+        if (loadingEl) loadingEl.style.display = 'none';
+
+        lookupBox.style.display = 'block';
+        alertBox.textContent = 'Network error while checking credential registry.';
+        alertBox.style.display = 'block';
+      }
+    }
+  </script>
+</body>
+</html>

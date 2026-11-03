@@ -1,0 +1,915 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Internship Completion Certificate | Uzair AI Studio</title>
+  <link rel="icon" type="image/png" href="/assets/uzairaistudio.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800;900&family=Great+Vibes&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;0,900;1,400&family=Alex+Brush&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+  <script src="/js/qrcode.js"></script>
+  <script src="/js/qr-badge-generator.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+
+  <style>
+    :root {
+      --cert-gold-1: #FFE082;
+      --cert-gold-2: #E5A93C;
+      --cert-gold-3: #B37D14;
+      --cert-gold-dark: #785207;
+      --cert-blue-1: #2563EB;
+      --cert-blue-2: #1D4ED8;
+      --cert-blue-3: #1E3A8A;
+      --cert-navy-deep: #0A192F;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: #0B132B;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      color: #0F172A;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 24px 16px 60px;
+    }
+
+    /* Top Floating Action Bar (Hidden in Print) */
+    .cert-top-bar {
+      width: 100%;
+      max-width: 1140px;
+      background: rgba(15, 23, 42, 0.85);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 14px;
+      padding: 12px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 24px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.35);
+      z-index: 100;
+      flex-wrap: wrap;
+    }
+
+    .cert-top-bar-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .cert-top-bar-left img {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+    }
+
+    .cert-top-bar-title {
+      font-size: 0.88rem;
+      font-weight: 700;
+      color: #F8FAFC;
+    }
+
+    .cert-top-bar-sub {
+      font-size: 0.75rem;
+      color: #94A3B8;
+    }
+
+    .cert-actions-group {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .btn-cert-action {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 14px;
+      font-size: 0.82rem;
+      font-weight: 700;
+      border-radius: 8px;
+      border: 1px solid transparent;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.2s ease;
+      white-space: nowrap;
+    }
+
+    .btn-cert-action.primary {
+      background: linear-gradient(135deg, #2563EB, #1D4ED8);
+      color: #FFFFFF;
+      box-shadow: 0 4px 12px rgba(37, 99, 235, 0.35);
+    }
+    .btn-cert-action.primary:hover {
+      background: linear-gradient(135deg, #1D4ED8, #1E40AF);
+      transform: translateY(-1px);
+    }
+
+    .btn-cert-action.gold {
+      background: linear-gradient(135deg, #F59E0B, #D97706);
+      color: #FFFFFF;
+      box-shadow: 0 4px 12px rgba(245, 158, 11, 0.35);
+    }
+    .btn-cert-action.gold:hover {
+      background: linear-gradient(135deg, #D97706, #B45309);
+      transform: translateY(-1px);
+    }
+
+    .btn-cert-action.whatsapp {
+      background: #059669;
+      color: #FFFFFF;
+    }
+    .btn-cert-action.whatsapp:hover {
+      background: #047857;
+    }
+
+    .btn-cert-action.outline {
+      background: rgba(255, 255, 255, 0.06);
+      border-color: rgba(255, 255, 255, 0.2);
+      color: #E2E8F0;
+    }
+    .btn-cert-action.outline:hover {
+      background: rgba(255, 255, 255, 0.12);
+      color: #FFFFFF;
+    }
+
+    /* Certificate Outer Frame & Scaler */
+    .cert-viewport-wrapper {
+      width: 100%;
+      max-width: 1140px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow-x: auto;
+      padding-bottom: 20px;
+    }
+
+    /* Exact 1:1 Aspect Ratio Canvas (1120px x 630px -> 16:9 Landscape) */
+    .certificate-canvas {
+      width: 1120px;
+      height: 630px;
+      min-width: 1120px;
+      min-height: 630px;
+      background: #FFFFFF;
+      position: relative;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.1);
+      border-radius: 4px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      user-select: text;
+    }
+
+    /* Inner Border Frame with Beveled Corners */
+    .cert-inner-frame {
+      position: absolute;
+      top: 18px;
+      left: 18px;
+      right: 18px;
+      bottom: 18px;
+      border: 1.5px solid #CBD5E1;
+      pointer-events: none;
+      z-index: 10;
+    }
+
+    .cert-inner-frame-gold {
+      position: absolute;
+      top: 22px;
+      left: 22px;
+      right: 22px;
+      bottom: 22px;
+      border: 1.5px solid #D4AF37;
+      pointer-events: none;
+      z-index: 10;
+    }
+
+    /* SVG Geometric Background Shards (Left & Right Origami / Crystal Borders) */
+    .cert-svg-background {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    /* Certificate Content Layout */
+    .cert-content-area {
+      position: relative;
+      z-index: 20;
+      padding: 44px 130px 24px 130px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      height: 100%;
+      justify-content: space-between;
+    }
+
+    /* Header Section */
+    .cert-header-box {
+      margin-top: 10px;
+    }
+
+    .cert-title-main {
+      font-family: 'Cinzel', serif;
+      font-size: 3.1rem;
+      font-weight: 800;
+      letter-spacing: 0.14em;
+      color: #111827;
+      line-height: 1.05;
+      margin: 0;
+      text-transform: uppercase;
+    }
+
+    .cert-title-sub {
+      font-family: 'Cinzel', serif;
+      font-size: 1.5rem;
+      font-weight: 700;
+      letter-spacing: 0.22em;
+      color: #1D4ED8;
+      margin-top: 6px;
+      text-transform: uppercase;
+    }
+
+    .cert-intro-text {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 0.95rem;
+      font-weight: 500;
+      color: #1E293B;
+      margin-top: 12px;
+      letter-spacing: 0.02em;
+    }
+
+    /* Recipient Name in Cursive Calligraphy */
+    .cert-recipient-name {
+      font-family: 'Great Vibes', cursive;
+      font-size: 4.1rem;
+      font-weight: 400;
+      color: #1D4ED8;
+      line-height: 1.15;
+      margin: 2px 0 6px;
+      text-shadow: 0 1px 2px rgba(29, 78, 216, 0.15);
+      max-width: 860px;
+      word-wrap: break-word;
+    }
+
+    /* Award Statement Text */
+    .cert-body-statement {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 1.05rem;
+      line-height: 1.65;
+      color: #1E293B;
+      max-width: 780px;
+      margin: 0 auto;
+    }
+
+    .cert-body-statement strong {
+      color: #0F172A;
+      font-weight: 700;
+    }
+
+    .cert-body-statement .highlight-blue {
+      color: #1D4ED8;
+      font-weight: 700;
+    }
+
+    /* Signatures Section */
+    .cert-signatures-row {
+      width: 100%;
+      max-width: 760px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      margin-top: 10px;
+      padding: 0 20px;
+    }
+
+    .cert-signature-col {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 250px;
+      text-align: center;
+    }
+
+    .cert-signature-img-wrap {
+      height: 52px;
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      margin-bottom: 4px;
+    }
+
+    .cert-signature-img {
+      max-height: 50px;
+      max-width: 170px;
+      object-fit: contain;
+      filter: contrast(1.1);
+    }
+
+    .cert-sig-line {
+      width: 100%;
+      height: 1.5px;
+      background: #334155;
+      margin-bottom: 6px;
+    }
+
+    .cert-sig-title {
+      font-size: 0.88rem;
+      font-weight: 700;
+      color: #0F172A;
+      line-height: 1.25;
+    }
+
+    .cert-sig-subtitle {
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: #475569;
+      line-height: 1.3;
+    }
+
+    /* QR Code Micro-Badge (Center Between Signatures) */
+    .cert-qr-center-box {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 4px 10px;
+      border: 1px dashed #CBD5E1;
+      border-radius: 8px;
+      background: rgba(248, 250, 252, 0.85);
+    }
+
+    .cert-qr-canvas-holder {
+      width: 58px;
+      height: 58px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .cert-qr-canvas-holder canvas {
+      width: 58px !important;
+      height: 58px !important;
+    }
+
+    .cert-qr-ref-id {
+      font-family: 'Courier New', Courier, monospace;
+      font-size: 0.64rem;
+      font-weight: 700;
+      color: #0F172A;
+      margin-top: 2px;
+      letter-spacing: 0.04em;
+    }
+
+    /* Official Bottom Line Banner */
+    .cert-bottom-banner {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 0.80rem;
+      font-weight: 700;
+      color: #1D4ED8;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+
+    /* Medallion Ribbon Badge (Top Right) */
+    .cert-top-medallion {
+      position: absolute;
+      top: 0;
+      right: 70px;
+      z-index: 25;
+      pointer-events: none;
+    }
+
+    /* Lock Screen for Incomplete Interns */
+    .cert-locked-card {
+      width: 100%;
+      max-width: 680px;
+      background: #FFFFFF;
+      border-radius: 20px;
+      padding: 40px 32px;
+      text-align: center;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.4);
+      margin-top: 30px;
+    }
+
+    .lock-shield-icon {
+      font-size: 4rem;
+      margin-bottom: 16px;
+      display: inline-block;
+      animation: pulseSlow 3s infinite ease-in-out;
+    }
+
+    @keyframes pulseSlow {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.06); }
+    }
+
+    .lock-title {
+      font-size: 1.6rem;
+      font-weight: 800;
+      color: #0F172A;
+      margin-bottom: 10px;
+    }
+
+    .lock-desc {
+      font-size: 0.95rem;
+      color: #475569;
+      line-height: 1.6;
+      margin-bottom: 24px;
+    }
+
+    .lock-countdown-box {
+      background: #EFF6FF;
+      border: 1px solid #BFDBFE;
+      border-radius: 12px;
+      padding: 16px;
+      margin-bottom: 26px;
+      display: inline-block;
+      width: 100%;
+      max-width: 440px;
+    }
+
+    .lock-countdown-label {
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: #1D4ED8;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 4px;
+    }
+
+    .lock-countdown-val {
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: #1E3A8A;
+    }
+
+    /* Print Styles */
+    @media print {
+      @page {
+        size: landscape A4;
+        margin: 0;
+      }
+
+      body {
+        background: #FFFFFF !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        display: block !important;
+      }
+
+      .cert-top-bar,
+      .cert-viewport-wrapper::-webkit-scrollbar,
+      #lookupPromptState {
+        display: none !important;
+      }
+
+      .cert-viewport-wrapper {
+        padding: 0 !important;
+        margin: 0 !important;
+        max-width: 100% !important;
+        width: 100% !important;
+        display: block !important;
+      }
+
+      .certificate-canvas {
+        width: 100vw !important;
+        height: 100vh !important;
+        min-width: 100vw !important;
+        min-height: 100vh !important;
+        box-shadow: none !important;
+        border-radius: 0 !important;
+        border: none !important;
+        page-break-inside: avoid !important;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Action Controls (Screen Only) -->
+  <header class="cert-top-bar" id="certTopBar">
+    <div class="cert-top-bar-left">
+      <img src="/assets/uzairaistudio.png" alt="Uzair AI Studio">
+      <div>
+        <div class="cert-top-bar-title" id="topbarCandidateName">Official Certificate of Completion</div>
+        <div class="cert-top-bar-sub">Uzair AI Studio • Cryptographically Verified Credential</div>
+      </div>
+    </div>
+
+    <div class="cert-actions-group">
+      <button type="button" class="btn-cert-action gold" id="btnPrintCert" onclick="window.print()">
+        <span>🖨️ Print / Save PDF</span>
+      </button>
+      <button type="button" class="btn-cert-action primary" id="btnDownloadCertPng">
+        <span>⬇️ Download High-Res (PNG)</span>
+      </button>
+      <a id="btnWhatsAppShare" href="#" target="_blank" class="btn-cert-action whatsapp">
+        <span>💬 Share</span>
+      </a>
+      <a id="btnVerifyLink" href="/verify" class="btn-cert-action outline">
+        <span>🔍 Live Registry</span>
+      </a>
+      <a href="/" class="btn-cert-action outline">
+        <span>← Home</span>
+      </a>
+    </div>
+  </header>
+
+  <!-- State 1: Active Certificate View -->
+  <main class="cert-viewport-wrapper" id="certMainView">
+    <div class="certificate-canvas" id="printableCertificate">
+
+      <!-- SVG Shards Background (Faceted Luxury Origami Polygonal Left & Right Borders) -->
+      <svg class="cert-svg-background" viewBox="0 0 1120 630" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <!-- Gold Gradients -->
+          <linearGradient id="goldGrad1" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#FFE082" />
+            <stop offset="35%" stop-color="#E5A93C" />
+            <stop offset="70%" stop-color="#B37D14" />
+            <stop offset="100%" stop-color="#785207" />
+          </linearGradient>
+
+          <linearGradient id="goldGradLight" x1="0%" y1="100%" x2="100%" y2="0%">
+            <stop offset="0%" stop-color="#D97706" />
+            <stop offset="50%" stop-color="#FCD34D" />
+            <stop offset="100%" stop-color="#F59E0B" />
+          </linearGradient>
+
+          <!-- Deep Royal Sapphire Blue Gradients -->
+          <linearGradient id="blueGrad1" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#1E3A8A" />
+            <stop offset="50%" stop-color="#1D4ED8" />
+            <stop offset="100%" stop-color="#0A192F" />
+          </linearGradient>
+
+          <linearGradient id="navyDeep" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#0F2744" />
+            <stop offset="50%" stop-color="#0A192F" />
+            <stop offset="100%" stop-color="#030712" />
+          </linearGradient>
+
+          <linearGradient id="sapphireReflect" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stop-color="#1E40AF" />
+            <stop offset="50%" stop-color="#3B82F6" />
+            <stop offset="100%" stop-color="#1D4ED8" />
+          </linearGradient>
+        </defs>
+
+        <!-- Subtle High-Tech Circuit Traces Pattern (Watermark) -->
+        <g stroke="#2563EB" stroke-width="1" stroke-opacity="0.08" fill="none">
+          <!-- Left side circuits -->
+          <path d="M 120 180 L 220 180 L 260 220 L 340 220" />
+          <circle cx="340" cy="220" r="3" fill="#2563EB" fill-opacity="0.12" />
+          <path d="M 140 320 L 240 320 L 280 280 L 360 280" />
+          <circle cx="360" cy="280" r="3" fill="#2563EB" fill-opacity="0.12" />
+          <path d="M 110 440 L 200 440 L 240 480 L 320 480" />
+          <circle cx="320" cy="480" r="3" fill="#2563EB" fill-opacity="0.12" />
+
+          <!-- Center-right circuits -->
+          <path d="M 1000 200 L 900 200 L 860 240 L 800 240" />
+          <circle cx="800" cy="240" r="3" fill="#2563EB" fill-opacity="0.12" />
+          <path d="M 980 380 L 890 380 L 850 340 L 780 340" />
+          <circle cx="780" cy="340" r="3" fill="#2563EB" fill-opacity="0.12" />
+          <path d="M 960 480 L 880 480 L 840 520 L 760 520" />
+          <circle cx="760" cy="520" r="3" fill="#2563EB" fill-opacity="0.12" />
+        </g>
+
+        <!-- ==============================================
+             LEFT CORNER GEOMETRIC POLYGONAL FACET CLUSTERS
+             ============================================== -->
+        <!-- Top Left Outer Gold Shard -->
+        <polygon points="0,0 80,0 45,95 0,135" fill="url(#goldGradLight)" />
+        <polygon points="0,0 45,95 0,60" fill="url(#goldGrad1)" />
+
+        <!-- Large Left Navy Bevel Polygon -->
+        <polygon points="0,60 135,175 95,315 135,465 0,580" fill="url(#navyDeep)" />
+
+        <!-- Faceted Blue Crystals on Left -->
+        <polygon points="0,110 120,215 90,315 0,250" fill="url(#blueGrad1)" />
+        <polygon points="120,215 135,270 90,315" fill="url(#sapphireReflect)" />
+        <polygon points="0,380 90,315 130,410 0,470" fill="url(#blueGrad1)" />
+        <polygon points="90,315 135,360 130,410" fill="url(#sapphireReflect)" />
+
+        <!-- Gold Facet Accent Ribbons Left -->
+        <polygon points="0,240 90,315 70,335 0,270" fill="url(#goldGrad1)" />
+        <polygon points="0,460 130,410 115,440 0,500" fill="url(#goldGradLight)" />
+
+        <!-- Bottom Left Corner Polygon -->
+        <polygon points="0,520 120,630 0,630" fill="url(#goldGradLight)" />
+        <polygon points="0,570 70,630 0,630" fill="url(#navyDeep)" />
+
+        <!-- ===============================================
+             RIGHT CORNER GEOMETRIC POLYGONAL FACET CLUSTERS
+             =============================================== -->
+        <!-- Bottom Right Large Faceted Cluster -->
+        <polygon points="1120,440 1010,480 980,560 1040,630 1120,630" fill="url(#navyDeep)" />
+        <polygon points="1120,490 1030,525 1010,585 1080,630 1120,630" fill="url(#blueGrad1)" />
+        <polygon points="1030,525 980,560 1010,585" fill="url(#goldGrad1)" />
+        <polygon points="1120,570 1060,610 1120,630" fill="url(#goldGradLight)" />
+
+        <!-- Top Right Minor Corner Shard -->
+        <polygon points="1040,0 1120,0 1120,70" fill="url(#goldGradLight)" />
+        <polygon points="1070,0 1120,0 1120,40" fill="url(#navyDeep)" />
+      </svg>
+
+      <!-- Inner Thin Double Borders -->
+      <div class="cert-inner-frame"></div>
+      <div class="cert-inner-frame-gold"></div>
+
+      <!-- Top Right Golden Seal with Hanging Ribbon (Matches Official Image) -->
+      <div class="cert-top-medallion">
+        <svg width="150" height="190" viewBox="0 0 150 190" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="medRibbonGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%" stop-color="#1E3A8A" />
+              <stop offset="50%" stop-color="#2563EB" />
+              <stop offset="100%" stop-color="#1D4ED8" />
+            </linearGradient>
+
+            <linearGradient id="medalGoldRing" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#FFE082" />
+              <stop offset="35%" stop-color="#F59E0B" />
+              <stop offset="70%" stop-color="#B45309" />
+              <stop offset="100%" stop-color="#78350F" />
+            </linearGradient>
+          </defs>
+
+          <!-- Dual Hanging Blue Ribbon with Inverted V Swallowtail Notch -->
+          <polygon points="45,0 105,0 105,170 75,145 45,170" fill="url(#medRibbonGrad)" filter="drop-shadow(0 4px 6px rgba(0,0,0,0.35))" />
+          <polygon points="45,0 75,0 75,145 45,170" fill="#1E3A8A" fill-opacity="0.3" />
+
+          <!-- Golden Medallion Scalloped Outer Sunburst Ring -->
+          <g filter="drop-shadow(0 6px 12px rgba(0,0,0,0.4))">
+            <!-- 24-point Scalloped Star/Gear -->
+            <circle cx="75" cy="85" r="54" fill="url(#medalGoldRing)" />
+            <circle cx="75" cy="85" r="48" fill="#D97706" />
+            <circle cx="75" cy="85" r="45" fill="url(#medalGoldRing)" />
+
+            <!-- Dark Navy Core Badge -->
+            <circle cx="75" cy="85" r="41" fill="#0A192F" stroke="#FDE68A" stroke-width="1.5" />
+
+            <!-- Center Emblem: Brain Circuit Logo & Text -->
+            <g transform="translate(56, 58) scale(0.65)">
+              <!-- Brain Circuit Vector Icon -->
+              <path d="M 28 6 C 20 6 14 11 14 18 C 14 20 15 22 16 24 C 13 26 11 30 11 35 C 11 41 15 46 20 48 L 20 54 L 38 54 L 38 48 C 43 46 47 41 47 35 C 47 30 45 26 42 24 C 43 22 44 20 44 18 C 44 11 38 6 30 6 Z" fill="none" stroke="#FDE68A" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" />
+              <circle cx="23" cy="20" r="2" fill="#FDE68A" />
+              <circle cx="35" cy="20" r="2" fill="#FDE68A" />
+              <circle cx="21" cy="34" r="2" fill="#FDE68A" />
+              <circle cx="37" cy="34" r="2" fill="#FDE68A" />
+              <path d="M 23 20 L 29 26 L 35 20 M 29 26 L 29 40 M 21 34 L 29 40 L 37 34" stroke="#FDE68A" stroke-width="1.8" />
+            </g>
+
+            <!-- Medallion Text: "Uzair AI Studio" -->
+            <text x="75" y="103" text-anchor="middle" font-family="'Plus Jakarta Sans', sans-serif" font-size="9.5" font-weight="800" fill="#FFFFFF" letter-spacing="0.5">Uzair AI</text>
+            <text x="75" y="113" text-anchor="middle" font-family="'Plus Jakarta Sans', sans-serif" font-size="8.5" font-weight="700" fill="#FDE68A" letter-spacing="0.4">Studio</text>
+          </g>
+        </svg>
+      </div>
+
+      <!-- Main Central Certificate Typography & Details -->
+      <div class="cert-content-area">
+
+        <!-- Header -->
+        <div class="cert-header-box">
+          <h1 class="cert-title-main">CERTIFICATE</h1>
+          <div class="cert-title-sub">OF COMPLETION</div>
+          <p class="cert-intro-text">the following award is given to</p>
+        </div>
+
+        <!-- Dynamic Recipient Name -->
+        <div class="cert-recipient-name" id="certRecipientName">Muhammad Uzair</div>
+
+        <!-- Award Description Statement -->
+        <p class="cert-body-statement" id="certBodyStatement">
+          This certificate is awarded to <strong id="certBoldName">Muhammad Uzair</strong> for successful completion of <strong class="highlight-blue" id="certDomain">Web Development</strong> Internship & Training Program by <strong class="highlight-blue" id="certStudioName">UZAIR AI STUDIO</strong> from <strong id="certDatePeriod">1st April to 30th May 2026 (8 weeks)</strong>.
+        </p>
+
+        <!-- Signatures & Verification Badge Row -->
+        <div class="cert-signatures-row">
+
+          <!-- Left: Muhammad Uzair Signature -->
+          <div class="cert-signature-col">
+            <div class="cert-signature-img-wrap">
+              <img src="/assets/uzair_signature (2).png" alt="Founder Signature" class="cert-signature-img" id="certSigFounderImg">
+            </div>
+            <div class="cert-sig-line"></div>
+            <div class="cert-sig-title" id="certFounderName">Owner &amp; Founder</div>
+            <div class="cert-sig-subtitle">UZAIR AI STUDIO</div>
+          </div>
+
+          <!-- Center: Dynamic Verification QR Code -->
+          <div class="cert-qr-center-box" id="certQrBox" title="Scan with phone camera to verify official registry record">
+            <div class="cert-qr-canvas-holder" id="certQrCanvas"></div>
+            <div class="cert-qr-ref-id" id="certRefId">UZ-INT-XXXXX</div>
+          </div>
+
+          <!-- Right: Saad / Training Supervisor Signature -->
+          <div class="cert-signature-col">
+            <div class="cert-signature-img-wrap">
+              <img src="/assets/saad_signature.png" alt="Supervisor Signature" class="cert-signature-img" id="certSigSupervisorImg">
+            </div>
+            <div class="cert-sig-line"></div>
+            <div class="cert-sig-title" id="certSupervisorTitle">Training Supervisor</div>
+            <div class="cert-sig-subtitle">AI &amp; Software Engineer<br>UZAIR AI STUDIO</div>
+          </div>
+
+        </div>
+
+        <!-- Bottom Official Trademark Banner -->
+        <div class="cert-bottom-banner" id="certBottomBanner">
+          UZAIR AI STUDIO | Artificial Intelligence Technology
+        </div>
+
+      </div>
+
+    </div>
+  </main>
+
+  <!-- State 2: Security Lock Screen (When Internship is still Active / In-Progress) -->
+  <div class="cert-locked-card" id="certLockedView" style="display:none;">
+    <div class="lock-shield-icon">🛡️</div>
+    <h2 class="lock-title">Certificate of Completion Locked</h2>
+    <p class="lock-desc" id="lockMessage">
+      This official credential is cryptographically protected and will only be unlocked upon official completion of your 2-Month Internship &amp; Training Program.
+    </p>
+
+    <div class="lock-countdown-box">
+      <div class="lock-countdown-label">Program Status</div>
+      <div class="lock-countdown-val" id="lockCountdownText">⏳ Active Duration in Progress</div>
+      <div style="font-size:0.85rem; color:#64748B; margin-top:6px;" id="lockDatesText">Completion Date: -</div>
+    </div>
+
+    <div style="display:flex; justify-content:center; gap:12px; flex-wrap:wrap;">
+      <a id="btnLockOfferLetter" href="#" class="btn-cert-action primary" style="font-size:0.9rem; padding:12px 20px;">
+        <span>📄 View Official Offer Letter</span>
+      </a>
+      <a id="btnLockVerify" href="#" class="btn-cert-action outline" style="font-size:0.9rem; padding:12px 20px; color:#1E293B; border-color:#CBD5E1;">
+        <span>🔍 Check Status in Registry</span>
+      </a>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', async () => {
+      const urlParams = new URLSearchParams(window.location.search);
+      let queryId = urlParams.get('id');
+
+      if (!queryId) {
+        const parts = window.location.pathname.split('/').filter(Boolean);
+        const last = parts[parts.length - 1];
+        if (last && !last.includes('.html') && last.toUpperCase() !== 'CERTIFICATE') {
+          queryId = last;
+        }
+      }
+
+      if (!queryId) {
+        queryId = 'UZ-INT-MVZMX46F'; // Default preview ID
+      }
+
+      queryId = queryId.trim().toUpperCase();
+
+      // Get admin token if available
+      const adminToken = localStorage.getItem('uzair_admin_token');
+      const headers = {};
+      if (adminToken) headers['Authorization'] = `Bearer ${adminToken}`;
+
+      try {
+        const res = await fetch(`/api/internship/certificate/${encodeURIComponent(queryId)}`, { headers });
+        const json = await res.json();
+
+        // Check if locked
+        if (res.status === 403 || (json && json.locked)) {
+          showLockedScreen(json, queryId);
+          return;
+        }
+
+        if (!json.success || !json.certificate) {
+          alert(json.message || 'Certificate not found.');
+          return;
+        }
+
+        renderCertificate(json.certificate);
+      } catch (err) {
+        console.error('Error fetching certificate:', err);
+      }
+
+      // Wire up Download PNG
+      const btnDownload = document.getElementById('btnDownloadCertPng');
+      if (btnDownload) {
+        btnDownload.addEventListener('click', async () => {
+          const certEl = document.getElementById('printableCertificate');
+          if (!certEl) return;
+
+          const origBtnText = btnDownload.innerHTML;
+          btnDownload.innerHTML = '<span>⏳ Rendering High-Res...</span>';
+          btnDownload.disabled = true;
+
+          try {
+            const canvas = await html2canvas(certEl, {
+              scale: 2.5, // 2800px x 1575px Ultra-HD Print Clarity
+              useCORS: true,
+              logging: false,
+              backgroundColor: '#FFFFFF'
+            });
+
+            const link = document.createElement('a');
+            link.download = `${queryId}-Certificate-of-Completion-Uzair-AI-Studio.png`;
+            link.href = canvas.toDataURL('image/png');
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+          } catch (e) {
+            alert('Failed to generate high-resolution certificate image. You can use the Print / Save PDF button.');
+          } finally {
+            btnDownload.innerHTML = origBtnText;
+            btnDownload.disabled = false;
+          }
+        });
+      }
+    });
+
+    function renderCertificate(cert) {
+      document.getElementById('certMainView').style.display = 'flex';
+      document.getElementById('certTopBar').style.display = 'flex';
+      document.getElementById('certLockedView').style.display = 'none';
+
+      document.title = `Certificate of Completion - ${cert.fullName} | Uzair AI Studio`;
+      document.getElementById('topbarCandidateName').textContent = `${cert.fullName} (${cert.id})`;
+
+      // Recipient
+      document.getElementById('certRecipientName').textContent = cert.fullName;
+      document.getElementById('certBoldName').textContent = cert.fullName;
+      document.getElementById('certDomain').textContent = cert.domain;
+      document.getElementById('certStudioName').textContent = cert.studioName || 'UZAIR AI STUDIO';
+      document.getElementById('certDatePeriod').textContent = cert.formattedPeriod || `${cert.startDate} to ${cert.completionDate} (${cert.duration || '8 weeks'})`;
+      document.getElementById('certRefId').textContent = cert.id;
+
+      // Render Verification QR Code
+      const qrContainer = document.getElementById('certQrCanvas');
+      if (qrContainer && typeof QRCode !== 'undefined') {
+        qrContainer.innerHTML = '';
+        const verifyUrl = `${window.location.origin}/verify?id=${encodeURIComponent(cert.id)}`;
+        new QRCode(qrContainer, {
+          text: verifyUrl,
+          width: 58,
+          height: 58,
+          colorDark: '#0A192F',
+          colorLight: '#FFFFFF',
+          correctLevel: QRCode.CorrectLevel.M
+        });
+
+        // Set action links
+        document.getElementById('btnVerifyLink').href = `/verify?id=${encodeURIComponent(cert.id)}`;
+        const shareMsg = encodeURIComponent(
+          `🎓 Official Credential Verified!\n\n` +
+          `I have successfully completed the ${cert.domain} Internship & Training Program at Uzair AI Studio.\n\n` +
+          `📜 Certificate of Completion: ${window.location.origin}/certificate?id=${cert.id}\n` +
+          `🛡️ Live Registry Record: ${verifyUrl}\n\n` +
+          `Authorized by Muhammad Uzair (Lead Architect & Founder, Uzair AI Studio)`
+        );
+        document.getElementById('btnWhatsAppShare').href = `https://wa.me/?text=${shareMsg}`;
+      }
+    }
+
+    function showLockedScreen(data, id) {
+      document.getElementById('certMainView').style.display = 'none';
+      document.getElementById('certTopBar').style.display = 'none';
+      const lockView = document.getElementById('certLockedView');
+      lockView.style.display = 'block';
+
+      if (data.message) {
+        document.getElementById('lockMessage').textContent = data.message;
+      }
+
+      if (data.daysRemaining !== undefined) {
+        document.getElementById('lockCountdownText').textContent = `⏳ ${data.daysRemaining} Days Remaining in Tenure`;
+      }
+
+      if (data.completionDate) {
+        document.getElementById('lockDatesText').textContent = `Official Completion Release Date: ${data.completionDate}`;
+      }
+
+      document.getElementById('btnLockOfferLetter').href = `/offer-letter?id=${encodeURIComponent(id)}`;
+      document.getElementById('btnLockVerify').href = `/verify?id=${encodeURIComponent(id)}`;
+    }
+  </script>
+</body>
+</html>

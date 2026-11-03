@@ -1,0 +1,678 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Internship Offer Letter | Uzair AI Studio</title>
+  <link rel="icon" type="image/png" href="/assets/uzairaistudio.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&family=Oswald:wght@600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+  <script src="/js/qrcode.js"></script>
+  <script src="/js/qr-badge-generator.js"></script>
+  <style>
+    :root {
+      --primary-navy: #1E3A8A;
+      --primary-blue: #1D4ED8;
+      --text-dark: #0F172A;
+      --text-body: #1E293B;
+    }
+
+    body.letter-body-bg {
+      background: #E2E8F0;
+      color: var(--text-dark);
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      margin: 0;
+      padding: 24px 16px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+      box-sizing: border-box;
+    }
+
+    /* Top Controls Bar (Hidden in Print) */
+    .controls-bar {
+      width: 100%;
+      max-width: 800px;
+      background: #FFFFFF;
+      border: 1px solid #CBD5E1;
+      border-radius: 12px;
+      padding: 12px 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: 20px;
+      box-shadow: 0 4px 14px rgba(15, 23, 42, 0.08);
+      box-sizing: border-box;
+    }
+
+    .controls-top-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 8px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid #F1F5F9;
+    }
+
+    .candidate-pill-badge {
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: #1E293B;
+      background: #F1F5F9;
+      padding: 4px 10px;
+      border-radius: 6px;
+      border: 1px solid #E2E8F0;
+    }
+
+    .btn-action-group {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 8px;
+      width: 100%;
+    }
+
+    .btn-action-group .btn {
+      width: 100%;
+      padding: 8px 10px;
+      font-size: 0.8rem;
+      white-space: normal;
+      line-height: 1.25;
+      text-align: center;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      box-sizing: border-box;
+      border-radius: 8px;
+    }
+
+    /* A4 Document Sheet (Replicating Official PDF Exactly) */
+    .document-page {
+      width: 100%;
+      max-width: 800px;
+      min-height: 1080px;
+      background: #FFFFFF;
+      box-shadow: 0 12px 36px rgba(15, 23, 42, 0.15);
+      border-radius: 2px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      position: relative;
+      box-sizing: border-box;
+      overflow: hidden;
+    }
+
+    .document-content {
+      padding: 44px 54px 20px 54px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Header Section */
+    .doc-header {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding-bottom: 12px;
+    }
+
+    .header-logo-circle {
+      width: 58px;
+      height: 58px;
+      border-radius: 50%;
+      background: #0F172A;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+      flex-shrink: 0;
+    }
+
+    .header-logo-img {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+
+    .header-title-text {
+      font-size: 1.65rem;
+      font-weight: 800;
+      color: var(--primary-navy);
+      letter-spacing: 0.02em;
+      text-transform: uppercase;
+      line-height: 1.1;
+    }
+
+    .doc-divider-line {
+      width: 100%;
+      height: 2.5px;
+      background: linear-gradient(90deg, #1D4ED8 0%, #2563EB 60%, #38BDF8 100%);
+      margin-bottom: 24px;
+    }
+
+    .doc-big-title {
+      font-family: 'Oswald', 'Plus Jakarta Sans', sans-serif;
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--primary-navy);
+      text-align: center;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      margin: 0 0 28px 0;
+    }
+
+    /* Letter Metadata */
+    .doc-date-line {
+      font-size: 0.95rem;
+      color: var(--text-dark);
+      margin-bottom: 18px;
+    }
+    .doc-date-line strong {
+      font-weight: 700;
+    }
+
+    .doc-salutation {
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--text-dark);
+      margin-bottom: 8px;
+    }
+
+    .doc-welcome {
+      font-size: 1.05rem;
+      font-weight: 800;
+      color: var(--primary-blue);
+      margin-bottom: 16px;
+    }
+
+    /* Letter Body */
+    .doc-paragraphs {
+      font-size: 0.92rem;
+      color: var(--text-body);
+      line-height: 1.68;
+      text-align: justify;
+    }
+
+    .doc-paragraphs p {
+      margin-bottom: 14px;
+    }
+
+    .doc-paragraphs strong {
+      color: var(--text-dark);
+      font-weight: 700;
+    }
+
+    /* Sign-off & Verification Grid */
+    .signoff-section {
+      margin-top: 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    .signoff-left {
+      min-width: 200px;
+    }
+
+    .sincerely-text {
+      font-size: 0.92rem;
+      color: var(--text-body);
+      margin-bottom: 4px;
+    }
+
+    .signature-image {
+      height: 52px;
+      max-width: 160px;
+      object-fit: contain;
+      display: block;
+      margin: 4px 0 6px 0;
+    }
+
+    .signoff-name {
+      font-size: 1.05rem;
+      font-weight: 800;
+      color: var(--text-dark);
+      line-height: 1.2;
+    }
+
+    .signoff-role {
+      font-size: 0.82rem;
+      color: #475569;
+      font-weight: 600;
+      line-height: 1.3;
+    }
+
+    .signoff-company {
+      font-size: 0.85rem;
+      font-weight: 800;
+      color: var(--primary-navy);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .signoff-right {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    /* Official Digital Stamp Box (Matching PDF 1:1) */
+    .official-digital-stamp {
+      border: 1.8px dashed #0284C7;
+      border-radius: 4px;
+      padding: 7px 14px;
+      text-align: center;
+      background: rgba(240, 249, 255, 0.45);
+      color: #0369A1;
+      transform: rotate(-1.5deg);
+      box-shadow: 0 1px 3px rgba(3, 105, 161, 0.08);
+      user-select: none;
+    }
+
+    .stamp-line-title {
+      font-size: 0.72rem;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      line-height: 1.2;
+    }
+
+    .stamp-line-location {
+      font-size: 0.62rem;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      line-height: 1.2;
+    }
+
+    .stamp-line-owner {
+      font-size: 0.8rem;
+      font-weight: 900;
+      letter-spacing: 0.1em;
+      margin: 2px 0;
+      line-height: 1.2;
+      color: #0284C7;
+    }
+
+    .stamp-line-desig {
+      font-size: 0.62rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      line-height: 1.2;
+    }
+
+    .stamp-line-notice {
+      font-size: 0.52rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #0284C7;
+      border-top: 1px dotted #7DD3FC;
+      margin-top: 3px;
+      padding-top: 2px;
+      line-height: 1.1;
+    }
+
+    /* Embedded Scannable QR Card */
+    .qr-verification-badge {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      background: #FFFFFF;
+      border: 1px solid #E2E8F0;
+      border-radius: 8px;
+      padding: 6px;
+      box-shadow: 0 2px 6px rgba(15, 23, 42, 0.05);
+    }
+
+    #qrCanvasContainer {
+      width: 68px;
+      height: 68px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    #qrCanvasContainer canvas {
+      width: 100% !important;
+      height: 100% !important;
+      display: block;
+      image-rendering: pixelated;
+    }
+
+    .qr-badge-sub {
+      font-size: 0.58rem;
+      font-weight: 700;
+      color: #64748B;
+      text-align: center;
+      margin-top: 3px;
+      letter-spacing: 0.03em;
+    }
+
+    /* Bottom Official Banner */
+    .doc-bottom-banner {
+      background: var(--primary-navy);
+      color: #FFFFFF;
+      text-align: center;
+      padding: 10px 18px;
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.03em;
+    }
+
+    /* Responsive adjustments for Mobile & Tablets */
+    @media (max-width: 640px) {
+      body.letter-body-bg {
+        padding: 12px 8px;
+      }
+      .controls-bar {
+        padding: 12px 10px;
+        border-radius: 10px;
+      }
+      .controls-top-row {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      .btn-action-group {
+        grid-template-columns: 1fr;
+      }
+      .document-content {
+        padding: 24px 14px 14px 14px;
+      }
+      .doc-header {
+        gap: 10px;
+      }
+      .header-logo-circle {
+        width: 44px;
+        height: 44px;
+      }
+      .header-logo-img {
+        width: 36px;
+        height: 36px;
+      }
+      .header-title-text {
+        font-size: 1.25rem;
+      }
+      .doc-big-title {
+        font-size: 1.35rem;
+        margin-bottom: 16px;
+      }
+      .doc-paragraphs {
+        font-size: 0.85rem;
+      }
+      .signoff-section {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 16px;
+      }
+      .signoff-right {
+        width: 100%;
+        justify-content: flex-start;
+        flex-wrap: wrap;
+        gap: 12px;
+      }
+    }
+
+    /* Print Precision Styles (Strict 1-Page A4 Guarantee) */
+    @media print {
+      @page {
+        size: A4 portrait;
+        margin: 0;
+      }
+      html, body {
+        width: 210mm !important;
+        height: 297mm !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        background: #FFFFFF !important;
+        overflow: hidden !important;
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+      }
+      .controls-bar {
+        display: none !important;
+      }
+      .document-page {
+        box-shadow: none !important;
+        border-radius: 0 !important;
+        width: 210mm !important;
+        height: 297mm !important;
+        max-height: 297mm !important;
+        min-height: 297mm !important;
+        margin: 0 !important;
+        page-break-after: avoid !important;
+        page-break-inside: avoid !important;
+        overflow: hidden !important;
+      }
+    }
+  </style>
+</head>
+<body class="letter-body-bg">
+
+  <!-- Interactive Controls Bar (Zero-Overflow Responsive Layout) -->
+  <div class="controls-bar">
+    <div class="controls-top-row">
+      <a href="/admin" class="btn btn-outline btn-sm">&larr; Return to Admin Hub</a>
+      <span class="candidate-pill-badge" id="topbarCandidateName">Loading Offer Letter...</span>
+    </div>
+
+    <div class="btn-action-group">
+      <button type="button" class="btn btn-primary btn-sm" onclick="window.print()">
+        <span>🖨️ Print / Save Official PDF</span>
+      </button>
+      <button type="button" id="btnDownloadQrBadge" class="btn btn-outline btn-sm" title="Download High-Resolution Official QR Verification Badge">
+        <span>🖼️ Save QR Badge (PNG)</span>
+      </button>
+      <a id="btnRecommendationLink" href="#" class="btn btn-outline btn-sm">
+        <span>📜 Letter of Recommendation</span>
+      </a>
+      <a id="btnTopVerifyLink" href="#" target="_blank" class="btn btn-outline btn-sm">
+        <span>🔍 Live QR Verification</span>
+      </a>
+      <a id="btnWhatsAppShare" href="#" target="_blank" class="btn btn-whatsapp btn-sm">
+        <span>💬 Send via WhatsApp</span>
+      </a>
+    </div>
+  </div>
+
+  <!-- A4 Printable Sheet (1:1 Replica of Uzair AI Studio Official Template) -->
+  <div class="document-page" id="printableOfferLetter">
+    
+    <div class="document-content">
+      
+      <!-- Top Brand Header -->
+      <div class="doc-header">
+        <div class="header-logo-circle">
+          <img src="/assets/uzairaistudio.png" alt="Uzair AI Studio Official Logo" class="header-logo-img">
+        </div>
+        <div class="header-title-text">
+          UZAIR AI STUDIO
+        </div>
+      </div>
+
+      <div class="doc-divider-line"></div>
+
+      <!-- Formal Letter Title -->
+      <h1 class="doc-big-title">INTERNSHIP OFFER LETTER</h1>
+
+      <!-- Date -->
+      <div class="doc-date-line">
+        <strong>Date:</strong> <span id="docIssueDate">October 01, 2026</span>
+      </div>
+
+      <!-- Salutation -->
+      <div class="doc-salutation">
+        Dear <span id="docCandidateGreeting">Candidate</span>,
+      </div>
+
+      <!-- Welcome Line -->
+      <div class="doc-welcome">
+        Welcome to UZAIR AI STUDIO.
+      </div>
+
+      <!-- Body Copy -->
+      <div class="doc-paragraphs">
+        <p>
+          Congratulations! We are delighted to offer you an internship position as a <strong id="docRoleTitle">web developer</strong> under our <strong>Internship & Training Program</strong>. This offer letter confirms your selection and welcomes you to our organization.
+        </p>
+
+        <p>
+          The internship duration will be from <strong id="docDurationRange">1st October to 30th November, 2026</strong>, for a period of <strong id="docDurationWeeks">8 weeks</strong>.
+        </p>
+
+        <p>
+          During this internship, you will have the opportunity to work on real-world projects, enhance your technical skills, and gain practical experience under professional guidance. You are expected to perform your assigned tasks responsibly and follow all company policies and instructions.
+        </p>
+
+        <p>
+          This internship is intended to provide valuable industry exposure and help you develop the skills required for your future career.
+        </p>
+
+        <p>
+          We look forward to a productive and successful association with you and wish you all the best for your professional journey.
+        </p>
+      </div>
+
+      <!-- Sign-off, Signatures & Digital Stamp -->
+      <div class="signoff-section">
+        <div class="signoff-left">
+          <div class="sincerely-text">Sincerely,</div>
+          <img src="/assets/uzair_signature (2).png" alt="Signature of Founder Muhammad Uzair" class="signature-image" id="sigFounderImg">
+          <div class="signoff-name" id="sigFounderName">Muhammad Uzair</div>
+          <div class="signoff-role" id="sigFounderRole">Owner & Founder</div>
+          <div class="signoff-company" id="sigStudioName">UZAIR AI STUDIO</div>
+        </div>
+
+        <div class="signoff-right">
+          <!-- Digital Stamp -->
+          <div class="official-digital-stamp">
+            <div class="stamp-line-title">UZAIR AI STUDIO</div>
+            <div class="stamp-line-location" id="stampLocation">23200 MARDAN KPK</div>
+            <div class="stamp-line-owner">M.UZAIR</div>
+            <div class="stamp-line-desig">OWNER & FOUNDER</div>
+            <div class="stamp-line-notice">ONLY FOR VERIFICATION PURPOSES</div>
+          </div>
+
+          <!-- Embedded Scannable QR -->
+          <div class="qr-verification-badge">
+            <div id="qrCanvasContainer"></div>
+            <div class="qr-badge-sub" id="qrCandidateId">UZ-INT-XXXXX</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Official Footer Banner -->
+    <div class="doc-bottom-banner" id="docFooterBanner">
+      UZAIR AI STUDIO | Empowering Futures Through Technology | kmuzairkhan123@gmail.com
+    </div>
+
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', async () => {
+      const urlParams = new URLSearchParams(window.location.search);
+      let internId = urlParams.get('id');
+
+      if (!internId) {
+        const pathSegments = window.location.pathname.split('/').filter(Boolean);
+        const lastSeg = pathSegments[pathSegments.length - 1];
+        if (lastSeg && !lastSeg.includes('.html')) {
+          internId = lastSeg;
+        }
+      }
+
+      if (!internId) {
+        document.getElementById('topbarCandidateName').textContent = 'Error: No candidate ID provided.';
+        return;
+      }
+
+      try {
+        const res = await fetch(`/api/internship/offer-letter/${encodeURIComponent(internId)}`);
+        const json = await res.json();
+
+        if (!json.success || !json.letter) {
+          document.getElementById('topbarCandidateName').textContent = 'Offer letter not found.';
+          return;
+        }
+
+        const d = json.letter;
+
+        // Populate elements
+        document.title = `Internship Offer Letter - ${d.fullName} | Uzair AI Studio`;
+        document.getElementById('topbarCandidateName').textContent = `${d.fullName} (${d.id})`;
+
+        document.getElementById('docIssueDate').textContent = d.formattedIssueDate || 'October 01, 2026';
+        document.getElementById('docCandidateGreeting').textContent = d.firstName || d.fullName;
+        document.getElementById('docRoleTitle').textContent = d.roleName.toLowerCase();
+        document.getElementById('docDurationRange').textContent = `${d.formattedStartDate} to ${d.formattedEndDate}`;
+        document.getElementById('docDurationWeeks').textContent = d.duration || '8 weeks';
+
+        document.getElementById('sigFounderName').textContent = d.founderName || 'Muhammad Uzair';
+        document.getElementById('sigFounderRole').textContent = d.founderTitle || 'Owner & Founder';
+        document.getElementById('sigStudioName').textContent = d.studioName || 'UZAIR AI STUDIO';
+        document.getElementById('stampLocation').textContent = d.studioLocation || '23200 MARDAN KPK';
+
+        document.getElementById('docFooterBanner').textContent = 
+          `${d.studioName} | Empowering Futures Through Technology | ${d.studioEmail || 'kmuzairkhan123@gmail.com'}`;
+
+        document.getElementById('qrCandidateId').textContent = d.id;
+
+        // Actions
+        const verifyUrl = `${window.location.origin}/verify?id=${d.id}`;
+        document.getElementById('btnTopVerifyLink').href = verifyUrl;
+        document.getElementById('btnRecommendationLink').href = `/recommendation-letter?id=${d.id}`;
+
+        // WhatsApp Share Message
+        const rawWaNumber = (d.whatsapp || '').replace(/[^0-9]/g, '');
+        const shareMsg = encodeURIComponent(
+          `Dear ${d.fullName},\n\n` +
+          `Congratulations! Your official Internship Offer Letter from Uzair AI Studio is available:\n\n` +
+          `📄 Offer Letter: ${window.location.origin}/offer-letter?id=${d.id}\n` +
+          `🔍 Live Verification Badge: ${verifyUrl}\n` +
+          `Candidate Ref ID: ${d.id}\n\n` +
+          `Best Regards,\nMuhammad Uzair (Founder & Lead Architect)\nUzair AI Studio`
+        );
+        document.getElementById('btnWhatsAppShare').href = `https://wa.me/${rawWaNumber}?text=${shareMsg}`;
+
+        // Render QR Code
+        const qrContainer = document.getElementById('qrCanvasContainer');
+        if (typeof QRCode !== 'undefined') {
+          qrContainer.innerHTML = '';
+          new QRCode(qrContainer, {
+            text: verifyUrl,
+            width: 140,
+            height: 140,
+            colorDark: '#0F172A',
+            colorLight: '#FFFFFF',
+            correctLevel: QRCode.CorrectLevel.M
+          });
+        }
+
+        // 1-Click QR Badge Downloader
+        const btnSaveBadge = document.getElementById('btnDownloadQrBadge');
+        if (btnSaveBadge) {
+          btnSaveBadge.addEventListener('click', () => {
+            const qrCanvas = qrContainer.querySelector('canvas');
+            if (window.UzairQrBadge) {
+              window.UzairQrBadge.downloadBadge(d, qrCanvas);
+            }
+          });
+        }
+      } catch (err) {
+        console.error(err);
+        document.getElementById('topbarCandidateName').textContent = 'Error loading offer letter data.';
+      }
+    });
+  </script>
+</body>
+</html>
