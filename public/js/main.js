@@ -1963,57 +1963,78 @@ function initInternshipModule() {
         statusResult.className = 'status-result-area found';
         statusResult.innerHTML = `
           <div class="result-success-box">
-            <div class="res-head" style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px;">
-              <span class="badge-status-pending" style="background:#ECFDF5; color:#065F46; border:1px solid #A7F3D0; font-weight:700; padding:4px 10px; border-radius:999px; font-size:0.75rem;">
-                ● ${app.status}
-              </span>
-              <span class="res-id" style="font-family:'JetBrains Mono', monospace; font-weight:700; color:#1D4ED8; background:#EFF6FF; padding:3px 8px; border-radius:6px; font-size:0.8rem;">
-                ${app.id}
-              </span>
-            </div>
-            
-            <h4 style="font-size:1.2rem; font-weight:800; color:var(--text-primary); margin:10px 0 4px;">
-              ${app.fullName}
-            </h4>
-            <p style="font-size:0.875rem; color:var(--text-muted); margin-bottom:12px;">
-              Track: <strong style="color:#2563EB;">${app.domain}</strong> &bull; Institute: <strong>${app.institute}</strong> &bull; Degree: ${app.qualification}
-            </p>
-
-            <!-- Timeline Card -->
-            <div style="background:#F8FAFC; border:1px solid #E2E8F0; border-radius:12px; padding:12px 14px; margin-bottom:14px;">
-              <div style="display:flex; justify-content:space-between; align-items:center; font-size:0.8rem; margin-bottom:6px; flex-wrap:wrap; gap:6px;">
-                <span style="color:#64748B;">Duration: <strong>${app.duration || '2 Months'}</strong> (Started: ${app.startDate})</span>
-                <span style="color:${isCompleted ? '#059669' : '#0284C7'}; font-weight:800;">
-                  ${isCompleted ? '🎓 Program Completed & Certified' : `⏳ ${app.daysRemaining} Days Remaining (Target: ${app.completionDate})`}
+            <!-- Official Verified Digital Badge -->
+            <div class="verified-badge-card" style="background:linear-gradient(135deg, #FFFFFF 0%, #F0FDF4 100%); border:2px solid #86EFAC; border-radius:14px; padding:18px; box-shadow:0 8px 24px rgba(16,185,129,0.12); margin-bottom:16px;">
+              <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; border-bottom:1px solid #DCFCE7; padding-bottom:12px; margin-bottom:14px;">
+                <div style="display:flex; align-items:center; gap:8px;">
+                  <span style="display:inline-flex; align-items:center; justify-content:center; width:34px; height:34px; background:#10B981; color:#fff; border-radius:50%; font-size:1.1rem; box-shadow:0 2px 8px rgba(16,185,129,0.35);">✓</span>
+                  <div>
+                    <strong style="color:#065F46; font-size:0.95rem; display:block; letter-spacing:0.5px;">OFFICIALLY VERIFIED CANDIDATE</strong>
+                    <small style="color:#047857; font-size:0.75rem;">Uzair AI Studio • Autonomous Verification System</small>
+                  </div>
+                </div>
+                <span class="res-id" style="font-family:'JetBrains Mono', monospace; font-weight:700; color:#1D4ED8; background:#EFF6FF; border:1px solid #BFDBFE; padding:4px 10px; border-radius:6px; font-size:0.85rem;">
+                  ${app.id}
                 </span>
               </div>
-              <div style="background:#E2E8F0; height:8px; border-radius:999px; overflow:hidden;">
-                <div style="background:linear-gradient(90deg, #2563EB, #10B981); height:100%; width:${isCompleted ? 100 : Math.max(10, app.progressPercent || 15)}%; border-radius:999px;"></div>
+
+              <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(200px, 1fr)); gap:12px; margin-bottom:14px;">
+                <div>
+                  <span style="font-size:0.75rem; color:#64748B; display:block;">Candidate Name</span>
+                  <strong style="font-size:1.15rem; color:#0F172A;">${app.fullName}</strong>
+                </div>
+                <div>
+                  <span style="font-size:0.75rem; color:#64748B; display:block;">Track & Specialization</span>
+                  <span class="domain-tag" style="display:inline-block; margin-top:2px;">${app.domain}</span>
+                </div>
+                <div>
+                  <span style="font-size:0.75rem; color:#64748B; display:block;">Academic Institution</span>
+                  <strong style="font-size:0.9rem; color:#1E293B;">${app.institute || 'N/A'}</strong>
+                </div>
+                <div>
+                  <span style="font-size:0.75rem; color:#64748B; display:block;">Internship Status</span>
+                  <span style="font-weight:700; font-size:0.85rem; color:${isCompleted ? '#059669' : '#0284C7'};">
+                    ${isCompleted ? '🎓 Certified Graduate' : '🟢 Active Intern (Remote Track)'}
+                  </span>
+                </div>
               </div>
-            </div>
 
-            <!-- Notice & Credential Availability -->
-            <div class="res-notice" style="background:#EFF6FF; border:1px solid #BFDBFE; border-radius:10px; padding:12px; font-size:0.825rem; color:#1E3A8A; margin-bottom:14px; line-height:1.5;">
-              <span>📄 <strong>Credentials &amp; Official Documentation:</strong> Your verified registration is active. Your official Internship Offer Letter is ready to view and download below. Letters of recommendation unlock upon program completion.</span>
-            </div>
+              <!-- Timeline Progress Bar -->
+              <div style="background:#FFFFFF; border:1px solid #E2E8F0; border-radius:10px; padding:10px 14px; margin-bottom:14px;">
+                <div style="display:flex; justify-content:space-between; align-items:center; font-size:0.8rem; margin-bottom:6px; flex-wrap:wrap; gap:6px;">
+                  <span style="color:#64748B;">Duration: <strong>${app.duration || '2 Months'}</strong> (Started: ${app.startDate})</span>
+                  <span style="color:${isCompleted ? '#059669' : '#0284C7'}; font-weight:800;">
+                    ${isCompleted ? '🎓 Program Completed & Certified' : `⏳ ${app.daysRemaining} Days Remaining (Target: ${app.completionDate})`}
+                  </span>
+                </div>
+                <div style="background:#E2E8F0; height:8px; border-radius:999px; overflow:hidden;">
+                  <div style="background:linear-gradient(90deg, #2563EB, #10B981); height:100%; width:${isCompleted ? 100 : Math.max(10, app.progressPercent || 15)}%; border-radius:999px;"></div>
+                </div>
+              </div>
 
-            <!-- Action Buttons -->
-            <div style="display:flex; gap:10px; flex-wrap:wrap;">
-              ${certButtonHtml}
-              <a href="/offer-letter/${encodeURIComponent(app.id)}" target="_blank" class="btn btn-primary btn-sm">
-                <span>📄 View Offer Letter PDF</span>
-              </a>
-              <a href="/verify?id=${encodeURIComponent(app.id)}" target="_blank" class="btn btn-outline btn-sm" style="border-color:#0284C7; color:#0369A1;">
-                <span>🛡️ Verified Credential Page</span>
-              </a>
-              ${lorButtonHtml}
-              ${expButtonHtml}
-              <button type="button" class="btn btn-outline btn-sm" id="btnStatusDownloadBadge" style="border-color:#2563EB; color:#1D4ED8; font-weight:700;">
-                <span>🖼️ Save QR Badge (PNG)</span>
-              </button>
-              <a href="https://wa.me/923433885835?text=${encodeURIComponent(`Hi Coordinator, checking registration status for ${app.fullName} (${app.id})`)}" target="_blank" class="btn btn-whatsapp btn-sm">
-                <span>💬 Coordinator WhatsApp</span>
-              </a>
+              <!-- Notice & Document Vault Access -->
+              <div class="res-notice" style="background:#EFF6FF; border:1.5px dashed #93C5FD; border-radius:10px; padding:12px; font-size:0.825rem; color:#1E3A8A; margin-bottom:14px; line-height:1.5; display:flex; align-items:center; gap:10px;">
+                <span style="font-size:1.3rem;">🔒</span>
+                <div>
+                  <strong>Official Document Vault Security:</strong> For authenticity and candidate privacy, official printable Offer Letters, Certificates, and Letters of Recommendation are stored securely in your private <strong>Intern Portal</strong>. Please sign in below to view and download your documents.
+                </div>
+              </div>
+
+              <!-- Action Buttons (Redirecting to Intern Portal for Documents) -->
+              <div style="display:flex; gap:10px; flex-wrap:wrap; align-items:center;">
+                <a href="/intern-portal" class="btn btn-primary" style="display:inline-flex; align-items:center; gap:8px; padding:10px 20px; font-weight:700; background:linear-gradient(135deg, #2563EB, #1D4ED8); box-shadow:0 4px 14px rgba(37,99,235,0.3);">
+                  <span>🔐 Sign In to Intern Portal to Download Documents &rarr;</span>
+                </a>
+                <a href="/verify?id=${encodeURIComponent(app.id)}" target="_blank" class="btn btn-outline btn-sm" style="border-color:#0284C7; color:#0369A1;">
+                  <span>🛡️ Full Verification Sheet</span>
+                </a>
+                <button type="button" class="btn btn-outline btn-sm" id="btnStatusDownloadBadge" style="border-color:#2563EB; color:#1D4ED8; font-weight:700;">
+                  <span>🖼️ Save Verified Badge (PNG)</span>
+                </button>
+                <a href="https://wa.me/923433885835?text=${encodeURIComponent(`Hi Coordinator, checking registration status for ${app.fullName} (${app.id})`)}" target="_blank" class="btn btn-whatsapp btn-sm">
+                  <span>💬 Coordinator WhatsApp</span>
+                </a>
+              </div>
             </div>
           </div>
         `;

@@ -390,6 +390,16 @@ function initInternsManager() {
 
   if (btnClose) btnClose.addEventListener('click', () => modal.style.display = 'none');
   if (btnCancel) btnCancel.addEventListener('click', () => modal.style.display = 'none');
+  const btnResetPw = document.getElementById('btnAdminResetPw');
+  if (btnResetPw) {
+    btnResetPw.addEventListener('click', () => {
+      const modalId = document.getElementById('editModalId').value;
+      if (modalId) {
+        document.getElementById('editPortalPassword').value = modalId;
+        alert(`Password field set to default ID: ${modalId}. Click 'Save Changes' to update.`);
+      }
+    });
+  }
 
   if (editForm) {
     editForm.addEventListener('submit', async (e) => {
@@ -397,6 +407,8 @@ function initInternsManager() {
       const id = document.getElementById('editModalId').value;
       const updates = {
         fullName: document.getElementById('editFullName').value.trim(),
+        email: document.getElementById('editPortalEmail').value.trim(),
+        password: document.getElementById('editPortalPassword').value.trim(),
         gender: document.getElementById('editGender').value,
         domain: document.getElementById('editDomain').value,
         status: document.getElementById('editStatus').value,
@@ -518,6 +530,12 @@ function filterAndRenderInterns() {
           <div style="font-size:0.72rem; color:#64748B;">${i.email}</div>
         </td>
         <td>
+          <div style="font-family:'JetBrains Mono',monospace; font-size:0.72rem; background:#F8FAFC; border:1px solid #E2E8F0; border-radius:6px; padding:4px 6px;">
+            <div style="color:#0284C7; font-weight:700; word-break:break-all;">✉ ${i.email}</div>
+            <div style="color:#D97706; font-weight:700; margin-top:2px;">🔑 <span title="Portal Password">${i.password || i.id}</span></div>
+          </div>
+        </td>
+        <td>
           <select class="status-select-inline" onchange="quickUpdateStatus('${i.id}', this.value)">
             <option value="Application Received • Offer Letter Pending" ${i.status.includes('Pending') ? 'selected' : ''}>⏳ Pending</option>
             <option value="Offer Letter Released • Active Intern" ${i.status.includes('Released') ? 'selected' : ''}>📄 Offer Released</option>
@@ -589,6 +607,13 @@ function filterAndRenderInterns() {
               </div>
               <small style="color:#64748B; font-size:0.7rem; display:block; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">${i.email}</small>
             </div>
+          </div>
+
+          <!-- Portal Account Credentials on Mobile Card -->
+          <div style="margin:8px 0 10px; background:#F0FDF4; border:1px solid #BBF7D0; border-radius:8px; padding:6px 10px; font-size:0.75rem; font-family:'JetBrains Mono',monospace;">
+            <div style="color:#166534; font-weight:700;">🔑 Portal Account:</div>
+            <div style="color:#0369A1;">✉ ${i.email}</div>
+            <div style="color:#D97706; font-weight:700;">Password: ${i.password || i.id}</div>
           </div>
 
           <div class="cand-card-actions">
@@ -689,6 +714,8 @@ window.openEditModal = function(id) {
 
   document.getElementById('modalInternId').textContent = intern.id;
   document.getElementById('editModalId').value = intern.id;
+  document.getElementById('editPortalEmail').value = intern.email || '';
+  document.getElementById('editPortalPassword').value = intern.password || intern.id;
   document.getElementById('editFullName').value = intern.fullName;
   document.getElementById('editGender').value = intern.gender || 'Male';
   document.getElementById('editDomain').value = intern.domain;

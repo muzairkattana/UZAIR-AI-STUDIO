@@ -30,7 +30,47 @@
     "offerLetterIssued": false,
     "notes": "Standard applicant registration via website.",
     "createdAt": "2026-11-03T09:45:44.553Z",
-    "updatedAt": "2026-11-03T12:22:09.345Z"
+    "updatedAt": "2026-11-03T16:06:25.514Z",
+    "password": "UZ-INT-MW0I5PPL",
+    "passwordHash": "c44439070e57811779fa9315577a8eb95635e583ad5aa2766e83229d60384da9",
+    "tasksProgress": {
+      "currentWeek": 8,
+      "completedWeeks": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8
+      ],
+      "completedTasks": [
+        "w1_t1",
+        "w1_t2",
+        "w2_t1",
+        "w2_t2",
+        "w3_t1",
+        "w3_t2",
+        "w4_t1",
+        "w4_t2",
+        "w5_t1",
+        "w5_t2",
+        "w6_t1",
+        "w6_t2",
+        "w7_t1",
+        "w7_t2",
+        "w8_t1",
+        "w8_t2"
+      ],
+      "submissions": {
+        "w1_t1": {
+          "link": "https://github.com/khan/project",
+          "notes": "",
+          "updatedAt": "2026-11-03T16:06:25.514Z"
+        }
+      }
+    }
   },
   {
     "id": "UZ-INT-MW0BVKQS",
@@ -63,7 +103,17 @@
     "offerLetterIssued": false,
     "notes": "Standard applicant registration via website.",
     "createdAt": "2026-11-03T06:49:53.859Z",
-    "updatedAt": "2026-11-03T06:55:06.237Z"
+    "updatedAt": "2026-11-03T06:55:06.237Z",
+    "password": "UZ-INT-MW0BVKQS",
+    "passwordHash": "136c3ea3940b0461389a8075d2c5b7124b070e1df364627023fa22f6734619e6",
+    "tasksProgress": {
+      "currentWeek": 1,
+      "completedWeeks": [],
+      "completedTasks": [
+        "w1_t1"
+      ],
+      "submissions": {}
+    }
   },
   {
     "id": "UZ-INT-MVZMX46F",
@@ -96,7 +146,17 @@
     "offerLetterIssued": false,
     "notes": "Applicant approved by Founder Muhammad Uzair. MIT course access sent.",
     "createdAt": "2026-11-02T19:11:15.303Z",
-    "updatedAt": "2026-11-02T19:11:15.425Z"
+    "updatedAt": "2026-11-02T19:11:15.425Z",
+    "password": "UZ-INT-MVZMX46F",
+    "passwordHash": "60497f6e304bce3824bcd3b2eb8ca2750739e76a07692dc7c85f09b1987fbe5b",
+    "tasksProgress": {
+      "currentWeek": 1,
+      "completedWeeks": [],
+      "completedTasks": [
+        "w1_t1"
+      ],
+      "submissions": {}
+    }
   },
   {
     "id": "UZ-INT-MVZKSFZF",
@@ -121,7 +181,17 @@
       "Flexible Self-Paced Schedule"
     ],
     "status": "Application Received • Offer Letter Pending",
-    "createdAt": "2026-11-02T18:11:38.091Z"
+    "createdAt": "2026-11-02T18:11:38.091Z",
+    "password": "UZ-INT-MVZKSFZF",
+    "passwordHash": "1668e1aef329e94a2c37d4903fe1ded534cb8d4623eccdff6cdcd03ac1e3bcfd",
+    "tasksProgress": {
+      "currentWeek": 1,
+      "completedWeeks": [],
+      "completedTasks": [
+        "w1_t1"
+      ],
+      "submissions": {}
+    }
   },
   {
     "id": "UZ-INT-MU01COMP",
@@ -148,6 +218,40 @@
     "certificateIssued": true,
     "performanceRating": "Exceptional (Grade A+)",
     "notes": "Completed all production milestones with distinction.",
-    "createdAt": "2026-04-01T08:00:00.000Z"
+    "createdAt": "2026-04-01T08:00:00.000Z",
+    "password": "UzairAI@2026",
+    "passwordHash": "6d774f0fddc852b672fbe694ded3fdccac094e1939b69b86672a5dd7a665845a",
+    "tasksProgress": {
+      "currentWeek": 8,
+      "completedWeeks": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8
+      ],
+      "completedTasks": [
+        "w1_t1",
+        "w1_t2",
+        "w2_t1",
+        "w2_t2",
+        "w3_t1",
+        "w3_t2",
+        "w4_t1",
+        "w4_t2",
+        "w5_t1",
+        "w5_t2",
+        "w6_t1",
+        "w6_t2",
+        "w7_t1",
+        "w7_t2",
+        "w8_t1",
+        "w8_t2"
+      ],
+      "submissions": {}
+    }
   }
 ]

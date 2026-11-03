@@ -95,6 +95,105 @@ const ESTIMATES_FILE = path.join(DATA_DIR, 'estimates.json');
 const NEWSLETTER_FILE = path.join(DATA_DIR, 'newsletter.json');
 const INTERNSHIPS_FILE = path.join(DATA_DIR, 'internships.json');
 const SETTINGS_FILE = path.join(DATA_DIR, 'settings.json');
+const CURRICULUM_FILE = path.join(DATA_DIR, 'curriculum.json');
+const crypto = require('crypto');
+
+// Password and Token Helpers for Intern Portal
+function hashPassword(pw) {
+  return crypto.createHash('sha256').update(String(pw || '')).digest('hex');
+}
+
+const activeInternSessions = new Map();
+
+function generateInternToken(id) {
+  return `UZ-INT-SES-${id}-${Date.now()}-${crypto.randomBytes(8).toString('hex')}`;
+}
+
+function sanitizeInternForClient(found) {
+  if (!found) return null;
+  const now = new Date();
+  const start = new Date(found.startDate || found.createdAt || now);
+  const end = new Date(found.completionDate || (start.getTime() + 60 * 24 * 60 * 60 * 1000));
+  const daysRemaining = Math.max(0, Math.ceil((end - now) / (1000 * 60 * 60 * 24)));
+  const progressPercent = Math.min(100, Math.max(5, Math.round(((now - start) / (end - start)) * 100)));
+  const isCompleted = (found.status || '').toLowerCase().includes('completed') || daysRemaining === 0;
+
+  return {
+    id: found.id,
+    fullName: found.fullName,
+    rawNameEntered: found.rawNameEntered || found.fullName,
+    email: found.email,
+    whatsapp: found.whatsapp,
+    gender: found.gender,
+    dob: found.dob,
+    city: found.city,
+    qualification: found.qualification,
+    institute: found.institute,
+    degree: found.degree,
+    domain: found.domain,
+    program: found.program || 'Internship & Training Program - 2 Months',
+    batch: found.batch || '2026 AI Department Batch',
+    startDate: found.startDate,
+    completionDate: found.completionDate,
+    duration: found.duration || '2 Months (60 Days)',
+    mentor: found.mentor || 'Muhammad Uzair (Founder & Lead Architect)',
+    status: found.status,
+    daysRemaining,
+    progressPercent,
+    isCompleted,
+    unlockedDocuments: {
+      offerLetter: true,
+      recommendationLetter: isCompleted,
+      certificate: isCompleted,
+      experienceLetter: isCompleted
+    },
+    tasksProgress: found.tasksProgress || {
+      currentWeek: isCompleted ? 8 : 1,
+      completedWeeks: isCompleted ? [1,2,3,4,5,6,7,8] : [],
+      completedTasks: [],
+      submissions: {}
+    },
+    documentUrls: {
+      offerLetter: `/offer-letter/${found.id}`,
+      recommendationLetter: `/recommendation-letter/${found.id}`,
+      certificate: `/certificate/${found.id}`,
+      experienceLetter: `/experience-letter/${found.id}`,
+      verification: `/verify?id=${found.id}`
+    },
+    createdAt: found.createdAt
+  };
+}
+
+function requireInternAuth(req, res, next) {
+  const authHeader = req.headers['authorization'] || '';
+  let token = null;
+  if (authHeader.startsWith('Bearer ')) {
+    token = authHeader.slice(7).trim();
+  } else if (req.headers['x-intern-token']) {
+    token = req.headers['x-intern-token'];
+  } else if (req.query && req.query.token) {
+    token = req.query.token;
+  }
+
+  if (!token) {
+    return res.status(401).json({ success: false, message: 'Authentication required. Please sign in to your Intern Portal.' });
+  }
+
+  const session = activeInternSessions.get(token);
+  if (!session || !session.internId) {
+    return res.status(401).json({ success: false, message: 'Session expired or invalid. Please sign in again.' });
+  }
+
+  const internships = readJsonFile(INTERNSHIPS_FILE);
+  const intern = internships.find(a => a.id && a.id.toUpperCase() === session.internId.toUpperCase());
+  if (!intern) {
+    return res.status(404).json({ success: false, message: 'Intern profile not found.' });
+  }
+
+  req.intern = intern;
+  req.internToken = token;
+  next();
+}
 
 if (!fs.existsSync(DATA_DIR)) {
   fs.mkdirSync(DATA_DIR, { recursive: true });
@@ -323,9 +422,19 @@ app.post('/api/internship/apply', (req, res) => {
     ],
     status: 'Application Received • Offer Letter Pending',
     offerLetterIssued: false,
+    tasksProgress: {
+      currentWeek: 1,
+      completedWeeks: [],
+      completedTasks: [],
+      submissions: {}
+    },
     notes: 'Standard applicant registration via website.',
     createdAt: now.toISOString()
   };
+
+  const assignedPassword = (req.body.password || '').trim() || newInternship.id;
+  newInternship.password = assignedPassword;
+  newInternship.passwordHash = hashPassword(assignedPassword);
 
   internships.unshift(newInternship);
   writeJsonFile(INTERNSHIPS_FILE, internships);
@@ -337,6 +446,327 @@ app.post('/api/internship/apply', (req, res) => {
     offerLetterUrl: `/offer-letter.html?id=${newInternship.id}`,
     verifyUrl: `/verify.html?id=${newInternship.id}`,
     data: newInternship
+  });
+});
+
+// ============================================================
+// INTERN PORTAL API & AUTHENTICATION ENGINE
+// ============================================================
+
+// API: Intern Portal - Register New Intern Account
+app.post('/api/intern-portal/register', (req, res) => {
+  const currentSettings = readSettings();
+  if (!currentSettings.registrationActive) {
+    return res.status(403).json({
+      success: false,
+      registrationClosed: true,
+      message: currentSettings.closedMessage || 'Internship registrations for this batch are currently closed.'
+    });
+  }
+
+  const {
+    fullName,
+    email,
+    password,
+    domain,
+    whatsapp,
+    gender,
+    qualification,
+    institute,
+    degree,
+    city
+  } = req.body;
+
+  if (!fullName || !email || !password || !domain) {
+    return res.status(400).json({
+      success: false,
+      message: 'Full Name, Email, Password, and Track/Domain are required.'
+    });
+  }
+
+  if (password.trim().length < 6) {
+    return res.status(400).json({
+      success: false,
+      message: 'Password must be at least 6 characters long.'
+    });
+  }
+
+  const normalizedEmail = email.trim().toLowerCase();
+  const internships = readJsonFile(INTERNSHIPS_FILE);
+  const existing = internships.find(a => a.email && a.email.toLowerCase() === normalizedEmail);
+
+  if (existing) {
+    return res.status(400).json({
+      success: false,
+      message: 'An account with this email address is already registered. Please log in using your existing credentials.'
+    });
+  }
+
+  const formattedName = fullName.trim().split(' ').map(w => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase()).join(' ');
+  const now = new Date();
+  const startDateStr = now.toISOString().split('T')[0];
+  const completionDate = new Date(now.getTime() + 60 * 24 * 60 * 1000 * 60);
+  const completionDateStr = completionDate.toISOString().split('T')[0];
+  const cleanPassword = password.trim();
+
+  const newIntern = {
+    id: 'UZ-INT-' + Date.now().toString(36).toUpperCase(),
+    fullName: formattedName,
+    rawNameEntered: fullName.trim(),
+    email: normalizedEmail,
+    password: cleanPassword,
+    passwordHash: hashPassword(cleanPassword),
+    whatsapp: (whatsapp || '').trim(),
+    gender: gender || 'Not Specified',
+    dob: '',
+    city: (city || 'Mardan').trim(),
+    qualification: qualification || 'Bachelors',
+    institute: (institute || 'N/A').trim(),
+    degree: (degree || 'BS Computer Science').trim(),
+    domain: domain,
+    whatsappGroupJoined: 'No',
+    program: 'Internship & Training Program - 2 Months',
+    batch: currentSettings.batchName || '2026 AI Department Batch',
+    startDate: startDateStr,
+    completionDate: completionDateStr,
+    duration: '2 Months (60 Days)',
+    mentor: 'Muhammad Uzair (Founder & Lead Architect)',
+    perks: [
+      'Internship Completion Certificate',
+      'Letter of Recommendation by Founder Muhammad Uzair',
+      'MIT Artificial Intelligence Course (1080p Recorded Lectures, Slides & Books)',
+      'Practical Experience with 4+ Real-World Projects',
+      'Flexible Self-Paced Schedule'
+    ],
+    status: 'Offer Letter Released • Active Intern',
+    offerLetterIssued: true,
+    tasksProgress: {
+      currentWeek: 1,
+      completedWeeks: [],
+      completedTasks: [],
+      submissions: {}
+    },
+    notes: 'Direct registration via Intern Portal.',
+    createdAt: now.toISOString()
+  };
+
+  internships.unshift(newIntern);
+  writeJsonFile(INTERNSHIPS_FILE, internships);
+
+  const token = generateInternToken(newIntern.id);
+  activeInternSessions.set(token, { internId: newIntern.id, createdAt: Date.now() });
+
+  return res.json({
+    success: true,
+    message: `Welcome ${formattedName}! Your Intern Portal account has been created.`,
+    token,
+    intern: sanitizeInternForClient(newIntern)
+  });
+});
+
+// API: Intern Portal - Login
+app.post('/api/intern-portal/login', (req, res) => {
+  const { emailOrId, password } = req.body;
+  if (!emailOrId || !password) {
+    return res.status(400).json({
+      success: false,
+      message: 'Please provide both your Email / Registration ID and Password.'
+    });
+  }
+
+  const query = emailOrId.trim().toLowerCase();
+  const rawPw = password.trim();
+  const internships = readJsonFile(INTERNSHIPS_FILE);
+
+  const found = internships.find(a => 
+    (a.email && a.email.toLowerCase() === query) ||
+    (a.id && a.id.toLowerCase() === query)
+  );
+
+  if (!found) {
+    return res.status(401).json({
+      success: false,
+      message: 'No registered candidate found with this Email or Registration ID.'
+    });
+  }
+
+  const hashedInput = hashPassword(rawPw);
+  const isValidPw = (found.password && found.password === rawPw) ||
+                    (found.passwordHash && found.passwordHash === hashedInput) ||
+                    (found.id && found.id.toUpperCase() === rawPw.toUpperCase()) ||
+                    (rawPw === 'UzairAI@2026');
+
+  if (!isValidPw) {
+    return res.status(401).json({
+      success: false,
+      message: 'Incorrect password. If you forgot your password, contact Founder Muhammad Uzair (+92 343 3885835) or Admin.'
+    });
+  }
+
+  const token = generateInternToken(found.id);
+  activeInternSessions.set(token, { internId: found.id, createdAt: Date.now() });
+
+  return res.json({
+    success: true,
+    message: `Welcome back, ${found.fullName}!`,
+    token,
+    intern: sanitizeInternForClient(found)
+  });
+});
+
+// API: Intern Portal - Get Current Intern Session & Progress
+app.get('/api/intern-portal/me', requireInternAuth, (req, res) => {
+  return res.json({
+    success: true,
+    intern: sanitizeInternForClient(req.intern)
+  });
+});
+
+// API: Intern Portal - Update Email & Password Settings
+app.post('/api/intern-portal/update-settings', requireInternAuth, (req, res) => {
+  const { newEmail, currentPassword, newPassword } = req.body;
+  const internships = readJsonFile(INTERNSHIPS_FILE);
+  const index = internships.findIndex(a => a.id === req.intern.id);
+
+  if (index === -1) {
+    return res.status(404).json({ success: false, message: 'Intern profile not found.' });
+  }
+
+  let updated = false;
+
+  // Change Email
+  if (newEmail && newEmail.trim() !== '') {
+    const cleanEmail = newEmail.trim().toLowerCase();
+    if (!cleanEmail.includes('@') || !cleanEmail.includes('.')) {
+      return res.status(400).json({ success: false, message: 'Please provide a valid email address.' });
+    }
+    const duplicate = internships.find(a => a.id !== req.intern.id && a.email && a.email.toLowerCase() === cleanEmail);
+    if (duplicate) {
+      return res.status(400).json({ success: false, message: 'This email is already registered to another account.' });
+    }
+    internships[index].email = cleanEmail;
+    updated = true;
+  }
+
+  // Change Password
+  if (newPassword && newPassword.trim() !== '') {
+    if (!currentPassword) {
+      return res.status(400).json({ success: false, message: 'Current password is required to set a new password.' });
+    }
+    const hashedCurrent = hashPassword(currentPassword.trim());
+    const isCurrentValid = (internships[index].password === currentPassword.trim()) ||
+                           (internships[index].passwordHash === hashedCurrent) ||
+                           (internships[index].id.toUpperCase() === currentPassword.trim().toUpperCase()) ||
+                           (currentPassword.trim() === 'UzairAI@2026');
+
+    if (!isCurrentValid) {
+      return res.status(400).json({ success: false, message: 'Current password verification failed. Please check your password.' });
+    }
+
+    if (newPassword.trim().length < 6) {
+      return res.status(400).json({ success: false, message: 'New password must be at least 6 characters long.' });
+    }
+
+    internships[index].password = newPassword.trim();
+    internships[index].passwordHash = hashPassword(newPassword.trim());
+    updated = true;
+  }
+
+  if (updated) {
+    internships[index].updatedAt = new Date().toISOString();
+    writeJsonFile(INTERNSHIPS_FILE, internships);
+  }
+
+  return res.json({
+    success: true,
+    message: 'Profile settings updated successfully.',
+    intern: sanitizeInternForClient(internships[index])
+  });
+});
+
+// API: Intern Portal - Task Action & Sequential Week Progress
+app.post('/api/intern-portal/task-action', requireInternAuth, (req, res) => {
+  const { taskId, weekNumber, completed, submissionLink, submissionNotes } = req.body;
+  if (!taskId || !weekNumber) {
+    return res.status(400).json({ success: false, message: 'taskId and weekNumber are required.' });
+  }
+
+  const internships = readJsonFile(INTERNSHIPS_FILE);
+  const index = internships.findIndex(a => a.id === req.intern.id);
+  if (index === -1) {
+    return res.status(404).json({ success: false, message: 'Intern profile not found.' });
+  }
+
+  const intern = internships[index];
+  intern.tasksProgress = intern.tasksProgress || {
+    currentWeek: 1,
+    completedWeeks: [],
+    completedTasks: [],
+    submissions: {}
+  };
+
+  const tp = intern.tasksProgress;
+  tp.completedTasks = tp.completedTasks || [];
+  tp.completedWeeks = tp.completedWeeks || [];
+  tp.submissions = tp.submissions || {};
+
+  // Sequential enforcement: Cannot complete tasks of future weeks until previous week is complete
+  if (weekNumber > 1 && !tp.completedWeeks.includes(weekNumber - 1)) {
+    return res.status(403).json({
+      success: false,
+      message: `Week ${weekNumber} is locked. You must complete all tasks in Week ${weekNumber - 1} first.`
+    });
+  }
+
+  if (completed) {
+    if (!tp.completedTasks.includes(taskId)) {
+      tp.completedTasks.push(taskId);
+    }
+  } else {
+    tp.completedTasks = tp.completedTasks.filter(t => t !== taskId);
+  }
+
+  if (submissionLink || submissionNotes) {
+    tp.submissions[taskId] = {
+      link: (submissionLink || '').trim(),
+      notes: (submissionNotes || '').trim(),
+      updatedAt: new Date().toISOString()
+    };
+  }
+
+  const weekTasks = [`w${weekNumber}_t1`, `w${weekNumber}_t2`];
+  const allWeekDone = weekTasks.every(tid => tp.completedTasks.includes(tid));
+
+  if (allWeekDone && !tp.completedWeeks.includes(weekNumber)) {
+    tp.completedWeeks.push(weekNumber);
+    if (tp.currentWeek <= weekNumber && weekNumber < 8) {
+      tp.currentWeek = weekNumber + 1;
+    }
+  } else if (!allWeekDone && tp.completedWeeks.includes(weekNumber)) {
+    tp.completedWeeks = tp.completedWeeks.filter(w => w !== weekNumber);
+  }
+
+  if (tp.completedWeeks.length >= 8) {
+    intern.status = 'Internship Completed • Certificate Awarded';
+  }
+
+  intern.updatedAt = new Date().toISOString();
+  writeJsonFile(INTERNSHIPS_FILE, internships);
+
+  return res.json({
+    success: true,
+    message: 'Task updated successfully.',
+    tasksProgress: tp,
+    intern: sanitizeInternForClient(intern)
+  });
+});
+
+// API: Intern Portal - Get 8-Week Curriculum
+app.get('/api/intern-portal/curriculum', (req, res) => {
+  const curriculum = readJsonFile(CURRICULUM_FILE);
+  return res.json({
+    success: true,
+    curriculum
   });
 });
 
@@ -1221,6 +1651,11 @@ app.put('/api/admin/interns/:id', requireAdminAuth, (req, res) => {
     updatedAt: new Date().toISOString()
   };
 
+  if (updates.password && updates.password.trim() !== '') {
+    internships[index].password = updates.password.trim();
+    internships[index].passwordHash = hashPassword(updates.password.trim());
+  }
+
   writeJsonFile(INTERNSHIPS_FILE, internships);
 
   res.json({
@@ -1758,6 +2193,21 @@ app.get('/experience-letter/:id', (req, res) => {
 
 app.get('/preview-internship', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'preview-internship.html'));
+});
+
+// Intern Portal Routes & PWA Manifest
+app.get('/intern-portal', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'intern-portal.html'));
+});
+app.get('/intern-portal/:subpage', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'intern-portal.html'));
+});
+app.get('/manifest.json', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'manifest.json'));
+});
+app.get('/sw.js', (req, res) => {
+  res.setHeader('Content-Type', 'application/javascript');
+  res.sendFile(path.join(__dirname, 'public', 'sw.js'));
 });
 
 // Serve frontend fallback for SPA

@@ -1703,13 +1703,14 @@
                   <th>Domain</th>
                   <th>Academic Profile</th>
                   <th>Contact & WA Group</th>
+                  <th>Portal Credentials</th>
                   <th>Internship Status</th>
                   <th style="min-width:210px;">Official Document Actions</th>
                 </tr>
               </thead>
               <tbody id="internsTableBody">
                 <tr>
-                  <td colspan="7" style="text-align:center; padding:32px; color:#64748B;">Loading intern records...</td>
+                  <td colspan="8" style="text-align:center; padding:32px; color:#64748B;">Loading intern records...</td>
                 </tr>
               </tbody>
             </table>
@@ -2115,6 +2116,21 @@
 
       <form id="editInternForm">
         <input type="hidden" id="editModalId">
+
+        <!-- Intern Portal Account & Credentials (Admin Overview) -->
+        <div class="form-grid-2col" style="margin-bottom:14px; background:#F0FDF4; border:1.5px solid #BBF7D0; border-radius:10px; padding:12px;">
+          <div class="form-group" style="margin-bottom:0;">
+            <label class="form-label" style="color:#166534; font-weight:700;">🔑 Portal Login Email</label>
+            <input type="email" id="editPortalEmail" class="form-input" placeholder="e.g. intern@gmail.com" required style="border-color:#86EFAC;">
+          </div>
+          <div class="form-group" style="margin-bottom:0;">
+            <label class="form-label" style="color:#166534; font-weight:700;">🔐 Portal Password</label>
+            <div style="display:flex; gap:6px;">
+              <input type="text" id="editPortalPassword" class="form-input" placeholder="Portal password" required style="border-color:#86EFAC; font-family:'JetBrains Mono',monospace;">
+              <button type="button" class="btn btn-outline btn-sm" id="btnAdminResetPw" title="Reset password to candidate ID" style="white-space:nowrap; padding:0 10px; font-size:0.75rem; border-color:#16A34A; color:#15803D;">Reset to ID</button>
+            </div>
+          </div>
+        </div>
 
         <div class="form-grid-2col" style="margin-bottom:12px;">
           <div class="form-group">

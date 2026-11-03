@@ -1,0 +1,1110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Intern Portal • Uzair AI Studio</title>
+  
+  <!-- PWA & Mobile App Meta Tags -->
+  <link rel="manifest" href="/manifest.json">
+  <meta name="theme-color" content="#2563EB">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="InternPortal">
+  <link rel="apple-touch-icon" href="/assets/uzairaistudio.png">
+  <link rel="icon" type="image/png" href="/assets/uzairaistudio.png">
+
+  <!-- Google Fonts & QR Code Lib -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+  <script src="/js/qrcode.js"></script>
+
+  <style>
+    /* ============================================================
+       EXECUTIVE LIGHT THEME DESIGN SYSTEM (MOBILE-FIRST)
+       ============================================================ */
+    :root {
+      --bg-body: #F8FAFC;
+      --bg-card: #FFFFFF;
+      --border-subtle: #E2E8F0;
+      --border-focus: #2563EB;
+      --text-main: #0F172A;
+      --text-muted: #64748B;
+      --primary: #2563EB;
+      --primary-hover: #1D4ED8;
+      --primary-light: #EFF6FF;
+      --success: #059669;
+      --success-light: #ECFDF5;
+      --warning: #D97706;
+      --warning-light: #FEF3C7;
+      --danger: #DC2626;
+      --shadow-sm: 0 1px 3px rgba(15, 23, 42, 0.05);
+      --shadow-md: 0 4px 12px rgba(15, 23, 42, 0.07);
+      --shadow-lg: 0 12px 28px rgba(15, 23, 42, 0.09);
+      --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      background-color: var(--bg-body);
+      color: var(--text-main);
+      font-family: var(--font-sans);
+      line-height: 1.5;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* PWA Install Promotion Banner */
+    .pwa-install-banner {
+      background: linear-gradient(135deg, #1E40AF 0%, #2563EB 100%);
+      color: #FFFFFF;
+      padding: 10px 16px;
+      display: none;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      box-shadow: 0 2px 10px rgba(37, 99, 235, 0.25);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .pwa-install-banner .install-btn-pill {
+      background: #FFFFFF;
+      color: #1E40AF;
+      border: none;
+      padding: 6px 14px;
+      border-radius: 999px;
+      font-size: 0.78rem;
+      font-weight: 800;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+      transition: transform 0.15s, background 0.15s;
+    }
+    .pwa-install-banner .install-btn-pill:hover {
+      transform: translateY(-1px);
+      background: #F8FAFC;
+    }
+    .pwa-install-banner .banner-close {
+      background: transparent;
+      border: none;
+      color: rgba(255,255,255,0.7);
+      font-size: 1.1rem;
+      cursor: pointer;
+      padding: 2px 6px;
+    }
+
+    /* App Header */
+    .portal-header {
+      background: var(--bg-card);
+      border-bottom: 1px solid var(--border-subtle);
+      position: sticky;
+      top: 0;
+      z-index: 90;
+      box-shadow: var(--shadow-sm);
+    }
+    .header-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 12px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+    .header-brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      color: var(--text-main);
+    }
+    .header-brand img {
+      width: 36px;
+      height: 36px;
+      border-radius: 8px;
+    }
+    .header-brand-text h1 {
+      font-size: 1rem;
+      font-weight: 800;
+      letter-spacing: -0.3px;
+      color: #0F172A;
+    }
+    .header-brand-text span {
+      display: block;
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      font-weight: 600;
+    }
+    .header-user-status {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .header-avatar-circle {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #2563EB, #1D4ED8);
+      color: #FFFFFF;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 0.85rem;
+      box-shadow: 0 2px 6px rgba(37,99,235,0.3);
+    }
+
+    /* Portal Main Container */
+    .portal-main {
+      flex: 1;
+      max-width: 1200px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 24px 20px 80px;
+    }
+
+    /* Authentication Container (Login & Register) */
+    .auth-shell {
+      max-width: 480px;
+      margin: 40px auto;
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: 16px;
+      padding: 32px 28px;
+      box-shadow: var(--shadow-lg);
+    }
+    .auth-nav-tabs {
+      display: flex;
+      background: #F1F5F9;
+      border-radius: 10px;
+      padding: 4px;
+      margin-bottom: 24px;
+      gap: 4px;
+    }
+    .auth-tab-btn {
+      flex: 1;
+      padding: 9px;
+      border: none;
+      background: transparent;
+      border-radius: 8px;
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .auth-tab-btn.active {
+      background: #FFFFFF;
+      color: var(--primary);
+      box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+    }
+
+    .form-group {
+      margin-bottom: 16px;
+    }
+    .form-label {
+      display: block;
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: #334155;
+      margin-bottom: 6px;
+    }
+    .form-input, .form-select, .form-textarea {
+      width: 100%;
+      padding: 10px 14px;
+      border: 1.5px solid var(--border-subtle);
+      border-radius: 10px;
+      font-family: inherit;
+      font-size: 0.875rem;
+      color: var(--text-main);
+      background: #FFFFFF;
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .form-input:focus, .form-select:focus, .form-textarea:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+    }
+    .btn-submit {
+      width: 100%;
+      padding: 12px;
+      border: none;
+      border-radius: 10px;
+      background: linear-gradient(135deg, var(--primary), var(--primary-hover));
+      color: #FFFFFF;
+      font-size: 0.95rem;
+      font-weight: 800;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      box-shadow: 0 4px 14px rgba(37, 99, 235, 0.3);
+      transition: transform 0.15s, opacity 0.15s;
+    }
+    .btn-submit:hover {
+      opacity: 0.95;
+      transform: translateY(-1px);
+    }
+    .btn-submit:active {
+      transform: translateY(0);
+    }
+
+    .auth-alert {
+      padding: 12px 14px;
+      border-radius: 10px;
+      font-size: 0.825rem;
+      margin-bottom: 18px;
+      display: none;
+      line-height: 1.5;
+    }
+    .auth-alert.error {
+      background: #FEF2F2;
+      border: 1px solid #FECACA;
+      color: #991B1B;
+    }
+    .auth-alert.success {
+      background: var(--success-light);
+      border: 1px solid #A7F3D0;
+      color: var(--success);
+    }
+    .auth-alert.warning {
+      background: var(--warning-light);
+      border: 1px solid #FDE68A;
+      color: var(--warning);
+    }
+
+    /* Dashboard Navigation (Desktop Tabs & Mobile App Bar) */
+    .dashboard-nav-tabs {
+      display: flex;
+      gap: 8px;
+      border-bottom: 1px solid var(--border-subtle);
+      margin-bottom: 24px;
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+    .dashboard-nav-tabs::-webkit-scrollbar { display: none; }
+    .dash-tab-btn {
+      padding: 10px 18px;
+      background: transparent;
+      border: none;
+      border-bottom: 2.5px solid transparent;
+      font-size: 0.875rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      cursor: pointer;
+      white-space: nowrap;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s;
+    }
+    .dash-tab-btn:hover {
+      color: var(--primary);
+    }
+    .dash-tab-btn.active {
+      color: var(--primary);
+      border-bottom-color: var(--primary);
+    }
+
+    /* Welcome Hero Card */
+    .welcome-card {
+      background: linear-gradient(135deg, #1E3A8A 0%, #2563EB 100%);
+      color: #FFFFFF;
+      border-radius: 16px;
+      padding: 24px 28px;
+      margin-bottom: 24px;
+      box-shadow: 0 8px 24px rgba(37, 99, 235, 0.2);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+    .welcome-meta h2 {
+      font-size: 1.5rem;
+      font-weight: 800;
+      margin-bottom: 4px;
+    }
+    .welcome-meta p {
+      font-size: 0.875rem;
+      color: #BFDBFE;
+    }
+    .welcome-badges {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 10px;
+    }
+    .welcome-pill {
+      background: rgba(255,255,255,0.18);
+      backdrop-filter: blur(8px);
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-size: 0.75rem;
+      font-weight: 700;
+    }
+
+    /* 4-Column Stat Cards Grid */
+    .stats-grid-4 {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+    .stat-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: 14px;
+      padding: 18px;
+      box-shadow: var(--shadow-sm);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .stat-card-title {
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 6px;
+    }
+    .stat-card-value {
+      font-size: 1.4rem;
+      font-weight: 800;
+      color: var(--text-main);
+      margin-bottom: 6px;
+    }
+    .stat-card-sub {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+    .progress-bar-wrap {
+      background: #E2E8F0;
+      height: 8px;
+      border-radius: 999px;
+      overflow: hidden;
+      margin-top: 8px;
+    }
+    .progress-bar-fill {
+      background: linear-gradient(90deg, #2563EB, #10B981);
+      height: 100%;
+      border-radius: 999px;
+      transition: width 0.4s ease;
+    }
+
+    /* Document Vault Cards Grid */
+    .vault-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 18px;
+      margin-bottom: 24px;
+    }
+    .vault-card {
+      background: var(--bg-card);
+      border: 1.5px solid var(--border-subtle);
+      border-radius: 14px;
+      padding: 20px;
+      box-shadow: var(--shadow-sm);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      position: relative;
+      transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+    }
+    .vault-card:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-md);
+      border-color: #CBD5E1;
+    }
+    .vault-card-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 3px 8px;
+      border-radius: 6px;
+      font-size: 0.7rem;
+      font-weight: 800;
+      margin-bottom: 10px;
+      width: fit-content;
+    }
+    .badge-unlocked { background: var(--success-light); color: var(--success); border: 1px solid #A7F3D0; }
+    .badge-locked { background: #F1F5F9; color: #64748B; border: 1px solid #CBD5E1; }
+    
+    .vault-card-title {
+      font-size: 1.05rem;
+      font-weight: 800;
+      color: var(--text-main);
+      margin-bottom: 4px;
+    }
+    .vault-card-desc {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-bottom: 16px;
+      line-height: 1.4;
+    }
+    .vault-btn {
+      width: 100%;
+      padding: 9px 12px;
+      border-radius: 8px;
+      font-size: 0.825rem;
+      font-weight: 700;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .vault-btn.primary { background: var(--primary); color: #FFFFFF; border: none; }
+    .vault-btn.primary:hover { background: var(--primary-hover); }
+    .vault-btn.gold { background: linear-gradient(135deg, #F59E0B, #D97706); color: #FFFFFF; border: none; }
+    .vault-btn.locked { background: #E2E8F0; color: #94A3B8; cursor: not-allowed; border: 1px solid #CBD5E1; }
+
+    /* 8-Week Curriculum Accordion / Timeline */
+    .curriculum-wrap {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+    .week-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: 14px;
+      overflow: hidden;
+      box-shadow: var(--shadow-sm);
+      transition: border-color 0.2s;
+    }
+    .week-card.active-week {
+      border-color: #93C5FD;
+      box-shadow: 0 4px 16px rgba(37,99,235,0.08);
+    }
+    .week-card.locked-week {
+      opacity: 0.75;
+      background: #F8FAFC;
+    }
+    .week-header {
+      padding: 16px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      cursor: pointer;
+      user-select: none;
+      background: #FFFFFF;
+      border-bottom: 1px solid transparent;
+    }
+    .week-card.active-week .week-header {
+      border-bottom-color: var(--border-subtle);
+    }
+    .week-title-box {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .week-num-badge {
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      background: #EFF6FF;
+      color: var(--primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 0.85rem;
+      border: 1px solid #BFDBFE;
+    }
+    .week-num-badge.done {
+      background: var(--success-light);
+      color: var(--success);
+      border-color: #A7F3D0;
+    }
+    .week-title-box h3 {
+      font-size: 0.98rem;
+      font-weight: 800;
+      color: var(--text-main);
+    }
+    .week-title-box p {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+    }
+    .week-body {
+      padding: 18px 20px;
+      background: #FFFFFF;
+    }
+    .tasks-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .task-item {
+      background: #F8FAFC;
+      border: 1px solid #E2E8F0;
+      border-radius: 10px;
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .task-item.completed {
+      background: #F0FDF4;
+      border-color: #BBF7D0;
+    }
+    .task-top-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+    }
+    .task-checkbox {
+      width: 20px;
+      height: 20px;
+      cursor: pointer;
+      accent-color: var(--success);
+      margin-top: 2px;
+    }
+    .task-content h4 {
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: #0F172A;
+      margin-bottom: 2px;
+    }
+    .task-content p {
+      font-size: 0.8rem;
+      color: #475569;
+      line-height: 1.45;
+    }
+    .task-deliverable-box {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      flex-wrap: wrap;
+      margin-top: 4px;
+    }
+    .task-deliverable-input {
+      flex: 1;
+      min-width: 200px;
+      padding: 7px 12px;
+      border: 1px solid #CBD5E1;
+      border-radius: 8px;
+      font-size: 0.8rem;
+      background: #FFFFFF;
+    }
+    .btn-save-task {
+      padding: 7px 14px;
+      background: #2563EB;
+      color: #FFFFFF;
+      border: none;
+      border-radius: 8px;
+      font-size: 0.78rem;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    /* Mobile Bottom App Navigation Bar */
+    .mobile-app-bar {
+      display: none;
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: #FFFFFF;
+      border-top: 1px solid var(--border-subtle);
+      box-shadow: 0 -4px 16px rgba(0,0,0,0.06);
+      z-index: 95;
+      padding: 6px 12px;
+      justify-content: space-around;
+      align-items: center;
+    }
+    .app-bar-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2px;
+      text-decoration: none;
+      color: var(--text-muted);
+      font-size: 0.7rem;
+      font-weight: 700;
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      padding: 4px 10px;
+      border-radius: 8px;
+    }
+    .app-bar-item.active {
+      color: var(--primary);
+      background: var(--primary-light);
+    }
+    .app-bar-icon {
+      font-size: 1.25rem;
+    }
+
+    /* Responsive Media Queries */
+    @media (max-width: 768px) {
+      .portal-main {
+        padding: 16px 14px 90px;
+      }
+      .mobile-app-bar {
+        display: flex;
+      }
+      .dashboard-nav-tabs {
+        display: none;
+      }
+      .welcome-card {
+        padding: 18px 20px;
+      }
+      .welcome-meta h2 {
+        font-size: 1.25rem;
+      }
+      .auth-shell {
+        margin: 16px auto;
+        padding: 24px 18px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- PWA Install Promotion Banner -->
+  <aside class="pwa-install-banner" id="pwaBanner">
+    <div style="display:flex; align-items:center; gap:8px;">
+      <span style="font-size:1.15rem;">📲</span>
+      <span>Install <strong>Uzair AI Studio Portal</strong> on your phone for 1-tap offline access!</span>
+    </div>
+    <div style="display:flex; align-items:center; gap:8px;">
+      <button type="button" class="install-btn-pill" id="btnInstallApp">⬇️ Install App</button>
+      <button type="button" class="banner-close" id="btnCloseBanner" aria-label="Close install banner">&times;</button>
+    </div>
+  </aside>
+
+  <!-- App Header -->
+  <header class="portal-header">
+    <div class="header-container">
+      <a href="/" class="header-brand">
+        <img src="/assets/uzairaistudio.png" alt="Uzair AI Studio Official Seal">
+        <div class="header-brand-text">
+          <h1>Uzair AI Studio</h1>
+          <span>Official Remote Intern Command Portal</span>
+        </div>
+      </a>
+
+      <!-- User Session Control -->
+      <div class="header-user-status" id="headerUserStatus">
+        <div id="userHeaderPill" style="display:none; align-items:center; gap:10px;">
+          <div style="text-align:right;" class="hide-on-mobile">
+            <strong id="headerUserName" style="font-size:0.85rem; display:block; color:#0F172A;">-</strong>
+            <span id="headerUserId" style="font-family:var(--font-mono); font-size:0.7rem; color:var(--primary);">-</span>
+          </div>
+          <div class="header-avatar-circle" id="headerUserAvatar">U</div>
+          <button type="button" id="btnLogout" class="vault-btn" style="background:#F1F5F9; color:#475569; padding:6px 12px; font-size:0.75rem; border:1px solid #CBD5E1;" title="Sign out of portal">Logout</button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content Viewport -->
+  <main class="portal-main">
+
+    <!-- ============================================================
+         AUTH GATEWAY (LOGIN & REGISTRATION VIEWS)
+         ============================================================ -->
+    <section class="auth-shell" id="authSection" style="display:block;">
+      <div style="text-align:center; margin-bottom:20px;">
+        <img src="/assets/uzairaistudio.png" alt="Uzair AI Studio" style="width:56px; height:56px; border-radius:12px; margin-bottom:8px;">
+        <h2 style="font-size:1.4rem; font-weight:800; color:#0F172A;">Candidate & Intern Portal</h2>
+        <p style="font-size:0.85rem; color:#64748B;">Access your weekly tasks, curriculum analytics, and official credentials.</p>
+      </div>
+
+      <div class="auth-nav-tabs">
+        <button type="button" class="auth-tab-btn active" id="tabBtnLogin">🔐 Sign In</button>
+        <button type="button" class="auth-tab-btn" id="tabBtnRegister">📝 Create Account / Apply</button>
+      </div>
+
+      <div id="authAlert" class="auth-alert"></div>
+
+      <!-- Sign In Form -->
+      <form id="loginForm" style="display:block;">
+        <div class="form-group">
+          <label class="form-label" for="loginEmailOrId">Email Address or Registration ID</label>
+          <input type="text" id="loginEmailOrId" class="form-input" placeholder="e.g. yourname@gmail.com or UZ-INT-..." required>
+        </div>
+        <div class="form-group">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+            <label class="form-label" for="loginPassword" style="margin-bottom:0;">Password</label>
+            <a href="https://wa.me/923433885835?text=Hi%20Muhammad%20Uzair,%20I%20forgot%20my%20Intern%20Portal%20password" target="_blank" style="font-size:0.75rem; color:#2563EB; text-decoration:none;">Forgot Password?</a>
+          </div>
+          <input type="password" id="loginPassword" class="form-input" placeholder="Enter your portal password" required>
+        </div>
+        <button type="submit" class="btn-submit" id="btnLoginSubmit">
+          <span>Sign In to Intern Portal &rarr;</span>
+        </button>
+      </form>
+
+      <!-- Register / Create Account Form -->
+      <form id="registerForm" style="display:none;">
+        <div id="regClosedAlert" style="display:none; background:#FEF3C7; border:1px solid #FDE68A; border-radius:10px; padding:12px; font-size:0.825rem; color:#92400E; margin-bottom:14px; line-height:1.45;">
+          <strong>⚠️ Registrations Closed:</strong> <span id="regClosedMsg">-</span>
+        </div>
+
+        <div id="regFieldsContainer">
+          <div class="form-group">
+            <label class="form-label" for="regFullName">Full Legal Name (For Certificate)</label>
+            <input type="text" id="regFullName" class="form-input" placeholder="e.g. Muhammad Uzair" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="regEmail">Email Address</label>
+            <input type="email" id="regEmail" class="form-input" placeholder="e.g. intern@gmail.com" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="regPassword">Portal Password (Minimum 6 Characters)</label>
+            <input type="password" id="regPassword" class="form-input" placeholder="Choose a secure password" minlength="6" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="regDomain">Specialization Track</label>
+            <select id="regDomain" class="form-select" required>
+              <option value="Web Development">Web Development (Full-Stack & React/Node)</option>
+              <option value="Generative AI">Generative AI & LLM Systems</option>
+              <option value="Data Science">Data Science & Predictive Analytics</option>
+              <option value="Python Development">Python Backend & Scripting</option>
+              <option value="Front-End Development">Front-End UI/UX Engineering</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="regWhatsapp">WhatsApp Contact Number</label>
+            <input type="text" id="regWhatsapp" class="form-input" placeholder="e.g. +92 343 3885835" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="regInstitute">University or Educational Institute</label>
+            <input type="text" id="regInstitute" class="form-input" placeholder="e.g. UET Mardan / NUST / GIKI" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="regDegree">Degree Program & City</label>
+            <div style="display:flex; gap:8px;">
+              <input type="text" id="regDegree" class="form-input" placeholder="Degree (e.g. BS AI / BS CS)" required>
+              <input type="text" id="regCity" class="form-input" placeholder="City (e.g. Mardan)" style="width:120px;" required>
+            </div>
+          </div>
+          <button type="submit" class="btn-submit" id="btnRegisterSubmit">
+            <span>Create Account &amp; Launch Portal &rarr;</span>
+          </button>
+        </div>
+      </form>
+    </section>
+
+    <!-- ============================================================
+         INTERN PORTAL DASHBOARD (AUTHENTICATED VIEWS)
+         ============================================================ -->
+    <section id="dashboardSection" style="display:none;">
+
+      <!-- Desktop Nav Tabs -->
+      <nav class="dashboard-nav-tabs">
+        <button type="button" class="dash-tab-btn active" data-view="viewQuickDashboard">📊 Quick View</button>
+        <button type="button" class="dash-tab-btn" data-view="viewCurriculum">📚 Weekly Curriculum &amp; Tasks</button>
+        <button type="button" class="dash-tab-btn" data-view="viewVault">📁 Document Recovery Vault</button>
+        <button type="button" class="dash-tab-btn" data-view="viewSettings">⚙️ Account Settings</button>
+      </nav>
+
+      <!-- VIEW 1: QUICK VIEW DASHBOARD -->
+      <div id="viewQuickDashboard" class="portal-view-pane" style="display:block;">
+        
+        <!-- Welcome Hero -->
+        <div class="welcome-card">
+          <div class="welcome-meta">
+            <h2>Welcome back, <span id="dashCandidateName">Candidate</span>!</h2>
+            <p>Remote Track &bull; 8 Weeks (2 Months) &bull; Mentored by <strong>Muhammad Uzair</strong></p>
+            <div class="welcome-badges">
+              <span class="welcome-pill" id="dashStatusPill">🟢 Active Remote Intern</span>
+              <span class="welcome-pill" id="dashDomainPill">Track: Loading...</span>
+              <span class="welcome-pill" style="font-family:var(--font-mono);" id="dashIdPill">UZ-INT-...</span>
+            </div>
+          </div>
+          <div>
+            <a href="https://wa.me/923433885835?text=Hi%20Mentor%20Muhammad%20Uzair,%20checking%20in%20from%20my%20Intern%20Portal" target="_blank" class="install-btn-pill" style="background:#FFFFFF; color:#1E3A8A; font-size:0.85rem; padding:8px 16px;">
+              <span>💬 Mentor WhatsApp</span>
+            </a>
+          </div>
+        </div>
+
+        <!-- 4 Key Metrics -->
+        <div class="stats-grid-4">
+          <div class="stat-card">
+            <div>
+              <div class="stat-card-title">Curriculum Progress</div>
+              <div class="stat-card-value" id="statCurriculumWeek">Week 1 / 8</div>
+              <div class="stat-card-sub" id="statProgressPct">12% Completed</div>
+            </div>
+            <div class="progress-bar-wrap">
+              <div class="progress-bar-fill" id="statProgressBar" style="width:12%;"></div>
+            </div>
+          </div>
+
+          <div class="stat-card">
+            <div>
+              <div class="stat-card-title">Timeline & Duration</div>
+              <div class="stat-card-value" id="statDaysRemaining">60 Days</div>
+              <div class="stat-card-sub" id="statTimelineTarget">Target: -</div>
+            </div>
+            <div style="font-size:0.72rem; color:#059669; font-weight:700; margin-top:8px;">🟢 Remote Asynchronous Track</div>
+          </div>
+
+          <div class="stat-card">
+            <div>
+              <div class="stat-card-title">Milestone Tasks</div>
+              <div class="stat-card-value" id="statTasksCount">1 / 16</div>
+              <div class="stat-card-sub">Completed & Submitted</div>
+            </div>
+            <div style="font-size:0.72rem; color:#2563EB; font-weight:700; margin-top:8px;">Sequential Task Unlocking</div>
+          </div>
+
+          <div class="stat-card">
+            <div>
+              <div class="stat-card-title">Document Security</div>
+              <div class="stat-card-value" id="statCredentialStatus" style="font-size:1.1rem; color:#2563EB;">Offer Released</div>
+              <div class="stat-card-sub">Completion documents locked</div>
+            </div>
+            <div style="font-size:0.72rem; color:#D97706; font-weight:700; margin-top:8px;">🔒 8-Week Lock Enforced</div>
+          </div>
+        </div>
+
+        <!-- Verified Digital Badge Hologram Card -->
+        <div style="background:#FFFFFF; border:2px solid #86EFAC; border-radius:16px; padding:22px; margin-bottom:24px; box-shadow:var(--shadow-md);">
+          <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; border-bottom:1px solid #DCFCE7; padding-bottom:14px; margin-bottom:16px;">
+            <div style="display:flex; align-items:center; gap:10px;">
+              <div style="width:38px; height:38px; background:#10B981; color:#fff; border-radius:50%; display:flex; align-items:center; justify-content:center; font-weight:800; font-size:1.2rem; box-shadow:0 2px 8px rgba(16,185,129,0.3);">✓</div>
+              <div>
+                <strong style="font-size:1.05rem; color:#065F46; letter-spacing:0.3px; display:block;">OFFICIAL VERIFIED CANDIDATE BADGE</strong>
+                <small style="font-size:0.75rem; color:#047857;">Autonomous Public Verification &bull; Uzair AI Studio</small>
+              </div>
+            </div>
+            <div id="badgeQrCodeBox" style="padding:4px; background:#FFFFFF; border:1px solid #E2E8F0; border-radius:8px;"></div>
+          </div>
+
+          <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(200px, 1fr)); gap:12px; font-size:0.85rem;">
+            <div>
+              <span style="color:#64748B; font-size:0.75rem; display:block;">Candidate Name:</span>
+              <strong id="badgeName" style="color:#0F172A; font-size:1rem;">-</strong>
+            </div>
+            <div>
+              <span style="color:#64748B; font-size:0.75rem; display:block;">Registration ID:</span>
+              <strong id="badgeId" style="font-family:var(--font-mono); color:#1D4ED8;">-</strong>
+            </div>
+            <div>
+              <span style="color:#64748B; font-size:0.75rem; display:block;">Domain / Track:</span>
+              <strong id="badgeDomain" style="color:#0F172A;">-</strong>
+            </div>
+            <div>
+              <span style="color:#64748B; font-size:0.75rem; display:block;">Supervisor:</span>
+              <strong style="color:#0F172A;">Muhammad Uzair (Founder)</strong>
+            </div>
+          </div>
+
+          <div style="margin-top:16px; display:flex; gap:10px; flex-wrap:wrap;">
+            <a id="btnBadgeVerifyLink" href="#" target="_blank" class="vault-btn primary" style="width:auto; padding:8px 16px; font-size:0.8rem;">
+              <span>🛡️ Open Live Verification Page</span>
+            </a>
+            <button type="button" id="btnCopyBadgeLink" class="vault-btn" style="width:auto; background:#F8FAFC; border:1px solid #CBD5E1; color:#334155; padding:8px 16px; font-size:0.8rem;">
+              <span>📋 Copy Verification Link</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Remote Internship Guidelines & Protocol -->
+        <div style="background:#FFFFFF; border:1px solid #E2E8F0; border-radius:14px; padding:20px; box-shadow:var(--shadow-sm);">
+          <h3 style="font-size:1.1rem; font-weight:800; margin-bottom:12px; color:#0F172A;">🌐 Remote Internship Guidelines &amp; Policies</h3>
+          <ul style="font-size:0.85rem; color:#475569; padding-left:20px; line-height:1.7;">
+            <li><strong>Asynchronous Flexibility:</strong> Work at your preferred hours while maintaining consistency on weekly milestone tasks.</li>
+            <li><strong>Sequential Unlocking:</strong> Each week's tasks unlock automatically when the preceding week's deliverables are completed.</li>
+            <li><strong>Authenticity &amp; Integrity:</strong> Submit your own original code. Code is reviewed directly by Lead Architect Muhammad Uzair.</li>
+            <li><strong>Credential Release:</strong> Letters of Recommendation and Certificates of Completion unlock upon completing your full 8-week duration.</li>
+          </ul>
+        </div>
+
+      </div>
+
+      <!-- VIEW 2: WEEKLY CURRICULUM & TASKS -->
+      <div id="viewCurriculum" class="portal-view-pane" style="display:none;">
+        <div style="margin-bottom:20px;">
+          <h2 style="font-size:1.3rem; font-weight:800; color:#0F172A;">8-Week Course Tasks &amp; Project Milestones</h2>
+          <p style="font-size:0.85rem; color:#64748B;">Complete each week's milestone tasks to unlock subsequent weeks. Your progress updates in real time.</p>
+        </div>
+
+        <div class="curriculum-wrap" id="curriculumContainer">
+          <!-- Dynamically populated 8-week cards -->
+        </div>
+      </div>
+
+      <!-- VIEW 3: DOCUMENT RECOVERY VAULT -->
+      <div id="viewVault" class="portal-view-pane" style="display:none;">
+        <div style="margin-bottom:20px;">
+          <h2 style="font-size:1.3rem; font-weight:800; color:#0F172A;">Official Document Recovery Vault</h2>
+          <p style="font-size:0.85rem; color:#64748B;">All your official Uzair AI Studio credentials are securely archived here. Re-download them anytime if lost or stolen.</p>
+        </div>
+
+        <div class="vault-grid">
+          <!-- Document 1: Offer Letter -->
+          <div class="vault-card">
+            <div>
+              <span class="vault-card-badge badge-unlocked">✓ Available Immediately</span>
+              <h3 class="vault-card-title">Internship Offer Letter</h3>
+              <p class="vault-card-desc">Official formal admission letter with program dates, domain details, stipend status, and verification seal.</p>
+            </div>
+            <a id="btnVaultOffer" href="#" target="_blank" class="vault-btn primary">
+              <span>📄 Download / Print Offer Letter</span>
+            </a>
+          </div>
+
+          <!-- Document 2: Recommendation Letter -->
+          <div class="vault-card" id="vaultLorCard">
+            <div>
+              <span class="vault-card-badge" id="vaultLorBadge">🔒 Locked</span>
+              <h3 class="vault-card-title">Letter of Recommendation</h3>
+              <p class="vault-card-desc" id="vaultLorDesc">Official executive endorsement by Founder Muhammad Uzair with verified performance evaluation.</p>
+            </div>
+            <a id="btnVaultLor" href="#" class="vault-btn" target="_blank">
+              <span>📜 Access Recommendation Letter</span>
+            </a>
+          </div>
+
+          <!-- Document 3: Certificate of Completion -->
+          <div class="vault-card" id="vaultCertCard">
+            <div>
+              <span class="vault-card-badge" id="vaultCertBadge">🔒 Locked</span>
+              <h3 class="vault-card-title">Certificate of Completion</h3>
+              <p class="vault-card-desc" id="vaultCertDesc">Gold-embossed graduation award with ribbon seal, dual signatures, and live verification QR code.</p>
+            </div>
+            <a id="btnVaultCert" href="#" class="vault-btn" target="_blank">
+              <span>🎓 Access Certificate</span>
+            </a>
+          </div>
+
+          <!-- Document 4: Experience Letter -->
+          <div class="vault-card" id="vaultExpCard">
+            <div>
+              <span class="vault-card-badge" id="vaultExpBadge">🔒 Locked</span>
+              <h3 class="vault-card-title">Experience Letter</h3>
+              <p class="vault-card-desc" id="vaultExpDesc">Employment experience certificate specifying software engineering contributions and project tracks.</p>
+            </div>
+            <a id="btnVaultExp" href="#" class="vault-btn" target="_blank">
+              <span>💼 Access Experience Letter</span>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- VIEW 4: ACCOUNT SETTINGS -->
+      <div id="viewSettings" class="portal-view-pane" style="display:none;">
+        <div style="margin-bottom:20px;">
+          <h2 style="font-size:1.3rem; font-weight:800; color:#0F172A;">Account &amp; Security Settings</h2>
+          <p style="font-size:0.85rem; color:#64748B;">Update your login email address, reset your password, and review your profile details.</p>
+        </div>
+
+        <div id="settingsAlert" class="auth-alert"></div>
+
+        <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(320px, 1fr)); gap:20px;">
+          <!-- Change Email -->
+          <div style="background:#FFFFFF; border:1px solid #E2E8F0; border-radius:14px; padding:22px; box-shadow:var(--shadow-sm);">
+            <h3 style="font-size:1.05rem; font-weight:800; margin-bottom:6px; color:#0F172A;">✉️ Change Login Email</h3>
+            <p style="font-size:0.8rem; color:#64748B; margin-bottom:16px;">Current Registered Email: <strong id="settingsCurrentEmail" style="color:#0F172A;">-</strong></p>
+
+            <form id="formUpdateEmail">
+              <div class="form-group">
+                <label class="form-label" for="inputNewEmail">New Email Address</label>
+                <input type="email" id="inputNewEmail" class="form-input" placeholder="e.g. newemail@gmail.com" required>
+              </div>
+              <button type="submit" class="btn-submit" style="padding:9px; font-size:0.85rem;">Update Email Address</button>
+            </form>
+          </div>
+
+          <!-- Change Password -->
+          <div style="background:#FFFFFF; border:1px solid #E2E8F0; border-radius:14px; padding:22px; box-shadow:var(--shadow-sm);">
+            <h3 style="font-size:1.05rem; font-weight:800; margin-bottom:6px; color:#0F172A;">🔐 Change Password</h3>
+            <p style="font-size:0.8rem; color:#64748B; margin-bottom:16px;">Set a new secure password for your portal account.</p>
+
+            <form id="formUpdatePassword">
+              <div class="form-group">
+                <label class="form-label" for="inputCurrentPassword">Current Password</label>
+                <input type="password" id="inputCurrentPassword" class="form-input" placeholder="Enter current password" required>
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="inputNewPassword">New Password (Min 6 chars)</label>
+                <input type="password" id="inputNewPassword" class="form-input" placeholder="Enter new password" minlength="6" required>
+              </div>
+              <button type="submit" class="btn-submit" style="padding:9px; font-size:0.85rem;">Update Password</button>
+            </form>
+          </div>
+        </div>
+
+        <!-- Registered Profile Summary Card -->
+        <div style="background:#FFFFFF; border:1px solid #E2E8F0; border-radius:14px; padding:22px; margin-top:20px; box-shadow:var(--shadow-sm);">
+          <h3 style="font-size:1.05rem; font-weight:800; margin-bottom:14px; color:#0F172A;">👤 Registered Profile Summary</h3>
+          <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(200px, 1fr)); gap:12px; font-size:0.85rem;">
+            <div><span style="color:#64748B; font-size:0.75rem;">Full Name:</span><br><strong id="profName">-</strong></div>
+            <div><span style="color:#64748B; font-size:0.75rem;">Candidate ID:</span><br><strong id="profId" style="font-family:var(--font-mono); color:#2563EB;">-</strong></div>
+            <div><span style="color:#64748B; font-size:0.75rem;">Domain:</span><br><strong id="profDomain">-</strong></div>
+            <div><span style="color:#64748B; font-size:0.75rem;">Institute:</span><br><strong id="profInstitute">-</strong></div>
+            <div><span style="color:#64748B; font-size:0.75rem;">Degree:</span><br><strong id="profDegree">-</strong></div>
+            <div><span style="color:#64748B; font-size:0.75rem;">WhatsApp:</span><br><strong id="profWa">-</strong></div>
+            <div><span style="color:#64748B; font-size:0.75rem;">Start Date:</span><br><strong id="profStartDate">-</strong></div>
+            <div><span style="color:#64748B; font-size:0.75rem;">Target Completion:</span><br><strong id="profEndDate">-</strong></div>
+          </div>
+        </div>
+      </div>
+
+    </section>
+
+  </main>
+
+  <!-- Mobile Bottom App Bar (Phones & Small Tablets) -->
+  <nav class="mobile-app-bar" id="mobileAppBar">
+    <button type="button" class="app-bar-item active" data-view="viewQuickDashboard">
+      <span class="app-bar-icon">📊</span>
+      <span>Dashboard</span>
+    </button>
+    <button type="button" class="app-bar-item" data-view="viewCurriculum">
+      <span class="app-bar-icon">📚</span>
+      <span>Curriculum</span>
+    </button>
+    <button type="button" class="app-bar-item" data-view="viewVault">
+      <span class="app-bar-icon">📁</span>
+      <span>Vault</span>
+    </button>
+    <button type="button" class="app-bar-item" data-view="viewSettings">
+      <span class="app-bar-icon">⚙️</span>
+      <span>Settings</span>
+    </button>
+  </nav>
+
+  <!-- iOS PWA Home Screen Instructions Modal -->
+  <div id="iosModal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.6); z-index:999; align-items:flex-end; justify-content:center;">
+    <div style="background:#FFFFFF; border-radius:18px 18px 0 0; max-width:440px; width:100%; padding:24px; text-align:center;">
+      <h3 style="font-size:1.15rem; font-weight:800; margin-bottom:8px;">Install on iPhone / iPad</h3>
+      <p style="font-size:0.85rem; color:#475569; margin-bottom:16px;">
+        1. Tap the <strong>Share</strong> button <span style="font-size:1.2rem;">📤</span> at the bottom of Safari.<br>
+        2. Scroll down and tap <strong>"Add to Home Screen"</strong> ➕.<br>
+        3. Launch Intern Portal directly from your home screen like a native app!
+      </p>
+      <button type="button" id="btnCloseIosModal" class="btn-submit" style="padding:10px;">Got It</button>
+    </div>
+  </div>
+
+  <!-- Client-Side JavaScript Logic -->
+  <script src="/js/intern-portal.js"></script>
+</body>
+</html>

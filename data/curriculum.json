@@ -1,0 +1,213 @@
+{
+  "totalWeeks": 8,
+  "weeks": [
+    {
+      "weekNumber": 1,
+      "title": "Remote Onboarding, Workspace Setup & Version Control",
+      "summary": "Establish professional development toolchains, Git best practices, and familiarize with Uzair AI Studio coding standards.",
+      "objectives": [
+        "Configure modern developer toolchain (VS Code, Git, Node.js / Python environment).",
+        "Master GitHub branching strategies (feature branches, conventional commits, pull requests).",
+        "Understand remote communication protocols and weekly sprint deliverables."
+      ],
+      "tasks": [
+        {
+          "id": "w1_t1",
+          "title": "Local Developer Workspace & Repository Setup",
+          "description": "Install required compilers/runtimes, configure Git global user identity, clone the starter project, and verify local build execution.",
+          "deliverableType": "GitHub Repository Link",
+          "hint": "Submit your public GitHub profile and repository URL."
+        },
+        {
+          "id": "w1_t2",
+          "title": "Clean Git Branching & First Code Contribution",
+          "description": "Create a feature branch `feat/onboarding-setup`, write a modular utility function with unit tests, open a pull request, and merge cleanly.",
+          "deliverableType": "Pull Request / Commit Link",
+          "hint": "Provide the commit hash or merged pull request link."
+        }
+      ]
+    },
+    {
+      "weekNumber": 2,
+      "title": "Core Domain Architecture & Component Engineering",
+      "summary": "Build high-performance, modular system foundations according to domain best practices.",
+      "objectives": [
+        "Architect clean separation of concerns (presentation, business logic, data access).",
+        "Implement responsive, accessible UI modules or modular backend service layers.",
+        "Ensure type safety and adherence to design systems."
+      ],
+      "tasks": [
+        {
+          "id": "w2_t1",
+          "title": "Modular Architecture Implementation",
+          "description": "Design and scaffold the foundational architecture for your track (e.g. component hierarchy in Web Dev, data preprocessing pipelines in AI/Data Science).",
+          "deliverableType": "Code Repository / File Structure",
+          "hint": "Include a brief README describing the module hierarchy."
+        },
+        {
+          "id": "w2_t2",
+          "title": "Interactive Responsive Component / Algorithm Pipeline",
+          "description": "Implement at least 3 interactive components or data processing algorithms with responsive layout and graceful error handling.",
+          "deliverableType": "Live Demo Link or Code Gist",
+          "hint": "Host on a live preview (e.g. Vercel / GitHub Pages / Streamlit)."
+        }
+      ]
+    },
+    {
+      "weekNumber": 3,
+      "title": "RESTful APIs, State Management & Cloud Integration",
+      "summary": "Connect frontend interfaces to scalable backend services, asynchronous endpoints, and external APIs.",
+      "objectives": [
+        "Implement robust asynchronous data fetching with optimistic updates.",
+        "Manage global application state with centralized stores and caching.",
+        "Handle offline state, network timeouts, and HTTP status codes."
+      ],
+      "tasks": [
+        {
+          "id": "w3_t1",
+          "title": "Async API Client & Error Boundary",
+          "description": "Construct an API communication client with retry logic, request headers, error boundaries, and token authorization.",
+          "deliverableType": "API Implementation Link",
+          "hint": "Provide code link demonstrating handling of 4xx/5xx responses."
+        },
+        {
+          "id": "w3_t2",
+          "title": "Global State & Reactive Data Flow",
+          "description": "Implement centralized state management ensuring reactive updates across multi-view interfaces without unnecessary re-renders.",
+          "deliverableType": "Demo Video / Code Link",
+          "hint": "Describe the state management pattern used in your submission notes."
+        }
+      ]
+    },
+    {
+      "weekNumber": 4,
+      "title": "Mid-Term Production Milestone & Architectural Review",
+      "summary": "Milestone Review 1: Deploy a functional end-to-end prototype for evaluation by Mentor Muhammad Uzair.",
+      "objectives": [
+        "Assemble completed modules into a unified working system.",
+        "Deploy to a public staging environment.",
+        "Participate in mid-term code review and incorporate architectural feedback."
+      ],
+      "tasks": [
+        {
+          "id": "w4_t1",
+          "title": "End-to-End Staging Deployment (Milestone 1)",
+          "description": "Deploy the complete 4-week prototype to a live hosting environment (e.g. Vercel, Netlify, Render, Railway).",
+          "deliverableType": "Live Production Staging URL",
+          "hint": "Ensure the live link is accessible publicly without login barriers."
+        },
+        {
+          "id": "w4_t2",
+          "title": "Mid-Term Sprint Retrospective & Code Documentation",
+          "description": "Write a 1-page architecture review documenting technical trade-offs, performance bottlenecks resolved, and upcoming sprint goals.",
+          "deliverableType": "Markdown Report / PDF Link",
+          "hint": "Submit via Google Drive or directly inside repository docs."
+        }
+      ]
+    },
+    {
+      "weekNumber": 5,
+      "title": "Advanced Engineering: AI Integration, Scaling & Performance",
+      "summary": "Enhance system capabilities with machine learning models, database optimization, or advanced algorithms.",
+      "objectives": [
+        "Integrate external AI APIs (OpenAI, Gemini, Anthropic) or local ML models.",
+        "Profile computational hotspots and optimize data structures.",
+        "Implement lazy loading, code splitting, and caching strategies."
+      ],
+      "tasks": [
+        {
+          "id": "w5_t1",
+          "title": "AI Model / Intelligent Service Integration",
+          "description": "Incorporate an intelligent feature (e.g. natural language processing, automated analytics, recommendation system, or predictive model).",
+          "deliverableType": "Feature Demonstration Link",
+          "hint": "Provide prompts/weights configuration and integration snippet."
+        },
+        {
+          "id": "w5_t2",
+          "title": "High-Throughput Performance Optimization",
+          "description": "Conduct performance audits, optimize asset delivery, minimize query latency, and achieve a 90+ Lighthouse / benchmark score.",
+          "deliverableType": "Audit Screenshot & Code Commit",
+          "hint": "Submit before & after benchmark metrics."
+        }
+      ]
+    },
+    {
+      "weekNumber": 6,
+      "title": "Quality Assurance, Security Hardening & Automated Testing",
+      "summary": "Ensure production resilience through comprehensive automated test suites and defensive security practices.",
+      "objectives": [
+        "Author unit, integration, and end-to-end tests.",
+        "Sanitize inputs to protect against XSS, SQL/NoSQL injection, and CSRF.",
+        "Implement secure secrets management and environment variable segregation."
+      ],
+      "tasks": [
+        {
+          "id": "w6_t1",
+          "title": "Automated Test Suite Implementation",
+          "description": "Write a comprehensive test suite (Jest, PyTest, or Playwright) covering critical user flows and edge cases with at least 80% coverage.",
+          "deliverableType": "Test Execution Report & Code Link",
+          "hint": "Include command to run tests locally in submission notes."
+        },
+        {
+          "id": "w6_t2",
+          "title": "Security Audit & Vulnerability Remediation",
+          "description": "Review application security: sanitize client inputs, implement strict CORS policies, rate limiting, and dependency vulnerability scanning.",
+          "deliverableType": "Security Audit Summary",
+          "hint": "List resolved vulnerabilities and security headers configured."
+        }
+      ]
+    },
+    {
+      "weekNumber": 7,
+      "title": "Cloud Deployment, CI/CD Pipelines & DevOps Staging",
+      "summary": "Automate build, test, and deployment workflows with modern continuous integration pipelines.",
+      "objectives": [
+        "Configure GitHub Actions or equivalent CI/CD pipelines.",
+        "Set up multi-environment deployments (staging, production).",
+        "Implement telemetry, health checks, and error monitoring."
+      ],
+      "tasks": [
+        {
+          "id": "w7_t1",
+          "title": "CI/CD Pipeline Configuration",
+          "description": "Create a GitHub Actions workflow that automatically runs linting, executes test suites, and triggers production deployment on git push.",
+          "deliverableType": "GitHub Actions Workflow YAML Link",
+          "hint": "Submit `.github/workflows/deploy.yml` URL."
+        },
+        {
+          "id": "w7_t2",
+          "title": "Production Monitoring & Health Telemetry",
+          "description": "Implement uptime health check endpoints (`/api/health`), structured logging, and error tracking integrations.",
+          "deliverableType": "Health Check URL & Telemetry Dashboard",
+          "hint": "Provide a link to your live `/api/health` status."
+        }
+      ]
+    },
+    {
+      "weekNumber": 8,
+      "title": "Capstone Delivery, Technical Documentation & Graduation",
+      "summary": "Final Capstone Presentation: Deliver your polished project, present technical findings, and receive graduation credentials.",
+      "objectives": [
+        "Deliver finalized production system with documentation.",
+        "Present capstone project demonstration to studio leadership.",
+        "Unlock official Certificate of Completion, LOR, and Experience Letter."
+      ],
+      "tasks": [
+        {
+          "id": "w8_t1",
+          "title": "Final Capstone Production Release",
+          "description": "Deploy the final capstone build with custom domain / stable production URL, comprehensive documentation, and architectural schema.",
+          "deliverableType": "Final Production System URL",
+          "hint": "Submit final GitHub repository with comprehensive README."
+        },
+        {
+          "id": "w8_t2",
+          "title": "Graduation Defense & Internship Portfolio Report",
+          "description": "Compile a portfolio case study showcasing your 8-week journey, key technical achievements, and submit your graduation clearance request.",
+          "deliverableType": "Final Portfolio Link / PDF Report",
+          "hint": "Upon mentor review, all official graduation documents unlock instantly."
+        }
+      ]
+    }
+  ]
+}
