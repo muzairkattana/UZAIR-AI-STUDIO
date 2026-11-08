@@ -532,11 +532,16 @@ img, svg, video, canvas, audio, iframe {
 /* Mobile Drawer */
 .mobile-nav-drawer {
   display: none;
-  position: fixed;
+  position: fixed !important;
   top: 72px;
   left: 0;
+  right: 0;
+  bottom: 0;
   width: 100%;
   height: calc(100vh - 72px);
+  height: calc(100dvh - 72px);
+  max-height: calc(100vh - 72px);
+  max-height: calc(100dvh - 72px);
   background: rgba(255, 255, 255, 0.98);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
@@ -545,10 +550,12 @@ img, svg, video, canvas, audio, iframe {
   flex-direction: column;
   gap: 16px;
   overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
   border-top: 1px solid var(--border-light);
   transform: translateY(-100%);
   opacity: 0;
-  transition: all var(--transition-normal);
+  transition: transform var(--transition-normal), opacity var(--transition-normal);
 }
 
 .mobile-nav-drawer.open {
@@ -3982,6 +3989,9 @@ img, svg, video, canvas, audio, iframe {
   .mobile-nav-drawer {
     top: 64px;
     height: calc(100vh - 64px);
+    height: calc(100dvh - 64px);
+    max-height: calc(100vh - 64px);
+    max-height: calc(100dvh - 64px);
     padding: 16px;
   }
 }

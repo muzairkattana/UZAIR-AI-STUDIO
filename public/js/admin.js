@@ -432,11 +432,13 @@ function initAdminNavigation() {
     if (!sidebar) return;
     const isOpen = sidebar.classList.toggle('open');
     if (backdrop) backdrop.classList.toggle('active', isOpen);
+    document.body.style.overflow = isOpen ? 'hidden' : '';
   }
 
   function closeSidebarDrawer() {
     if (sidebar) sidebar.classList.remove('open');
     if (backdrop) backdrop.classList.remove('active');
+    document.body.style.overflow = '';
   }
 
   if (mobileToggle) mobileToggle.addEventListener('click', toggleSidebarDrawer);

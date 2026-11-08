@@ -1,5 +1,53 @@
 [
   {
+    "id": "UAIS-INT-MW7XAU6Y",
+    "fullName": "Hamad Khan",
+    "rawNameEntered": "Hamad Khan",
+    "email": "hamadkhan@gmail.com",
+    "whatsapp": "0343498234908",
+    "gender": "Male",
+    "dob": "2026-11-08",
+    "city": "peshawar",
+    "qualification": "Masters",
+    "institute": "uet peshawar",
+    "degree": "BS Artificial Intelligence (BSAI)",
+    "domain": "Cyber Security",
+    "whatsappGroupJoined": "No",
+    "program": "Advanced Engineering Fellowship - 6 Months",
+    "batch": "2026 AI Department Batch",
+    "startDate": "2026-11-08",
+    "completionDate": "2027-05-07",
+    "duration": "6 Months (180 Days / 24 Weeks)",
+    "trackDuration": "6 Months",
+    "mentor": "Muhammad Uzair (Founder & Lead Architect)",
+    "perks": [
+      "Official 6-Month Industry Experience Letter",
+      "Internship Completion Certificate",
+      "Letter of Recommendation by Founder Muhammad Uzair",
+      "MIT Artificial Intelligence Course (1080p Recorded Lectures, Slides & Books)",
+      "Enterprise Architecture & Production Portfolio",
+      "Flexible Self-Paced Schedule"
+    ],
+    "status": "Application Received • Offer Letter Pending",
+    "offerLetterIssued": false,
+    "tasksProgress": {
+      "currentWeek": 2,
+      "completedWeeks": [
+        1
+      ],
+      "completedTasks": [
+        "w1_t1",
+        "w1_t2"
+      ],
+      "submissions": {}
+    },
+    "notes": "Standard applicant registration via website.",
+    "createdAt": "2026-11-08T14:24:01.114Z",
+    "password": "UAIS-INT-MW7XAU6Y",
+    "passwordHash": "a2d76ebf414772173ceebd9a57d3fa570284441f408c2ec8de2533cf78f88395",
+    "updatedAt": "2026-11-08T14:34:55.499Z"
+  },
+  {
     "id": "UAIS-INT-MW7KULUS",
     "fullName": "Mlaskdfjas",
     "rawNameEntered": "Mlaskdfjas",
