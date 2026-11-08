@@ -916,10 +916,10 @@
       box-shadow: 0 8px 20px rgba(15, 23, 42, 0.42);
     }
     .vault-btn.gold { 
-      background: linear-gradient(135deg, #D97706 0%, #F59E0B 100%); 
+      background: linear-gradient(135deg, #090D16 0%, #0F172A 50%, #1E293B 100%); 
       color: #FFFFFF; 
       border: 1px solid rgba(255, 255, 255, 0.2);
-      box-shadow: 0 4px 14px rgba(217, 119, 6, 0.3);
+      box-shadow: 0 4px 14px rgba(15, 23, 42, 0.3);
     }
     .vault-btn.gold:hover { 
       background: linear-gradient(135deg, #B45309 0%, #D97706 100%); 
@@ -2048,6 +2048,95 @@
       margin: 0;
       white-space: pre;
     }
+  
+    /* MIT Course Responsive Theater Layout */
+    .mit-course-theater-grid {
+      display: grid;
+      grid-template-columns: 1fr 380px;
+      gap: 22px;
+      margin-bottom: 30px;
+      align-items: start;
+    }
+    .mit-video-player-card {
+      background: #0F172A;
+      border-radius: 18px;
+      border: 1px solid #1E293B;
+      overflow: hidden;
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
+      width: 100%;
+    }
+    .mit-video-aspect-wrap {
+      position: relative;
+      padding-bottom: 56.25%;
+      height: 0;
+      overflow: hidden;
+      background: #000000;
+      width: 100%;
+    }
+    .mit-playlist-drawer {
+      background: #FFFFFF;
+      border-radius: 18px;
+      border: 1px solid #E2E8F0;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      box-shadow: 0 4px 16px rgba(15, 23, 42, 0.05);
+      height: 640px;
+      max-height: 640px;
+      width: 100%;
+      box-sizing: border-box;
+    }
+
+    @media (max-width: 992px) {
+      .mit-course-theater-grid {
+        grid-template-columns: 1fr !important;
+        gap: 20px !important;
+      }
+      .mit-playlist-drawer {
+        height: 480px !important;
+        max-height: 480px !important;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .mit-course-header-banner {
+        padding: 18px 16px !important;
+        border-radius: 14px !important;
+      }
+      .mit-course-title {
+        font-size: 1.25rem !important;
+      }
+      .mit-course-meta-pills {
+        gap: 8px !important;
+        font-size: 0.725rem !important;
+      }
+      .mit-video-info-bar {
+        padding: 14px 14px !important;
+      }
+      .mit-lecture-title-heading {
+        font-size: 1.05rem !important;
+      }
+      .mit-video-nav-controls {
+        flex-direction: column !important;
+        align-items: stretch !important;
+        gap: 10px !important;
+      }
+      .mit-video-nav-controls > div {
+        display: flex !important;
+        width: 100% !important;
+      }
+      .mit-video-nav-controls button {
+        flex: 1 !important;
+        text-align: center !important;
+        justify-content: center !important;
+      }
+      .mit-playlist-drawer {
+        height: 420px !important;
+        max-height: 420px !important;
+        border-radius: 14px !important;
+      }
+    }
+
   </style>
 </head>
 <body>
@@ -2419,7 +2508,7 @@
       <div id="viewMitCourse" class="portal-view-pane" style="display:none;">
         
         <!-- Header Banner -->
-        <div style="background:linear-gradient(135deg, #090D16 0%, #0F172A 50%, #1E1B4B 100%); border-radius:20px; padding:26px 30px; margin-bottom:24px; color:#FFFFFF; border:1.5px solid rgba(255,255,255,0.12); box-shadow:0 16px 36px -10px rgba(15,23,42,0.35);">
+        <div class="mit-course-header-banner" style="background:linear-gradient(135deg, #090D16 0%, #0F172A 50%, #1E1B4B 100%); border-radius:20px; padding:24px 26px; margin-bottom:24px; color:#FFFFFF; border:1.5px solid rgba(255,255,255,0.12); box-shadow:0 16px 36px -10px rgba(15,23,42,0.35);">
           <div style="display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:16px;">
             <div style="max-width:720px;">
               <div style="display:flex; align-items:center; gap:8px; margin-bottom:10px;">
@@ -2442,24 +2531,16 @@
 
             <!-- Offline Cloud Storage Card -->
             <div style="background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.15); border-radius:14px; padding:16px 20px; min-width:260px; text-align:center;">
-              <div style="font-size:0.75rem; color:#A5B4FC; font-weight:800; text-transform:uppercase; letter-spacing:0.05em; margin-bottom:4px;">Offline Course Files</div>
-              <div style="font-size:1rem; font-weight:800; color:#FFFFFF; margin-bottom:8px;">Full Archive Download</div>
-              <p style="font-size:0.78rem; color:#94A3B8; margin-bottom:12px; line-height:1.4;">
-                Download all lecture recordings, slides &amp; assignments to your device for offline study.
-              </p>
-              <a href="https://mega.nz/folder/2joFkDqI#HSLl8mP_Os0KXGuIZZhiPA" target="_blank" rel="noopener noreferrer" class="btn btn-sm" style="display:inline-flex; align-items:center; justify-content:center; gap:8px; width:100%; background:linear-gradient(135deg, #DC2626, #EF4444); color:#FFFFFF; font-weight:800; padding:9px 16px; border-radius:9px; text-decoration:none; box-shadow:0 4px 14px rgba(239,68,68,0.35);">
-                <span>☁️ Open MEGA Cloud Folder</span>
-              </a>
-            </div>
+              
           </div>
         </div>
 
         <!-- In-Portal Interactive Lecture Theater -->
-        <div style="display:grid; grid-template-columns:1fr 360px; gap:22px; margin-bottom:30px;" id="mitCourseTheaterGrid">
+        <div style="display:grid; grid-template-columns:1fr 360px; gap:22px; margin-bottom:30px;" class="mit-course-theater-grid" id="mitCourseTheaterGrid">
           
           <!-- Left Main Video Player -->
-          <div style="background:#0F172A; border-radius:18px; border:1px solid #1E293B; overflow:hidden; box-shadow:0 12px 30px rgba(0,0,0,0.12);">
-            <div style="position:relative; padding-bottom:56.25%; height:0; overflow:hidden; background:#000000;">
+          <div class="mit-video-player-card">
+            <div class="mit-video-aspect-wrap">
               <iframe 
                 id="mitVideoPlayerFrame" 
                 src="https://www.youtube-nocookie.com/embed/TjZBTDzGeGg?autoplay=0&rel=0&modestbranding=1" 
@@ -2472,7 +2553,7 @@
             </div>
 
             <!-- Video Info Bar -->
-            <div style="padding:18px 22px; background:#0F172A; color:#FFFFFF; border-top:1px solid #1E293B;">
+            <div class="mit-video-info-bar" style="background:#0F172A; color:#FFFFFF; border-top:1px solid #1E293B;">
               <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; margin-bottom:8px;">
                 <span id="mitCurrentLectureBadge" style="background:#3B82F6; color:#FFFFFF; font-size:0.75rem; font-weight:800; padding:3px 12px; border-radius:6px; letter-spacing:0.04em;">
                   LECTURE 1 OF 24
@@ -2486,7 +2567,7 @@
                 Introduction to the foundational ideas of computational intelligence, historical perspectives, and the vision of engineering intelligent reasoning agents.
               </p>
 
-              <div style="margin-top:14px; padding-top:14px; border-top:1px solid #1E293B; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
+              <div class="mit-video-nav-controls" style="margin-top:14px; padding-top:14px; border-top:1px solid #1E293B; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
                 <div style="display:flex; gap:8px;">
                   <button type="button" id="btnMitPrevLecture" class="btn btn-outline btn-sm" style="background:#1E293B; color:#CBD5E1; border-color:#334155; padding:6px 14px; font-size:0.8rem;">
                     &larr; Previous Lecture
@@ -2503,7 +2584,7 @@
           </div>
 
           <!-- Right Playlist / Lecture Syllabus Drawer -->
-          <div style="background:#FFFFFF; border-radius:18px; border:1px solid #E2E8F0; display:flex; flex-direction:column; overflow:hidden; box-shadow:0 4px 16px rgba(15,23,42,0.05); max-height:680px;">
+          <div class="mit-playlist-drawer">
             <div style="padding:16px 18px; background:#F8FAFC; border-bottom:1px solid #E2E8F0;">
               <div style="display:flex; justify-content:space-between; align-items:center;">
                 <strong style="font-size:0.95rem; color:#0F172A; font-weight:800;">Course Syllabus &amp; Lectures</strong>
@@ -2659,6 +2740,12 @@
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="9"></rect><rect x="14" y="3" width="7" height="5"></rect><rect x="14" y="12" width="7" height="9"></rect><rect x="3" y="16" width="7" height="5"></rect></svg>
       </span>
       <span>Dashboard</span>
+    </button>
+    <button type="button" class="app-bar-item" data-view="viewMitCourse">
+      <span class="app-bar-icon">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 2 7 12 12 22 7 12 2"></polygon><polyline points="2 17 12 22 22 17"></polyline><polyline points="2 12 12 17 22 12"></polyline></svg>
+      </span>
+      <span>MIT Course</span>
     </button>
     <button type="button" class="app-bar-item" data-view="viewCurriculum">
       <span class="app-bar-icon">

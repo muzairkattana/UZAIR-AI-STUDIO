@@ -748,7 +748,7 @@
       badgeCert.className = 'vault-card-badge badge-unlocked';
       badgeCert.textContent = '✓ Officially Awarded';
       descCert.textContent = 'Official Certificate of Completion with gold ribbon seal, dual signatures, and live QR verification.';
-      btnCert.className = 'vault-btn gold';
+      btnCert.className = 'vault-btn primary';
       const certUrl = `/certificate/${encodeURIComponent(currentIntern.id)}`;
       btnCert.href = certUrl;
       btnCert.innerHTML = '<span>🖨️ Direct Print Certificate</span>';
