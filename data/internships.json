@@ -1,5 +1,45 @@
 [
   {
+    "id": "UAIS-INT-MW7KULUS",
+    "fullName": "Mlaskdfjas",
+    "rawNameEntered": "Mlaskdfjas",
+    "email": "lkasdj@gmail.com",
+    "whatsapp": "034345675835",
+    "gender": "Male",
+    "dob": "2026-11-08",
+    "city": "mardan",
+    "qualification": "Bachelors",
+    "institute": "adfjaldkflak;dj",
+    "degree": "BS Artificial Intelligence (BSAI)",
+    "domain": "Generative AI",
+    "whatsappGroupJoined": "No",
+    "program": "Internship & Training Program - 2 Months",
+    "batch": "2026 AI Department Batch",
+    "startDate": "2026-11-08",
+    "completionDate": "2027-01-07",
+    "duration": "2 Months (60 Days)",
+    "mentor": "Muhammad Uzair (Founder & Lead Architect)",
+    "perks": [
+      "Internship Completion Certificate",
+      "Letter of Recommendation by Founder Muhammad Uzair",
+      "MIT Artificial Intelligence Course (1080p Recorded Lectures, Slides & Books)",
+      "Practical Experience with 4+ Real-World Projects",
+      "Flexible Self-Paced Schedule"
+    ],
+    "status": "Application Received • Offer Letter Pending",
+    "offerLetterIssued": false,
+    "tasksProgress": {
+      "currentWeek": 1,
+      "completedWeeks": [],
+      "completedTasks": [],
+      "submissions": {}
+    },
+    "notes": "Standard applicant registration via website.",
+    "createdAt": "2026-11-08T08:35:28.420Z",
+    "password": "UAIS-INT-MW7KULUS",
+    "passwordHash": "3609a48b20c29777cd95c5f9ad3b3b8f57b27541c5f89839b92f89f1b2cadf24"
+  },
+  {
     "id": "UAIS-INT-MW0VZOUJ",
     "fullName": "Kamran Katana",
     "rawNameEntered": "kamran katana",
