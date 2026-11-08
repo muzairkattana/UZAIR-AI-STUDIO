@@ -174,33 +174,57 @@
       max-width: 1200px;
       width: 100%;
       margin: 0 auto;
-      padding: 24px 20px 80px;
+      padding: 28px 20px 48px;
     }
 
     /* Authentication Container (Login & Register) */
     .auth-shell {
-      max-width: 480px;
-      margin: 40px auto;
+      max-width: 500px;
+      margin: 36px auto;
       background: var(--bg-card);
       border: 1px solid var(--border-subtle);
-      border-radius: 16px;
-      padding: 32px 28px;
-      box-shadow: var(--shadow-lg);
+      border-radius: 20px;
+      padding: 34px 30px;
+      box-shadow: 0 10px 32px rgba(15, 23, 42, 0.08), 0 1px 3px rgba(15, 23, 42, 0.04);
+      position: relative;
+      overflow: hidden;
+    }
+    .auth-shell::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, #2563EB 0%, #3B82F6 50%, #60A5FA 100%);
+    }
+    .auth-badge-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 12px;
+      background: #EFF6FF;
+      border: 1px solid #BFDBFE;
+      color: #1D4ED8;
+      font-size: 0.75rem;
+      font-weight: 700;
+      border-radius: 999px;
+      margin-bottom: 12px;
     }
     .auth-nav-tabs {
-      display: flex;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
       background: #F1F5F9;
-      border-radius: 10px;
+      border-radius: 12px;
       padding: 4px;
-      margin-bottom: 24px;
+      margin-bottom: 22px;
       gap: 4px;
     }
     .auth-tab-btn {
-      flex: 1;
-      padding: 9px;
+      padding: 10px;
       border: none;
       background: transparent;
-      border-radius: 8px;
+      border-radius: 9px;
       font-size: 0.85rem;
       font-weight: 700;
       color: var(--text-muted);
@@ -210,7 +234,7 @@
     .auth-tab-btn.active {
       background: #FFFFFF;
       color: var(--primary);
-      box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
     }
 
     .form-group {
@@ -218,14 +242,14 @@
     }
     .form-label {
       display: block;
-      font-size: 0.8rem;
+      font-size: 0.825rem;
       font-weight: 700;
       color: #334155;
       margin-bottom: 6px;
     }
     .form-input, .form-select, .form-textarea {
       width: 100%;
-      padding: 10px 14px;
+      padding: 11px 14px;
       border: 1.5px solid var(--border-subtle);
       border-radius: 10px;
       font-family: inherit;
@@ -238,6 +262,110 @@
     .form-input:focus, .form-select:focus, .form-textarea:focus {
       border-color: var(--primary);
       box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+    }
+
+    /* Password Input with Visibility Eye Toggle */
+    .password-input-wrap {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+    .password-input-wrap .form-input {
+      padding-right: 44px;
+    }
+    .btn-toggle-eye {
+      position: absolute;
+      right: 8px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      padding: 6px 8px;
+      color: #64748B;
+      font-size: 1.05rem;
+      line-height: 1;
+      border-radius: 6px;
+      transition: color 0.15s, background 0.15s;
+    }
+    .btn-toggle-eye:hover {
+      color: #0F172A;
+      background: #F1F5F9;
+    }
+
+    /* Responsive 2-Col Grid for Form */
+    .form-grid-2col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+    @media (max-width: 480px) {
+      .form-grid-2col {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* Auth Card Footer */
+    .auth-card-footer {
+      margin-top: 24px;
+      padding-top: 18px;
+      border-top: 1px solid #F1F5F9;
+      text-align: center;
+    }
+    .auth-footer-divider {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 14px;
+    }
+    .auth-footer-divider span {
+      font-size: 0.725rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: #94A3B8;
+      font-weight: 700;
+    }
+    .auth-help-links {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      align-items: center;
+      margin-bottom: 14px;
+    }
+    .auth-help-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.825rem;
+      font-weight: 700;
+      color: #059669;
+      text-decoration: none;
+      background: #ECFDF5;
+      border: 1px solid #A7F3D0;
+      padding: 7px 16px;
+      border-radius: 999px;
+      transition: all 0.15s;
+    }
+    .auth-help-link:hover {
+      background: #D1FAE5;
+      color: #047857;
+      transform: translateY(-1px);
+    }
+    .auth-back-link {
+      font-size: 0.825rem;
+      font-weight: 600;
+      color: #64748B;
+      text-decoration: none;
+      transition: color 0.15s;
+    }
+    .auth-back-link:hover {
+      color: #2563EB;
+    }
+    .auth-security-badge {
+      font-size: 0.725rem;
+      color: #94A3B8;
+      font-weight: 500;
     }
     .btn-submit {
       width: 100%;
@@ -620,18 +748,20 @@
 
     /* Mobile Bottom App Navigation Bar */
     .mobile-app-bar {
-      display: none;
+      display: none !important; /* Strictly hidden unless portal-authenticated on mobile */
       position: fixed;
       bottom: 0;
       left: 0;
       right: 0;
-      background: #FFFFFF;
+      background: rgba(255, 255, 255, 0.98);
       border-top: 1px solid var(--border-subtle);
-      box-shadow: 0 -4px 16px rgba(0,0,0,0.06);
+      box-shadow: 0 -4px 20px rgba(15, 23, 42, 0.08);
       z-index: 95;
-      padding: 6px 12px;
+      padding: 8px 12px calc(8px + env(safe-area-inset-bottom, 0px));
       justify-content: space-around;
       align-items: center;
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
     }
     .app-bar-item {
       display: flex;
@@ -645,37 +775,109 @@
       background: transparent;
       border: none;
       cursor: pointer;
-      padding: 4px 10px;
-      border-radius: 8px;
+      padding: 6px 12px;
+      border-radius: 10px;
+      min-width: 64px;
+      transition: all 0.15s ease;
+    }
+    .app-bar-item:active {
+      transform: scale(0.95);
     }
     .app-bar-item.active {
       color: var(--primary);
-      background: var(--primary-light);
+      background: #EFF6FF;
     }
     .app-bar-icon {
       font-size: 1.25rem;
+      line-height: 1;
     }
 
     /* Responsive Media Queries */
     @media (max-width: 768px) {
       .portal-main {
-        padding: 16px 14px 90px;
+        padding: 16px 14px 40px;
       }
-      .mobile-app-bar {
-        display: flex;
+      body.portal-authenticated .portal-main {
+        padding-bottom: calc(76px + env(safe-area-inset-bottom, 0px));
+      }
+      body.portal-authenticated .mobile-app-bar {
+        display: flex !important;
       }
       .dashboard-nav-tabs {
         display: none;
       }
+      .header-container {
+        padding: 10px 14px;
+      }
+      .header-brand img {
+        width: 32px;
+        height: 32px;
+      }
+      .header-brand-text h1 {
+        font-size: 0.925rem;
+      }
+      .header-brand-text span {
+        font-size: 0.68rem;
+      }
       .welcome-card {
-        padding: 18px 20px;
+        padding: 20px 16px;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 16px;
       }
       .welcome-meta h2 {
         font-size: 1.25rem;
       }
+      .stats-grid-4 {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+      }
+      .stat-card {
+        padding: 14px 12px;
+      }
+      .stat-card-title {
+        font-size: 0.72rem;
+      }
+      .stat-card-value {
+        font-size: 1.2rem;
+      }
+      .stat-card-sub {
+        font-size: 0.7rem;
+      }
+      .vault-grid {
+        grid-template-columns: 1fr;
+        gap: 14px;
+      }
+      .task-deliverable-box {
+        flex-direction: column;
+        align-items: stretch;
+      }
+      .task-deliverable-input {
+        min-width: 100%;
+      }
+      .btn-save-task {
+        width: 100%;
+        padding: 9px;
+        text-align: center;
+      }
       .auth-shell {
-        margin: 16px auto;
+        margin: 12px auto;
         padding: 24px 18px;
+        border-radius: 16px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .stats-grid-4 {
+        grid-template-columns: 1fr;
+      }
+      .app-bar-item {
+        padding: 4px 6px;
+        font-size: 0.65rem;
+        min-width: 54px;
+      }
+      .app-bar-icon {
+        font-size: 1.15rem;
       }
     }
   </style>
@@ -730,9 +932,10 @@
          ============================================================ -->
     <section class="auth-shell" id="authSection" style="display:block;">
       <div style="text-align:center; margin-bottom:20px;">
-        <img src="/assets/uzairaistudio.png" alt="Uzair AI Studio" style="width:56px; height:56px; border-radius:12px; margin-bottom:8px;">
-        <h2 style="font-size:1.4rem; font-weight:800; color:#0F172A;">Candidate & Intern Portal</h2>
-        <p style="font-size:0.85rem; color:#64748B;">Access your weekly tasks, curriculum analytics, and official credentials.</p>
+        <span class="auth-badge-pill">🔒 Official Intern &amp; Candidate Gateway</span>
+        <img src="/assets/uzairaistudio.png" alt="Uzair AI Studio" style="width:58px; height:58px; border-radius:14px; margin:0 auto 10px; display:block; box-shadow:0 4px 12px rgba(37,99,235,0.18);">
+        <h2 style="font-size:1.45rem; font-weight:800; color:#0F172A; letter-spacing:-0.3px;">Candidate &amp; Intern Portal</h2>
+        <p style="font-size:0.85rem; color:#64748B; margin-top:4px;">Access your 8-week curriculum, milestones, and official credentials.</p>
       </div>
 
       <div class="auth-nav-tabs">
@@ -746,14 +949,17 @@
       <form id="loginForm" style="display:block;">
         <div class="form-group">
           <label class="form-label" for="loginEmailOrId">Email Address or Registration ID</label>
-          <input type="text" id="loginEmailOrId" class="form-input" placeholder="e.g. yourname@gmail.com or UZ-INT-..." required>
+          <input type="text" id="loginEmailOrId" class="form-input" placeholder="e.g. intern@gmail.com or UZ-INT-..." required autocomplete="username">
         </div>
         <div class="form-group">
           <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
             <label class="form-label" for="loginPassword" style="margin-bottom:0;">Password</label>
-            <a href="https://wa.me/923433885835?text=Hi%20Muhammad%20Uzair,%20I%20forgot%20my%20Intern%20Portal%20password" target="_blank" style="font-size:0.75rem; color:#2563EB; text-decoration:none;">Forgot Password?</a>
+            <a href="https://wa.me/923433885835?text=Hi%20Muhammad%20Uzair,%20I%20forgot%20my%20Intern%20Portal%20password" target="_blank" style="font-size:0.75rem; color:#2563EB; text-decoration:none; font-weight:600;">Forgot Password?</a>
           </div>
-          <input type="password" id="loginPassword" class="form-input" placeholder="Enter your portal password" required>
+          <div class="password-input-wrap">
+            <input type="password" id="loginPassword" class="form-input" placeholder="Enter your portal password" required autocomplete="current-password">
+            <button type="button" class="btn-toggle-eye" id="btnToggleLoginPass" aria-label="Toggle password visibility">👁️</button>
+          </div>
         </div>
         <button type="submit" class="btn-submit" id="btnLoginSubmit">
           <span>Sign In to Intern Portal &rarr;</span>
@@ -773,19 +979,22 @@
           </div>
           <div class="form-group">
             <label class="form-label" for="regEmail">Email Address</label>
-            <input type="email" id="regEmail" class="form-input" placeholder="e.g. intern@gmail.com" required>
+            <input type="email" id="regEmail" class="form-input" placeholder="e.g. intern@gmail.com" required autocomplete="email">
           </div>
           <div class="form-group">
             <label class="form-label" for="regPassword">Portal Password (Minimum 6 Characters)</label>
-            <input type="password" id="regPassword" class="form-input" placeholder="Choose a secure password" minlength="6" required>
+            <div class="password-input-wrap">
+              <input type="password" id="regPassword" class="form-input" placeholder="Choose a secure password" minlength="6" required autocomplete="new-password">
+              <button type="button" class="btn-toggle-eye" id="btnToggleRegPass" aria-label="Toggle password visibility">👁️</button>
+            </div>
           </div>
           <div class="form-group">
             <label class="form-label" for="regDomain">Specialization Track</label>
             <select id="regDomain" class="form-select" required>
-              <option value="Web Development">Web Development (Full-Stack & React/Node)</option>
-              <option value="Generative AI">Generative AI & LLM Systems</option>
-              <option value="Data Science">Data Science & Predictive Analytics</option>
-              <option value="Python Development">Python Backend & Scripting</option>
+              <option value="Web Development">Web Development (Full-Stack &amp; React/Node)</option>
+              <option value="Generative AI">Generative AI &amp; LLM Systems</option>
+              <option value="Data Science">Data Science &amp; Predictive Analytics</option>
+              <option value="Python Development">Python Backend &amp; Scripting</option>
               <option value="Front-End Development">Front-End UI/UX Engineering</option>
             </select>
           </div>
@@ -797,11 +1006,14 @@
             <label class="form-label" for="regInstitute">University or Educational Institute</label>
             <input type="text" id="regInstitute" class="form-input" placeholder="e.g. UET Mardan / NUST / GIKI" required>
           </div>
-          <div class="form-group">
-            <label class="form-label" for="regDegree">Degree Program & City</label>
-            <div style="display:flex; gap:8px;">
-              <input type="text" id="regDegree" class="form-input" placeholder="Degree (e.g. BS AI / BS CS)" required>
-              <input type="text" id="regCity" class="form-input" placeholder="City (e.g. Mardan)" style="width:120px;" required>
+          <div class="form-grid-2col">
+            <div class="form-group" style="margin-bottom:0;">
+              <label class="form-label" for="regDegree">Degree Program</label>
+              <input type="text" id="regDegree" class="form-input" placeholder="e.g. BS AI / BS CS" required>
+            </div>
+            <div class="form-group" style="margin-bottom:0;">
+              <label class="form-label" for="regCity">City / Location</label>
+              <input type="text" id="regCity" class="form-input" placeholder="e.g. Mardan" required>
             </div>
           </div>
           <button type="submit" class="btn-submit" id="btnRegisterSubmit">
@@ -809,6 +1021,24 @@
           </button>
         </div>
       </form>
+
+      <!-- Auth Card Footer & Trust Badges -->
+      <div class="auth-card-footer">
+        <div class="auth-footer-divider">
+          <span>Need Assistance or Support?</span>
+        </div>
+        <div class="auth-help-links">
+          <a href="https://wa.me/923433885835?text=Hi%20Muhammad%20Uzair,%20I%20need%20assistance%20with%20the%20Intern%20Portal" target="_blank" class="auth-help-link">
+            <span>💬 WhatsApp Founder Muhammad Uzair</span>
+          </a>
+          <a href="/" class="auth-back-link">
+            <span>&larr; Return to Uzair AI Studio Main Website</span>
+          </a>
+        </div>
+        <div class="auth-security-badge">
+          <span>🛡️ Verified Remote Portal &bull; SSL Encrypted &bull; PWA Offline Ready</span>
+        </div>
+      </div>
     </section>
 
     <!-- ============================================================
@@ -1043,13 +1273,19 @@
             <form id="formUpdatePassword">
               <div class="form-group">
                 <label class="form-label" for="inputCurrentPassword">Current Password</label>
-                <input type="password" id="inputCurrentPassword" class="form-input" placeholder="Enter current password" required>
+                <div class="password-input-wrap">
+                  <input type="password" id="inputCurrentPassword" class="form-input" placeholder="Enter current password" required autocomplete="current-password">
+                  <button type="button" class="btn-toggle-eye" id="btnToggleCurrentPass" aria-label="Toggle password visibility">👁️</button>
+                </div>
               </div>
               <div class="form-group">
                 <label class="form-label" for="inputNewPassword">New Password (Min 6 chars)</label>
-                <input type="password" id="inputNewPassword" class="form-input" placeholder="Enter new password" minlength="6" required>
+                <div class="password-input-wrap">
+                  <input type="password" id="inputNewPassword" class="form-input" placeholder="Enter new password" minlength="6" required autocomplete="new-password">
+                  <button type="button" class="btn-toggle-eye" id="btnToggleNewPass" aria-label="Toggle password visibility">👁️</button>
+                </div>
               </div>
-              <button type="submit" class="btn-submit" style="padding:9px; font-size:0.85rem;">Update Password</button>
+              <button type="submit" class="btn-submit" style="padding:10px; font-size:0.875rem;">Update Password</button>
             </form>
           </div>
         </div>

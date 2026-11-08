@@ -245,6 +245,9 @@
   if (btnLogout) {
     btnLogout.addEventListener('click', async () => {
       localStorage.removeItem(TOKEN_KEY);
+      document.body.classList.remove('portal-authenticated');
+      const mobileAppBar = document.getElementById('mobileAppBar');
+      if (mobileAppBar) mobileAppBar.style.display = 'none';
       if (window.UzairLocalDB) {
         await window.UzairLocalDB.clearInternSession();
       }
@@ -252,6 +255,31 @@
       window.location.reload();
     });
   }
+
+  // Password Visibility Toggles
+  function setupPasswordToggle(btnId, inputId) {
+    const btn = document.getElementById(btnId);
+    const input = document.getElementById(inputId);
+    if (btn && input) {
+      btn.addEventListener('click', (e) => {
+        e.preventDefault();
+        if (input.type === 'password') {
+          input.type = 'text';
+          btn.textContent = '🙈';
+          btn.setAttribute('aria-label', 'Hide password');
+        } else {
+          input.type = 'password';
+          btn.textContent = '👁️';
+          btn.setAttribute('aria-label', 'Show password');
+        }
+      });
+    }
+  }
+
+  setupPasswordToggle('btnToggleLoginPass', 'loginPassword');
+  setupPasswordToggle('btnToggleRegPass', 'regPassword');
+  setupPasswordToggle('btnToggleCurrentPass', 'inputCurrentPassword');
+  setupPasswordToggle('btnToggleNewPass', 'inputNewPassword');
 
   // ============================================================
   // 3. NAVIGATION VIEW SWITCHER (DESKTOP TABS & MOBILE APP BAR)
@@ -292,6 +320,7 @@
   function renderAuthenticatedPortal() {
     if (!currentIntern) return;
 
+    document.body.classList.add('portal-authenticated');
     authSection.style.display = 'none';
     dashboardSection.style.display = 'block';
     if (userHeaderPill) userHeaderPill.style.display = 'flex';
@@ -554,11 +583,27 @@
       const json = await res.json();
       if (json && json.success && json.curriculum) {
         currentCurriculum = json.curriculum;
+        try {
+          localStorage.setItem('uzair_cached_curriculum', JSON.stringify(currentCurriculum));
+        } catch (e) {}
         renderCurriculumWeeks(currentCurriculum.weeks);
+        return;
       }
     } catch (e) {
-      container.innerHTML = '<div style="padding:20px; color:#EF4444;">Failed to load curriculum. Please refresh.</div>';
+      console.warn('[Curriculum] Network fetch failed, checking offline cache...');
     }
+
+    // Offline cache fallback from localStorage
+    try {
+      const cached = localStorage.getItem('uzair_cached_curriculum');
+      if (cached) {
+        currentCurriculum = JSON.parse(cached);
+        renderCurriculumWeeks(currentCurriculum.weeks);
+        return;
+      }
+    } catch (cacheErr) {}
+
+    container.innerHTML = '<div style="padding:20px; color:#EF4444; text-align:center;">Failed to load curriculum. Please connect to internet to download initial curriculum data.</div>';
   }
 
   function renderCurriculumWeeks(weeks) {
@@ -784,7 +829,11 @@
       }
     }
 
-    // Default to Auth Section
+    // Default to Auth Section (unauthenticated state)
+    document.body.classList.remove('portal-authenticated');
+    const mobileAppBar = document.getElementById('mobileAppBar');
+    if (mobileAppBar) mobileAppBar.style.display = 'none';
+    if (userHeaderPill) userHeaderPill.style.display = 'none';
     if (authSection) authSection.style.display = 'block';
     if (dashboardSection) dashboardSection.style.display = 'none';
     checkPublicRegistrationStatus();
