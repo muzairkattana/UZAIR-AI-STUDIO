@@ -641,7 +641,7 @@
     const credStatusEl = document.getElementById('statCredentialStatus');
     if (credStatusEl) {
       credStatusEl.textContent = isCompleted ? 'All Credentials Ready' : 'Offer Letter Ready';
-      credStatusEl.style.color = isCompleted ? '#059669' : '#4F46E5';
+      credStatusEl.style.color = isCompleted ? '#059669' : '#0F172A';
     }
 
     // Populate Verified Digital Badge Preview
@@ -770,7 +770,7 @@
       badgeExp.textContent = '✓ Officially Awarded';
       descExp.textContent = 'Official software engineering experience credential signed by Lead Architect Muhammad Uzair.';
       btnExp.className = 'vault-btn primary';
-      btnExp.style.background = '#8B5CF6';
+      btnExp.style.background = 'linear-gradient(135deg, #090D16 0%, #0F172A 50%, #1E293B 100%)';
       const expUrl = `/experience-letter/${encodeURIComponent(currentIntern.id)}`;
       btnExp.href = expUrl;
       btnExp.innerHTML = '<span>🖨️ Direct Print Experience Letter</span>';
@@ -960,7 +960,7 @@
                   Deliverable: <strong style="color:#0284C7;">${t.deliverableType}</strong> &bull; <em>${t.hint || ''}</em>
                 </div>
                 <div style="margin-top:8px; display:flex; flex-wrap:wrap; gap:8px;">
-                  <button type="button" class="btn-task-blueprint-open" onclick="window.printTaskGuidePdf(${weekNum}, '${t.id}')" style="background:linear-gradient(135deg, #4F46E5, #6366F1); border:none; color:#FFFFFF; border-radius:6px; padding:6px 12px; font-size:0.75rem; font-weight:700; cursor:pointer; display:inline-flex; align-items:center; gap:6px; box-shadow:0 2px 6px rgba(79,70,229,0.25); transition:all 0.15s;">
+                  <button type="button" class="btn-task-blueprint-open" onclick="window.printTaskGuidePdf(${weekNum}, '${t.id}')" style="background:linear-gradient(135deg, #090D16, #0F172A); border:1px solid rgba(255,255,255,0.15); color:#FFFFFF; border-radius:6px; padding:6px 12px; font-size:0.75rem; font-weight:700; cursor:pointer; display:inline-flex; align-items:center; gap:6px; box-shadow:0 2px 6px rgba(15,23,42,0.25); transition:all 0.15s;">
                     <span>📄 Direct Print Task PDF / Blueprint</span>
                   </button>
                   <button type="button" class="btn-task-blueprint-open" onclick="window.triggerTaskGuide(${weekNum}, '${t.id}')" style="background:#F1F5F9; border:1px solid #CBD5E1; color:#334155; border-radius:6px; padding:6px 12px; font-size:0.75rem; font-weight:600; cursor:pointer; display:inline-flex; align-items:center; gap:5px; transition:all 0.15s;">
@@ -1124,7 +1124,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    border-bottom: 2px solid #4F46E5;
+    border-bottom: 2px solid #0F172A;
     padding-bottom: 14px;
     margin-bottom: 16px;
   }
@@ -1144,7 +1144,7 @@
     color: #FFFFFF;
     font-weight: 800;
     font-size: 18px;
-    border: 2px solid #6366F1;
+    border: 2px solid #334155;
   }
   .doc-brand-info h1 {
     font-size: 17px;
@@ -1154,7 +1154,7 @@
     line-height: 1.1;
   }
   .doc-brand-info h1 span {
-    color: #4F46E5;
+    color: #0F172A;
   }
   .doc-brand-info p {
     font-size: 11px;
@@ -1169,9 +1169,9 @@
   }
   .doc-spec-badge {
     display: inline-block;
-    background: #EEF2FF;
-    border: 1px solid #C7D2FE;
-    color: #4338CA;
+    background: #F1F5F9;
+    border: 1px solid #CBD5E1;
+    color: #0F172A;
     font-size: 11px;
     font-weight: 800;
     padding: 3px 10px;
@@ -1218,7 +1218,7 @@
 
   /* Task Banner */
   .task-banner {
-    background: linear-gradient(135deg, #1E1B4B 0%, #312E81 50%, #4338CA 100%);
+    background: linear-gradient(135deg, #090D16 0%, #0F172A 50%, #1E293B 100%);
     color: #FFFFFF;
     border-radius: 8px;
     padding: 14px 18px;
@@ -1229,7 +1229,7 @@
     font-weight: 700;
     letter-spacing: 0.1em;
     text-transform: uppercase;
-    color: #A5B4FC;
+    color: #94A3B8;
     margin-bottom: 4px;
   }
   .task-banner h2 {
@@ -1241,7 +1241,7 @@
   }
   .task-banner p {
     font-size: 12px;
-    color: #E0E7FF;
+    color: #E2E8F0;
     line-height: 1.45;
   }
 
@@ -1255,7 +1255,7 @@
     text-transform: uppercase;
     letter-spacing: 0.06em;
     color: #1E293B;
-    border-left: 3px solid #4F46E5;
+    border-left: 3px solid #0F172A;
     padding-left: 8px;
     margin-bottom: 8px;
     display: flex;
@@ -1385,7 +1385,7 @@
     color: #64748B;
   }
   .verification-seal strong {
-    color: #4F46E5;
+    color: #0F172A;
     font-size: 11px;
     display: block;
   }
@@ -1396,7 +1396,7 @@
     transform: translate(-50%, -50%) rotate(-30deg);
     font-size: 60px;
     font-weight: 900;
-    color: rgba(79, 70, 229, 0.035);
+    color: rgba(15, 23, 42, 0.035);
     letter-spacing: 0.15em;
     pointer-events: none;
     white-space: nowrap;
@@ -1429,7 +1429,7 @@
       <td class="lbl">Candidate</td>
       <td class="val">${escapeHtml(candidateName)}</td>
       <td class="lbl">Candidate ID</td>
-      <td class="val" style="font-family:'JetBrains Mono',monospace; color:#4F46E5;">${escapeHtml(candidateId)}</td>
+      <td class="val" style="font-family:'JetBrains Mono',monospace; color:#0F172A;">${escapeHtml(candidateId)}</td>
     </tr>
     <tr>
       <td class="lbl">Specialization</td>
