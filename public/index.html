@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, interactive-widget=resizes-content">
   <title>Uzair AI Studio | Premier Software House, Mobile Apps & AI Engineering</title>
   
   <meta name="description" content="Uzair AI Studio, founded by Muhammad Uzair in Mardan, KPK, Pakistan, engineers custom enterprise software, mobile applications, modern web platforms, and intelligent AI automation.">
@@ -1707,10 +1707,24 @@
     </svg>
   </button>
 
-  <!-- AI Chat Drawer -->
+  <!-- AI Chat Backdrop (Auto-Close on Click Outside) -->
+  <div class="ai-chat-backdrop" id="aiChatBackdrop"></div>
+
+  <!-- AI Chat Drawer (WhatsApp-Style Mobile Engine) -->
   <div class="ai-chat-drawer" id="aiChatDrawer">
+    <!-- Mobile Drag / Dismiss Bar -->
+    <div class="chat-sheet-bar" id="chatSheetBar" title="Close Chat">
+      <span class="chat-sheet-pill"></span>
+    </div>
+
     <div class="chat-header">
       <div class="chat-header-info">
+        <button type="button" class="btn-chat-back" id="backAiChat" aria-label="Back / Close Chat" title="Back">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="19" y1="12" x2="5" y2="12"></line>
+            <polyline points="12 19 5 12 12 5"></polyline>
+          </svg>
+        </button>
         <img src="/assets/uzairaistudio.png" alt="Uzair AI" class="chat-avatar-img">
         <div class="chat-header-text">
           <strong>Uzair AI Concierge</strong>

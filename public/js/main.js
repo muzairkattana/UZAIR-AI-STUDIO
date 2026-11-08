@@ -629,6 +629,9 @@ function initNewsletter() {
 function initAiAssistant() {
   const openBtn = document.getElementById('openAiChat');
   const closeBtn = document.getElementById('closeAiChat');
+  const backBtn = document.getElementById('backAiChat');
+  const sheetBar = document.getElementById('chatSheetBar');
+  const backdrop = document.getElementById('aiChatBackdrop');
   const chatDrawer = document.getElementById('aiChatDrawer');
   const chatForm = document.getElementById('aiChatForm');
   const chatInput = document.getElementById('aiChatInput');
@@ -636,16 +639,129 @@ function initAiAssistant() {
 
   if (!openBtn || !chatDrawer) return;
 
-  openBtn.addEventListener('click', () => {
-    chatDrawer.classList.toggle('open');
+  // Keep WhatsApp-like stationary header & pinned input above mobile virtual keyboard
+  function syncMobileChatViewport() {
+    if (window.innerWidth > 768) {
+      chatDrawer.style.top = '';
+      chatDrawer.style.height = '';
+      chatDrawer.style.maxHeight = '';
+      chatDrawer.style.bottom = '';
+      return;
+    }
+    if (!chatDrawer.classList.contains('open')) return;
+
+    if (window.visualViewport) {
+      const vv = window.visualViewport;
+      // When keyboard is visible, top is clamped to visual viewport top, height fits exactly
+      const topOffset = Math.max(0, vv.offsetTop);
+      chatDrawer.style.top = `${topOffset}px`;
+      chatDrawer.style.height = `${vv.height}px`;
+      chatDrawer.style.maxHeight = `${vv.height}px`;
+      chatDrawer.style.bottom = 'auto';
+    }
+
+    if (messagesBox) {
+      messagesBox.scrollTop = messagesBox.scrollHeight;
+    }
+  }
+
+  function openChat() {
+    chatDrawer.classList.add('open');
+    if (backdrop) backdrop.classList.add('active');
+    if (window.innerWidth <= 768) {
+      document.body.classList.add('chat-open-mobile');
+      syncMobileChatViewport();
+    }
+    setTimeout(() => {
+      if (chatInput) chatInput.focus();
+      if (messagesBox) messagesBox.scrollTop = messagesBox.scrollHeight;
+    }, 150);
+  }
+
+  function closeChat() {
+    chatDrawer.classList.remove('open');
+    if (backdrop) backdrop.classList.remove('active');
+    document.body.classList.remove('chat-open-mobile');
+    chatDrawer.style.top = '';
+    chatDrawer.style.height = '';
+    chatDrawer.style.maxHeight = '';
+    chatDrawer.style.bottom = '';
+    if (chatInput) chatInput.blur();
+  }
+
+  // Toggle button (click launcher)
+  openBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
     if (chatDrawer.classList.contains('open')) {
-      chatInput.focus();
+      closeChat();
+    } else {
+      openChat();
     }
   });
 
   if (closeBtn) {
-    closeBtn.addEventListener('click', () => {
-      chatDrawer.classList.remove('open');
+    closeBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      closeChat();
+    });
+  }
+
+  if (backBtn) {
+    backBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      closeChat();
+    });
+  }
+
+  if (sheetBar) {
+    sheetBar.addEventListener('click', (e) => {
+      e.stopPropagation();
+      closeChat();
+    });
+  }
+
+  if (backdrop) {
+    backdrop.addEventListener('click', (e) => {
+      e.stopPropagation();
+      closeChat();
+    });
+  }
+
+  // AUTO-CLOSE WHEN CLICKING OUTSIDE OF CHATBOT INTERFACE
+  document.addEventListener('click', (e) => {
+    if (!chatDrawer.classList.contains('open')) return;
+    // If click was inside drawer or on launcher trigger button, do not close
+    if (chatDrawer.contains(e.target) || openBtn.contains(e.target)) return;
+    closeChat();
+  });
+
+  // Support Escape Key
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && chatDrawer.classList.contains('open')) {
+      closeChat();
+    }
+  });
+
+  // Mobile Visual Viewport Watchers (Handles Keyboard Show/Hide seamlessly)
+  if (window.visualViewport) {
+    window.visualViewport.addEventListener('resize', syncMobileChatViewport);
+    window.visualViewport.addEventListener('scroll', syncMobileChatViewport);
+  }
+  window.addEventListener('resize', syncMobileChatViewport);
+
+  // Sync on keyboard focus & blur
+  if (chatInput) {
+    chatInput.addEventListener('focus', () => {
+      if (window.innerWidth <= 768) {
+        setTimeout(syncMobileChatViewport, 80);
+        setTimeout(syncMobileChatViewport, 260);
+      }
+    });
+
+    chatInput.addEventListener('blur', () => {
+      if (window.innerWidth <= 768) {
+        setTimeout(syncMobileChatViewport, 120);
+      }
     });
   }
 
@@ -715,18 +831,18 @@ function initAiAssistant() {
           if (act.includes('Apply on Website') || act.includes('Internship')) {
             const internEl = document.getElementById('internship');
             if (internEl) internEl.scrollIntoView({ behavior: 'smooth' });
-            chatDrawer.classList.remove('open');
+            closeChat();
           } else if (act.includes('Open Google Form')) {
             window.open('https://docs.google.com/forms/d/e/1FAIpQLSeCa6gtGbeSSDzoYAP0JBx3QeHdlBmLsA7EKq9Nv1jqTlv9jg/viewform?usp=sharing&ouid=113245648858304432575', '_blank');
           } else if (act.includes('Planner') || act.includes('Architecture')) {
             const plannerEl = document.getElementById('planner') || document.getElementById('projectEstimator');
             if (plannerEl) plannerEl.scrollIntoView({ behavior: 'smooth' });
-            chatDrawer.classList.remove('open');
+            closeChat();
           } else if (act.includes('WhatsApp')) {
             window.open('https://wa.me/923433885835?text=Hi%20Muhammad%20Uzair,%20I%20want%20to%20discuss%20a%20project%20with%20Uzair%20AI%20Studio', '_blank');
           } else if (act.includes('Portfolio') || act.includes('Case Studies')) {
             document.getElementById('portfolio').scrollIntoView({ behavior: 'smooth' });
-            chatDrawer.classList.remove('open');
+            closeChat();
           } else {
             chatInput.value = act;
             chatForm.dispatchEvent(new Event('submit'));
