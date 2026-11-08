@@ -941,15 +941,15 @@ img, svg, video, canvas, audio, iframe {
 
 .hero-tab-pill:hover {
   background: #FFFFFF;
-  border-color: rgba(29, 78, 216, 0.3);
+  border-color: rgba(99, 102, 241, 0.4);
   color: var(--primary);
 }
 
 .hero-tab-pill.active {
-  background: var(--primary-light);
-  border-color: var(--primary);
-  color: var(--primary);
-  box-shadow: 0 2px 8px rgba(29, 78, 216, 0.12);
+  background: #EEF2FF;
+  border-color: #6366F1;
+  color: #4338CA;
+  box-shadow: 0 4px 14px rgba(79, 70, 229, 0.18);
 }
 
 .hero-stage-view {
@@ -2851,7 +2851,7 @@ img, svg, video, canvas, audio, iframe {
   background: var(--primary);
   color: #FFFFFF;
   border-color: var(--primary);
-  box-shadow: 0 10px 24px rgba(29, 78, 216, 0.35);
+  box-shadow: 0 10px 24px rgba(79, 70, 229, 0.35);
   transform: translateY(-3px);
 }
 
@@ -3070,9 +3070,21 @@ img, svg, video, canvas, audio, iframe {
   position: relative;
 }
 
+.footer-links-duo {
+  display: contents;
+}
+
 @media (max-width: 768px) {
   .site-footer {
-    padding: 38px 0 100px; /* 100px bottom clearance ensures floating chat and back-to-top buttons never overlap footer text */
+    padding: 38px 0 125px; /* 125px bottom clearance ensures floating chat and back-to-top buttons never overlap footer text */
+  }
+  .footer-links-duo {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    padding: 14px 0;
+    border-top: 1px solid #E2E8F0;
+    border-bottom: 1px solid #E2E8F0;
   }
 }
 
@@ -3119,7 +3131,7 @@ img, svg, video, canvas, audio, iframe {
   background: #FFFFFF;
   border-color: var(--primary);
   color: var(--primary);
-  box-shadow: 0 2px 8px rgba(37, 99, 235, 0.08);
+  box-shadow: 0 4px 12px rgba(79, 70, 229, 0.12);
 }
 
 .footer-contact-icon {
@@ -5059,10 +5071,10 @@ img, svg, video, canvas, audio, iframe {
   position: absolute;
   width: 28px;
   height: 28px;
-  border-color: #3B82F6;
+  border-color: #6366F1;
   border-style: solid;
   border-width: 0;
-  filter: drop-shadow(0 0 8px rgba(59, 130, 246, 0.8));
+  filter: drop-shadow(0 0 8px rgba(99, 102, 241, 0.8));
   transition: border-color 0.3s, filter 0.3s;
 }
 
@@ -5184,8 +5196,8 @@ img, svg, video, canvas, audio, iframe {
 .qr-live-scanner-wrap.drag-over,
 .scanner-viewport-box.drag-over,
 .status-checker-card.drag-over {
-  border-color: #3B82F6 !important;
-  box-shadow: 0 0 25px rgba(59, 130, 246, 0.4) !important;
+  border-color: #6366F1 !important;
+  box-shadow: 0 0 25px rgba(99, 102, 241, 0.4) !important;
   transform: scale(1.006);
   transition: all 0.2s ease;
 }

@@ -338,7 +338,14 @@
       localStorage.removeItem(TOKEN_KEY);
       document.body.classList.remove('portal-authenticated');
       const mobileAppBar = document.getElementById('mobileAppBar');
-      if (mobileAppBar) mobileAppBar.style.display = 'none';
+      if (mobileAppBar) {
+        mobileAppBar.style.setProperty('display', 'none', 'important');
+        mobileAppBar.style.setProperty('visibility', 'hidden', 'important');
+      }
+      const headerDesktopNav = document.getElementById('headerDesktopNav');
+      if (headerDesktopNav) {
+        headerDesktopNav.style.setProperty('display', 'none', 'important');
+      }
       if (window.UzairLocalDB) {
         await window.UzairLocalDB.clearInternSession();
       }
@@ -383,6 +390,12 @@
     const target = document.getElementById(targetViewId);
     if (target) target.style.display = 'block';
 
+    // Update Desktop Header Nav Buttons
+    document.querySelectorAll('.header-nav-btn').forEach(btn => {
+      if (btn.dataset.view === targetViewId) btn.classList.add('active');
+      else btn.classList.remove('active');
+    });
+
     // Update Desktop Tabs
     document.querySelectorAll('.dash-tab-btn').forEach(btn => {
       if (btn.dataset.view === targetViewId) btn.classList.add('active');
@@ -398,7 +411,7 @@
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
-  document.querySelectorAll('.dash-tab-btn, .app-bar-item').forEach(el => {
+  document.querySelectorAll('.header-nav-btn, .dash-tab-btn, .app-bar-item').forEach(el => {
     el.addEventListener('click', () => {
       const view = el.dataset.view;
       if (view) switchPortalView(view);
@@ -504,8 +517,25 @@
     const internNotifWrap = document.getElementById('internNotifWrap');
     if (internNotifWrap) internNotifWrap.style.display = 'inline-flex';
 
+    const headerNav = document.getElementById('headerDesktopNav');
     const mobileAppBar = document.getElementById('mobileAppBar');
-    if (mobileAppBar && window.innerWidth <= 768) mobileAppBar.style.display = 'flex';
+    function syncNavbars() {
+      if (window.innerWidth > 768) {
+        if (headerNav) headerNav.style.setProperty('display', 'inline-flex', 'important');
+        if (mobileAppBar) {
+          mobileAppBar.style.setProperty('display', 'none', 'important');
+          mobileAppBar.style.setProperty('visibility', 'hidden', 'important');
+        }
+      } else {
+        if (headerNav) headerNav.style.setProperty('display', 'none', 'important');
+        if (mobileAppBar && document.body.classList.contains('portal-authenticated')) {
+          mobileAppBar.style.setProperty('display', 'flex', 'important');
+          mobileAppBar.style.setProperty('visibility', 'visible', 'important');
+        }
+      }
+    }
+    syncNavbars();
+    window.addEventListener('resize', syncNavbars);
 
     if (window.UzairNotifications) {
       window.UzairNotifications.initBell({
@@ -533,10 +563,39 @@
 
     // Populate Hero & Metrics
     const isCompleted = currentIntern.isCompleted;
-    document.getElementById('dashCandidateName').textContent = currentIntern.fullName;
-    document.getElementById('dashDomainPill').textContent = `Track: ${currentIntern.domain}`;
-    document.getElementById('dashIdPill').textContent = currentIntern.id;
-    document.getElementById('dashStatusPill').textContent = isCompleted ? '🎓 Certified Graduate' : '🟢 Active Remote Intern';
+    const nameEl = document.getElementById('dashCandidateName');
+    if (nameEl) nameEl.textContent = currentIntern.fullName;
+
+    const domainEl = document.getElementById('dashDomainPill');
+    if (domainEl) domainEl.textContent = `Track: ${currentIntern.domain}`;
+
+    const idTextEl = document.getElementById('dashIdText');
+    if (idTextEl) idTextEl.textContent = currentIntern.id;
+    const idPill = document.getElementById('dashIdPill');
+    if (idPill) {
+      idPill.onclick = () => {
+        navigator.clipboard.writeText(currentIntern.id).then(() => {
+          showPortalToast(`Candidate ID ${currentIntern.id} copied!`, 'info');
+        }).catch(() => {});
+      };
+    }
+
+    const durEl = document.getElementById('dashTrackDuration');
+    if (durEl) {
+      const dur = currentIntern.trackDuration || currentIntern.duration || '2 Months';
+      durEl.textContent = dur.includes('6') ? '🏆 24 Weeks (6 Months Fellowship Track)' : '⚡ 8 Weeks (2 Months Sprint Track)';
+    }
+
+    const statusEl = document.getElementById('dashStatusPill');
+    if (statusEl) {
+      statusEl.textContent = isCompleted ? '🎓 Certified Graduate' : '🟢 Active Remote Intern';
+      statusEl.className = isCompleted ? 'welcome-pill-v2 pill-status completed' : 'welcome-pill-v2 pill-status';
+    }
+
+    const btnProfile = document.getElementById('btnWelcomeProfile');
+    if (btnProfile) {
+      btnProfile.onclick = () => openInternProfileModal();
+    }
 
     const currentWeekNum = currentIntern.tasksProgress ? currentIntern.tasksProgress.currentWeek : 1;
     document.getElementById('statCurriculumWeek').textContent = isCompleted ? 'Week 8 / 8' : `Week ${currentWeekNum} / 8`;
@@ -554,7 +613,7 @@
     const credStatusEl = document.getElementById('statCredentialStatus');
     if (credStatusEl) {
       credStatusEl.textContent = isCompleted ? 'All Credentials Ready' : 'Offer Letter Ready';
-      credStatusEl.style.color = isCompleted ? '#059669' : '#2563EB';
+      credStatusEl.style.color = isCompleted ? '#059669' : '#4F46E5';
     }
 
     // Populate Verified Digital Badge Preview
@@ -1161,7 +1220,14 @@
     // Default to Auth Section (unauthenticated state)
     document.body.classList.remove('portal-authenticated');
     const mobileAppBar = document.getElementById('mobileAppBar');
-    if (mobileAppBar) mobileAppBar.style.display = 'none';
+    if (mobileAppBar) {
+      mobileAppBar.style.setProperty('display', 'none', 'important');
+      mobileAppBar.style.setProperty('visibility', 'hidden', 'important');
+    }
+    const headerDesktopNav = document.getElementById('headerDesktopNav');
+    if (headerDesktopNav) {
+      headerDesktopNav.style.setProperty('display', 'none', 'important');
+    }
     const internNotifWrap = document.getElementById('internNotifWrap');
     if (internNotifWrap) internNotifWrap.style.display = 'none';
     if (userHeaderPill) userHeaderPill.style.display = 'none';
