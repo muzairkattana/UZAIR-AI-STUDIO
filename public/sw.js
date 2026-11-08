@@ -34,6 +34,8 @@ const PRECACHE_URLS = [
   '/recommendation-letter.html',
   '/experience-letter.html',
   '/verify.html',
+  '/task-assignment',
+  '/assets/verfication/Intern%20Task%20Assignment%20%E2%80%93%20UZAIR%20AI%20STUDIO.html',
 
   // Brand Assets
   '/assets/uzairaistudio.png',

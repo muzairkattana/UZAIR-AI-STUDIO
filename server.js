@@ -138,16 +138,18 @@ function sanitizeInternForClient(found) {
     startDate: found.startDate,
     completionDate: found.completionDate,
     duration: found.duration || '2 Months (60 Days)',
+    trackDuration: found.trackDuration || (String(found.duration || '').includes('6') ? '6 Months' : '2 Months'),
     mentor: found.mentor || 'Muhammad Uzair (Founder & Lead Architect)',
     status: found.status,
     daysRemaining,
     progressPercent,
     isCompleted,
+    isSixMonthTrack: (String(found.trackDuration || found.duration || '').includes('6')),
     unlockedDocuments: {
       offerLetter: true,
       recommendationLetter: isCompleted,
       certificate: isCompleted,
-      experienceLetter: isCompleted
+      experienceLetter: isCompleted && (String(found.trackDuration || found.duration || '').includes('6'))
     },
     tasksProgress: found.tasksProgress || {
       currentWeek: isCompleted ? 8 : 1,
@@ -1539,7 +1541,17 @@ app.get('/api/internship/experience-letter/:id', async (req, res) => {
   const token = authHeader.startsWith('Bearer ') ? authHeader.slice(7).trim() : req.headers['x-admin-token'] || (req.query && req.query.admin_token);
   const isAdmin = token ? await verifyAdminAuthToken(token) : false;
 
-  // STRICT ACCESS RULE: Experience Letter is locked until tenure is complete
+  // STRICT ACCESS RULE: Experience Letter is available exclusively for 6-Month Track and locked until 6th month completion
+  const isSixMonthTrack = String(found.trackDuration || found.duration || '').includes('6');
+  if (!isSixMonthTrack && !isAdmin) {
+    return res.status(403).json({
+      success: false,
+      locked: true,
+      message: 'Official Experience Letters are awarded exclusively for candidates enrolled in the 6-Month Advanced Engineering Fellowship Track who complete their full 6-month tenure.',
+      trackDuration: found.trackDuration || found.duration || '2 Months'
+    });
+  }
+
   if (!isCompleted && !isAdmin) {
     return res.status(403).json({
       success: false,
@@ -2387,6 +2399,14 @@ app.get('/experience-letter/:id', (req, res) => {
 
 app.get('/preview-internship', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'preview-internship.html'));
+});
+
+// Official Intern Task Assignment Document (Verification Assets)
+app.get('/task-assignment', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'assets', 'verfication', 'Intern Task Assignment – UZAIR AI STUDIO.html'));
+});
+app.get('/task-assignment/:id', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'assets', 'verfication', 'Intern Task Assignment – UZAIR AI STUDIO.html'));
 });
 
 // Intern Portal Routes & PWA Manifest

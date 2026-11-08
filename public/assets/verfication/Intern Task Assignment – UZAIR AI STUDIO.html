@@ -64,7 +64,7 @@ body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset
 .sg{margin-top:14px;padding:12px 14px;border:1px dashed #c9a24a;border-radius:8px;background:#fffdf6;font-size:13px;color:#4a5568}
 .sg b{color:#0a2358}
 .shield{display:none}
-@media print{html,body{display:none!important}}
+@media print{@page{size:A4 portrait;margin:0}.bar,.ban,#off{display:none!important}html,body{background:#fff!important;display:block!important;padding:0!important}#view{padding:0!important;margin:0!important}#doc{zoom:1!important;transform:none!important;width:100%!important}.sheet{box-shadow:none!important;margin:0 auto!important;page-break-after:always;page-break-inside:avoid}}
 .np .app{visibility:hidden}
 </style>
 </head>
@@ -91,7 +91,17 @@ deliv:"A public repository named after your landing page project\nAt least five 
 desc:"At the end of each working day, send your mentor a short written update. Keep it brief, honest, and specific.",
 deliv:"What you completed today\nWhat you plan to do tomorrow\nAny blockers where you need help",notes:""}]};
 const OFFK="uas-offline-copy";
-let S=SAMPLE;try{const o=JSON.parse(localStorage.getItem(OFFK));if(o&&o.S&&!navigator.onLine)S=o.S}catch(e){}
+let S=SAMPLE;
+try {
+  if (window.__INTERN_TASK_DATA__) {
+    S = window.__INTERN_TASK_DATA__;
+  } else {
+    const p = new URLSearchParams(window.location.search);
+    const d = p.get("data");
+    if (d) S = JSON.parse(decodeURIComponent(d));
+  }
+} catch(e) {}
+try { const o = JSON.parse(localStorage.getItem(OFFK)); if (o && o.S && !navigator.onLine) S = o.S; } catch(e) {}
 const $=id=>document.getElementById(id), doc=$('doc');
 const fmt=v=>{if(!v)return"";const d=new Date(v+"T00:00");return isNaN(d)?v:d.toLocaleDateString("en-US",{month:"short",day:"numeric",year:"numeric"})};
 const el=(c,h)=>{const d=document.createElement("div");d.className=c;if(h!=null)d.innerHTML=h;return d};
@@ -148,14 +158,15 @@ function scale(){const w=$('view').clientWidth-20;doc.style.zoom=Math.min(1,w/79
 document.addEventListener("contextmenu",e=>{e.preventDefault()});
 document.addEventListener("dragstart",e=>e.preventDefault());
 document.addEventListener("keydown",e=>{if((e.ctrlKey||e.metaKey)&&["p","s","u"].includes(e.key.toLowerCase()))e.preventDefault()});
-addEventListener("beforeprint",()=>document.body.classList.add("np"));addEventListener("afterprint",()=>document.body.classList.remove("np"));
+// In-portal printing supported
 
 paginate();addEventListener("resize",scale);
 const off=$('off'),ban=$('ban');let bt;
 const say=m=>{ban.textContent=m;ban.classList.add("on");clearTimeout(bt);bt=setTimeout(()=>ban.classList.remove("on"),4500)};
-const has=()=>{try{return!!localStorage.getItem(OFFK)}catch(e){return false}};
+const taskKey = () => (S && S.meta && S.meta.ref) ? (OFFK + "_" + S.meta.ref) : OFFK;
+const has=()=>{try{return!!(localStorage.getItem(taskKey()) || localStorage.getItem(OFFK))}catch(e){return false}};
 const mark=()=>{const ok=has();off.classList.toggle("ok",ok);off.textContent=ok?"Offline ready ✓":"Save for offline"};
-off.onclick=()=>{try{localStorage.setItem(OFFK,JSON.stringify({t:Date.now(),S}));if(navigator.storage&&navigator.storage.persist)navigator.storage.persist();mark();say("Saved inside this portal for offline reading. It can’t be downloaded or printed.")}catch(e){say("Offline saving isn’t available in this browser.")}};
+off.onclick=()=>{try{const k=taskKey();localStorage.setItem(k,JSON.stringify({t:Date.now(),S}));localStorage.setItem(OFFK,JSON.stringify({t:Date.now(),S}));if(navigator.storage&&navigator.storage.persist)navigator.storage.persist();mark();say("Saved inside this portal for offline reading. It can’t be downloaded or printed.")}catch(e){say("Offline saving isn’t available in this browser.")}};
 addEventListener("offline",()=>say(has()?"You’re offline. Your saved copy stays available while this page is open.":"You’re offline. Open the page online and tap “Save for offline”."));
 addEventListener("online",()=>say("Back online."));
 mark();

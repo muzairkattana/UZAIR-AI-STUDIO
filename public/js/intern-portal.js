@@ -640,8 +640,14 @@
 
     const credStatusEl = document.getElementById('statCredentialStatus');
     if (credStatusEl) {
-      credStatusEl.textContent = isCompleted ? 'All Credentials Ready' : 'Offer Letter Ready';
-      credStatusEl.style.color = isCompleted ? '#059669' : '#0F172A';
+      const isSixMonthTrack = Boolean(currentIntern.isSixMonthTrack || (String(currentIntern.trackDuration || currentIntern.duration || '').includes('6')));
+      if (isCompleted) {
+        credStatusEl.textContent = isSixMonthTrack ? 'All Credentials & Exp Letter Ready' : 'Completion Credentials Ready';
+        credStatusEl.style.color = '#059669';
+      } else {
+        credStatusEl.textContent = 'Offer Letter Ready';
+        credStatusEl.style.color = '#0F172A';
+      }
     }
 
     // Populate Verified Digital Badge Preview
@@ -761,14 +767,16 @@
       };
     }
 
-    // Experience Letter
+    // Experience Letter (Strictly unlocked ONLY for 6-Month Track upon completing 6 months)
     const btnExp = document.getElementById('btnVaultExp');
     const badgeExp = document.getElementById('vaultExpBadge');
     const descExp = document.getElementById('vaultExpDesc');
-    if (isCompleted) {
+    const isSixMonthTrack = Boolean(currentIntern.isSixMonthTrack || (String(currentIntern.trackDuration || currentIntern.duration || '').includes('6')));
+
+    if (isCompleted && isSixMonthTrack) {
       badgeExp.className = 'vault-card-badge badge-unlocked';
       badgeExp.textContent = '✓ Officially Awarded';
-      descExp.textContent = 'Official software engineering experience credential signed by Lead Architect Muhammad Uzair.';
+      descExp.textContent = 'Official 6-month software engineering experience credential signed by Lead Architect Muhammad Uzair.';
       btnExp.className = 'vault-btn primary';
       btnExp.style.background = 'linear-gradient(135deg, #090D16 0%, #0F172A 50%, #1E293B 100%)';
       const expUrl = `/experience-letter/${encodeURIComponent(currentIntern.id)}`;
@@ -778,16 +786,28 @@
         e.preventDefault();
         window.directPrintDocument(expUrl, 'Experience Letter', currentIntern.fullName);
       };
-    } else {
+    } else if (isSixMonthTrack) {
       badgeExp.className = 'vault-card-badge badge-locked';
-      badgeExp.textContent = '🔒 Time-Locked';
-      descExp.textContent = 'Unlocks upon graduation to substantiate your completed software engineering contributions.';
+      badgeExp.textContent = `🔒 Time-Locked (${currentIntern.daysRemaining || 180} days remaining)`;
+      descExp.textContent = `Unlocks automatically upon completing your full 6-month (24-week) Fellowship Track (${currentIntern.daysRemaining || 180} days remaining).`;
       btnExp.className = 'vault-btn locked';
       btnExp.removeAttribute('href');
-      btnExp.innerHTML = '<span>🔒 Locked Until Program Completion</span>';
+      btnExp.innerHTML = '<span>🔒 Locked Until 6th Month Completion</span>';
       btnExp.onclick = (e) => {
         e.preventDefault();
-        alert('🔒 Experience Letter Notice:\n\nExperience letters substantiate completed software engineering work and unlock upon internship completion.');
+        alert(`🔒 6-Month Experience Letter Notice:\n\nExperience letters substantiate 6-month software engineering contributions and unlock automatically upon completing your 6-month duration.\n\n• Days Remaining: ${currentIntern.daysRemaining || 180}\n• Target Completion: ${currentIntern.completionDate || '6 Months'}`);
+      };
+    } else {
+      // 2-Month sprint track - not enrolled in 6-month fellowship
+      badgeExp.className = 'vault-card-badge badge-locked';
+      badgeExp.textContent = '🔒 6-Month Track Only';
+      descExp.textContent = 'The official Software Engineering Experience Letter is designated exclusively for candidates enrolled in the 6-Month Fellowship Track.';
+      btnExp.className = 'vault-btn locked';
+      btnExp.removeAttribute('href');
+      btnExp.innerHTML = '<span>🔒 Enrolled in 2-Month Sprint Track</span>';
+      btnExp.onclick = (e) => {
+        e.preventDefault();
+        alert('🔒 Experience Letter Notice:\n\nYou are enrolled in the 2-Month Sprint Track.\n\nOfficial Experience Letters are awarded exclusively to candidates enrolled in the 6-Month Fellowship Track after completing their full 6-month tenure.\n\nYour 2-Month credentials include:\n• Official Offer Letter (Ready)\n• Certificate of Completion (Unlocks upon completion)\n• Letter of Recommendation (Unlocks upon completion)');
       };
     }
   }
@@ -1508,7 +1528,7 @@
 </html>`;
   };
 
-  // Direct In-Portal Print for Task PDF
+  // Direct In-Portal Print for Task PDF using the official Intern Task Assignment specification
   window.printTaskGuidePdf = function (weekNum, taskId) {
     if (!currentCurriculum || !currentCurriculum.weeks) {
       showPortalToast('Curriculum data is still loading. Please retry.', 'warning');
@@ -1525,8 +1545,32 @@
       return;
     }
 
-    const html = window.generateTaskSpecPdfHtml(weekNum, week.title, task, currentIntern);
-    window.printDocumentContentInPortal(html, `Task Blueprint - Week ${weekNum}: ${task.title}`);
+    const intern = currentIntern || {};
+    const taskPayload = {
+      meta: {
+        intern: intern.fullName || 'Engineering Intern',
+        track: intern.domain || 'Software Engineering & AI',
+        mentor: intern.mentor || 'Muhammad Uzair',
+        period: `Week ${weekNum}: ${week.title || ('Milestone ' + weekNum)}`,
+        issued: new Date().toISOString().split('T')[0],
+        ref: `UAIS-TASK-${intern.id || '2026'}-W${weekNum}`
+      },
+      tasks: [
+        {
+          title: task.title || 'Technical Sprint Milestone',
+          priority: task.priority || 'High',
+          due: intern.completionDate || 'End of Sprint Week',
+          desc: (task.description || '') + (task.hint ? `\n\nImplementation Hint: ${task.hint}` : ''),
+          deliv: (Array.isArray(task.steps) && task.steps.length ? task.steps.join('\n') : '') +
+                 (task.deliverableType ? `\nDeliverable Type: ${task.deliverableType}` : '\nDeliverable: Production-Grade GitHub Implementation'),
+          notes: (task.acceptanceCriteria && task.acceptanceCriteria.length ? ('Acceptance Criteria:\n' + task.acceptanceCriteria.join('\n') + '\n\n') : '') +
+                 (task.codeTemplate ? ('Architectural Starter Pattern:\n' + task.codeTemplate) : '')
+        }
+      ]
+    };
+
+    const taskDocUrl = `/task-assignment?data=${encodeURIComponent(JSON.stringify(taskPayload))}`;
+    window.directPrintDocument(taskDocUrl, `Task Assignment - Week ${weekNum}: ${task.title}`);
   };
 
   // Task Blueprint Guide Functions
