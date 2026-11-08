@@ -447,6 +447,8 @@
         populateDocumentVault();
       } else if (targetViewId === 'viewSettings' && typeof populateSettingsView === 'function') {
         populateSettingsView();
+      } else if (targetViewId === 'viewCurriculum' && typeof loadAndRenderCurriculum === 'function') {
+        loadAndRenderCurriculum();
       }
     } catch (viewErr) {
       console.warn('[Intern Portal] View refresh notice:', viewErr);
@@ -718,7 +720,7 @@
   function populateDocumentVault() {
     if (!currentIntern) return;
     const isCompleted = Boolean(currentIntern.isCompleted);
-    const internDays = (internDays !== undefined && internDays !== null) ? internDays : (currentIntern.isCompleted ? 0 : 60);
+    const internDays = (currentIntern.daysRemaining !== undefined && currentIntern.daysRemaining !== null) ? currentIntern.daysRemaining : (currentIntern.isCompleted ? 0 : 60);
 
     // Offer Letter
     const btnOffer = document.getElementById('btnVaultOffer');
@@ -933,6 +935,17 @@
   async function loadAndRenderCurriculum() {
     const container = document.getElementById('curriculumContainer');
     if (!container) return;
+    if (!currentIntern) {
+      // Try restoring session from local storage / DB
+      const token = localStorage.getItem(TOKEN_KEY);
+      if (window.UzairLocalDB) {
+        try {
+          const sess = await window.UzairLocalDB.getInternSession();
+          if (sess && sess.profile) currentIntern = sess.profile;
+        } catch (e) {}
+      }
+    }
+    if (!currentIntern) return;
 
     try {
       const domainQuery = encodeURIComponent(currentIntern.domain || '');
