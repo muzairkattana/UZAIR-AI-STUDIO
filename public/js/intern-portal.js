@@ -707,7 +707,7 @@
       btnOffer.innerHTML = '<span>🖨️ Direct Print Offer Letter</span>';
       btnOffer.onclick = (e) => {
         e.preventDefault();
-        window.directPrintDocument(offerUrl, 'Internship Offer Letter', currentIntern.fullName);
+        window.directPrintDocument(offerUrl, 'Internship Offer Letter', currentIntern.fullName, true);
       };
     }
 
@@ -725,7 +725,7 @@
       btnLor.innerHTML = '<span>🖨️ Direct Print LOR</span>';
       btnLor.onclick = (e) => {
         e.preventDefault();
-        window.directPrintDocument(lorUrl, 'Letter of Recommendation (LOR)', currentIntern.fullName);
+        window.directPrintDocument(lorUrl, 'Letter of Recommendation (LOR)', currentIntern.fullName, true);
       };
     } else {
       badgeLor.className = 'vault-card-badge badge-locked';
@@ -754,7 +754,7 @@
       btnCert.innerHTML = '<span>🖨️ Direct Print Certificate</span>';
       btnCert.onclick = (e) => {
         e.preventDefault();
-        window.directPrintDocument(certUrl, 'Certificate of Completion', currentIntern.fullName);
+        window.directPrintDocument(certUrl, 'Certificate of Completion', currentIntern.fullName, true);
       };
     } else {
       badgeCert.className = 'vault-card-badge badge-locked';
@@ -786,7 +786,7 @@
       btnExp.innerHTML = '<span>🖨️ Direct Print Experience Letter</span>';
       btnExp.onclick = (e) => {
         e.preventDefault();
-        window.directPrintDocument(expUrl, 'Experience Letter', currentIntern.fullName);
+        window.directPrintDocument(expUrl, 'Experience Letter', currentIntern.fullName, true);
       };
     } else if (isSixMonthTrack) {
       badgeExp.className = 'vault-card-badge badge-locked';
