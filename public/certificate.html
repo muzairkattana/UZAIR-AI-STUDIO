@@ -6,6 +6,7 @@
 <title>Certificate of Completion – Uzair AI Studio</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;800&family=Great+Vibes&family=Cabin:wght@500;600;700&display=swap">
+<script src="/js/local-db.js"></script>
 <style>
   :root{--ink:#241f1d;--blue:#0a5aa8;--navy:#0a2358;--gold:#c9a24a;--page:#dfe6f0}
   *{box-sizing:border-box;margin:0;padding:0}
@@ -298,7 +299,21 @@ async function initCertificate() {
         }
       }
     } catch(e) {
-      console.warn('Dynamic certificate fetch fallback:', e);
+      console.warn('Dynamic certificate fetch fallback, checking IndexedDB:', e);
+      if (window.UzairLocalDB) {
+        try {
+          const intern = await window.UzairLocalDB.getInternById(queryId);
+          if (intern) {
+            DATA.name = intern.fullName || intern.rawNameEntered || DATA.name;
+            DATA.course = intern.domain || DATA.course;
+            DATA.reg = intern.id;
+            DATA.tr = (intern.id || '1674-6256-37').replace(/[^0-9]/g, '').slice(0, 10) || '1674-6256-37';
+            DATA.issued = 'Issued ' + (intern.completionDate || '30 May 2026');
+          }
+        } catch (dbErr) {
+          console.warn('LocalDB read error in certificate:', dbErr);
+        }
+      }
     }
   }
 

@@ -5,6 +5,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
   <title>Executive Admin Portal | Uzair AI Studio</title>
   <link rel="icon" type="image/png" href="/assets/uzairaistudio.png">
+  <link rel="manifest" href="/manifest-admin.json">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Admin Command">
+  <link rel="apple-touch-icon" href="/assets/uzairaistudio.png">
+  <meta name="theme-color" content="#0B1329">
   <link rel="stylesheet" href="/css/style.css">
   <style>
     /* Admin Portal Executive Dashboard Styles */
@@ -1743,6 +1749,16 @@
             <p class="admin-page-subtitle" id="pageSubtitleHeading">2-Month Training Program applicants, offer letters, recommendations & official verification</p>
           </div>
         </div>
+
+        <div class="topbar-right">
+          <div id="adminOfflineBadge" class="admin-sync-pill" style="display:inline-flex; align-items:center; gap:6px; padding:5px 12px; border-radius:999px; font-size:0.75rem; font-weight:700; background:#ECFDF5; color:#065F46; border:1px solid rgba(16, 185, 129, 0.3);">
+            <span class="pulse-dot" style="width:6px; height:6px;"></span>
+            <span id="adminOfflineBadgeText">🟢 Cloud Connected</span>
+          </div>
+          <button type="button" class="btn btn-outline btn-sm" id="btnInstallAdminApp" style="display:none; align-items:center; gap:6px; font-size:0.75rem; font-weight:700; padding:5px 12px; border-radius:8px; border:1px solid rgba(37,99,235,0.3); background:#FFFFFF; color:#2563EB; cursor:pointer;">
+            <span>📲 Install Admin App</span>
+          </button>
+        </div>
       </header>
 
       <!-- Dynamic Content Canvas -->
@@ -2458,6 +2474,7 @@
   <script src="/js/zxing.min.js"></script>
   <script src="/js/qr-badge-generator.js"></script>
   <script src="/js/firebase-client.js"></script>
+  <script src="/js/local-db.js"></script>
   <script src="/js/admin.js"></script>
 </body>
 </html>

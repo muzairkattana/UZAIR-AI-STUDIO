@@ -1086,7 +1086,6 @@ app = FastAPI(title=<span class="c-str">"Uzair AI Studio Neural Core"</span>)
 function initInternshipModule() {
   const tabBtns = document.querySelectorAll('.intern-tab-btn');
   const tabDirectPortal = document.getElementById('tabDirectPortal');
-  const tabGoogleForm = document.getElementById('tabGoogleForm');
   const tabCheckStatus = document.getElementById('tabCheckStatus');
 
   // Tab Switching
@@ -1096,7 +1095,6 @@ function initInternshipModule() {
     });
 
     if (tabDirectPortal) tabDirectPortal.style.display = tabKey === 'direct-portal' ? 'block' : 'none';
-    if (tabGoogleForm) tabGoogleForm.style.display = tabKey === 'google-form' ? 'block' : 'none';
     if (tabCheckStatus) tabCheckStatus.style.display = tabKey === 'check-status' ? 'block' : 'none';
   }
 

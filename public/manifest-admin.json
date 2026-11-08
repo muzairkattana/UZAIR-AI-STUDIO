@@ -1,0 +1,26 @@
+{
+  "name": "Uzair AI Studio • Admin Command",
+  "short_name": "AdminPortal",
+  "description": "Executive Candidate Registry, Verified Documents & Command Dashboard by Muhammad Uzair",
+  "start_url": "/admin",
+  "scope": "/admin",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#0B1329",
+  "theme_color": "#0B1329",
+  "icons": [
+    {
+      "src": "/assets/uzairaistudio.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/assets/uzairaistudio.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["business", "productivity", "utilities"]
+}

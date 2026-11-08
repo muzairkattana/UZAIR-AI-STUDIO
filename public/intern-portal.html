@@ -6,7 +6,7 @@
   <title>Intern Portal • Uzair AI Studio</title>
   
   <!-- PWA & Mobile App Meta Tags -->
-  <link rel="manifest" href="/manifest.json">
+  <link rel="manifest" href="/manifest-intern.json">
   <meta name="theme-color" content="#2563EB">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="default">
@@ -706,7 +706,10 @@
       </a>
 
       <!-- User Session Control -->
-      <div class="header-user-status" id="headerUserStatus">
+      <div class="header-user-status" id="headerUserStatus" style="display:flex; align-items:center; gap:8px;">
+        <div id="internOfflineBadge" style="display:none; align-items:center; gap:6px; font-size:0.75rem; font-weight:700; padding:4px 10px; border-radius:999px; background:#FEF3C7; color:#92400E; border:1px solid #FCD34D;">
+          <span>⚡ Offline Mode (Cached Data)</span>
+        </div>
         <div id="userHeaderPill" style="display:none; align-items:center; gap:10px;">
           <div style="text-align:right;" class="hide-on-mobile">
             <strong id="headerUserName" style="font-size:0.85rem; display:block; color:#0F172A;">-</strong>
@@ -1105,6 +1108,7 @@
   </div>
 
   <!-- Client-Side JavaScript Logic -->
+  <script src="/js/local-db.js"></script>
   <script src="/js/intern-portal.js"></script>
 </body>
 </html>

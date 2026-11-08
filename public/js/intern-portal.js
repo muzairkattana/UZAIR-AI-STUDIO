@@ -170,6 +170,9 @@
         if (res.ok && json.success && json.token) {
           localStorage.setItem(TOKEN_KEY, json.token);
           currentIntern = json.intern;
+          if (window.UzairLocalDB) {
+            window.UzairLocalDB.saveInternSession(currentIntern, json.token);
+          }
           renderAuthenticatedPortal();
         } else {
           showAuthAlert(json.message || 'Invalid email or password.', 'error');
@@ -222,6 +225,9 @@
         if (res.ok && json.success && json.token) {
           localStorage.setItem(TOKEN_KEY, json.token);
           currentIntern = json.intern;
+          if (window.UzairLocalDB) {
+            window.UzairLocalDB.saveInternSession(currentIntern, json.token);
+          }
           renderAuthenticatedPortal();
         } else {
           showAuthAlert(json.message || 'Error creating account.', 'error');
@@ -237,8 +243,11 @@
 
   // Logout Handler
   if (btnLogout) {
-    btnLogout.addEventListener('click', () => {
+    btnLogout.addEventListener('click', async () => {
       localStorage.removeItem(TOKEN_KEY);
+      if (window.UzairLocalDB) {
+        await window.UzairLocalDB.clearInternSession();
+      }
       currentIntern = null;
       window.location.reload();
     });
@@ -710,8 +719,34 @@
   }
 
   // ============================================================
-  // 6. INITIALIZATION & SESSION RESTORATION
+  // 6. INITIALIZATION & SESSION RESTORATION (OFFLINE INDEXEDDB)
   // ============================================================
+  function updateInternNetworkStatus(isOnline) {
+    const badge = document.getElementById('internOfflineBadge');
+    if (!badge) return;
+    badge.style.display = isOnline ? 'none' : 'inline-flex';
+  }
+
+  window.addEventListener('online', () => {
+    updateInternNetworkStatus(true);
+    const token = localStorage.getItem(TOKEN_KEY);
+    if (token) {
+      fetch('/api/intern-portal/me', {
+        headers: { 'Authorization': `Bearer ${token}` }
+      }).then(r => r.json()).then(j => {
+        if (j.success && j.intern) {
+          currentIntern = j.intern;
+          if (window.UzairLocalDB) window.UzairLocalDB.saveInternSession(currentIntern, token);
+          renderAuthenticatedPortal();
+        }
+      }).catch(() => {});
+    }
+  });
+
+  window.addEventListener('offline', () => {
+    updateInternNetworkStatus(false);
+  });
+
   async function initPortal() {
     const token = localStorage.getItem(TOKEN_KEY);
     if (token) {
@@ -722,10 +757,31 @@
         const json = await res.json();
         if (res.ok && json.success && json.intern) {
           currentIntern = json.intern;
+          if (window.UzairLocalDB) {
+            window.UzairLocalDB.saveInternSession(currentIntern, token);
+          }
           renderAuthenticatedPortal();
+          updateInternNetworkStatus(true);
           return;
         }
-      } catch (e) {}
+      } catch (e) {
+        console.warn('[Intern Portal] Network offline during token check, querying IndexedDB:', e);
+      }
+
+      // Offline fallback: load cached intern profile from IndexedDB
+      if (window.UzairLocalDB) {
+        try {
+          const sess = await window.UzairLocalDB.getInternSession();
+          if (sess && sess.profile) {
+            currentIntern = sess.profile;
+            renderAuthenticatedPortal();
+            updateInternNetworkStatus(false);
+            return;
+          }
+        } catch (dbErr) {
+          console.error('[Intern Portal] Failed to read cached profile:', dbErr);
+        }
+      }
     }
 
     // Default to Auth Section

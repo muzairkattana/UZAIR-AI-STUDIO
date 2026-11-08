@@ -3,7 +3,86 @@
  * Manages Internships, Real-Time Settings, QR Codes, and Strategy Consultations
  */
 
+// -------------------------------------------------------------
+// PWA & SERVICE WORKER INSTALLATION (ADMIN PORTAL MOBILE APP)
+// -------------------------------------------------------------
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('/sw.js').then(() => {
+    console.log('⚡ [Admin PWA] Service Worker active & pre-caching enabled.');
+  }).catch(err => {
+    console.warn('[Admin PWA] Service Worker registration skipped:', err);
+  });
+}
+
+let adminDeferredPrompt = null;
+window.addEventListener('beforeinstallprompt', (e) => {
+  e.preventDefault();
+  adminDeferredPrompt = e;
+  const btnInstall = document.getElementById('btnInstallAdminApp');
+  if (btnInstall) btnInstall.style.display = 'inline-flex';
+});
+
+// Update offline status badge
+function updateOfflineStatusBadge(isOnline, recordCount = 0) {
+  const badge = document.getElementById('adminOfflineBadge');
+  const badgeText = document.getElementById('adminOfflineBadgeText');
+  if (!badge || !badgeText) return;
+
+  if (isOnline) {
+    badge.style.background = '#ECFDF5';
+    badge.style.color = '#065F46';
+    badge.style.borderColor = 'rgba(16, 185, 129, 0.3)';
+    badgeText.textContent = '🟢 Cloud Connected';
+  } else {
+    badge.style.background = '#FEF3C7';
+    badge.style.color = '#92400E';
+    badge.style.borderColor = '#FCD34D';
+    badgeText.textContent = recordCount > 0 
+      ? `⚡ Offline (${recordCount} Local Records)`
+      : '⚡ Offline Mode (Local DB)';
+  }
+}
+
+window.addEventListener('online', () => {
+  updateOfflineStatusBadge(true);
+  if (window.showAdminToast) {
+    window.showAdminToast('🟢 Reconnected to cloud. Synchronizing latest candidate registry...', 'success');
+  }
+  loadInterns();
+  loadSettings();
+  loadConsultations();
+});
+
+window.addEventListener('offline', () => {
+  updateOfflineStatusBadge(false, (allInternsData || []).length);
+  if (window.showAdminToast) {
+    window.showAdminToast('⚡ Connection offline. Running seamlessly from IndexedDB local database.', 'info');
+  }
+});
+
 document.addEventListener('DOMContentLoaded', () => {
+  // Wire install button
+  const btnInstall = document.getElementById('btnInstallAdminApp');
+  if (btnInstall) {
+    btnInstall.addEventListener('click', async () => {
+      const isIos = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+      if (isIos) {
+        alert('To install Admin App on iOS:\n\n1. Tap the Share button (📤) at the bottom of Safari\n2. Scroll down and tap "Add to Home Screen"\n3. Tap "Add"');
+        return;
+      }
+      if (adminDeferredPrompt) {
+        adminDeferredPrompt.prompt();
+        const { outcome } = await adminDeferredPrompt.userChoice;
+        if (outcome === 'accepted') {
+          btnInstall.style.display = 'none';
+        }
+        adminDeferredPrompt = null;
+      } else {
+        alert('To install Admin Command App:\n\n• On Chrome / Android: Tap the menu (⋮) -> "Add to Home screen" or "Install App"\n• On Windows / Mac / Edge: Click the app icon (⊞) in the browser address bar');
+      }
+    });
+  }
+
   initAdminAuth();
   initAdminNavigation();
   initInternsManager();
@@ -60,21 +139,34 @@ function initAdminAuth() {
   const adminPassInput = document.getElementById('adminPass');
   const btnLogout = document.getElementById('btnLogout');
 
-  // Check saved session (strict: must verify token against backend, no query bypass)
+  // Check saved session (strict: must verify token against backend, with IndexedDB offline fallback)
   const savedToken = localStorage.getItem('uzair_admin_token');
   if (savedToken) {
     fetch('/api/admin/verify-session', {
       headers: { 'Authorization': `Bearer ${savedToken}` }
     }).then(res => res.json()).then(data => {
       if (data && data.success) {
+        if (window.UzairLocalDB) {
+          window.UzairLocalDB.saveAdminSession({ token: savedToken, user: data.user || { name: 'Muhammad Uzair', email: 'kmuzairkhan123@gmail.com' } });
+        }
         showDashboard();
       } else {
         localStorage.removeItem('uzair_admin_token');
         localStorage.removeItem('uzair_admin_user');
+        if (window.UzairLocalDB) window.UzairLocalDB.clearAdminSession();
         if (loginWrapper) loginWrapper.style.display = 'flex';
         if (adminLayout) adminLayout.style.display = 'none';
       }
-    }).catch(() => {
+    }).catch(async () => {
+      // Offline fallback: check cached admin session in IndexedDB
+      if (window.UzairLocalDB) {
+        const cached = await window.UzairLocalDB.getAdminSession();
+        if (cached && cached.token) {
+          showDashboard();
+          updateOfflineStatusBadge(false);
+          return;
+        }
+      }
       showDashboard();
     });
   } else {
@@ -142,6 +234,9 @@ function initAdminAuth() {
         if (res.ok && data.success) {
           localStorage.setItem('uzair_admin_token', data.token);
           localStorage.setItem('uzair_admin_user', JSON.stringify(data.user));
+          if (window.UzairLocalDB) {
+            window.UzairLocalDB.saveAdminSession({ token: data.token, user: data.user || { name: 'Muhammad Uzair', email: 'kmuzairkhan123@gmail.com' } });
+          }
           if (btnSubmit) {
             btnSubmit.innerHTML = '<span>✅ Verified • Launching Command Hub...</span>';
           }
@@ -181,6 +276,9 @@ function initAdminAuth() {
       }
       localStorage.removeItem('uzair_admin_token');
       localStorage.removeItem('uzair_admin_user');
+      if (window.UzairLocalDB) {
+        await window.UzairLocalDB.clearAdminSession();
+      }
       window.location.reload();
     });
   }
@@ -460,12 +558,36 @@ async function loadInterns() {
     const json = await res.json();
     if (json.success) {
       allInternsData = json.data || [];
+      if (window.UzairLocalDB) {
+        window.UzairLocalDB.saveInterns(allInternsData);
+      }
       updateKPIs(allInternsData);
       filterAndRenderInterns();
+      updateOfflineStatusBadge(true);
+    } else {
+      throw new Error(json.message || 'Server error loading candidates');
     }
   } catch (err) {
+    console.warn('[Admin Portal] Online fetch failed, loading from IndexedDB local database:', err);
+    if (window.UzairLocalDB) {
+      try {
+        const cached = await window.UzairLocalDB.getInterns();
+        if (cached && cached.length > 0) {
+          allInternsData = cached;
+          updateKPIs(allInternsData);
+          filterAndRenderInterns();
+          updateOfflineStatusBadge(false, cached.length);
+          if (window.showAdminToast) {
+            window.showAdminToast(`⚡ Offline Mode: Displaying ${cached.length} candidates from local database`, 'info');
+          }
+          return;
+        }
+      } catch (dbErr) {
+        console.error('Error reading from IndexedDB:', dbErr);
+      }
+    }
     if (tbody) {
-      tbody.innerHTML = `<tr><td colspan="9" style="text-align:center; color:#EF4444; padding:24px;">Failed to load intern records from server.</td></tr>`;
+      tbody.innerHTML = `<tr><td colspan="9" style="text-align:center; color:#EF4444; padding:24px;">Failed to load candidate records from server or local database.</td></tr>`;
     }
   }
 }
@@ -1418,6 +1540,10 @@ async function loadConsultations() {
     allConsultationsData = [...subs, ...ests];
     allConsultationsData.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
 
+    if (window.UzairLocalDB) {
+      window.UzairLocalDB.saveConsultations(allConsultationsData);
+    }
+
     // Update KPI counters
     const totalCount = allConsultationsData.length;
     const stratCount = subs.length;
@@ -1439,6 +1565,14 @@ async function loadConsultations() {
 
     filterAndRenderConsultations();
   } catch (err) {
+    if (window.UzairLocalDB) {
+      const cached = await window.UzairLocalDB.getConsultations();
+      if (cached && cached.length > 0) {
+        allConsultationsData = cached;
+        filterAndRenderConsultations();
+        return;
+      }
+    }
     tbody.innerHTML = `<tr><td colspan="7" style="text-align:center; color:#EF4444; padding:24px;">Error connecting to consultations database.</td></tr>`;
   }
 }
@@ -1835,17 +1969,14 @@ function initSettingsManager() {
 }
 
 async function loadSettings() {
-  try {
-    const res = await adminFetch('/api/admin/settings');
-    const json = await res.json();
-    if (!json.success) return;
-
-    const s = json.settings;
-    document.getElementById('settingRegistrationActive').checked = !!s.registrationActive;
-    document.getElementById('settingClosedMessage').value = s.closedMessage || '';
-    document.getElementById('settingBatchName').value = s.batchName || '';
-    document.getElementById('settingProgramDuration').value = s.programDuration || '';
-    document.getElementById('settingCoordinatorWhatsApp').value = s.coordinatorWhatsApp || '';
+  function populateSettings(s) {
+    if (!s) return;
+    const regActive = document.getElementById('settingRegistrationActive');
+    if (regActive) regActive.checked = !!s.registrationActive;
+    if (document.getElementById('settingClosedMessage')) document.getElementById('settingClosedMessage').value = s.closedMessage || '';
+    if (document.getElementById('settingBatchName')) document.getElementById('settingBatchName').value = s.batchName || '';
+    if (document.getElementById('settingProgramDuration')) document.getElementById('settingProgramDuration').value = s.programDuration || '';
+    if (document.getElementById('settingCoordinatorWhatsApp')) document.getElementById('settingCoordinatorWhatsApp').value = s.coordinatorWhatsApp || '';
 
     if (document.getElementById('settingInstructorName')) {
       document.getElementById('settingInstructorName').value = s.instructorName || 'Engr. Saad';
@@ -1873,8 +2004,21 @@ async function loadSettings() {
       kpiStatus.style.color = s.registrationActive ? '#0F172A' : '#EF4444';
       kpiSub.textContent = s.registrationActive ? 'Active Accepting' : 'Entry Closed';
     }
+  }
+
+  try {
+    const res = await adminFetch('/api/admin/settings');
+    const json = await res.json();
+    if (!json.success) throw new Error(json.message);
+
+    const s = json.settings;
+    if (window.UzairLocalDB) window.UzairLocalDB.saveSettings(s);
+    populateSettings(s);
   } catch (err) {
-    console.error('Settings load error:', err);
+    if (window.UzairLocalDB) {
+      const cached = await window.UzairLocalDB.getSettings();
+      if (cached) populateSettings(cached);
+    }
   }
 }
 

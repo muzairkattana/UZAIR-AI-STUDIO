@@ -3319,13 +3319,218 @@ img {
     grid-template-columns: 1fr;
   }
   
+  /* Perfected Mobile Hero Section Experience */
+  .hero-section {
+    padding: 28px 0 36px;
+  }
+  
+  .hero-grid {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+
+  .hero-title {
+    font-size: clamp(1.75rem, 6.5vw, 2.15rem);
+    line-height: 1.18;
+    letter-spacing: -0.025em;
+    margin-bottom: 12px;
+  }
+
+  .hero-subtitle {
+    font-size: 0.92rem;
+    line-height: 1.55;
+    margin-bottom: 18px;
+    color: #475569;
+  }
+
   .hero-cta-group {
+    display: flex;
     flex-direction: column;
     align-items: stretch;
+    gap: 10px;
+    width: 100%;
+    margin-bottom: 14px;
   }
   
   .hero-cta-group .btn {
     width: 100%;
+    justify-content: center;
+    padding: 13px 18px;
+    font-size: 0.92rem;
+    border-radius: 10px;
+  }
+
+  .hero-channel-note {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    text-align: center;
+    width: 100%;
+    font-size: 0.72rem;
+    padding: 8px 12px;
+    margin-bottom: 18px;
+    line-height: 1.45;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.95);
+    border: 1px solid rgba(203, 213, 225, 0.85);
+    box-shadow: 0 1px 4px rgba(15, 23, 42, 0.04);
+    gap: 6px;
+  }
+
+  .hero-proof-bar {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    padding-top: 16px;
+    border-top: 1px solid var(--border-light);
+    width: 100%;
+  }
+
+  .proof-item {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 6px;
+    padding: 8px 4px;
+    background: #FFFFFF;
+    border-radius: 10px;
+    border: 1px solid var(--border-light);
+    box-shadow: 0 1px 3px rgba(15, 23, 42, 0.04);
+    min-width: 0;
+  }
+
+  .proof-icon {
+    width: 28px;
+    height: 28px;
+    font-size: 0.8rem;
+    border-radius: 6px;
+  }
+
+  .proof-text strong {
+    font-size: 0.75rem;
+    line-height: 1.2;
+    white-space: nowrap;
+  }
+
+  .proof-text span {
+    font-size: 0.62rem;
+    line-height: 1.2;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%;
+    display: block;
+    color: var(--text-muted);
+  }
+
+  /* Right Visual Command Card on Mobile */
+  .hero-visual-card {
+    padding: 14px 12px;
+    border-radius: 16px;
+    box-shadow: 0 12px 30px -6px rgba(15, 23, 42, 0.08);
+  }
+
+  .visual-card-topbar {
+    padding-bottom: 8px;
+    margin-bottom: 10px;
+    gap: 6px;
+  }
+
+  .window-dots {
+    display: none;
+  }
+
+  .hero-view-toggles {
+    flex-grow: 1;
+  }
+
+  .view-toggle-btn {
+    flex: 1;
+    justify-content: center;
+    padding: 5px 6px;
+    font-size: 0.7rem;
+  }
+
+  .status-badge-live {
+    font-size: 0.68rem;
+    padding: 3px 8px;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  .hero-tabs-nav {
+    gap: 5px;
+    margin-bottom: 10px;
+  }
+
+  .hero-tab-pill {
+    min-width: 0;
+    flex: 1;
+    padding: 6px 3px;
+    font-size: 0.7rem;
+    white-space: nowrap;
+  }
+
+  .dashboard-hero-image {
+    max-height: 175px;
+    border-radius: 8px;
+  }
+
+  .dashboard-hero-image img {
+    height: 175px;
+  }
+
+  .image-floating-label {
+    font-size: 0.68rem;
+    padding: 2px 6px;
+    bottom: 6px;
+    left: 6px;
+  }
+
+  .live-metrics-row {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 6px;
+  }
+
+  .metric-mini-card {
+    padding: 6px 4px;
+    border-radius: 8px;
+  }
+
+  .metric-mini-val {
+    font-size: 0.95rem;
+    line-height: 1.15;
+  }
+
+  .metric-mini-lbl {
+    font-size: 0.62rem;
+    white-space: nowrap;
+  }
+
+  .hero-tech-label {
+    font-size: 0.65rem;
+    margin-bottom: 6px;
+  }
+
+  .tech-tags-cloud {
+    gap: 4px;
+  }
+
+  .tech-tag {
+    font-size: 0.66rem;
+    padding: 3px 6px;
+  }
+
+  .floating-card-pill {
+    position: static;
+    margin-top: 12px;
+    width: 100%;
+    justify-content: center;
+    box-shadow: none;
+    background: var(--bg-surface-subtle);
+    border: 1px solid var(--border-light);
+    padding: 8px 12px;
+    border-radius: 8px;
   }
   
   .ai-chat-launcher {
@@ -3556,7 +3761,7 @@ img {
 }
 .intern-tab-nav {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(2, 1fr);
   gap: 12px;
   background: var(--bg-surface);
   padding: 8px;

@@ -3,7 +3,7 @@
   "short_name": "InternPortal",
   "description": "Official Candidate & Remote Internship Command Portal by Uzair AI Studio",
   "start_url": "/intern-portal",
-  "scope": "/",
+  "scope": "/intern-portal",
   "display": "standalone",
   "orientation": "portrait",
   "background_color": "#F8FAFC",

@@ -1,0 +1,26 @@
+{
+  "name": "Uzair AI Studio • Intern Portal",
+  "short_name": "InternPortal",
+  "description": "Candidate Command Portal, Weekly Tasks & Official Credentials by Muhammad Uzair",
+  "start_url": "/intern-portal",
+  "scope": "/intern-portal",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#F8FAFC",
+  "theme_color": "#2563EB",
+  "icons": [
+    {
+      "src": "/assets/uzairaistudio.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/assets/uzairaistudio.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["education", "productivity", "career"]
+}

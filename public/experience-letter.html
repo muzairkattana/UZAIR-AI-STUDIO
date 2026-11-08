@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Experience Letter – Uzair AI Studio</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;800&family=Cabin:wght@400;500;600;700&family=Barlow+Condensed:wght@700;800&display=swap">
+<script src="/js/local-db.js"></script>
 <style>
   :root{--ink:#26303f;--blue:#0a5aa8;--navy:#0a2358;--gold:#c9a24a}
   *{box-sizing:border-box;margin:0;padding:0}
@@ -273,7 +274,25 @@ async function initExperienceLetter() {
         }
       }
     } catch(e) {
-      console.warn('Dynamic experience fetch fallback:', e);
+      console.warn('Dynamic experience fetch fallback, checking IndexedDB:', e);
+      if (window.UzairLocalDB) {
+        try {
+          const intern = await window.UzairLocalDB.getInternById(queryId);
+          if (intern) {
+            DATA.name = intern.fullName || intern.rawNameEntered || DATA.name;
+            DATA.role = intern.domain || DATA.role;
+            DATA.start = intern.startDate || DATA.start;
+            DATA.end = intern.completionDate || DATA.end;
+            DATA.date = new Date(intern.completionDate || intern.createdAt || Date.now()).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+            DATA.ref = intern.id;
+            DATA.vid = 'ID: ' + intern.id;
+            DATA.email = 'kmuzairkhan123@gmail.com';
+            DATA.pro = (intern.gender === 'Female') ? 'she' : 'he';
+          }
+        } catch (dbErr) {
+          console.warn('LocalDB read error in experience-letter:', dbErr);
+        }
+      }
     }
   }
 

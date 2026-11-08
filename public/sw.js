@@ -1,19 +1,200 @@
-// Uzair AI Studio - Intern Portal Service Worker
-const CACHE_NAME = 'uzair-intern-portal-v1';
+/**
+ * Uzair AI Studio - Progressive Web App Service Worker
+ * Powers separate offline installation for:
+ * 1. Admin Portal (/admin)
+ * 2. Intern Portal (/intern-portal)
+ * Pre-caches shells, offline document templates, and assets.
+ */
 
-self.addEventListener('install', (e) => {
-  self.skipWaiting();
+const CACHE_NAME = 'uzair-studio-v2';
+
+const PRECACHE_URLS = [
+  // App Shells
+  '/admin',
+  '/admin.html',
+  '/intern-portal',
+  '/intern-portal.html',
+  '/manifest-admin.json',
+  '/manifest-intern.json',
+
+  // Core Scripts & Styles
+  '/css/style.css',
+  '/js/admin.js',
+  '/js/intern-portal.js',
+  '/js/local-db.js',
+  '/js/firebase-client.js',
+  '/js/qrcode-bundle.js',
+  '/js/qrcode.js',
+  '/js/qr-badge-generator.js',
+
+  // Official Offline Document Templates
+  '/offer-letter.html',
+  '/certificate.html',
+  '/recommendation-letter.html',
+  '/experience-letter.html',
+  '/verify.html',
+
+  // Brand Assets
+  '/assets/uzairaistudio.png',
+  '/assets/uzair_signature (2).png',
+  '/assets/saad_signature.png'
+];
+
+// Install: Pre-cache core shells and templates
+self.addEventListener('install', (event) => {
+  event.waitUntil(
+    caches.open(CACHE_NAME).then((cache) => {
+      console.log('[SW] Pre-caching offline shells and document templates...');
+      return cache.addAll(PRECACHE_URLS).catch((err) => {
+        console.warn('[SW] Non-fatal pre-cache warning:', err);
+      });
+    }).then(() => self.skipWaiting())
+  );
 });
 
-self.addEventListener('activate', (e) => {
-  e.waitUntil(clients.claim());
+// Activate: Clean up older cache versions
+self.addEventListener('activate', (event) => {
+  event.waitUntil(
+    caches.keys().then((cacheNames) => {
+      return Promise.all(
+        cacheNames.map((name) => {
+          if (name !== CACHE_NAME) {
+            console.log('[SW] Purging legacy cache:', name);
+            return caches.delete(name);
+          }
+        })
+      );
+    }).then(() => self.clients.claim())
+  );
 });
 
-self.addEventListener('fetch', (e) => {
-  // Pass-through network requests with fallback
-  if (e.request.method === 'GET' && e.request.url.startsWith(self.location.origin)) {
-    e.respondWith(
-      fetch(e.request).catch(() => caches.match(e.request))
+// Fetch: Smart offline fallback strategy
+self.addEventListener('fetch', (event) => {
+  const req = event.request;
+  if (req.method !== 'GET') return;
+
+  const url = new URL(req.url);
+
+  // Only handle origin requests
+  if (url.origin !== self.location.origin) return;
+
+  // 1. Navigation requests (HTML pages)
+  if (req.mode === 'navigate') {
+    event.respondWith(
+      fetch(req)
+        .then((networkRes) => {
+          // Update cache with fresh version
+          const resClone = networkRes.clone();
+          caches.open(CACHE_NAME).then((cache) => cache.put(req, resClone));
+          return networkRes;
+        })
+        .catch(async () => {
+          // Offline fallback based on route
+          const pathname = url.pathname;
+          const cache = await caches.open(CACHE_NAME);
+
+          if (pathname.startsWith('/admin')) {
+            const cachedAdmin = await cache.match('/admin') || await cache.match('/admin.html');
+            if (cachedAdmin) return cachedAdmin;
+          }
+
+          if (pathname.startsWith('/intern-portal')) {
+            const cachedIntern = await cache.match('/intern-portal') || await cache.match('/intern-portal.html');
+            if (cachedIntern) return cachedIntern;
+          }
+
+          if (pathname.includes('offer-letter')) {
+            const cached = await cache.match('/offer-letter.html');
+            if (cached) return cached;
+          }
+
+          if (pathname.includes('certificate')) {
+            const cached = await cache.match('/certificate.html');
+            if (cached) return cached;
+          }
+
+          if (pathname.includes('recommendation-letter')) {
+            const cached = await cache.match('/recommendation-letter.html');
+            if (cached) return cached;
+          }
+
+          if (pathname.includes('experience-letter')) {
+            const cached = await cache.match('/experience-letter.html');
+            if (cached) return cached;
+          }
+
+          if (pathname.includes('verify')) {
+            const cached = await cache.match('/verify.html');
+            if (cached) return cached;
+          }
+
+          return (await cache.match(req)) || caches.match('/intern-portal.html');
+        })
     );
+    return;
   }
+
+  // 2. Static Assets (CSS, JS, Images, Fonts) - Cache-first with network refresh
+  if (
+    url.pathname.endsWith('.css') ||
+    url.pathname.endsWith('.js') ||
+    url.pathname.endsWith('.png') ||
+    url.pathname.endsWith('.jpg') ||
+    url.pathname.endsWith('.svg') ||
+    url.pathname.endsWith('.json')
+  ) {
+    event.respondWith(
+      caches.match(req).then((cached) => {
+        if (cached) {
+          // Fetch updated version in background
+          fetch(req).then((networkRes) => {
+            if (networkRes && networkRes.status === 200) {
+              caches.open(CACHE_NAME).then((cache) => cache.put(req, networkRes));
+            }
+          }).catch(() => {});
+          return cached;
+        }
+
+        return fetch(req).then((networkRes) => {
+          if (networkRes && networkRes.status === 200) {
+            const resClone = networkRes.clone();
+            caches.open(CACHE_NAME).then((cache) => cache.put(req, resClone));
+          }
+          return networkRes;
+        }).catch(() => cached);
+      })
+    );
+    return;
+  }
+
+  // 3. API requests: Network first with cache mirror fallback
+  if (url.pathname.startsWith('/api/')) {
+    event.respondWith(
+      fetch(req)
+        .then((networkRes) => {
+          if (networkRes && networkRes.status === 200) {
+            const resClone = networkRes.clone();
+            caches.open(CACHE_NAME).then((cache) => cache.put(req, resClone));
+          }
+          return networkRes;
+        })
+        .catch(async () => {
+          const cached = await caches.match(req);
+          if (cached) return cached;
+          return new Response(JSON.stringify({ 
+            offline: true, 
+            success: false, 
+            message: 'Device is offline. Using IndexedDB local database.' 
+          }), {
+            headers: { 'Content-Type': 'application/json' }
+          });
+        })
+    );
+    return;
+  }
+
+  // Default passthrough
+  event.respondWith(
+    fetch(req).catch(() => caches.match(req))
+  );
 });
