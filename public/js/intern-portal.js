@@ -105,7 +105,7 @@
     }, 3800);
   }
 
-  window.directPrintDocument = function(rawUrl, docTitle, candidateName) {
+  window.directPrintDocument = function(rawUrl, docTitle, candidateName, shouldAutoPrint = false) {
     if (!rawUrl || rawUrl === '#' || rawUrl.endsWith('#')) {
       showPortalToast('Document link is not ready yet.', 'warning');
       return;
@@ -168,7 +168,7 @@
 
     iframe.onload = () => {
       if (loader) loader.style.display = 'none';
-      if (!autoPrinted) {
+      if (shouldAutoPrint && !autoPrinted) {
         autoPrinted = true;
         setTimeout(triggerPrint, 400);
       }
@@ -980,11 +980,8 @@
                   Deliverable: <strong style="color:#0284C7;">${t.deliverableType}</strong> &bull; <em>${t.hint || ''}</em>
                 </div>
                 <div style="margin-top:8px; display:flex; flex-wrap:wrap; gap:8px;">
-                  <button type="button" class="btn-task-blueprint-open" onclick="window.printTaskGuidePdf(${weekNum}, '${t.id}')" style="background:linear-gradient(135deg, #090D16, #0F172A); border:1px solid rgba(255,255,255,0.15); color:#FFFFFF; border-radius:6px; padding:6px 12px; font-size:0.75rem; font-weight:700; cursor:pointer; display:inline-flex; align-items:center; gap:6px; box-shadow:0 2px 6px rgba(15,23,42,0.25); transition:all 0.15s;">
-                    <span>📄 Direct Print Task PDF / Blueprint</span>
-                  </button>
-                  <button type="button" class="btn-task-blueprint-open" onclick="window.triggerTaskGuide(${weekNum}, '${t.id}')" style="background:#F1F5F9; border:1px solid #CBD5E1; color:#334155; border-radius:6px; padding:6px 12px; font-size:0.75rem; font-weight:600; cursor:pointer; display:inline-flex; align-items:center; gap:5px; transition:all 0.15s;">
-                    <span>🔍 View Guide Modal</span>
+                  <button type="button" class="btn-task-blueprint-open" onclick="window.triggerTaskGuide(${weekNum}, '${t.id}')" style="background:linear-gradient(135deg, #090D16, #0F172A); border:1px solid rgba(255,255,255,0.15); color:#FFFFFF; border-radius:6px; padding:6px 14px; font-size:0.75rem; font-weight:700; cursor:pointer; display:inline-flex; align-items:center; gap:6px; box-shadow:0 2px 6px rgba(15,23,42,0.25); transition:all 0.15s;">
+                    <span>📋 View Task Specification &amp; Guide</span>
                   </button>
                 </div>
               </div>
@@ -1672,15 +1669,7 @@
   const btnPrintTaskGuide = document.getElementById('btnPrintTaskGuide');
   if (btnPrintTaskGuide) {
     btnPrintTaskGuide.addEventListener('click', () => {
-      const modal = document.getElementById('taskGuideModal');
-      const weekNum = parseInt(modal?.dataset?.currentWeek || '1', 10);
-      const taskId = modal?.dataset?.currentTaskId;
       window.closeTaskGuideModal();
-      if (taskId) {
-        window.printTaskGuidePdf(weekNum, taskId);
-      } else {
-        window.print();
-      }
     });
   }
 
