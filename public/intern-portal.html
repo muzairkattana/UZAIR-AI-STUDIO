@@ -2137,6 +2137,54 @@
       }
     }
 
+  
+    .app-bar-icon {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 22px;
+      height: 22px;
+      flex-shrink: 0;
+    }
+    .app-bar-icon svg {
+      width: 19px !important;
+      height: 19px !important;
+      stroke: currentColor !important;
+      display: block !important;
+      flex-shrink: 0 !important;
+    }
+    .app-bar-item {
+      display: flex !important;
+      flex-direction: column !important;
+      align-items: center !important;
+      justify-content: center !important;
+      gap: 3px !important;
+      text-decoration: none !important;
+      color: #64748B !important;
+      font-size: 0.68rem !important;
+      font-weight: 700 !important;
+      background: transparent !important;
+      border: none !important;
+      cursor: pointer !important;
+      padding: 5px 6px !important;
+      border-radius: 10px !important;
+      min-width: 0 !important;
+      flex: 1 1 0 !important;
+      transition: all 0.15s ease !important;
+      white-space: nowrap !important;
+      line-height: 1.1 !important;
+    }
+    .app-bar-item:hover {
+      color: #0F172A !important;
+    }
+    .app-bar-item.active {
+      color: #0F172A !important;
+      background: #F1F5F9 !important;
+    }
+    .app-bar-item.active .app-bar-icon svg {
+      stroke: #0F172A !important;
+    }
+
   </style>
 </head>
 <body>
@@ -2741,11 +2789,14 @@
       </span>
       <span>Dashboard</span>
     </button>
-    <button type="button" class="app-bar-item" data-view="viewMitCourse">
+    <button type="button" class="app-bar-item" data-view="viewMitCourse" title="MIT Artificial Intelligence Course">
       <span class="app-bar-icon">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 2 7 12 12 22 7 12 2"></polygon><polyline points="2 17 12 22 22 17"></polyline><polyline points="2 12 12 17 22 12"></polyline></svg>
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M22 10v6M2 10l10-5 10 5-10 5z"></path>
+          <path d="M6 12v5c0 2 2 3 6 3s6-1 6-3v-5"></path>
+        </svg>
       </span>
-      <span>MIT Course</span>
+      <span>MIT AI</span>
     </button>
     <button type="button" class="app-bar-item" data-view="viewCurriculum">
       <span class="app-bar-icon">
