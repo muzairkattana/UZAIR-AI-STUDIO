@@ -1930,15 +1930,71 @@
     .task-steps-list li:last-child {
       border-bottom: none;
     }
-    .task-code-box {
-      background: #0F172A;
-      color: #38BDF8;
-      font-family: var(--font-mono);
-      font-size: 0.78rem;
-      padding: 12px 14px;
+    .task-code-ide {
+      background: #0D1117;
+      border: 1px solid #30363D;
       border-radius: 10px;
-      overflow-x: auto;
+      overflow: hidden;
       margin-bottom: 16px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+    }
+    .task-code-ide-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 8px 14px;
+      background: #161B22;
+      border-bottom: 1px solid #21262D;
+    }
+    .task-code-ide-dots {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .task-code-ide-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      display: inline-block;
+    }
+    .task-code-ide-dot.red { background: #FF5F56; }
+    .task-code-ide-dot.yellow { background: #FFBD2E; }
+    .task-code-ide-dot.green { background: #27C93F; }
+    .task-code-ide-filename {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: #C9D1D9;
+      margin-left: 8px;
+    }
+    .btn-copy-code {
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      color: #8B949E;
+      font-size: 0.72rem;
+      font-weight: 600;
+      padding: 4px 10px;
+      border-radius: 6px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      transition: all 0.2s;
+    }
+    .btn-copy-code:hover {
+      background: rgba(255, 255, 255, 0.18);
+      color: #FFFFFF;
+    }
+    .task-code-box {
+      background: #0D1117;
+      color: #79C0FF;
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      line-height: 1.6;
+      padding: 14px 16px;
+      overflow-x: auto;
+      margin: 0;
+      white-space: pre;
     }
   </style>
 </head>
@@ -2593,7 +2649,21 @@
 
         <div class="task-guide-section" id="taskGuideCodeSection">
           <div class="task-guide-section-title">💻 Code Blueprint / Starter Pattern</div>
-          <pre class="task-code-box" id="taskGuideCode"></pre>
+          <div class="task-code-ide">
+            <div class="task-code-ide-bar">
+              <div class="task-code-ide-dots">
+                <span class="task-code-ide-dot red"></span>
+                <span class="task-code-ide-dot yellow"></span>
+                <span class="task-code-ide-dot green"></span>
+                <span class="task-code-ide-filename" id="taskGuideCodeFilename">solution.py / app.js</span>
+              </div>
+              <button type="button" class="btn-copy-code" id="btnCopyTaskCode" onclick="window.copyTaskGuideCode()">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                <span id="btnCopyTaskCodeText">Copy Code</span>
+              </button>
+            </div>
+            <pre class="task-code-box" id="taskGuideCode"></pre>
+          </div>
         </div>
 
         <div class="task-guide-section">

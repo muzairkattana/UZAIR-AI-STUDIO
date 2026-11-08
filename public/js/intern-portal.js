@@ -980,8 +980,11 @@
                   Deliverable: <strong style="color:#0284C7;">${t.deliverableType}</strong> &bull; <em>${t.hint || ''}</em>
                 </div>
                 <div style="margin-top:8px; display:flex; flex-wrap:wrap; gap:8px;">
-                  <button type="button" class="btn-task-blueprint-open" onclick="window.triggerTaskGuide(${weekNum}, '${t.id}')" style="background:linear-gradient(135deg, #090D16, #0F172A); border:1px solid rgba(255,255,255,0.15); color:#FFFFFF; border-radius:6px; padding:6px 14px; font-size:0.75rem; font-weight:700; cursor:pointer; display:inline-flex; align-items:center; gap:6px; box-shadow:0 2px 6px rgba(15,23,42,0.25); transition:all 0.15s;">
-                    <span>📋 View Task Specification &amp; Guide</span>
+                  <button type="button" class="btn-task-blueprint-open" onclick="window.viewTaskAssignmentDoc(${weekNum}, '${t.id}')" style="background:linear-gradient(135deg, #090D16, #0F172A); border:1px solid rgba(255,255,255,0.2); color:#FFFFFF; border-radius:6px; padding:6px 14px; font-size:0.75rem; font-weight:700; cursor:pointer; display:inline-flex; align-items:center; gap:6px; box-shadow:0 2px 6px rgba(15,23,42,0.25); transition:all 0.15s;">
+                    <span>📜 View Task Assignment</span>
+                  </button>
+                  <button type="button" class="btn-task-blueprint-open" onclick="window.triggerTaskGuide(${weekNum}, '${t.id}')" style="background:#F1F5F9; border:1px solid #CBD5E1; color:#334155; border-radius:6px; padding:6px 14px; font-size:0.75rem; font-weight:700; cursor:pointer; display:inline-flex; align-items:center; gap:6px; transition:all 0.15s;">
+                    <span>📋 Quick Specification &amp; Code</span>
                   </button>
                 </div>
               </div>
@@ -1525,8 +1528,8 @@
 </html>`;
   };
 
-  // Direct In-Portal Print for Task PDF using the official Intern Task Assignment specification
-  window.printTaskGuidePdf = function (weekNum, taskId) {
+  // Direct In-Portal View for Task PDF using the official Intern Task Assignment specification
+  window.viewTaskAssignmentDoc = function (weekNum, taskId) {
     if (!currentCurriculum || !currentCurriculum.weeks) {
       showPortalToast('Curriculum data is still loading. Please retry.', 'warning');
       return;
@@ -1560,14 +1563,31 @@
           desc: (task.description || '') + (task.hint ? `\n\nImplementation Hint: ${task.hint}` : ''),
           deliv: (Array.isArray(task.steps) && task.steps.length ? task.steps.join('\n') : '') +
                  (task.deliverableType ? `\nDeliverable Type: ${task.deliverableType}` : '\nDeliverable: Production-Grade GitHub Implementation'),
-          notes: (task.acceptanceCriteria && task.acceptanceCriteria.length ? ('Acceptance Criteria:\n' + task.acceptanceCriteria.join('\n') + '\n\n') : '') +
-                 (task.codeTemplate ? ('Architectural Starter Pattern:\n' + task.codeTemplate) : '')
+          codeTemplate: task.codeTemplate || '',
+          notes: (task.acceptanceCriteria && task.acceptanceCriteria.length ? ('Acceptance Criteria:\n' + task.acceptanceCriteria.join('\n')) : '')
         }
       ]
     };
 
     const taskDocUrl = `/task-assignment?data=${encodeURIComponent(JSON.stringify(taskPayload))}`;
-    window.directPrintDocument(taskDocUrl, `Task Assignment - Week ${weekNum}: ${task.title}`);
+    window.directPrintDocument(taskDocUrl, `Task Assignment - Week ${weekNum}: ${task.title}`, intern.fullName, false);
+  };
+  window.printTaskGuidePdf = window.viewTaskAssignmentDoc;
+
+  // Copy Starter Code from Task Guide Modal
+  window.copyTaskGuideCode = function () {
+    const codeEl = document.getElementById('taskGuideCode');
+    const btnText = document.getElementById('btnCopyTaskCodeText');
+    if (!codeEl || !codeEl.textContent) return;
+    navigator.clipboard.writeText(codeEl.textContent).then(() => {
+      if (btnText) {
+        btnText.textContent = 'Copied! ✓';
+        setTimeout(() => { btnText.textContent = 'Copy Code'; }, 2000);
+      }
+      showPortalToast('Starter code copied to clipboard!', 'success');
+    }).catch(() => {
+      showPortalToast('Failed to copy code to clipboard.', 'warning');
+    });
   };
 
   // Task Blueprint Guide Functions
@@ -1621,9 +1641,19 @@
     // Code
     const codeEl = document.getElementById('taskGuideCode');
     const codeSec = document.getElementById('taskGuideCodeSection');
+    const filenameEl = document.getElementById('taskGuideCodeFilename');
     if (task.codeTemplate) {
       codeSec.style.display = 'block';
       codeEl.textContent = task.codeTemplate;
+      if (filenameEl) {
+        const domain = (currentIntern.domain || '').toLowerCase();
+        let fname = 'app.js';
+        if (domain.includes('python') || domain.includes('ai') || domain.includes('data') || domain.includes('machine')) fname = 'main.py';
+        else if (domain.includes('react') || domain.includes('frontend') || domain.includes('next')) fname = 'App.tsx';
+        else if (domain.includes('flutter') || domain.includes('mobile')) fname = 'main.dart';
+        else if (domain.includes('android')) fname = 'MainActivity.kt';
+        filenameEl.textContent = fname;
+      }
     } else {
       codeSec.style.display = 'none';
     }

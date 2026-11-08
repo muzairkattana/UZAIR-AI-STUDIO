@@ -63,6 +63,12 @@ body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset
 .li.cont i{visibility:hidden}
 .sg{margin-top:14px;padding:12px 14px;border:1px dashed #c9a24a;border-radius:8px;background:#fffdf6;font-size:13px;color:#4a5568}
 .sg b{color:#0a2358}
+.code-wrap{margin:8px 0 10px;border-radius:8px;background:#0d1117;border:1px solid #30363d;overflow:hidden;box-shadow:0 4px 14px rgba(0,0,0,0.18)}
+.code-bar{display:flex;align-items:center;justify-content:space-between;padding:6px 12px;background:#161b22;border-bottom:1px solid #21262d;font:600 11px monospace;color:#8b949e}
+.code-dots{display:flex;gap:5px;align-items:center}
+.code-dot{width:9px;height:9px;border-radius:50%;display:inline-block}
+.cd-r{background:#ff5f56}.cd-y{background:#ffbd2e}.cd-g{background:#27c93f}
+.code-pre{margin:0;padding:12px 14px;font-family:'JetBrains Mono','Courier New',monospace;font-size:12px;line-height:1.55;color:#79c0ff;background:#0d1117;overflow-x:auto;white-space:pre-wrap;word-break:break-all}
 .shield{display:none}
 @media print{@page{size:A4 portrait;margin:0}.bar,.ban,#off{display:none!important}html,body{background:#fff!important;display:block!important;padding:0!important}#view{padding:0!important;margin:0!important}#doc{zoom:1!important;transform:none!important;width:100%!important}.sheet{box-shadow:none!important;margin:0 auto!important;page-break-after:always;page-break-inside:avoid}}
 .np .app{visibility:hidden}
@@ -112,6 +118,12 @@ const lines=t=>(t||"").split(/\n+/).map(x=>x.trim()).filter(Boolean);
 function unit(type,text,cont){
   if(type==="p"){const e=el("u r p"+(cont?" cont":""));e.textContent=text;return{el:e,tgt:e,text,type,split:1}}
   if(type==="li"){const e=el("u r li"+(cont?" cont":""),"<i></i><span></span>");const s=e.querySelector("span");s.textContent=text;return{el:e,tgt:s,text,type,split:1}}
+  if(type==="code"){
+    const e=el("u r code-wrap",'<div class="code-bar"><div class="code-dots"><span class="code-dot cd-r"></span><span class="code-dot cd-y"></span><span class="code-dot cd-g"></span><span style="margin-left:6px;font-weight:700;color:#c9d1d9;">Architecture Code Blueprint</span></div><span style="color:#58a6ff;font-size:10px;">PROD SPEC</span></div><pre class="code-pre"></pre>');
+    const p=e.querySelector("pre");
+    p.textContent=text;
+    return{el:e,tgt:p,text,type,split:0};
+  }
 }
 function units(){
   const m=S.meta,U=[],add=(e,k)=>{if(k)e.dataset.kwn=1;U.push({el:e})};
@@ -121,6 +133,7 @@ function units(){
     add(el("u th",'<span class="no">'+String(i+1).padStart(2,"0")+'</span><h3>'+esc(t.title||"Untitled task")+'</h3><span class="chip c-'+esc(t.priority)+'">'+esc((t.priority||"").toUpperCase())+'</span>'+(t.due?'<span class="chip c-due">DUE '+esc(fmt(t.due).toUpperCase())+'</span>':"")),1);
     if(lines(t.desc).length){add(el("u r lb","Description"),1);lines(t.desc).forEach(x=>U.push(unit("p",x)))}
     if(lines(t.deliv).length){add(el("u r lb","Deliverables"),1);lines(t.deliv).forEach(x=>U.push(unit("li",x)))}
+    if(t.codeTemplate && t.codeTemplate.trim().length){add(el("u r lb","Starter Code / Architectural Pattern"),1);U.push(unit("code",t.codeTemplate.trim()))}
     if(lines(t.notes).length){add(el("u r lb","Mentor notes"),1);lines(t.notes).forEach(x=>U.push(unit("p",x)))}
   });
   add(el("u th","<h3>Submission Guidelines</h3>"),1);
