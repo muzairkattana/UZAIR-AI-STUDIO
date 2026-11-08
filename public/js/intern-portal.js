@@ -665,9 +665,17 @@
 
     const credStatusEl = document.getElementById('statCredentialStatus');
     if (credStatusEl) {
-      const isSixMonthTrack = Boolean(currentIntern.isSixMonthTrack || (String(currentIntern.trackDuration || currentIntern.duration || '').includes('6')));
+      const durationStr = String(currentIntern.trackDuration || currentIntern.duration || '').toLowerCase();
+    const isEligibleLongTrack = Boolean(
+      currentIntern.isEligibleLongTrack || 
+      durationStr.includes('6') || 
+      durationStr.includes('year') || 
+      durationStr.includes('12') ||
+      durationStr.includes('fellowship')
+    );
+    const isTwoMonthSprint = !isEligibleLongTrack;
       if (isCompleted) {
-        credStatusEl.textContent = isSixMonthTrack ? 'All Credentials & Exp Letter Ready' : 'Completion Credentials Ready';
+        credStatusEl.textContent = isEligibleLongTrack ? 'All Credentials & Exp Letter Ready' : 'Completion Credentials Ready';
         credStatusEl.style.color = '#059669';
       } else {
         credStatusEl.textContent = 'Offer Letter Ready';
@@ -798,9 +806,9 @@
     const btnExp = document.getElementById('btnVaultExp');
     const badgeExp = document.getElementById('vaultExpBadge');
     const descExp = document.getElementById('vaultExpDesc');
-    const isSixMonthTrack = Boolean(currentIntern.isSixMonthTrack || (String(currentIntern.trackDuration || currentIntern.duration || '').includes('6')));
+    const isEligibleLongTrack = Boolean(currentIntern.isEligibleLongTrack || (String(currentIntern.trackDuration || currentIntern.duration || '').includes('6')));
 
-    if (isCompleted && isSixMonthTrack) {
+    if (isCompleted && isEligibleLongTrack) {
       badgeExp.className = 'vault-card-badge badge-unlocked';
       badgeExp.textContent = '✓ Officially Awarded';
       descExp.textContent = 'Official 6-month software engineering experience credential signed by Lead Architect Muhammad Uzair.';
@@ -813,7 +821,7 @@
         e.preventDefault();
         window.directPrintDocument(expUrl, 'Experience Letter', currentIntern.fullName, true);
       };
-    } else if (isSixMonthTrack) {
+    } else if (isEligibleLongTrack) {
       badgeExp.className = 'vault-card-badge badge-locked';
       badgeExp.textContent = `🔒 Time-Locked (${internDays || 180} days remaining)`;
       descExp.textContent = `Unlocks automatically upon completing your full 6-month (24-week) Fellowship Track (${internDays || 180} days remaining).`;
@@ -993,15 +1001,35 @@
     const completedTasks = tp.completedTasks || [];
     const completedWeeks = tp.completedWeeks || [];
     const activeWeekNum = tp.currentWeek || 1;
+    
+    // Calendar 7-Day Monday Sprint Timer:
+    // Calculates which week is eligible based on start date aligned to Monday
+    let eligibleWeek = 1;
+    if (currentIntern.calendarProgress && currentIntern.calendarProgress.eligibleWeek) {
+      eligibleWeek = currentIntern.calendarProgress.eligibleWeek;
+    } else {
+      const now = new Date();
+      const startRaw = new Date(currentIntern.startDate || currentIntern.createdAt || now);
+      const startDay = startRaw.getDay();
+      const diff = startRaw.getDate() - startDay + (startDay === 0 ? -6 : 1);
+      const startMon = new Date(startRaw);
+      startMon.setDate(diff);
+      startMon.setHours(0, 0, 0, 0);
+      const days = Math.floor((now - startMon) / (1000 * 60 * 60 * 24));
+      eligibleWeek = Math.max(1, Math.min(8, Math.floor(days / 7) + 1));
+    }
 
     container.innerHTML = weeks.map(w => {
       const weekNum = w.weekNumber;
       
-      // Strict Sequential Unlock Rule:
-      // Week 1 is always unlocked.
-      // Week N is unlocked ONLY IF Week N-1 is in completedWeeks!
-      const isUnlocked = weekNum === 1 || completedWeeks.includes(weekNum - 1) || currentIntern.isCompleted;
+      // Dual Unlock Requirement:
+      // 1. Previous week must be fully completed
+      // 2. 7-day calendar sprint cycle must reach this week (Monday start -> Sunday finish)
+      const prevWeekDone = weekNum === 1 || completedWeeks.includes(weekNum - 1);
+      const calendarTimerReady = weekNum <= eligibleWeek || currentIntern.isCompleted;
+      const isUnlocked = (prevWeekDone && calendarTimerReady) || currentIntern.isCompleted;
       const isDone = completedWeeks.includes(weekNum) || currentIntern.isCompleted;
+      const isTimerPending = prevWeekDone && !calendarTimerReady && !isDone;
 
       let cardClass = 'week-card';
       if (isDone) cardClass += ' done-week';
@@ -1015,7 +1043,7 @@
         return `
           <div class="task-item ${isTaskDone ? 'completed' : ''}" id="taskItem_${t.id}">
             <div class="task-top-row">
-              <input type="checkbox" class="task-checkbox" id="chk_${t.id}" data-task="${t.id}" data-week="${weekNum}" ${isTaskDone ? 'checked' : ''} ${!isUnlocked ? 'disabled' : ''}>
+              <input type="checkbox" class="task-checkbox" id="chk_${t.id}" data-task="${t.id}" data-week="${weekNum}" ${isTaskDone ? 'checked disabled title="Task completed & officially locked"' : (!isUnlocked ? 'disabled' : '')}>
               <div class="task-content" style="flex:1;">
                 <h4>${t.title}</h4>
                 <p>${t.description}</p>
@@ -1057,7 +1085,7 @@
             </div>
             <div style="text-align:right;">
               <span class="vault-card-badge ${isDone ? 'badge-unlocked' : (isUnlocked ? 'badge-unlocked' : 'badge-locked')}">
-                ${isDone ? '✓ Completed' : (isUnlocked ? 'In Progress' : '🔒 Locked')}
+                ${isDone ? '✓ Completed' : (isUnlocked ? 'In Progress' : (isTimerPending ? '⏳ Unlocks Monday' : '🔒 Locked'))}
               </span>
             </div>
           </div>

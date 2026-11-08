@@ -134,6 +134,31 @@ function generateInternToken(id) {
   return `UAIS-INT-SES-${id}-${Date.now()}-${crypto.randomBytes(8).toString('hex')}`;
 }
 
+
+// Calculate calendar-eligible week count based on Monday-aligned 7-day sprint cycles
+function calculateEligibleCalendarWeek(startDateStr, createdAtStr) {
+  const now = new Date();
+  const startRaw = new Date(startDateStr || createdAtStr || now);
+  
+  // Align start to the Monday of its start week
+  const startDay = startRaw.getDay(); // 0 is Sun, 1 is Mon...
+  const startMonDiff = startRaw.getDate() - startDay + (startDay === 0 ? -6 : 1);
+  const startMonday = new Date(startRaw);
+  startMonday.setDate(startMonDiff);
+  startMonday.setHours(0, 0, 0, 0);
+
+  // Align now to current time
+  const msElapsed = Math.max(0, now.getTime() - startMonday.getTime());
+  const daysElapsed = Math.floor(msElapsed / (1000 * 60 * 60 * 24));
+  
+  // Each calendar week sprint runs Monday through Sunday (7 days)
+  // Week 1: Day 0 to 6
+  // Week 2: Day 7+ (unlocked on 2nd Monday)
+  // Week 3: Day 14+ (unlocked on 3rd Monday) etc.
+  const eligibleWeek = Math.max(1, Math.min(8, Math.floor(daysElapsed / 7) + 1));
+  return { eligibleWeek, daysElapsed, startMonday: startMonday.toISOString().split('T')[0] };
+}
+
 function sanitizeInternForClient(found) {
   if (!found) return null;
   const now = new Date();
@@ -168,11 +193,17 @@ function sanitizeInternForClient(found) {
     progressPercent,
     isCompleted,
     isSixMonthTrack: (String(found.trackDuration || found.duration || '').includes('6')),
+    calendarProgress: calculateEligibleCalendarWeek(found.startDate, found.createdAt),
     unlockedDocuments: {
       offerLetter: true,
       recommendationLetter: isCompleted,
       certificate: isCompleted,
-      experienceLetter: isCompleted && (String(found.trackDuration || found.duration || '').includes('6'))
+      // Strictly for 6-Month or 1-Year Fellowship tracks (Never unlocked for 2-Month sprint track)
+      experienceLetter: isCompleted && Boolean(
+        String(found.trackDuration || found.duration || '').includes('6') ||
+        String(found.trackDuration || found.duration || '').toLowerCase().includes('year') ||
+        String(found.trackDuration || found.duration || '').includes('12')
+      )
     },
     tasksProgress: found.tasksProgress || {
       currentWeek: isCompleted ? 8 : 1,
@@ -849,7 +880,16 @@ app.post('/api/intern-portal/task-action', requireInternAuth, (req, res) => {
   tp.completedWeeks = tp.completedWeeks || [];
   tp.submissions = tp.submissions || {};
 
-  // Sequential enforcement: Cannot complete tasks of future weeks until previous week is complete
+  // 1. Auto-Lock Protection: Once a task is completed, it cannot be unchecked
+  const isAlreadyDone = tp.completedTasks.includes(taskId);
+  if (isAlreadyDone && !completed) {
+    return res.status(403).json({
+      success: false,
+      message: 'Completed tasks are officially locked and submitted. Unchecking is not permitted.'
+    });
+  }
+
+  // 2. Sequential completion enforcement: Previous week must be completed
   if (weekNumber > 1 && !tp.completedWeeks.includes(weekNumber - 1)) {
     return res.status(403).json({
       success: false,
@@ -857,12 +897,19 @@ app.post('/api/intern-portal/task-action', requireInternAuth, (req, res) => {
     });
   }
 
+  // 3. Calendar Timer enforcement: 7 days full sprint must complete, new tasks unlock on Monday
+  const { eligibleWeek } = calculateEligibleCalendarWeek(intern.startDate, intern.createdAt);
+  if (weekNumber > eligibleWeek && !intern.isCompleted) {
+    return res.status(403).json({
+      success: false,
+      message: `Week ${weekNumber} tasks unlock automatically on Monday following completion of your 7-day sprint cycle (Current calendar sprint: Week ${eligibleWeek}).`
+    });
+  }
+
   if (completed) {
     if (!tp.completedTasks.includes(taskId)) {
       tp.completedTasks.push(taskId);
     }
-  } else {
-    tp.completedTasks = tp.completedTasks.filter(t => t !== taskId);
   }
 
   if (submissionLink || submissionNotes) {

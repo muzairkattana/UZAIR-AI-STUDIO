@@ -338,11 +338,13 @@
           ${itemsHtml}
         </div>
 
+        ${role === 'intern' ? '' : `
         <div class="notif-dropdown-footer">
           <button type="button" class="btn-test-chime" id="btnTestChimeSound">
             <span>🔔 Test Audio Chime</span>
           </button>
         </div>
+        `}
       `;
 
       // Event: Toggle Sound
