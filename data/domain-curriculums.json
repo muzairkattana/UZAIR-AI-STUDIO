@@ -1,0 +1,1966 @@
+{
+  "domains": {
+    "Mobile App Development": {
+      "domainName": "Mobile App Development",
+      "subtitle": "Cross-Platform Mobile Engineering (Flutter, React Native, Android & iOS)",
+      "totalWeeks": 8,
+      "extendedWeeks": 24,
+      "weeks": [
+        {
+          "weekNumber": 1,
+          "title": "Mobile Toolchain, SDK Setup & Environment Architecture",
+          "summary": "Establish Flutter/React Native dev environments, Android Studio SDKs, emulators, and Git workflow.",
+          "objectives": [
+            "Configure Android Studio, Flutter/React Native CLI, and physical device USB debugging.",
+            "Initialize multi-environment config (.env, build variants, launch configurations).",
+            "Establish conventional Git branching strategy (feature/onboarding, releases)."
+          ],
+          "tasks": [
+            {
+              "id": "mad_w1_t1",
+              "title": "Cross-Platform Mobile Environment & Starter Scaffold",
+              "description": "Install Flutter/React Native SDKs, verify `flutter doctor` or `npx react-native doctor`, scaffold project, and run on Android emulator or physical device.",
+              "deliverableType": "GitHub Repo & Device Screenshot",
+              "tools": ["Flutter SDK / React Native", "Android Studio", "VS Code", "Git"],
+              "steps": [
+                "1. Install Flutter 3.x+ or Node.js 20+ with React Native CLI.",
+                "2. Configure Android SDK Platform Tools (API 34+) and test virtual emulator.",
+                "3. Create new project with clean folder structure (lib/presentation, lib/domain, lib/data).",
+                "4. Commit clean scaffold to GitHub with detailed README setup instructions."
+              ],
+              "acceptanceCriteria": [
+                "Zero errors on platform doctor diagnosis.",
+                "App compiles and renders successfully on physical device or emulator.",
+                "GitHub repository contains valid .gitignore (no build/ or .gradle files)."
+              ],
+              "codeTemplate": "// Starter App Scaffold\nvoid main() {\n  WidgetsFlutterBinding.ensureInitialized();\n  runApp(const UzairAIStudioMobileApp());\n}",
+              "hint": "Submit your public GitHub repository URL and emulator screenshot."
+            },
+            {
+              "id": "mad_w1_t2",
+              "title": "Theme Design System & Responsive Base Scaffold",
+              "description": "Construct light/dark theme tokens, typography scale (Plus Jakarta Sans), app bar, and bottom navigation shell.",
+              "deliverableType": "GitHub PR & Screen Capture",
+              "tools": ["Dart / TypeScript", "Material 3 / iOS Cupertino"],
+              "steps": [
+                "1. Implement design token palette matching Uzair AI Studio Iris theme.",
+                "2. Build adaptive bottom navigation bar with active screen tabs.",
+                "3. Ensure dynamic scaling across small and large phone displays."
+              ],
+              "acceptanceCriteria": [
+                "Smooth theme switching between light and dark modes.",
+                "Zero UI overflow errors (RenderFlex overflow = 0)."
+              ],
+              "codeTemplate": "ThemeData.light().copyWith(\n  colorScheme: ColorScheme.fromSeed(seedColor: Color(0xFF4F46E5)),\n  useMaterial3: true,\n)",
+              "hint": "Test on both narrow screen (360dp) and tablet viewports."
+            }
+          ]
+        },
+        {
+          "weekNumber": 2,
+          "title": "Modern UI Component Engineering & State Architecture",
+          "summary": "Master component hierarchy, modular UI cards, forms, and state management (Bloc/Riverpod/Zustand).",
+          "objectives": [
+            "Implement reactive state management pattern (Bloc/Provider/Riverpod).",
+            "Build reusable custom widgets: buttons, cards, status badges, modal bottom sheets.",
+            "Integrate reactive form validation with real-time feedback."
+          ],
+          "tasks": [
+            {
+              "id": "mad_w2_t1",
+              "title": "State Management Implementation (Bloc / Riverpod)",
+              "description": "Scaffold a state-managed feature module (e.g. User Profile or Product Catalog) handling Initial, Loading, Success, and Error states.",
+              "deliverableType": "GitHub Commit & State Diagram",
+              "tools": ["flutter_bloc / Riverpod", "Zustand / Redux Toolkit"],
+              "steps": [
+                "1. Define Event, State, and Bloc/Notifier classes.",
+                "2. Connect UI view to state stream using BlocBuilder or useAtom.",
+                "3. Add simulated network delay and verify loading spinners and error fallbacks."
+              ],
+              "acceptanceCriteria": [
+                "Clean separation of UI presentation from business logic.",
+                "Proper error handling when simulating unexpected state failures."
+              ],
+              "codeTemplate": "class CatalogBloc extends Bloc<CatalogEvent, CatalogState> {\n  CatalogBloc() : super(CatalogInitial()) {\n    on<FetchCatalog>(_onFetch);\n  }\n}",
+              "hint": "Provide a recording or GIF showing Loading -> Success state transitions."
+            },
+            {
+              "id": "mad_w2_t2",
+              "title": "Interactive Client Consultation & Booking Form",
+              "description": "Build an interactive multi-step mobile form with input masks (WhatsApp phone, email, project budget picker, timeline slider).",
+              "deliverableType": "Pull Request Link & Demo APK",
+              "tools": ["FormBuilder", "MaskedTextController"],
+              "steps": [
+                "1. Implement step-by-step form with validation at each transition.",
+                "2. Add input formatters for international phone numbers.",
+                "3. Display animated summary bottom sheet prior to submission."
+              ],
+              "acceptanceCriteria": [
+                "Invalid inputs show clear error messages below fields.",
+                "Form state persists during device orientation changes."
+              ],
+              "codeTemplate": "TextFormField(\n  keyboardType: TextInputType.phone,\n  validator: (val) => val == null || val.length < 10 ? 'Enter valid WhatsApp' : null,\n)",
+              "hint": "Include haptic feedback on successful form submit."
+            }
+          ]
+        },
+        {
+          "weekNumber": 3,
+          "title": "REST APIs, Asynchronous Networking & Caching",
+          "summary": "Connect mobile client to backend REST endpoints, manage token interceptors, and implement offline caching.",
+          "objectives": [
+            "Implement robust HTTP client with Dio / Axios with request/response interceptors.",
+            "Parse JSON into type-safe immutable data models.",
+            "Build offline-first caching layer using Hive, Isar, or SQLite (WatermelonDB)."
+          ],
+          "tasks": [
+            {
+              "id": "mad_w3_t1",
+              "title": "Type-Safe HTTP Client & Token Interceptors",
+              "description": "Create a networking service connecting to Uzair AI Studio API (`/api/internship/verify/:id` and `/api/notifications`). Include auth bearer token injection.",
+              "deliverableType": "GitHub PR with Unit Tests",
+              "tools": ["Dio / Retrofit", "HttpLoggingInterceptor"],
+              "steps": [
+                "1. Configure base Dio client with 15s timeout and automatic retry logic.",
+                "2. Create Interceptor injecting `Authorization: Bearer <token>` on secured routes.",
+                "3. Parse API response into freezed/equatable data model."
+              ],
+              "acceptanceCriteria": [
+                "Network errors (401, 404, 500) caught and mapped to user-friendly UI banners.",
+                "Passes unit tests for model JSON deserialization."
+              ],
+              "codeTemplate": "final dio = Dio(BaseOptions(baseUrl: 'https://uzairaistudio.com/api', connectTimeout: const Duration(seconds: 15)));\ndio.interceptors.add(AuthInterceptor());",
+              "hint": "Verify behavior when airplane mode is toggled."
+            },
+            {
+              "id": "mad_w3_t2",
+              "title": "Offline-First Local Database Synchronization",
+              "description": "Integrate local storage (Hive/SQLite) to cache candidate credentials, curriculum milestones, and notes for offline viewing.",
+              "deliverableType": "Code Repository & Offline Demo",
+              "tools": ["Hive / Isar / SQLite", "SharedPreferences"],
+              "steps": [
+                "1. Initialize local database box/table during app startup.",
+                "2. On successful network fetch, write records to local storage.",
+                "3. When offline, immediately serve cached records with an 'Offline Mode' indicator."
+              ],
+              "acceptanceCriteria": [
+                "App launches and loads candidate data seamlessly with zero internet connection.",
+                "Data synchronizes automatically when connection is restored."
+              ],
+              "codeTemplate": "final box = await Hive.openBox('intern_data');\nawait box.put('current_user', userModel.toJson());",
+              "hint": "Display an amber status pill when serving cached local data."
+            }
+          ]
+        },
+        {
+          "weekNumber": 4,
+          "title": "Device Hardware, Camera, QR Scanner & Biometrics",
+          "summary": "Access native platform APIs: optical camera scanner, local push notifications, and biometric authentication.",
+          "objectives": [
+            "Implement live QR code scanner to verify physical Uzair AI Studio ID badges.",
+            "Integrate biometric authentication (Fingerprint / Face ID).",
+            "Trigger local sound notifications and status updates."
+          ],
+          "tasks": [
+            {
+              "id": "mad_w4_t1",
+              "title": "High-Speed Optical QR Scanner Integration",
+              "description": "Integrate `mobile_scanner` or `react-native-camera` to scan applicant ID QR codes and route immediately to verified candidate sheet.",
+              "deliverableType": "Demo Video & Code Repo",
+              "tools": ["mobile_scanner", "qr_code_scanner"],
+              "steps": [
+                "1. Request runtime camera permissions gracefully.",
+                "2. Render viewfinder overlay with animated scanning line.",
+                "3. Parse scanned QR payload (e.g. `UAIS-INT-XXXXX`), trigger haptic buzz, and load profile."
+              ],
+              "acceptanceCriteria": [
+                "Accurately decodes QR within 500ms under standard indoor lighting.",
+                "Handles camera permission denial with instructional dialog."
+              ],
+              "codeTemplate": "MobileScanner(\n  onDetect: (capture) {\n    final barcode = capture.barcodes.first.rawValue;\n    if (barcode != null) Navigator.pushNamed(context, '/verify', arguments: barcode);\n  },\n)",
+              "hint": "Test with the sample QR code printed on the official ID badge."
+            },
+            {
+              "id": "mad_w4_t2",
+              "title": "Local Audio Notification & Push Alerts Engine",
+              "description": "Implement local push notifications with custom sound chimes when a new task or announcement is published.",
+              "deliverableType": "GitHub Commit & Video Walkthrough",
+              "tools": ["flutter_local_notifications", "audioplayers"],
+              "steps": [
+                "1. Initialize notification channels with HIGH importance and sound enabled.",
+                "2. Bundle synthesized audio chime asset into app bundle.",
+                "3. Schedule local notification when a background sync succeeds."
+              ],
+              "acceptanceCriteria": [
+                "Notification banner appears in system tray with studio logo icon.",
+                "Notification sound plays clearly on physical hardware."
+              ],
+              "codeTemplate": "const AndroidNotificationDetails androidDetails = AndroidNotificationDetails(\n  'sprint_updates', 'Sprint Updates',\n  importance: Importance.max, priority: Priority.high, sound: RawResourceAndroidNotificationSound('chime'),\n);",
+              "hint": "Check battery optimization whitelist on Android."
+            }
+          ]
+        },
+        {
+          "weekNumber": 5,
+          "title": "Complex Animations, Micro-Interactions & Gestures",
+          "summary": "Design delightful fluid micro-interactions, hero page transitions, shimmer loading skeletons, and gesture controls.",
+          "objectives": [
+            "Master explicit animations using AnimationController and CurvedAnimation.",
+            "Build custom shimmer skeleton loaders for zero-layout-shift UI.",
+            "Implement swipe-to-dismiss and pull-to-refresh interactions."
+          ],
+          "tasks": [
+            {
+              "id": "mad_w5_t1",
+              "title": "Shimmer Loading Skeleton & Smooth Transitions",
+              "description": "Replace generic circular spinners with high-end shimmer skeleton loading placeholders matching candidate cards and project cards.",
+              "deliverableType": "GitHub Pull Request & Screen Recording",
+              "tools": ["shimmer / Skeletonizer", "Lottie"],
+              "steps": [
+                "1. Create SkeletonCard mirroring the dimensions of real content cards.",
+                "2. Add linear gradient shimmer sweeping continuously across placeholders.",
+                "3. Cross-fade smoothly into real content when API data arrives."
+              ],
+              "acceptanceCriteria": [
+                "Zero layout jump/shift when content transitions from loading to loaded.",
+                "Animation runs at steady 60fps / 120fps with no frame jank."
+              ],
+              "codeTemplate": "Shimmer.fromColors(\n  baseColor: Colors.grey.shade300,\n  highlightColor: Colors.grey.shade100,\n  child: Container(height: 120, decoration: BoxDecoration(borderRadius: BorderRadius.circular(16))),\n)",
+              "hint": "Measure frame rate using Flutter DevTools Performance overlay."
+            },
+            {
+              "id": "mad_w5_t2",
+              "title": "Hero Transition & Expandable Document Vault Cards",
+              "description": "Implement Hero tag animation connecting the dashboard document vault thumbnail to a full-screen interactive credential preview.",
+              "deliverableType": "Code Repo & Video Capture",
+              "tools": ["Hero Widget", "InteractiveViewer"],
+              "steps": [
+                "1. Wrap document badge with unique Hero tag.",
+                "2. On tap, expand smoothly to full-screen viewer with pinch-to-zoom capability.",
+                "3. Include floating action button to direct print or share credential."
+              ],
+              "acceptanceCriteria": [
+                "Clean 300ms bezier curve transition with no clipping glitches.",
+                "Allows double-tap to zoom on high-res certificates."
+              ],
+              "codeTemplate": "Hero(\n  tag: 'cert_${intern.id}',\n  child: CertificateCard(intern: intern),\n)",
+              "hint": "Enable physics-based bounce on release."
+            }
+          ]
+        },
+        {
+          "weekNumber": 6,
+          "title": "Background Tasks, Deep Linking & PWA Portability",
+          "summary": "Configure background fetch workers, universal deep links (`https://uzairaistudio.com/verify?id=...`), and Web/PWA builds.",
+          "objectives": [
+            "Configure Android App Links & iOS Universal Links.",
+            "Implement background sync service worker.",
+            "Compile multi-platform build for Web/PWA and Android APK."
+          ],
+          "tasks": [
+            {
+              "id": "mad_w6_t1",
+              "title": "Universal Deep Linking & QR Route Handler",
+              "description": "Configure deep link intent filters so scanning an Uzair AI Studio link automatically opens the mobile app to the exact candidate profile.",
+              "deliverableType": "AndroidManifest.xml / Info.plist & Demo",
+              "tools": ["uni_links / app_links", "adb deep link tester"],
+              "steps": [
+                "1. Add `<intent-filter>` for scheme `https` and host `uzairaistudio.com` in AndroidManifest.",
+                "2. Parse initial URI and dynamic stream in app router.",
+                "3. Verify deep link via adb command: `adb shell am start -d 'https://uzairaistudio.com/verify?id=UAIS-INT-SAMPLE'`"
+              ],
+              "acceptanceCriteria": [
+                "App automatically opens and navigates directly to the target verification screen.",
+                "Gracefully falls back to home screen if ID is invalid."
+              ],
+              "codeTemplate": "<intent-filter android:autoVerify=\"true\">\n  <action android:name=\"android.intent.action.VIEW\" />\n  <category android:name=\"android.intent.category.DEFAULT\" />\n  <data android:scheme=\"https\" android:host=\"uzairaistudio.com\" android:pathPrefix=\"/verify\" />\n</intent-filter>",
+              "hint": "Check Android 12+ domain verification requirements."
+            },
+            {
+              "id": "mad_w6_t2",
+              "title": "PWA Offline Compilation & Service Worker Deployment",
+              "description": "Compile the Flutter/React Native application to modern Web PWA, installable on mobile Chrome/Safari with offline caching.",
+              "deliverableType": "Live Hosted PWA Link & Manifest",
+              "tools": ["flutter build web --pwa-strategy", "Workbox"],
+              "steps": [
+                "1. Configure manifest.json with 192x192 & 512x512 icons and standalone display mode.",
+                "2. Register service worker caching core JS/Wasm bundles and assets.",
+                "3. Deploy to live staging hosting (Vercel, Firebase, or Netlify)."
+              ],
+              "acceptanceCriteria": [
+                "Lighthouse PWA score >= 90.",
+                "Mobile browser shows 'Install Uzair AI Studio' app prompt."
+              ],
+              "codeTemplate": "{\n  \"name\": \"Uzair AI Studio Mobile\",\n  \"short_name\": \"UzairStudio\",\n  \"start_url\": \"/intern-portal\",\n  \"display\": \"standalone\",\n  \"theme_color\": \"#4F46E5\"\n}",
+              "hint": "Test 'Add to Home Screen' on real mobile device."
+            }
+          ]
+        },
+        {
+          "weekNumber": 7,
+          "title": "Production Hardening, Security, Obfuscation & Testing",
+          "summary": "Secure API keys, enable ProGuard/R8 code shrinking, write comprehensive integration tests, and optimize APK footprint.",
+          "objectives": [
+            "Write comprehensive widget and integration tests (>= 80% coverage on core logic).",
+            "Secure secrets using flutter_secure_storage and keystore encryption.",
+            "Optimize app bundle size (reduce APK under 25MB with split per ABI)."
+          ],
+          "tasks": [
+            {
+              "id": "mad_w7_t1",
+              "title": "Integration Testing Suite & Automation",
+              "description": "Write end-to-end integration tests automating: Login -> View Curriculum -> Complete Task -> Open Document Vault.",
+              "deliverableType": "Test Suite Code & Execution Report",
+              "tools": ["integration_test", "flutter_test"],
+              "steps": [
+                "1. Write integration test script finding widgets by key and simulating taps.",
+                "2. Mock backend responses to test both online and offline paths.",
+                "3. Run test runner: `flutter test integration_test/app_test.dart` and export report."
+              ],
+              "acceptanceCriteria": [
+                "All test assertions pass cleanly with zero uncaught exceptions.",
+                "Core candidate journey automated without manual intervention."
+              ],
+              "codeTemplate": "testWidgets('User login and task completion flow', (WidgetTester tester) async {\n  await tester.pumpWidget(const MyApp());\n  await tester.enterText(find.byKey(const Key('email_input')), 'test@gmail.com');\n  await tester.tap(find.byKey(const Key('btn_login')));\n  await tester.pumpAndSettle();\n  expect(find.text('Document Vault'), findsOneWidget);\n});",
+              "hint": "Use unique ValueKeys on all primary interactive buttons."
+            },
+            {
+              "id": "mad_w7_t2",
+              "title": "ProGuard/R8 Obfuscation & Split-ABI Release Build",
+              "description": "Configure ProGuard rules, enable resource shrinking, and build optimized Release APKs split by architecture (arm64-v8a, armeabi-v7a).",
+              "deliverableType": "Release APK Link & Size Breakdown",
+              "tools": ["R8 / ProGuard", "flutter build apk --split-per-abi"],
+              "steps": [
+                "1. Enable `minifyEnabled true` and `shrinkResources true` in android/app/build.gradle.",
+                "2. Add keep rules for reflective models in proguard-rules.pro.",
+                "3. Execute release build: `flutter build apk --split-per-abi --obfuscate --split-debug-info=./symbols`"
+              ],
+              "acceptanceCriteria": [
+                "Release arm64-v8a APK size reduced significantly (under 20MB).",
+                "App launches without crashing from over-aggressive shrinking."
+              ],
+              "codeTemplate": "buildTypes {\n  release {\n    signingConfig signingConfigs.release\n    minifyEnabled true\n    shrinkResources true\n    proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'\n  }\n}",
+              "hint": "Verify signed APK with jarsigner / apksigner."
+            }
+          ]
+        },
+        {
+          "weekNumber": 8,
+          "title": "Production Deployment, CI/CD Pipeline & Final Capstone",
+          "summary": "Ship completed production build, establish GitHub Actions automated build pipeline, and deliver capstone portfolio.",
+          "objectives": [
+            "Set up automated GitHub Actions workflow building signed APKs on every main commit.",
+            "Complete end-to-end Capstone Mobile App with live backend integration.",
+            "Generate production release notes and submit final evaluation."
+          ],
+          "tasks": [
+            {
+              "id": "mad_w8_t1",
+              "title": "Automated GitHub Actions CI/CD Build Workflow",
+              "description": "Create `.github/workflows/mobile-release.yml` that checks out code, runs tests, compiles signed release APKs, and uploads build artifacts.",
+              "deliverableType": "GitHub Workflow YAML & Green Pipeline Run",
+              "tools": ["GitHub Actions", "Fastlane"],
+              "steps": [
+                "1. Configure action with Java 17 and Flutter/Node setup actions.",
+                "2. Inject base64-encoded release keystore via GitHub Secrets.",
+                "3. Compile release APK and upload artifact using `actions/upload-artifact@v4`."
+              ],
+              "acceptanceCriteria": [
+                "Automated CI passes all linting, analysis, and build steps.",
+                "Green checkmark on GitHub commit status."
+              ],
+              "codeTemplate": "name: Mobile CI/CD\non: [push]\njobs:\n  build:\n    runs-on: ubuntu-latest\n    steps:\n      - uses: actions/checkout@v4\n      - uses: subosito/flutter-action@v2\n      - run: flutter pub get\n      - run: flutter test\n      - run: flutter build apk --split-per-abi",
+              "hint": "Store keystore passwords securely in repository secrets."
+            },
+            {
+              "id": "mad_w8_t2",
+              "title": "Final Capstone Presentation & Production Release",
+              "description": "Polish your full Capstone Mobile Application. Include complete documentation, architecture diagram, video demo walkthrough, and release APK.",
+              "deliverableType": "GitHub Final Release, Demo Video & APK",
+              "tools": ["GitHub Releases", "Loom / Screen Studio"],
+              "steps": [
+                "1. Publish official GitHub Release (v1.0.0) with signed APK assets attached.",
+                "2. Record a 3-5 minute professional Loom video demonstrating all features.",
+                "3. Write executive README with architecture diagrams, setup instructions, and feature highlights."
+              ],
+              "acceptanceCriteria": [
+                "Capstone represents industry-grade production engineering.",
+                "All weekly milestones verified and approved by Mentor Muhammad Uzair."
+              ],
+              "codeTemplate": "# Uzair AI Studio Mobile Platform v1.0.0\nOfficial production mobile engineering release by candidate.\n- Download APK: [releases/v1.0.0/app-arm64-v8a-release.apk]\n- Video Walkthrough: [Demo Link]",
+              "hint": "Congratulations! Upon mentor review, your Certificate, LOR, and Experience Letter will unlock in the Document Vault."
+            }
+          ]
+        }
+      ]
+    },
+    "Generative AI": {
+      "domainName": "Generative AI & Autonomous LLM Agents",
+      "subtitle": "Large Language Models, Multi-Agent Systems, RAG Architectures & Vector Databases",
+      "totalWeeks": 8,
+      "extendedWeeks": 24,
+      "weeks": [
+        {
+          "weekNumber": 1,
+          "title": "Modern AI Toolchain, API Setup & Prompt Engineering Foundations",
+          "summary": "Configure Python 3.11+, OpenAI/Gemini/Groq SDKs, Jupyter environments, and master structured prompting.",
+          "objectives": [
+            "Set up virtual environments (venv/conda), python-dotenv, and API keys securely.",
+            "Master structured few-shot, Chain-of-Thought (CoT), and ReAct prompting patterns.",
+            "Implement deterministic JSON schema outputs using Pydantic and function calling."
+          ],
+          "tasks": [
+            {
+              "id": "genai_w1_t1",
+              "title": "Secure AI Developer Environment & SDK Client",
+              "description": "Scaffold a Python AI workspace, configure `.env` secrets, establish unified client wrapper for OpenAI / Google Gemini API, and handle rate limits.",
+              "deliverableType": "GitHub Repo with Jupyter Notebook",
+              "tools": ["Python 3.11+", "OpenAI SDK", "google-generativeai", "Pydantic"],
+              "steps": [
+                "1. Initialize virtual environment and install requirements (openai, google-generativeai, pydantic, tenacity).",
+                "2. Create a unified `LLMClient` class with automatic exponential backoff retry logic.",
+                "3. Verify client connectivity with simple prompt execution."
+              ],
+              "acceptanceCriteria": [
+                "Zero API keys leaked to version control (.gitignore verified).",
+                "Handles API rate-limiting gracefully with exponential backoff."
+              ],
+              "codeTemplate": "from pydantic import BaseModel\nclass ProjectBrief(BaseModel):\n    title: str\n    tech_stack: list[str]\n    budget_estimate_usd: int",
+              "hint": "Include token consumption metrics in logs."
+            },
+            {
+              "id": "genai_w1_t2",
+              "title": "Structured CoT Prompt Pipeline with Pydantic Validation",
+              "description": "Design a structured prompt pipeline that analyzes client engineering requests, breaks them into architectural components, and returns validated Pydantic JSON.",
+              "deliverableType": "GitHub Commit & Sample JSON Outputs",
+              "tools": ["LangChain / Instructor", "Pydantic"],
+              "steps": [
+                "1. Define Pydantic schema for ClientProjectArchitecture.",
+                "2. Use tool calling / response_format json_object to enforce strict output.",
+                "3. Validate output against edge cases (incomplete briefs, conflicting requirements)."
+              ],
+              "acceptanceCriteria": [
+                "100% schema validation compliance over 10 diverse test prompts.",
+                "Contains step-by-step reasoning tokens before final JSON block."
+              ],
+              "codeTemplate": "completion = client.beta.chat.completions.parse(\n    model=\"gpt-4o-mini\",\n    messages=[{\"role\": \"system\", \"content\": \"You are Lead Architect at Uzair AI Studio.\"}],\n    response_format=ProjectBrief,\n)",
+              "hint": "Test with real client briefs from the studio intake form."
+            }
+          ]
+        },
+        {
+          "weekNumber": 2,
+          "title": "Vector Databases, Text Embeddings & Semantic Search",
+          "summary": "Understand embedding spaces, cosine similarity, chunking strategies, and vector index persistence.",
+          "objectives": [
+            "Generate dense embeddings using text-embedding-3-small or sentence-transformers.",
+            "Scaffold ChromaDB / Pinecone / Qdrant vector index.",
+            "Benchmark chunking strategies (RecursiveCharacter vs Semantic Chunking)."
+          ],
+          "tasks": [
+            {
+              "id": "genai_w2_t1",
+              "title": "Document Preprocessing & Multi-Strategy Chunking Pipeline",
+              "description": "Build an ingestion pipeline that reads technical documentation (PDF/Markdown/Code), applies recursive chunking with metadata tags, and benchmarks token overlaps.",
+              "deliverableType": "GitHub Repo & Chunking Comparison Report",
+              "tools": ["LangChain TextSplitters", "tiktoken", "PyPDF"],
+              "steps": [
+                "1. Load real software documentation documents.",
+                "2. Implement RecursiveCharacterTextSplitter with chunk_size=500 and overlap=50.",
+                "3. Attach document metadata (source, section, timestamp, page_number) to every chunk."
+              ],
+              "acceptanceCriteria": [
+                "Zero lost text across chunk boundaries.",
+                "Metadata properly serialized for downstream vector retrieval."
+              ],
+              "codeTemplate": "from langchain_text_splitters import RecursiveCharacterTextSplitter\nsplitter = RecursiveCharacterTextSplitter(\n    chunk_size=600, chunk_overlap=80, separators=['\\n## ', '\\n### ', '\\n', ' ']\n)",
+              "hint": "Compare search results when varying chunk sizes from 250 to 1000 tokens."
+            },
+            {
+              "id": "genai_w2_t2",
+              "title": "Local ChromaDB Vector Store & Semantic Query Engine",
+              "description": "Index software engineering knowledge chunks into ChromaDB with cosine similarity, and build a semantic search CLI displaying relevance scores.",
+              "deliverableType": "Pull Request & Benchmark CLI",
+              "tools": ["ChromaDB", "sentence-transformers"],
+              "steps": [
+                "1. Initialize persistent ChromaDB collection on local disk.",
+                "2. Embed and upsert 100+ technical knowledge chunks with IDs.",
+                "3. Query collection with natural language and return top-k results with distance metrics."
+              ],
+              "acceptanceCriteria": [
+                "Semantic queries return top 3 relevant chunks within 100ms.",
+                "Demonstrates semantic similarity (e.g. searching 'mobile cross-platform' retrieves 'Flutter')."
+              ],
+              "codeTemplate": "import chromadb\nchroma_client = chromadb.PersistentClient(path=\"./chroma_db\")\ncollection = chroma_client.get_or_create_collection(name=\"studio_knowledge\")",
+              "hint": "Normalize cosine distance to percentage similarity."
+            }
+          ]
+        },
+        {
+          "weekNumber": 3,
+          "title": "Retrieval-Augmented Generation (RAG) Architecture",
+          "summary": "Design full end-to-end RAG systems combining query rewriting, vector retrieval, reranking, and citation generation.",
+          "objectives": [
+            "Construct complete RAG pipeline with context window injection.",
+            "Implement Cohere / FlashRank cross-encoder reranking.",
+            "Enforce strict groundedness with inline citation markers."
+          ],
+          "tasks": [
+            {
+              "id": "genai_w3_t1",
+              "title": "Production RAG Pipeline with Source Citations",
+              "description": "Build an end-to-end RAG engine answering user questions about Uzair AI Studio projects, services, and tech stacks, with strict inline source citations.",
+              "deliverableType": "GitHub Commit & Streamlit Demo",
+              "tools": ["LangChain / LlamaIndex", "FastAPI / Streamlit"],
+              "steps": [
+                "1. Implement multi-query retrieval (rewrite ambiguous user questions).",
+                "2. Retrieve top 5 chunks and inject into grounded system prompt.",
+                "3. Generate response with explicit citation references [Doc 1, Page 3]."
+              ],
+              "acceptanceCriteria": [
+                "Zero hallucinations: if answer is not in context, responds with clear unknown notice.",
+                "Every factual assertion backed by retrieved chunk reference."
+              ],
+              "codeTemplate": "SYSTEM_PROMPT = \"\"\"You are Uzair AI Studio AI Concierge. Answer strictly based on the provided Context. If not mentioned in Context, state that you do not have sufficient information.\nContext: {context}\"\"\"",
+              "hint": "Evaluate with adversarial questions outside the context."
+            },
+            {
+              "id": "genai_w3_t2",
+              "title": "Cross-Encoder Reranker & Context Optimization",
+              "description": "Incorporate a cross-encoder reranker (FlashRank / Cohere Rerank) to reorder retrieved candidates before feeding to LLM, reducing prompt token bloat by 40%.",
+              "deliverableType": "Benchmark Notebook & PR",
+              "tools": ["flashrank", "sentence-transformers/cross-encoder"],
+              "steps": [
+                "1. Retrieve initial candidate pool of top 15 chunks via dense search.",
+                "2. Apply cross-encoder to score query-document relevance pairs.",
+                "3. Filter top 3 highest-scoring chunks for prompt context."
+              ],
+              "acceptanceCriteria": [
+                "Precision@3 metric improves over raw vector retrieval.",
+                "Reduces input prompt token usage significantly."
+              ],
+              "codeTemplate": "from flashrank import Ranker, RerankRequest\nranker = Ranker()\nresults = ranker.rerank(RerankRequest(query=query, passages=passages))",
+              "hint": "Log latency before and after reranker addition."
+            }
+          ]
+        },
+        {
+          "weekNumber": 4,
+          "title": "Autonomous LLM Agents, Tools & Function Calling",
+          "summary": "Build autonomous agents capable of dynamic reasoning, tool selection, calculator/search invocation, and loop termination.",
+          "objectives": [
+            "Master OpenAI/Gemini Tool & Function Calling protocols.",
+            "Implement ReAct (Reasoning + Acting) loop with scratchpad history.",
+            "Equip agents with custom tools: web search, database lookup, email dispatcher."
+          ],
+          "tasks": [
+            {
+              "id": "genai_w4_t1",
+              "title": "Custom Tool Suite & Function Calling Engine",
+              "description": "Create a suite of executable tools (calculate_project_estimate, check_candidate_id, query_studio_availability) and wire them to an autonomous agent loop.",
+              "deliverableType": "GitHub Repo & Interactive CLI",
+              "tools": ["OpenAI Function Calling", "Pydantic Tools"],
+              "steps": [
+                "1. Define tool functions with comprehensive docstrings and typed arguments.",
+                "2. Inspect tool_calls in LLM response, execute matching Python function, and return tool message.",
+                "3. Allow LLM to summarize tool output for end-user."
+              ],
+              "acceptanceCriteria": [
+                "Agent selects the correct tool based on user intent.",
+                "Gracefully handles tool execution failures and retries."
+              ],
+              "codeTemplate": "tools = [{\n    \"type\": \"function\",\n    \"function\": {\n        \"name\": \"lookup_intern_status\",\n        \"description\": \"Verify internship application by ID\",\n        \"parameters\": InternLookupSchema.model_json_schema()\n    }\n}]",
+              "hint": "Prevent infinite tool execution loops with a max_iterations guard (<= 5)."
+            },
+            {
+              "id": "genai_w4_t2",
+              "title": "ReAct Autonomous Engineering Agent",
+              "description": "Implement a full ReAct agent that autonomously plans, searches files, runs syntax checks, and reports bugs for a software repository.",
+              "deliverableType": "GitHub PR & Execution Log",
+              "tools": ["LangGraph / CrewAI / AutoGen"],
+              "steps": [
+                "1. Implement state graph with Thought -> Action -> Observation cycle.",
+                "2. Provide agent with file reading and command execution tools.",
+                "3. Test agent on finding a deliberate bug in a codebase."
+              ],
+              "acceptanceCriteria": [
+                "Agent successfully discovers and explains the target bug without human intervention.",
+                "Produces a clear audit trail of all intermediate thoughts and actions."
+              ],
+              "codeTemplate": "class AgentState(TypedDict):\n    messages: list[BaseMessage]\n    iterations: int\n    is_resolved: bool",
+              "hint": "Log intermediate steps to terminal with colored ANSI output."
+            }
+          ]
+        },
+        {
+          "weekNumber": 5,
+          "title": "Multi-Agent Orchestration & Workflow State Machines",
+          "summary": "Orchestrate collaborative teams of specialized AI agents (Architect, Developer, Tester, Reviewer) using LangGraph.",
+          "objectives": [
+            "Build stateful cyclical agent graphs with LangGraph.",
+            "Implement human-in-the-loop approval checkpoints.",
+            "Coordinate multi-agent role handoffs and conflict resolution."
+          ],
+          "tasks": [
+            {
+              "id": "genai_w5_t1",
+              "title": "LangGraph Multi-Agent Software Development Team",
+              "description": "Build a multi-agent system where a 'Product Manager' drafts user stories, a 'Developer Agent' writes Python code, and a 'QA Agent' runs tests and requests revisions.",
+              "deliverableType": "GitHub Repo & LangGraph Studio Visualization",
+              "tools": ["LangGraph", "LangChain Core"],
+              "steps": [
+                "1. Define GraphState containing project requirements, code draft, and test results.",
+                "2. Create nodes: `pm_node`, `developer_node`, `qa_node`.",
+                "3. Add conditional edge from `qa_node`: if tests pass -> END; else -> `developer_node`."
+              ],
+              "acceptanceCriteria": [
+                "Code is iteratively refined until QA unit tests pass.",
+                "Terminates safely if max cycles (3) exceeded."
+              ],
+              "codeTemplate": "workflow = StateGraph(AgentState)\nworkflow.add_node(\"developer\", dev_node)\nworkflow.add_node(\"qa\", qa_node)\nworkflow.add_conditional_edges(\"qa\", should_continue, {\"retry\": \"developer\", \"end\": END})",
+              "hint": "Render workflow diagram using `graph.get_graph().print_ascii()`."
+            },
+            {
+              "id": "genai_w5_t2",
+              "title": "Human-in-the-Loop Approval & Memory Checkpoint",
+              "description": "Incorporate interrupt checkpoints before critical actions (e.g. creating files, sending WhatsApp message) requiring explicit admin confirmation.",
+              "deliverableType": "PR Link & Terminal Demo Video",
+              "tools": ["MemorySaver", "interrupt_before"],
+              "steps": [
+                "1. Configure LangGraph checkpointer using `MemorySaver()`.",
+                "2. Set `interrupt_before=['execute_action']` on critical nodes.",
+                "3. Build interactive CLI resuming state upon operator typing 'approve'."
+              ],
+              "acceptanceCriteria": [
+                "Agent pauses execution state and persists to storage until human approval is delivered.",
+                "Rejection safely rolls back state."
+              ],
+              "codeTemplate": "app = workflow.compile(checkpointer=MemorySaver(), interrupt_before=[\"commit_code\"])",
+              "hint": "Verify state resume works after restarting the Python process."
+            }
+          ]
+        },
+        {
+          "weekNumber": 6,
+          "title": "Model Evaluation, Ragas, LLM-as-a-Judge & Guardrails",
+          "summary": "Implement quantitative evaluation frameworks: Ragas (faithfulness, answer relevance), NeMo Guardrails, and safety filters.",
+          "objectives": [
+            "Evaluate RAG accuracy quantitatively using Ragas / TruLens.",
+            "Implement Llama-Guard / NeMo guardrails against prompt injection and toxic output.",
+            "Benchmark cost, latency, and tokens per task across models (GPT-4o, Claude 3.5, Gemini 1.5, Llama 3)."
+          ],
+          "tasks": [
+            {
+              "id": "genai_w6_t1",
+              "title": "Automated Ragas Evaluation Benchmark",
+              "description": "Create an automated test suite evaluating your studio RAG system over 25 synthetic questions measuring Faithfulness, Answer Relevance, and Context Precision.",
+              "deliverableType": "Evaluation CSV Report & GitHub Commit",
+              "tools": ["ragas", "datasets", "pandas"],
+              "steps": [
+                "1. Build synthetic evaluation dataset with Questions, Ground Truth, and Contexts.",
+                "2. Run Ragas evaluation metrics using an independent judge model.",
+                "3. Export metrics dataframe and generate bar charts comparing RAG configurations."
+              ],
+              "acceptanceCriteria": [
+                "Achieves >= 0.85 Faithfulness and >= 0.80 Answer Relevance score.",
+                "Identifies specific weak queries for context chunk improvement."
+              ],
+              "codeTemplate": "from ragas import evaluate\nfrom ragas.metrics import faithfulness, answer_relevancy, context_precision\nresult = evaluate(dataset, metrics=[faithfulness, answer_relevancy, context_precision])",
+              "hint": "Use radar chart to visualize multi-metric performance."
+            },
+            {
+              "id": "genai_w6_t2",
+              "title": "Input/Output Security Guardrails & Jailbreak Defense",
+              "description": "Implement a security middleware checking incoming user prompts for prompt injection, system prompt extraction, and adversarial jailbreaks.",
+              "deliverableType": "Security Middleware & Pentest Report",
+              "tools": ["guardrails-ai / NeMo Guardrails", "Regex"],
+              "steps": [
+                "1. Implement heuristic checks for common jailbreak keywords ('ignore previous instructions', 'DAN mode').",
+                "2. Run secondary lightweight classifier checking prompt safety.",
+                "3. Block violating queries immediately with audit alert."
+              ],
+              "acceptanceCriteria": [
+                "Successfully blocks 10+ standard jailbreak and injection test payloads.",
+                "Latency overhead remains below 120ms."
+              ],
+              "codeTemplate": "def validate_prompt_safety(prompt: str) -> bool:\n    for pattern in JAILBREAK_PATTERNS:\n        if re.search(pattern, prompt, re.IGNORECASE): return False\n    return True",
+              "hint": "Document all defended vulnerabilities in your README."
+            }
+          ]
+        },
+        {
+          "weekNumber": 7,
+          "title": "Fine-Tuning, LoRA/QLoRA & Custom Domain Adaptation",
+          "summary": "Understand Parameter-Efficient Fine-Tuning (PEFT/LoRA), dataset formatting (ChatML/ShareGPT), and quantized inference.",
+          "objectives": [
+            "Curate and format high-quality instruction dataset for domain fine-tuning.",
+            "Understand LoRA / QLoRA mechanics (rank, alpha, target modules).",
+            "Serve fine-tuned open-source model using vLLM or Ollama."
+          ],
+          "tasks": [
+            {
+              "id": "genai_w7_t1",
+              "title": "Instruction Dataset Curation & Tokenization Pipeline",
+              "description": "Construct a curated 500-sample JSONL instruction dataset formatted in ChatML standard for Uzair AI Studio domain software engineering tasks.",
+              "deliverableType": "Dataset JSONL & Validation Script",
+              "tools": ["HuggingFace datasets", "jsonlines"],
+              "steps": [
+                "1. Draft high-quality prompt-response pairs reflecting real software architectures.",
+                "2. Validate JSON structure, check token distribution, and eliminate duplicate training samples.",
+                "3. Split into 90% train / 10% validation sets."
+              ],
+              "acceptanceCriteria": [
+                "100% compliant with standard ChatML schema ({messages: [{role, content}]}).",
+                "Passes HuggingFace dataset validation with zero syntax errors."
+              ],
+              "codeTemplate": "{\"messages\": [{\"role\": \"system\", \"content\": \"Uzair AI Studio Engineer\"}, {\"role\": \"user\", \"content\": \"...\"}, {\"role\": \"assistant\", \"content\": \"...\"}]}",
+              "hint": "Include diverse edge cases (refactoring, debugging, optimization)."
+            },
+            {
+              "id": "genai_w7_t2",
+              "title": "Open-Source LLM Serving with vLLM / Ollama",
+              "description": "Deploy an open-weights model (e.g. Llama 3.1 8B or Mistral 7B) locally or on cloud GPU, expose an OpenAI-compatible endpoint, and benchmark tokens/sec.",
+              "deliverableType": "Server Dockerfile & Performance Benchmark",
+              "tools": ["Ollama / vLLM", "Docker"],
+              "steps": [
+                "1. Run quantized model via Ollama or vLLM container.",
+                "2. Benchmark continuous batching and time-to-first-token (TTFT).",
+                "3. Connect your Week 3 RAG client to the self-hosted endpoint."
+              ],
+              "acceptanceCriteria": [
+                "Exposes `/v1/chat/completions` API compatible with OpenAI SDK.",
+                "Generates steady output stream with low initial latency."
+              ],
+              "codeTemplate": "client = OpenAI(base_url=\"http://localhost:11434/v1\", api_key=\"ollama\")",
+              "hint": "Compare GPU VRAM utilization with 4-bit vs 8-bit quantization."
+            }
+          ]
+        },
+        {
+          "weekNumber": 8,
+          "title": "Production Deployment, FastAPI Streaming & Capstone Showcase",
+          "summary": "Ship completed production AI application with SSE streaming, async queues, Docker containerization, and final presentation.",
+          "objectives": [
+            "Build production asynchronous FastAPI backend with Server-Sent Events (SSE) token streaming.",
+            "Deploy full application with Docker Compose (API + Vector DB + Frontend).",
+            "Deliver Capstone Presentation to Mentor Muhammad Uzair."
+          ],
+          "tasks": [
+            {
+              "id": "genai_w8_t1",
+              "title": "FastAPI SSE Streaming Backend & Session Memory",
+              "description": "Build high-throughput FastAPI service with asynchronous token streaming (`EventSourceResponse`), user session memory, and rate limiting.",
+              "deliverableType": "GitHub Repo & Postman / Curl Demo",
+              "tools": ["FastAPI", "sse-starlette", "Redis"],
+              "steps": [
+                "1. Create `StreamingResponse` endpoint yielding token chunks in real-time.",
+                "2. Store conversation session history in Redis with TTL expiration.",
+                "3. Add CORS middleware and JWT token verification."
+              ],
+              "acceptanceCriteria": [
+                "Streams tokens progressively to browser with no buffering delay.",
+                "Gracefully handles client disconnect mid-generation."
+              ],
+              "codeTemplate": "from sse_starlette.sse import EventSourceResponse\n@app.post('/api/chat/stream')\nasync def chat_stream(request: ChatRequest):\n    return EventSourceResponse(generate_stream_tokens(request))",
+              "hint": "Inspect network tab in browser to verify text/event-stream headers."
+            },
+            {
+              "id": "genai_w8_t2",
+              "title": "Full Capstone Autonomous AI System & Showcase",
+              "description": "Finalize and containerize your end-to-end Autonomous AI Project. Deliver complete documentation, architecture diagram, video demo, and deployment.",
+              "deliverableType": "Dockerized GitHub Repo & Loom Presentation",
+              "tools": ["Docker Compose", "Loom / Screen Studio"],
+              "steps": [
+                "1. Create `docker-compose.yml` orchestrating API service, ChromaDB, and web frontend.",
+                "2. Record a 5-minute executive video demonstrating multi-agent workflows and RAG accuracy.",
+                "3. Submit code and presentation for final fellowship certification."
+              ],
+              "acceptanceCriteria": [
+                "Single command execution: `docker compose up` starts full operational system.",
+                "Capstone approved by Mentor & Lead Architect Muhammad Uzair."
+              ],
+              "codeTemplate": "version: '3.8'\nservices:\n  ai-api:\n    build: .\n    ports: ['8000:8000']\n    env_file: .env\n  chroma:\n    image: chromadb/chroma:latest\n    ports: ['8000:8000']",
+              "hint": "Official Certificate, LOR, and 6-Month Experience Letter unlock upon completion."
+            }
+          ]
+        }
+      ]
+    },
+    "Web Development": {
+      "domainName": "Full-Stack Web Development",
+      "subtitle": "Next.js, React, Node.js, Express, MongoDB, REST/GraphQL APIs & Cloud Architecture",
+      "totalWeeks": 8,
+      "extendedWeeks": 24,
+      "weeks": [
+        {
+          "weekNumber": 1,
+          "title": "Modern Full-Stack Environment, Git & Clean Code Architecture",
+          "summary": "Configure Node.js 20+, Next.js/React, TypeScript, ESLint, Prettier, and conventional Git workflow.",
+          "objectives": [
+            "Scaffold Next.js / React full-stack application with TypeScript.",
+            "Establish clean architecture: presentation, controllers, services, repositories.",
+            "Enforce linting and automated formatting hooks."
+          ],
+          "tasks": [
+            {
+              "id": "web_w1_t1",
+              "title": "Full-Stack Scaffold & TypeScript Architecture",
+              "description": "Scaffold a modern Next.js / Node.js full-stack repository with TypeScript, path aliases (`@/components`), and modular folder hierarchy.",
+              "deliverableType": "GitHub Repository & Setup Documentation",
+              "tools": ["Next.js 14+", "Node.js 20+", "TypeScript", "ESLint"],
+              "steps": [
+                "1. Initialize project with strict TypeScript settings in tsconfig.json.",
+                "2. Configure folder structure: src/app, src/components, src/lib, src/services.",
+                "3. Write comprehensive README with local setup instructions."
+              ],
+              "acceptanceCriteria": [
+                "Compiles cleanly with zero TypeScript errors under `tsc --noEmit`.",
+                "GitHub repository contains clean initial commit history."
+              ],
+              "codeTemplate": "{\n  \"compilerOptions\": {\n    \"target\": \"ES2022\",\n    \"strict\": true,\n    \"paths\": { \"@/*\": [\"./src/*\"] }\n  }\n}",
+              "hint": "Submit your public GitHub URL."
+            },
+            {
+              "id": "web_w1_t2",
+              "title": "Responsive Design System with Iris Theme Palette",
+              "description": "Build reusable UI primitives (Buttons, Cards, Inputs, Modals, Badges) utilizing the studio Cyber Iris & Violet palette.",
+              "deliverableType": "GitHub PR & Storybook / Component Showcase",
+              "tools": ["Tailwind CSS / Vanilla CSS Variables", "Lucide Icons"],
+              "steps": [
+                "1. Implement CSS custom properties matching Uzair AI Studio Iris design tokens.",
+                "2. Build responsive layout shell with sticky navigation and mobile hamburger drawer.",
+                "3. Test layout across 320px, 768px, 1024px, and 1440px breakpoints."
+              ],
+              "acceptanceCriteria": [
+                "Zero horizontal scrollbars or overflow bugs on mobile viewports.",
+                "High accessibility score (WCAG AA contrast compliant)."
+              ],
+              "codeTemplate": ":root {\n  --primary: #4F46E5;\n  --primary-hover: #4338CA;\n  --accent-cyan: #06B6D4;\n}",
+              "hint": "Check touch target sizes (minimum 44x44px for touch)."
+            }
+          ]
+        },
+        {
+          "weekNumber": 2,
+          "title": "Asynchronous REST APIs, Express & Controller Layer",
+          "summary": "Design RESTful API endpoints, middleware pipeline, input validation with Zod, and structured error responses.",
+          "objectives": [
+            "Build RESTful CRUD endpoints following HTTP status code standards.",
+            "Implement request validation middleware using Zod.",
+            "Centralize global error handling with structured JSON responses."
+          ],
+          "tasks": [
+            {
+              "id": "web_w2_t1",
+              "title": "Zod Request Validation & Error Handling Middleware",
+              "description": "Build an Express/Next.js API route handler validating complex incoming requests (e.g. project estimate intake form) and returning clean validation errors.",
+              "deliverableType": "GitHub Commit & Postman Collection",
+              "tools": ["Express / Next.js Route Handlers", "Zod"],
+              "steps": [
+                "1. Define strict Zod schema for client consultation requests.",
+                "2. Create reusable validation middleware extracting typed payload.",
+                "3. Centralize error handler intercepting ZodError and returning 400 Bad Request."
+              ],
+              "acceptanceCriteria": [
+                "Invalid requests rejected with descriptive field-level error messages.",
+                "Valid requests pass sanitized, type-safe data to controller."
+              ],
+              "codeTemplate": "const ClientBriefSchema = z.object({\n  clientName: z.string().min(2),\n  email: z.string().email(),\n  whatsapp: z.string().min(10),\n  budgetRange: z.enum(['$1k-$3k', '$3k-$7k', '$7k+'])\n});",
+              "hint": "Include automated tests with Jest or Supertest."
+            },
+            {
+              "id": "web_w2_t2",
+              "title": "REST API Architecture for Candidate Verification",
+              "description": "Build `/api/internship/verify/:query` endpoint supporting both candidate ID and email queries with timeline progress calculations.",
+              "deliverableType": "PR Link & API Documentation",
+              "tools": ["Node.js", "Express"],
+              "steps": [
+                "1. Implement controller finding matching record in data layer.",
+                "2. Compute dynamic progress metrics (tenure percentage, days remaining).",
+                "3. Protect sensitive fields (do not expose raw passwords or admin tokens)."
+              ],
+              "acceptanceCriteria": [
+                "Returns 200 OK with formatted JSON on match; 404 Not Found if absent.",
+                "Calculates exact completion dates accurately."
+              ],
+              "codeTemplate": "const daysRemaining = Math.max(0, Math.ceil((end - now) / (1000 * 60 * 60 * 24)));\nconst isCompleted = daysRemaining === 0;",
+              "hint": "Benchmark response latency (should be under 50ms)."
+            }
+          ]
+        },
+        {
+          "weekNumber": 3,
+          "title": "Database Architecture, MongoDB & Indexed Data Queries",
+          "summary": "Design normalized/denormalized schemas, establish indexing for high-speed queries, and write aggregation pipelines.",
+          "objectives": [
+            "Model application data using Mongoose / Prisma.",
+            "Create compound indexes for high-frequency queries.",
+            "Implement MongoDB aggregation pipelines for dashboard metrics."
+          ],
+          "tasks": [
+            {
+              "id": "web_w3_t1",
+              "title": "Mongoose Schema Design & Compound Indexing",
+              "description": "Define database schemas for Interns, Submissions, and Estimates. Add compound indexes on `(email, id)` and pre-save hooks.",
+              "deliverableType": "GitHub Repo & Index Performance Test",
+              "tools": ["MongoDB", "Mongoose / Prisma"],
+              "steps": [
+                "1. Define schema with timestamps, enum validations, and default values.",
+                "2. Create unique index on candidate ID and sparse index on email.",
+                "3. Verify index usage using `.explain('executionStats')`."
+              ],
+              "acceptanceCriteria": [
+                "Query execution scan type uses IXSCAN instead of COLLSCAN.",
+                "Enforces unique constraints preventing duplicate applications."
+              ],
+              "codeTemplate": "InternSchema.index({ id: 1 }, { unique: true });\nInternSchema.index({ email: 1, whatsapp: 1 });",
+              "hint": "Test with 1,000 generated mock records."
+            },
+            {
+              "id": "web_w3_t2",
+              "title": "Analytics Aggregation Pipeline",
+              "description": "Build a dashboard analytics aggregation pipeline calculating: total candidates, completion rates per domain, and average days to task completion.",
+              "deliverableType": "GitHub PR & Sample Aggregation Output",
+              "tools": ["MongoDB Aggregation Framework"],
+              "steps": [
+                "1. Build multi-stage pipeline: `$match`, `$group`, `$project`, `$sort`.",
+                "2. Group candidates by domain and calculate certified percentages.",
+                "3. Expose endpoint serving data to admin dashboard charts."
+              ],
+              "acceptanceCriteria": [
+                "Aggregation executes in single query under 100ms.",
+                "Correctly handles domains with zero completions."
+              ],
+              "codeTemplate": "const stats = await Intern.aggregate([\n  { $group: { _id: '$domain', total: { $sum: 1 }, completed: { $sum: { $cond: ['$isCompleted', 1, 0] } } } }\n]);",
+              "hint": "Verify using MongoDB Compass Aggregation Builder."
+            }
+          ]
+        },
+        {
+          "weekNumber": 4,
+          "title": "Authentication, JWT, Role-Based Access Control & Security",
+          "summary": "Implement stateless JWT tokens, bcrypt password hashing, HTTP-only cookies, and role-based permissions (Admin vs Intern).",
+          "objectives": [
+            "Secure passwords with bcrypt salt hashing (work factor 12).",
+            "Generate and verify signed JWT tokens with expiration.",
+            "Implement RBAC middleware guarding executive routes."
+          ],
+          "tasks": [
+            {
+              "id": "web_w4_t1",
+              "title": "JWT Auth & Password Hashing Engine",
+              "description": "Build authentication endpoints (`/api/auth/login`, `/api/auth/register`) with bcrypt password verification and signed JWT token issuance.",
+              "deliverableType": "GitHub Commit & Security Audit Report",
+              "tools": ["jsonwebtoken", "bcryptjs"],
+              "steps": [
+                "1. Hash plain passwords using bcrypt prior to database insertion.",
+                "2. On login, verify credentials and sign JWT with 7-day expiration.",
+                "3. Store JWT in secure HTTP-only cookie or authorization header."
+              ],
+              "acceptanceCriteria": [
+                "Zero plain text passwords stored in database.",
+                "Rejects expired or tampered tokens with 401 Unauthorized."
+              ],
+              "codeTemplate": "const token = jwt.sign({ id: user.id, role: user.role }, process.env.JWT_SECRET, { expiresIn: '7d' });",
+              "hint": "Set secure, sameSite, and httpOnly flags on cookies."
+            },
+            {
+              "id": "web_w4_t2",
+              "title": "Role-Based Access Control (RBAC) Middleware",
+              "description": "Create authorization middleware (`requireRole('admin')`, `requireInternOwner`) preventing candidates from accessing executive hub features.",
+              "deliverableType": "PR Link & Automated Auth Tests",
+              "tools": ["Express Middleware", "Supertest"],
+              "steps": [
+                "1. Parse Bearer token from headers and decode user identity.",
+                "2. Verify candidate can only modify their own profile data.",
+                "3. Restrict administrative routes exclusively to founder credentials."
+              ],
+              "acceptanceCriteria": [
+                "Unauthorized access attempts return 403 Forbidden.",
+                "Admins can inspect all candidates; interns can inspect only their own."
+              ],
+              "codeTemplate": "function requireAdmin(req, res, next) {\n  if (req.user?.role !== 'admin') return res.status(403).json({ message: 'Forbidden' });\n  next();\n}",
+              "hint": "Test IDOR (Insecure Direct Object Reference) vulnerabilities."
+            }
+          ]
+        },
+        {
+          "weekNumber": 5,
+          "title": "State Management, Real-Time WebSockets & Audio Engine",
+          "summary": "Connect frontend to real-time events, Web Audio synthesized chimes, and persistent client state.",
+          "objectives": [
+            "Implement Web Audio API multi-tone notification chime without external files.",
+            "Sync frontend state reactively with Zustand / Redux / Context.",
+            "Implement server-sent notifications dropdown center with live counters."
+          ],
+          "tasks": [
+            {
+              "id": "web_w5_t1",
+              "title": "Web Audio API Notification Chime Engine",
+              "description": "Build a zero-dependency synthesized audio chime using browser AudioContext playing melodic tones upon notification arrival.",
+              "deliverableType": "JavaScript Module & Audio Demo",
+              "tools": ["Web Audio API (OscillatorNode, GainNode)"],
+              "steps": [
+                "1. Initialize AudioContext on first user gesture to satisfy browser autoplay policies.",
+                "2. Create primary sine wave oscillator (587Hz -> 880Hz) with gain envelope.",
+                "3. Add harmonic overtone (1760Hz) for crisp crystalline chime quality."
+              ],
+              "acceptanceCriteria": [
+                "Zero external audio file downloads (100% synthesized in code).",
+                "Plays smoothly across Chrome, Safari, Firefox, and Edge."
+              ],
+              "codeTemplate": "const ctx = new (window.AudioContext || window.webkitAudioContext)();\nconst osc = ctx.createOscillator(); osc.frequency.setValueAtTime(587.33, ctx.currentTime);",
+              "hint": "Include a toggle allowing users to mute notification sounds."
+            },
+            {
+              "id": "web_w5_t2",
+              "title": "Notification Dropdown Center & Badge Counter",
+              "description": "Build an interactive notification center dropdown with category filters (All, Submissions, Announcements), unread badge, and sound toggle.",
+              "deliverableType": "PR Link & Component Recording",
+              "tools": ["Vanilla JS / React", "LocalStorage"],
+              "steps": [
+                "1. Render bell button with animated red pulse badge.",
+                "2. Render dropdown list with relative timestamps ('2 mins ago').",
+                "3. Add 'Mark All as Read' action syncing with local state."
+              ],
+              "acceptanceCriteria": [
+                "Dropdown opens smoothly and auto-closes when clicking outside.",
+                "Unread count updates in real-time."
+              ],
+              "codeTemplate": "<button class=\"uzair-notif-bell-btn\"><span class=\"uzair-notif-badge\">3</span></button>",
+              "hint": "Ensure responsive positioning on mobile screens."
+            }
+          ]
+        },
+        {
+          "weekNumber": 6,
+          "title": "PWA Offline Caching, IndexedDB & Service Workers",
+          "summary": "Transform web portal into an offline-first Progressive Web App capable of running completely without internet connectivity.",
+          "objectives": [
+            "Implement Service Worker with Cache-First strategy for static assets.",
+            "Store user profile and curriculum offline using IndexedDB.",
+            "Build offline detection banner with automatic background queue sync."
+          ],
+          "tasks": [
+            {
+              "id": "web_w6_t1",
+              "title": "IndexedDB Local Database Layer (`UzairLocalDB`)",
+              "description": "Build a robust Promise-based IndexedDB wrapper storing candidate profiles, curriculums, and deliverable notes locally in browser storage.",
+              "deliverableType": "JavaScript Module & Offline Storage Test",
+              "tools": ["IndexedDB API", "idb"],
+              "steps": [
+                "1. Open IndexedDB database `UzairAIStudioDB` with version migrations.",
+                "2. Create object stores: `interns`, `curriculum`, `submissions`.",
+                "3. Provide CRUD methods: `saveIntern()`, `getInternById()`, `saveTaskSubmission()`."
+              ],
+              "acceptanceCriteria": [
+                "Persists multi-megabyte data reliably across browser sessions.",
+                "Allows full read access when completely disconnected from network."
+              ],
+              "codeTemplate": "const request = indexedDB.open('UzairAIStudioDB', 2);\nrequest.onupgradeneeded = (e) => { e.target.result.createObjectStore('interns', { keyPath: 'id' }); };",
+              "hint": "Inspect database records in Chrome DevTools Application tab."
+            },
+            {
+              "id": "web_w6_t2",
+              "title": "Service Worker Asset Caching & PWA Manifest",
+              "description": "Implement `sw.js` caching HTML, CSS, JS, and logo assets. Configure `manifest.json` enabling mobile installation.",
+              "deliverableType": "Service Worker Code & Lighthouse Audit",
+              "tools": ["Service Worker API", "Lighthouse"],
+              "steps": [
+                "1. Cache core assets during `install` event.",
+                "2. Intercept `fetch` requests with Cache-First fallback to network.",
+                "3. Display amber offline banner when `navigator.onLine === false`."
+              ],
+              "acceptanceCriteria": [
+                "Application loads instantly offline with browser in Airplane mode.",
+                "Lighthouse PWA compliance badge achieved."
+              ],
+              "codeTemplate": "self.addEventListener('fetch', (event) => {\n  event.respondWith(caches.match(event.request).then((res) => res || fetch(event.request)));\n});",
+              "hint": "Clear cache versions during new deployment activations."
+            }
+          ]
+        },
+        {
+          "weekNumber": 7,
+          "title": "Performance Optimization, Security Audits & Direct Printing",
+          "summary": "Optimize Core Web Vitals (LCP < 1.2s, CLS = 0), implement invisible iframe direct printing, and conduct security hardening.",
+          "objectives": [
+            "Achieve 95+ Google PageSpeed score on Mobile and Desktop.",
+            "Implement direct printing via hidden iframe without opening new tabs.",
+            "Harden against XSS, CSRF, and clickjacking using helmet security headers."
+          ],
+          "tasks": [
+            {
+              "id": "web_w7_t1",
+              "title": "Invisible Iframe Direct Document Printing",
+              "description": "Build an in-portal document printing utility that dynamically creates an invisible iframe, loads document HTML, and triggers `print()` directly without new tabs.",
+              "deliverableType": "JavaScript Utility & Video Demonstration",
+              "tools": ["HTMLIFrameElement", "window.print()"],
+              "steps": [
+                "1. Create hidden iframe with `display:none; position:fixed;`.",
+                "2. Set iframe `src` to document URL with `?autoprint=1` parameter.",
+                "3. Listen to load event, trigger `iframe.contentWindow.print()`, and remove iframe."
+              ],
+              "acceptanceCriteria": [
+                "System print dialog opens seamlessly without navigating away or opening extra tabs.",
+                "Shows polite floating toast alert while preparing print."
+              ],
+              "codeTemplate": "function directPrintDocument(url) {\n  const iframe = document.createElement('iframe');\n  iframe.style.display = 'none';\n  iframe.src = url;\n  iframe.onload = () => { iframe.contentWindow.print(); };\n  document.body.appendChild(iframe);\n}",
+              "hint": "Works smoothly for Offer Letter, LOR, Certificate, and Experience Letter."
+            },
+            {
+              "id": "web_w7_t2",
+              "title": "Security Headers & Content Security Policy (CSP)",
+              "description": "Configure helmet middleware to enforce strict HTTP headers: CSP, X-Frame-Options, X-Content-Type-Options, and HSTS.",
+              "deliverableType": "Server Configuration & SecurityHeaders.com Report",
+              "tools": ["helmet", "express-rate-limit"],
+              "steps": [
+                "1. Apply helmet middleware with custom CSP directives.",
+                "2. Implement express-rate-limit on sensitive endpoints (/api/auth/login, /api/internship/apply).",
+                "3. Sanitize user inputs against HTML/script injection."
+              ],
+              "acceptanceCriteria": [
+                "SecurityHeaders.com audit score >= A.",
+                "Prevents brute force credential stuffing on auth endpoints."
+              ],
+              "codeTemplate": "app.use(helmet({\n  contentSecurityPolicy: {\n    directives: { defaultSrc: [\"'self'\"], scriptSrc: [\"'self'\", \"'unsafe-inline'\"] }\n  }\n}));",
+              "hint": "Verify legitimate assets and fonts continue to load cleanly."
+            }
+          ]
+        },
+        {
+          "weekNumber": 8,
+          "title": "Production Deployment, CI/CD & Final Capstone Portfolio",
+          "summary": "Deploy complete full-stack web application to production cloud (Vercel/AWS/Render), set up custom domain, and complete capstone review.",
+          "objectives": [
+            "Configure GitHub Actions CI/CD deploying automatically on main push.",
+            "Configure custom domain with automatic SSL termination.",
+            "Complete final capstone portfolio review with Founder Muhammad Uzair."
+          ],
+          "tasks": [
+            {
+              "id": "web_w8_t1",
+              "title": "Automated Cloud Deployment & Domain Verification",
+              "description": "Deploy the full-stack web application to production cloud infrastructure with environmental secrets, custom domain DNS records, and SSL.",
+              "deliverableType": "Live Production URL & Deployment Log",
+              "tools": ["Vercel / Render / AWS EC2", "Cloudflare DNS"],
+              "steps": [
+                "1. Connect GitHub repository to production deployment provider.",
+                "2. Configure environment variables (NODE_ENV=production, JWT_SECRET, etc.).",
+                "3. Verify custom domain resolution and HTTPS certificate."
+              ],
+              "acceptanceCriteria": [
+                "Live website loads reliably with SSL padlock.",
+                "All API endpoints function in production environment."
+              ],
+              "codeTemplate": "vercel --prod --confirm",
+              "hint": "Test application globally using Pingdom / GTmetrix."
+            },
+            {
+              "id": "web_w8_t2",
+              "title": "Final Capstone Presentation & Credential Issuance",
+              "description": "Deliver your complete, fully tested Full-Stack Capstone Web Platform. Submit source code, architecture diagrams, and a video walkthrough.",
+              "deliverableType": "GitHub Final Release, Video Demo & Live URL",
+              "tools": ["GitHub", "Loom"],
+              "steps": [
+                "1. Tag official v1.0.0 release on GitHub.",
+                "2. Record a 5-minute video walkthrough explaining architecture and features.",
+                "3. Submit final deliverables for executive evaluation."
+              ],
+              "acceptanceCriteria": [
+                "Capstone represents senior-level engineering quality.",
+                "Approved by Lead Architect Muhammad Uzair for graduation credentials."
+              ],
+              "codeTemplate": "# Uzair AI Studio Full-Stack Capstone v1.0.0\nCompleted 8-Week / 24-Week Engineering Fellowship.\n- Live URL: https://uzairaistudio.com\n- Documentation: [README.md]",
+              "hint": "Your Certificate, LOR, and Experience Letter are unlocked upon approval."
+            }
+          ]
+        }
+      ]
+    },
+    "Python Development": {
+      "domainName": "Python Software Engineering & Distributed Systems",
+      "subtitle": "FastAPI, Microservices, AsyncIO, Automated Tooling & Cloud Scraping",
+      "totalWeeks": 8,
+      "extendedWeeks": 24,
+      "weeks": [
+        {
+          "weekNumber": 1,
+          "title": "Python 3.12+ Toolchain, Typing & Pytest Framework",
+          "summary": "Master modern Python: virtual environments, Poetry/Uv package management, type hints, and Pytest.",
+          "objectives": [
+            "Configure Poetry / Uv project with strict type checking (Mypy).",
+            "Write comprehensive unit test fixtures with Pytest.",
+            "Establish clean Git repository structure according to PEP 8 standards."
+          ],
+          "tasks": [
+            {
+              "id": "py_w1_t1",
+              "title": "Poetry Project Setup & Mypy Type Enforcement",
+              "description": "Initialize a modular Python project using Poetry, configure strict Mypy type enforcement, and configure Ruff linter.",
+              "deliverableType": "GitHub Repo & Pyproject.toml",
+              "tools": ["Python 3.12", "Poetry / Uv", "Mypy", "Ruff"],
+              "steps": [
+                "1. Initialize `pyproject.toml` with project metadata and dependencies.",
+                "2. Configure `[tool.mypy]` with `strict = true`.",
+                "3. Run `ruff check .` and `mypy .` to verify clean baseline."
+              ],
+              "acceptanceCriteria": [
+                "Zero linting or typing warnings across entire codebase.",
+                "Properly configured virtual environment."
+              ],
+              "codeTemplate": "[tool.mypy]\nstrict = true\ndisallow_untyped_defs = true\nignore_missing_imports = true",
+              "hint": "Submit your public GitHub repo URL."
+            },
+            {
+              "id": "py_w1_t2",
+              "title": "Unit Testing & Test-Driven Development (TDD) with Pytest",
+              "description": "Write a suite of unit tests with parameterized fixtures testing algorithmic utilities, string normalizers, and date calculators.",
+              "deliverableType": "GitHub PR & Pytest Coverage Report",
+              "tools": ["pytest", "pytest-cov"],
+              "steps": [
+                "1. Write modular functions in `src/utils.py`.",
+                "2. Write parameterized tests in `tests/test_utils.py` covering boundary cases.",
+                "3. Execute `pytest --cov=src` and verify >= 90% test coverage."
+              ],
+              "acceptanceCriteria": [
+                "All tests pass cleanly in under 2 seconds.",
+                "Test coverage meets or exceeds 90%."
+              ],
+              "codeTemplate": "import pytest\n@pytest.mark.parametrize('input_str,expected', [('muhammad uzair', 'Muhammad Uzair'), ('  john doe ', 'John Doe')])\ndef test_capitalize_name(input_str: str, expected: str) -> None:\n    assert clean_and_capitalize(input_str) == expected",
+              "hint": "Include tests for null and empty inputs."
+            }
+          ]
+        },
+        {
+          "weekNumber": 2,
+          "title": "High-Performance Asynchronous APIs with FastAPI",
+          "summary": "Build lightning-fast async REST APIs using FastAPI, Pydantic v2, and dependency injection.",
+          "objectives": [
+            "Build asynchronous API endpoints using `async def` and non-blocking IO.",
+            "Define complex nested Pydantic v2 validation models.",
+            "Implement dependency injection for database connections and auth."
+          ],
+          "tasks": [
+            {
+              "id": "py_w2_t1",
+              "title": "FastAPI REST API with Pydantic v2 Models",
+              "description": "Build a modular FastAPI service exposing candidate application and project estimation endpoints with auto-generated OpenAPI Swagger docs.",
+              "deliverableType": "GitHub Repo & OpenAPI JSON",
+              "tools": ["FastAPI", "Pydantic v2", "Uvicorn"],
+              "steps": [
+                "1. Create FastAPI application with modular `APIRouter` instances.",
+                "2. Define request and response schemas with custom field validators.",
+                "3. Test endpoints via interactive Swagger UI at `/docs`."
+              ],
+              "acceptanceCriteria": [
+                "Automatic documentation renders at `/docs` with interactive testing.",
+                "Returns standardized JSON responses with error handling."
+              ],
+              "codeTemplate": "from fastapi import FastAPI, Depends, HTTPException\napp = FastAPI(title='Uzair AI Studio Python API', version='1.0.0')",
+              "hint": "Run uvicorn with `--reload` flag during development."
+            },
+            {
+              "id": "py_w2_t2",
+              "title": "FastAPI Dependency Injection & Middleware",
+              "description": "Create reusable dependencies for API key authentication, request logging, and rate limiting.",
+              "deliverableType": "PR Link & Benchmark Report",
+              "tools": ["FastAPI Depends", "starlette.middleware"],
+              "steps": [
+                "1. Implement `get_current_admin` dependency validating Bearer tokens.",
+                "2. Create custom timing middleware adding `X-Process-Time` header.",
+                "3. Protect sensitive management endpoints."
+              ],
+              "acceptanceCriteria": [
+                "Rejected requests receive 401 Unauthorized before reaching route logic.",
+                "Response time header included in every outgoing response."
+              ],
+              "codeTemplate": "async def verify_admin_key(api_key: str = Header(...)) -> bool:\n    if api_key != os.getenv('ADMIN_SECRET'): raise HTTPException(status_code=403, detail='Forbidden')\n    return True",
+              "hint": "Test with curl including and omitting the header."
+            }
+          ]
+        },
+        {
+          "weekNumber": 3,
+          "title": "SQLAlchemy 2.0 Async, PostgreSQL & Alembic Migrations",
+          "summary": "Master database persistence: async SQLAlchemy ORM, relationship mapping, and Alembic schema migrations.",
+          "objectives": [
+            "Configure async SQLAlchemy 2.0 with asyncpg driver.",
+            "Model database entities (one-to-many, many-to-many).",
+            "Generate and apply zero-downtime database migrations with Alembic."
+          ],
+          "tasks": [
+            {
+              "id": "py_w3_t1",
+              "title": "SQLAlchemy 2.0 Async Models & Session Manager",
+              "description": "Define async ORM models for Candidate, WeeklyTask, and Submission with foreign key relationships and cascade deletes.",
+              "deliverableType": "GitHub Commit & Schema Diagram",
+              "tools": ["SQLAlchemy 2.0", "asyncpg", "PostgreSQL"],
+              "steps": [
+                "1. Initialize `AsyncEngine` with connection pooling.",
+                "2. Define DeclarativeBase models with typed mapped columns (`Mapped[str]`).",
+                "3. Create async context manager yielding database sessions."
+              ],
+              "acceptanceCriteria": [
+                "Async session management cleans up connections properly.",
+                "Foreign keys enforce referential integrity."
+              ],
+              "codeTemplate": "class Candidate(Base):\n    __tablename__ = 'candidates'\n    id: Mapped[str] = mapped_column(String(32), primary_key=True)\n    full_name: Mapped[str] = mapped_column(String(128))\n    domain: Mapped[str] = mapped_column(String(64))",
+              "hint": "Ensure all database queries use `await session.execute(...)`."
+            },
+            {
+              "id": "py_w3_t2",
+              "title": "Alembic Database Migration Pipeline",
+              "description": "Configure Alembic for asynchronous database migrations, generate revision scripts, and test upgrade/downgrade workflows.",
+              "deliverableType": "Alembic Migration Scripts & PR",
+              "tools": ["Alembic"],
+              "steps": [
+                "1. Initialize Alembic with async template.",
+                "2. Configure `target_metadata = Base.metadata` in `env.py`.",
+                "3. Generate migration: `alembic revision --autogenerate -m 'create_candidates_table'` and run `alembic upgrade head`."
+              ],
+              "acceptanceCriteria": [
+                "Migration executes without errors on fresh database.",
+                "Downgrade rollback (`alembic downgrade -1`) safely reverses schema changes."
+              ],
+              "codeTemplate": "alembic upgrade head",
+              "hint": "Never commit local database connection credentials."
+            }
+          ]
+        },
+        {
+          "weekNumber": 4,
+          "title": "Distributed Task Queues, Celery & Redis",
+          "summary": "Decouple heavy background tasks: asynchronous workers, Celery task scheduling, and Redis message brokering.",
+          "objectives": [
+            "Configure Celery worker with Redis broker and result backend.",
+            "Offload heavy tasks: PDF generation, email sending, batch processing.",
+            "Implement periodic scheduled tasks using Celery Beat."
+          ],
+          "tasks": [
+            {
+              "id": "py_w4_t1",
+              "title": "Celery Asynchronous PDF Generation Worker",
+              "description": "Implement an asynchronous background worker that renders official Offer Letters and Certificates to PDF upon candidate registration.",
+              "deliverableType": "GitHub Repo & Celery Worker Log",
+              "tools": ["Celery", "Redis", "WeasyPrint / ReportLab"],
+              "steps": [
+                "1. Configure Celery app with Redis broker URL.",
+                "2. Write `@celery_app.task` generating PDF document from HTML template.",
+                "3. Trigger task asynchronously from FastAPI route using `.delay()`."
+              ],
+              "acceptanceCriteria": [
+                "FastAPI returns immediate 202 Accepted response without waiting for PDF render.",
+                "Celery worker picks up and renders PDF successfully in background."
+              ],
+              "codeTemplate": "@celery_app.task(bind=True, max_retries=3)\ndef generate_pdf_task(self, candidate_id: str) -> str:\n    # Background PDF render logic\n    return f'/generated/{candidate_id}.pdf'",
+              "hint": "Check Celery worker status via `celery -A tasks worker --loglevel=info`."
+            },
+            {
+              "id": "py_w4_t2",
+              "title": "Celery Beat Periodic Task Scheduler",
+              "description": "Schedule a daily automated task checking candidate tenure and automatically issuing completion badges when reaching 60 or 180 days.",
+              "deliverableType": "PR Link & Task Audit Log",
+              "tools": ["Celery Beat", "crontab schedule"],
+              "steps": [
+                "1. Define Celery Beat schedule running every midnight.",
+                "2. Query candidates whose completionDate equals today.",
+                "3. Update status to 'Completed • Certified' and trigger notification."
+              ],
+              "acceptanceCriteria": [
+                "Celery Beat fires reliably according to schedule.",
+                "Idempotent: running task twice does not create duplicate certificates."
+              ],
+              "codeTemplate": "celery_app.conf.beat_schedule = {\n    'daily-tenure-check': {\n        'task': 'tasks.check_candidate_tenure',\n        'schedule': crontab(hour=0, minute=0),\n    },\n}",
+              "hint": "Test with an hourly schedule before switching to daily."
+            }
+          ]
+        },
+        {
+          "weekNumber": 5,
+          "title": "High-Volume Web Scraping & Data Extraction Pipelines",
+          "summary": "Build resilient, polite web scraping and automation engines using Playwright, BeautifulSoup, and AsyncIO.",
+          "objectives": [
+            "Scrape dynamic JavaScript single-page apps using Playwright.",
+            "Handle proxy rotation, user-agent randomization, and rate-limiting.",
+            "Clean and export structured data to JSON/Parquet formats."
+          ],
+          "tasks": [
+            {
+              "id": "py_w5_t1",
+              "title": "Headless Browser Automation with Playwright Python",
+              "description": "Build an asynchronous web automation script using Playwright that logs into a dashboard, extracts structured tables, and handles dynamic pagination.",
+              "deliverableType": "Python Script & Extracted JSON Dataset",
+              "tools": ["playwright-python", "asyncio"],
+              "steps": [
+                "1. Initialize Playwright async browser context.",
+                "2. Navigate to target URL, wait for network idle, and click dynamic elements.",
+                "3. Extract structured data into Pydantic models and export to JSON."
+              ],
+              "acceptanceCriteria": [
+                "Handles pagination until last page is reached.",
+                "Recovers gracefully from network timeouts with exponential retry."
+              ],
+              "codeTemplate": "from playwright.async_api import async_playwright\nasync with async_playwright() as p:\n    browser = await p.chromium.launch(headless=True)\n    page = await browser.new_page()\n    await page.goto('https://example.com')",
+              "hint": "Set reasonable viewport dimensions (1920x1080)."
+            },
+            {
+              "id": "py_w5_t2",
+              "title": "Resilient Scraping Engine with Concurrency & Rate Limiting",
+              "description": "Build a multi-worker async scraper using `asyncio.Semaphore` processing 100+ pages concurrently without getting IP-blocked.",
+              "deliverableType": "GitHub PR & Benchmark Metrics",
+              "tools": ["aiohttp", "asyncio", "BeautifulSoup4"],
+              "steps": [
+                "1. Limit concurrent connections using `asyncio.Semaphore(5)`.",
+                "2. Randomize User-Agent headers across requests.",
+                "3. Parse HTML DOM using BeautifulSoup with `lxml` parser."
+              ],
+              "acceptanceCriteria": [
+                "Zero unhandled HTTP 429 Too Many Requests errors.",
+                "Extracts and structures 100 pages in under 30 seconds."
+              ],
+              "codeTemplate": "semaphore = asyncio.Semaphore(5)\nasync def bounded_fetch(url: str):\n    async with semaphore:\n        return await fetch(url)",
+              "hint": "Respect robots.txt crawling guidelines."
+            }
+          ]
+        },
+        {
+          "weekNumber": 6,
+          "title": "High-Performance Concurrency, AsyncIO & ThreadPools",
+          "summary": "Master Python concurrency: CPU-bound vs IO-bound workloads, ThreadPoolExecutor, ProcessPoolExecutor, and asyncio internals.",
+          "objectives": [
+            "Benchmark performance: Sync vs Threading vs Multiprocessing vs AsyncIO.",
+            "Offload CPU-heavy tasks to ProcessPoolExecutor without blocking async event loop.",
+            "Write custom async context managers and generators."
+          ],
+          "tasks": [
+            {
+              "id": "py_w6_t1",
+              "title": "CPU-Bound Offloading via ProcessPoolExecutor",
+              "description": "Build an image processing and PDF watermarking endpoint in FastAPI that executes CPU-heavy rasterization in a process pool without blocking the async event loop.",
+              "deliverableType": "GitHub Repo & Latency Comparison",
+              "tools": ["concurrent.futures", "Pillow", "FastAPI"],
+              "steps": [
+                "1. Define synchronous CPU-intensive image resizing function.",
+                "2. Execute in ProcessPoolExecutor using `loop.run_in_executor()`.",
+                "3. Verify other API endpoints remain responsive during processing."
+              ],
+              "acceptanceCriteria": [
+                "API throughput remains steady (> 200 req/sec) while background images process.",
+                "Zero event-loop lag reported."
+              ],
+              "codeTemplate": "loop = asyncio.get_running_loop()\nresult = await loop.run_in_executor(process_pool, cpu_heavy_function, arg1, arg2)",
+              "hint": "Benchmark using wrk or locust."
+            },
+            {
+              "id": "py_w6_t2",
+              "title": "Asynchronous Event Stream & Custom Generator",
+              "description": "Implement a custom async generator streaming system telemetry (CPU, memory, active database connections) to connected clients.",
+              "deliverableType": "PR Link & Terminal Demo Video",
+              "tools": ["asyncio", "psutil"],
+              "steps": [
+                "1. Create async generator yielding system stats every 1 second.",
+                "2. Connect generator to FastAPI SSE endpoint.",
+                "3. Handle client disconnection cleanly without leaking generator tasks."
+              ],
+              "acceptanceCriteria": [
+                "Yields continuous real-time system metrics.",
+                "Cancels background loop immediately on client disconnect."
+              ],
+              "codeTemplate": "async def stream_system_stats() -> AsyncGenerator[str, None]:\n    while True:\n        yield f'data: {{\"cpu\": {psutil.cpu_percent()}}}\\n\\n'\n        await asyncio.sleep(1)",
+              "hint": "Ensure `try...finally` cleanup executes."
+            }
+          ]
+        },
+        {
+          "weekNumber": 7,
+          "title": "Microservices, Docker Multi-Stage & gRPC Communication",
+          "summary": "Package Python microservices: multi-stage Docker builds, gRPC protocol buffers, and inter-service communication.",
+          "objectives": [
+            "Write production multi-stage Dockerfile minimizing image size (< 150MB).",
+            "Define gRPC services with Protocol Buffers (.proto).",
+            "Implement high-speed binary RPC communication between services."
+          ],
+          "tasks": [
+            {
+              "id": "py_w7_t1",
+              "title": "Production Multi-Stage Dockerfile for Python",
+              "description": "Build an optimized multi-stage Docker container for your FastAPI service using `python:3.12-slim`, non-root user, and virtualenv caching.",
+              "deliverableType": "Dockerfile & Image Size Audit",
+              "tools": ["Docker", "Trivy Vulnerability Scanner"],
+              "steps": [
+                "1. Build stage: compile C-extensions and install wheel packages.",
+                "2. Production stage: copy virtualenv, set non-root user (`USER appuser`).",
+                "3. Scan image with Trivy to verify zero critical security vulnerabilities."
+              ],
+              "acceptanceCriteria": [
+                "Final image size under 160MB.",
+                "Runs as non-root user (UID 10001)."
+              ],
+              "codeTemplate": "FROM python:3.12-slim as builder\n# Install wheels\nFROM python:3.12-slim as runner\nUSER 10001\nCMD [\"uvicorn\", \"main:app\", \"--host\", \"0.0.0.0\", \"--port\", \"8000\"]",
+              "hint": "Use `.dockerignore` to exclude tests and virtual environment."
+            },
+            {
+              "id": "py_w7_t2",
+              "title": "gRPC High-Speed Inter-Service Communication",
+              "description": "Define a `.proto` service definition for candidate verification and implement both gRPC server and client in Python.",
+              "deliverableType": "GitHub PR with Proto Files & Benchmark",
+              "tools": ["grpcio", "protobuf"],
+              "steps": [
+                "1. Define `service VerificationService { rpc VerifyCandidate(CandidateRequest) returns (CandidateResponse); }`.",
+                "2. Generate Python code using `protoc` compiler.",
+                "3. Implement server servicer and benchmark speed against JSON REST."
+              ],
+              "acceptanceCriteria": [
+                "gRPC response latency achieves 2x speedup compared to standard JSON REST.",
+                "Type-safe protocol buffer serialization."
+              ],
+              "codeTemplate": "syntax = \"proto3\";\nmessage CandidateRequest { string candidate_id = 1; }\nmessage CandidateResponse { string full_name = 1; bool is_valid = 2; }",
+              "hint": "Log serialized payload byte size difference."
+            }
+          ]
+        },
+        {
+          "weekNumber": 8,
+          "title": "CI/CD Pipeline, Observability & Capstone Showcase",
+          "summary": "Ship complete distributed Python system: Prometheus metrics, structured JSON logging, GitHub Actions, and capstone presentation.",
+          "objectives": [
+            "Configure structured logging with structlog and Prometheus metrics.",
+            "Deploy automated GitHub Actions testing and container release pipeline.",
+            "Present completed Python Engineering Capstone to Mentor Muhammad Uzair."
+          ],
+          "tasks": [
+            {
+              "id": "py_w8_t1",
+              "title": "Observability: Prometheus Metrics & Structured Logging",
+              "description": "Instrument your FastAPI service with Prometheus metrics (request count, latency histogram, active DB connections) and structured JSON logging.",
+              "deliverableType": "GitHub Repo & Grafana Metrics Screenshot",
+              "tools": ["prometheus-fastapi-instrumentator", "structlog"],
+              "steps": [
+                "1. Expose `/metrics` endpoint for Prometheus scraping.",
+                "2. Configure `structlog` outputting machine-readable JSON logs with trace IDs.",
+                "3. Track custom metric: `candidate_verifications_total`."
+              ],
+              "acceptanceCriteria": [
+                "Prometheus scrapes `/metrics` successfully.",
+                "All log entries contain timestamp, log_level, and request_id."
+              ],
+              "codeTemplate": "from prometheus_fastapi_instrumentator import Instrumentator\nInstrumentator().instrument(app).expose(app)",
+              "hint": "Simulate error status codes to verify metric counters increment."
+            },
+            {
+              "id": "py_w8_t2",
+              "title": "Final Python Capstone Architecture Showcase",
+              "description": "Deliver your complete Python Software Engineering Capstone: full code repository, documentation, architecture diagrams, and video walkthrough.",
+              "deliverableType": "GitHub Release, Video Walkthrough & Docker Compose",
+              "tools": ["Docker Compose", "Loom"],
+              "steps": [
+                "1. Tag official v1.0.0 release on GitHub.",
+                "2. Record a 5-minute video walkthrough demonstrating architecture, tests, and workers.",
+                "3. Submit final deliverables for fellowship certification."
+              ],
+              "acceptanceCriteria": [
+                "System starts cleanly via `docker compose up`.",
+                "Approved by Lead Architect Muhammad Uzair."
+              ],
+              "codeTemplate": "# Uzair AI Studio Python Capstone v1.0.0\nCompleted 8-Week / 24-Week Engineering Fellowship.",
+              "hint": "Your Certificate, LOR, and Experience Letter are unlocked upon approval."
+            }
+          ]
+        }
+      ]
+    },
+    "Data Science": {
+      "domainName": "Data Science & Machine Learning",
+      "subtitle": "Data Analytics, Predictive Modeling, Scikit-Learn, Pandas & Interactive Dashboards",
+      "totalWeeks": 8,
+      "extendedWeeks": 24,
+      "weeks": [
+        {
+          "weekNumber": 1,
+          "title": "Data Science Stack, NumPy, Pandas & Exploratory Data Analysis",
+          "summary": "Master data manipulation: NumPy arrays, Pandas DataFrames, handling missing values, and EDA visualizations.",
+          "objectives": [
+            "Configure JupyterLab / VS Code data science environment.",
+            "Perform advanced data wrangling and imputation with Pandas.",
+            "Generate exploratory statistical visualizations with Seaborn and Plotly."
+          ],
+          "tasks": [
+            {
+              "id": "ds_w1_t1",
+              "title": "Advanced Pandas Data Wrangling & Feature Profiling",
+              "description": "Load a real-world messy dataset, handle missing data, transform categorical variables, and generate a comprehensive statistical profile.",
+              "deliverableType": "Jupyter Notebook & Data Profile Report",
+              "tools": ["Pandas", "NumPy", "YData Profiling"],
+              "steps": [
+                "1. Inspect data types, missing value ratios, and cardinality.",
+                "2. Apply median/mode imputation and outlier clipping.",
+                "3. Generate correlation matrices and feature distribution charts."
+              ],
+              "acceptanceCriteria": [
+                "Zero missing values remaining in cleaned dataset.",
+                "Notebook contains Markdown narrative explaining data anomalies."
+              ],
+              "codeTemplate": "import pandas as pd\ndf = pd.read_csv('data.csv')\ndf['tenure_days'] = (pd.to_datetime(df['end']) - pd.to_datetime(df['start'])).dt.days",
+              "hint": "Submit via GitHub repo with rendered notebook."
+            },
+            {
+              "id": "ds_w1_t2",
+              "title": "Interactive Statistical Dashboard with Plotly",
+              "description": "Build an interactive Plotly dashboard visualizing candidate enrollment trends, domain popularity, and completion distributions.",
+              "deliverableType": "HTML Interactive Dashboard & Code",
+              "tools": ["Plotly Express", "Seaborn"],
+              "steps": [
+                "1. Create interactive scatter plots with hover tooltips.",
+                "2. Build multi-variable histograms comparing domains.",
+                "3. Export standalone interactive HTML dashboard file."
+              ],
+              "acceptanceCriteria": [
+                "Interactive tooltips display exact counts on hover.",
+                "Responsive layout scales across screen sizes."
+              ],
+              "codeTemplate": "import plotly.express as px\nfig = px.histogram(df, x='domain', color='status', barmode='group')\nfig.write_html('dashboard.html')",
+              "hint": "Use Uzair AI Studio Iris-Violet color palette."
+            }
+          ]
+        },
+        {
+          "weekNumber": 2,
+          "title": "Supervised Learning, Regression & Classification Models",
+          "summary": "Train and evaluate predictive models using Scikit-Learn: Logistic Regression, Random Forest, and Gradient Boosting.",
+          "objectives": [
+            "Construct Scikit-Learn preprocessing pipelines (StandardScaler, OneHotEncoder).",
+            "Train binary and multi-class classification models.",
+            "Evaluate models using ROC-AUC, Precision, Recall, and Confusion Matrices."
+          ],
+          "tasks": [
+            {
+              "id": "ds_w2_t1",
+              "title": "Scikit-Learn Pipeline & Cross-Validation Benchmark",
+              "description": "Build a leak-free Scikit-Learn pipeline performing scaling, encoding, and training Random Forest vs XGBoost models with 5-fold stratified cross-validation.",
+              "deliverableType": "Jupyter Notebook & Model Comparison Table",
+              "tools": ["Scikit-Learn", "XGBoost"],
+              "steps": [
+                "1. Build ColumnTransformer isolating numerical and categorical features.",
+                "2. Assemble Pipeline with classifier step.",
+                "3. Evaluate using StratifiedKFold and compute mean ROC-AUC score."
+              ],
+              "acceptanceCriteria": [
+                "Zero data leakage between training and validation folds.",
+                "Pipeline exports cleanly to serialized artifact."
+              ],
+              "codeTemplate": "from sklearn.pipeline import Pipeline\nfrom sklearn.compose import ColumnTransformer\npipeline = Pipeline([('preprocessor', preprocessor), ('model', RandomForestClassifier())])",
+              "hint": "Plot ROC curves comparing all candidate models."
+            },
+            {
+              "id": "ds_w2_t2",
+              "title": "Hyperparameter Tuning with Optuna",
+              "description": "Implement automated Bayesian hyperparameter optimization using Optuna to tune max_depth, n_estimators, and learning rate.",
+              "deliverableType": "PR Link & Optuna Optimization History Plot",
+              "tools": ["Optuna", "Scikit-Learn"],
+              "steps": [
+                "1. Define Optuna objective function with search space.",
+                "2. Run 50 optimization trials maximizing validation F1 score.",
+                "3. Plot optimization history and parameter importance."
+              ],
+              "acceptanceCriteria": [
+                "Tuned model achieves at least a 5% improvement over baseline.",
+                "Visualizes hyperparameter sensitivity."
+              ],
+              "codeTemplate": "import optuna\ndef objective(trial):\n    n_estimators = trial.suggest_int('n_estimators', 50, 500)\n    # evaluation logic\nstudy = optuna.create_study(direction='maximize')\nstudy.optimize(objective, n_trials=50)",
+              "hint": "Set random seed for reproducible optimization runs."
+            }
+          ]
+        },
+        {
+          "weekNumber": 3,
+          "title": "Model Interpretability, SHAP & Feature Attribution",
+          "summary": "Explain model predictions: SHAP (Shapley Additive exPlanations), LIME, and feature importance analysis.",
+          "objectives": [
+            "Compute global and local feature importance using TreeSHAP.",
+            "Generate waterfall plots explaining individual customer/candidate predictions.",
+            "Audit models for demographic and fairness parity."
+          ],
+          "tasks": [
+            {
+              "id": "ds_w3_t1",
+              "title": "SHAP Explainability & Prediction Decomposition",
+              "description": "Compute SHAP values for your trained gradient boosting model and generate summary plots, dependence plots, and individual prediction waterfalls.",
+              "deliverableType": "Notebook & SHAP Narrative Analysis",
+              "tools": ["shap", "matplotlib"],
+              "steps": [
+                "1. Initialize `shap.TreeExplainer` on trained model.",
+                "2. Generate global summary plot showing most influential features.",
+                "3. Produce local waterfall plot explaining a specific positive prediction."
+              ],
+              "acceptanceCriteria": [
+                "Accurately interprets which features push predictions up vs down.",
+                "Documented insights suitable for executive stakeholders."
+              ],
+              "codeTemplate": "import shap\nexplainer = shap.TreeExplainer(model)\nshap_values = explainer(X_test)\nshap.plots.waterfall(shap_values[0])",
+              "hint": "Check for unexpected feature interactions."
+            },
+            {
+              "id": "ds_w3_t2",
+              "title": "Model Fairness & Bias Audit",
+              "description": "Audit your model predictions across demographic subsets (e.g. city, qualification) to detect and mitigate algorithmic bias.",
+              "deliverableType": "Fairness Audit Report & Mitigation Code",
+              "tools": ["Fairlearn", "AIF360"],
+              "steps": [
+                "1. Calculate demographic parity ratio and equalized odds across groups.",
+                "2. Apply threshold re-weighing if bias is detected.",
+                "3. Export before-and-after fairness metric comparison."
+              ],
+              "acceptanceCriteria": [
+                "Demographic parity ratio reaches >= 0.80 standard.",
+                "Documented mitigation strategy."
+              ],
+              "codeTemplate": "from fairlearn.metrics import MetricFrame, demographic_parity_ratio\nratio = demographic_parity_ratio(y_true, y_pred, sensitive_features=groups)",
+              "hint": "Include clear ethical analysis in report."
+            }
+          ]
+        },
+        {
+          "weekNumber": 4,
+          "title": "Time Series Forecasting & Anomaly Detection",
+          "summary": "Analyze temporal patterns: ARIMA, Prophet, rolling window metrics, and statistical anomaly detection.",
+          "objectives": [
+            "Decompose time series into trend, seasonality, and residual noise.",
+            "Train Prophet and exponential smoothing models.",
+            "Implement rolling z-score and Isolation Forest anomaly detectors."
+          ],
+          "tasks": [
+            {
+              "id": "ds_w4_t1",
+              "title": "Prophet Time Series Forecasting Model",
+              "description": "Forecast project intake volumes over a 90-day future horizon using Meta Prophet, incorporating holiday and seasonality effects.",
+              "deliverableType": "Forecast Plot & Trend Analysis Report",
+              "tools": ["prophet", "statsmodels"],
+              "steps": [
+                "1. Format dataframe with `ds` (date) and `y` (target metric) columns.",
+                "2. Fit Prophet model with weekly and monthly seasonalities.",
+                "3. Generate 90-day future forecast with upper and lower confidence intervals."
+              ],
+              "acceptanceCriteria": [
+                "Evaluates forecast error using MAPE and RMSE on holdout test window.",
+                "Decomposes weekly seasonality trends clearly."
+              ],
+              "codeTemplate": "from prophet import Prophet\nm = Prophet(weekly_seasonality=True)\nm.fit(df)\nfuture = m.make_future_dataframe(periods=90)\nforecast = m.predict(future)",
+              "hint": "Inspect changepoints for structural shifts in demand."
+            },
+            {
+              "id": "ds_w4_t2",
+              "title": "Isolation Forest Anomaly Detection Engine",
+              "description": "Detect abnormal user behavior or fraudulent duplicate applications using unsupervised Isolation Forest modeling.",
+              "deliverableType": "GitHub PR & Anomaly Investigation Log",
+              "tools": ["Scikit-Learn IsolationForest"],
+              "steps": [
+                "1. Feature engineer submission velocity, IP variance, and form completion time.",
+                "2. Fit IsolationForest with 2% contamination factor.",
+                "3. Flag and isolate anomalous data points for review."
+              ],
+              "acceptanceCriteria": [
+                "Identifies synthetic anomalous test records with high precision.",
+                "Produces clear visual scatter plot highlighting anomalies."
+              ],
+              "codeTemplate": "from sklearn.ensemble import IsolationForest\nclf = IsolationForest(contamination=0.02, random_state=42)\ndf['is_anomaly'] = clf.fit_predict(X) == -1",
+              "hint": "Tune contamination rate based on empirical studio records."
+            }
+          ]
+        },
+        {
+          "weekNumber": 5,
+          "title": "Unsupervised Learning, Clustering & Dimensionality Reduction",
+          "summary": "Discover hidden structures: K-Means, DBSCAN, Hierarchical clustering, and PCA / t-SNE / UMAP embeddings.",
+          "objectives": [
+            "Determine optimal clusters using Silhouette scores and Elbow method.",
+            "Apply PCA and UMAP for 2D/3D high-dimensional data visualization.",
+            "Build customer segmentation cohorts based on project requirements."
+          ],
+          "tasks": [
+            {
+              "id": "ds_w5_t1",
+              "title": "Customer Segmentation via K-Means & UMAP",
+              "description": "Segment software project inquiries into distinct client personas using K-Means clustering and visualize clusters in 2D space with UMAP.",
+              "deliverableType": "Notebook & Persona Profile Deck",
+              "tools": ["UMAP-learn", "Scikit-Learn K-Means"],
+              "steps": [
+                "1. Preprocess project budgets, timeline urgencies, and module counts.",
+                "2. Calculate Silhouette scores for k=2 through k=8 to select optimal clusters.",
+                "3. Project to 2D using UMAP and describe each client persona."
+              ],
+              "acceptanceCriteria": [
+                "Clear separation of clusters with high Silhouette score (> 0.50).",
+                "Actionable business descriptions for each identified cohort."
+              ],
+              "codeTemplate": "import umap\nreducer = umap.UMAP(n_neighbors=15, min_dist=0.1)\nembedding = reducer.fit_transform(X_scaled)",
+              "hint": "Label clusters with descriptive titles (e.g. 'Enterprise AI', 'Startup MVP')."
+            },
+            {
+              "id": "ds_w5_t2",
+              "title": "Density-Based Spatial Clustering (DBSCAN)",
+              "description": "Apply DBSCAN to detect geographic clusters and density hotspots of applicants across cities without pre-specifying cluster counts.",
+              "deliverableType": "PR Link & Geographic Cluster Map",
+              "tools": ["DBSCAN", "Folium / Plotly Geo"],
+              "steps": [
+                "1. Convert city coordinates to haversine distance matrix.",
+                "2. Run DBSCAN with epsilon radius.",
+                "3. Plot interactive map of clusters and noise points."
+              ],
+              "acceptanceCriteria": [
+                "Identifies major tech hubs while marking isolated locations as noise.",
+                "Interactive map renders with zoom capabilities."
+              ],
+              "codeTemplate": "from sklearn.cluster import DBSCAN\ndb = DBSCAN(eps=0.5, min_samples=5, metric='haversine').fit(coords_radians)",
+              "hint": "Convert latitude/longitude to radians for haversine."
+            }
+          ]
+        },
+        {
+          "weekNumber": 6,
+          "title": "Deep Learning Foundations, PyTorch & Neural Networks",
+          "summary": "Understand neural networks: PyTorch tensors, autograd, custom Dataset/DataLoader, and Multi-Layer Perceptrons.",
+          "objectives": [
+            "Build custom PyTorch neural networks using `nn.Module`.",
+            "Implement training loops with loss functions and optimizers (AdamW).",
+            "Prevent overfitting with Dropout, Batch Normalization, and Early Stopping."
+          ],
+          "tasks": [
+            {
+              "id": "ds_w6_t1",
+              "title": "PyTorch Deep Neural Network Classifier",
+              "description": "Build and train a multi-layer deep neural network in PyTorch predicting project completion timeline based on technical specifications.",
+              "deliverableType": "GitHub Repo & Training Curve Plots",
+              "tools": ["PyTorch 2.x", "TensorBoard"],
+              "steps": [
+                "1. Inherit from `nn.Module` defining Linear, BatchNorm, and ReLU layers.",
+                "2. Build custom `Dataset` and `DataLoader` with batching.",
+                "3. Train with AdamW optimizer and log loss curves to TensorBoard."
+              ],
+              "acceptanceCriteria": [
+                "Training and validation loss decrease smoothly without divergence.",
+                "Implements Early Stopping saving best model weights."
+              ],
+              "codeTemplate": "class ProjectPredictor(nn.Module):\n    def __init__(self, in_features):\n        super().__init__()\n        self.net = nn.Sequential(nn.Linear(in_features, 128), nn.ReLU(), nn.Dropout(0.2), nn.Linear(128, 1))",
+              "hint": "Check learning rate with lr_scheduler."
+            },
+            {
+              "id": "ds_w6_t2",
+              "title": "Transfer Learning with PyTorch Pretrained Models",
+              "description": "Fine-tune a pretrained computer vision or text classification model using PyTorch transfer learning for custom document classification.",
+              "deliverableType": "PR Link & Accuracy Benchmark",
+              "tools": ["torchvision / transformers", "PyTorch"],
+              "steps": [
+                "1. Load pretrained backbone model with frozen weights.",
+                "2. Replace classification head with custom Linear layer.",
+                "3. Fine-tune on target document dataset."
+              ],
+              "acceptanceCriteria": [
+                "Achieves > 92% classification accuracy on holdout test set.",
+                "Demonstrates significant speedup over training from scratch."
+              ],
+              "codeTemplate": "model = models.resnet18(weights=models.ResNet18_Weights.DEFAULT)\nfor param in model.parameters(): param.requires_grad = False\nmodel.fc = nn.Linear(model.fc.in_features, num_classes)",
+              "hint": "Unfreeze top layers for second phase fine-tuning."
+            }
+          ]
+        },
+        {
+          "weekNumber": 7,
+          "title": "MLOps, Model Serialization, MLflow & FastAPI Serving",
+          "summary": "Productionize machine learning: serialize models (ONNX/Joblib), track experiments with MLflow, and serve via REST API.",
+          "objectives": [
+            "Track model training experiments and metrics using MLflow.",
+            "Export models to cross-platform ONNX runtime format.",
+            "Build low-latency inference endpoint in FastAPI."
+          ],
+          "tasks": [
+            {
+              "id": "ds_w7_t1",
+              "title": "MLflow Experiment Tracking & Model Registry",
+              "description": "Instrument your training scripts with MLflow to track parameters, metrics, artifacts, and promote the champion model to the registry.",
+              "deliverableType": "MLflow Dashboard Screenshot & Log Code",
+              "tools": ["MLflow"],
+              "steps": [
+                "1. Start local MLflow tracking server.",
+                "2. Log hyperparams, validation metrics, and model artifacts inside `mlflow.start_run()`.",
+                "3. Register winning model to 'Production' stage."
+              ],
+              "acceptanceCriteria": [
+                "All experiment runs documented in MLflow web UI.",
+                "Enables 1-click loading of production model artifact."
+              ],
+              "codeTemplate": "import mlflow\nwith mlflow.start_run():\n    mlflow.log_params(params)\n    mlflow.log_metric('accuracy', acc)\n    mlflow.sklearn.log_model(model, 'model')",
+              "hint": "Store MLflow backend in local SQLite."
+            },
+            {
+              "id": "ds_w7_t2",
+              "title": "Low-Latency ONNX Model Serving API",
+              "description": "Convert your trained model to ONNX format and build a high-throughput FastAPI inference endpoint generating predictions in under 10ms.",
+              "deliverableType": "GitHub PR & Latency Benchmark",
+              "tools": ["ONNX Runtime", "FastAPI"],
+              "steps": [
+                "1. Convert Scikit-Learn / PyTorch model to `.onnx`.",
+                "2. Load ONNX inference session in FastAPI startup event.",
+                "3. Expose `/predict` endpoint returning predictions and confidence probabilities."
+              ],
+              "acceptanceCriteria": [
+                "Inference latency under 10ms per single sample request.",
+                "Payload matches Pydantic input schema."
+              ],
+              "codeTemplate": "import onnxruntime as ort\nsession = ort.InferenceSession('model.onnx')\npred = session.run(None, {session.get_inputs()[0].name: input_array})",
+              "hint": "Benchmark with concurrent requests."
+            }
+          ]
+        },
+        {
+          "weekNumber": 8,
+          "title": "Interactive Streamlit Dashboard & Final Capstone Presentation",
+          "summary": "Deliver full end-to-end Data Science Capstone: interactive Streamlit analytics platform, documentation, and executive presentation.",
+          "objectives": [
+            "Build interactive multi-page Streamlit web application.",
+            "Containerize data science application using Docker.",
+            "Present findings to Founder & Lead Architect Muhammad Uzair."
+          ],
+          "tasks": [
+            {
+              "id": "ds_w8_t1",
+              "title": "Interactive Streamlit Web Dashboard",
+              "description": "Build an executive Streamlit dashboard featuring live predictive modeling, interactive filters, scenario simulators, and data export.",
+              "deliverableType": "Streamlit App Code & Live Hosted Link",
+              "tools": ["Streamlit", "Altair", "Plotly"],
+              "steps": [
+                "1. Build multi-page navigation (Overview, Predictions, Analytics, Explainability).",
+                "2. Allow user to input custom project parameters and see instant predictions.",
+                "3. Cache heavy data loads using `@st.cache_data`."
+              ],
+              "acceptanceCriteria": [
+                "Loads instantly with zero re-computation lag.",
+                "Styling customized to match Uzair AI Studio executive branding."
+              ],
+              "codeTemplate": "import streamlit as st\nst.set_page_config(page_title='Uzair AI Studio Analytics', layout='wide')\nst.title('Executive Studio Intelligence')",
+              "hint": "Deploy directly to Streamlit Community Cloud or Vercel."
+            },
+            {
+              "id": "ds_w8_t2",
+              "title": "Final Data Science Capstone Showcase",
+              "description": "Finalize your Data Science & ML Capstone project. Deliver full code repository, documentation, executive slide deck, and video demonstration.",
+              "deliverableType": "GitHub Final Release, Video Walkthrough & Deck",
+              "tools": ["GitHub", "Loom"],
+              "steps": [
+                "1. Tag official v1.0.0 release on GitHub.",
+                "2. Record a 5-minute video walkthrough explaining model findings and business impact.",
+                "3. Submit final deliverables for fellowship certification."
+              ],
+              "acceptanceCriteria": [
+                "Capstone reflects industry-level data science and engineering.",
+                "Approved by Lead Architect Muhammad Uzair."
+              ],
+              "codeTemplate": "# Uzair AI Studio Data Science Capstone v1.0.0\nCompleted 8-Week / 24-Week Engineering Fellowship.",
+              "hint": "Your Certificate, LOR, and 6-Month Experience Letter unlock upon approval."
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

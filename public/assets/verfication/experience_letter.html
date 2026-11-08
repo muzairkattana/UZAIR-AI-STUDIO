@@ -236,12 +236,12 @@ function showLockModal(lockInfo) {
       <h2 style="margin:0 0 10px;font-size:24px;color:#0F172A;font-weight:800;">Experience Letter Locked</h2>
       <p style="margin:0 0 20px;color:#64748B;font-size:15px;line-height:1.6;">${lockInfo && lockInfo.message ? lockInfo.message : 'Official Experience Letter is issued upon completing the full internship / tenure.'}</p>
       <div style="background:#F8FAFC;border:1px solid #E2E8F0;border-radius:12px;padding:16px;margin-bottom:24px;display:flex;justify-content:space-around;">
-        <div><div style="font-size:12px;color:#64748B;font-weight:600;text-transform:uppercase;">Days Remaining</div><div style="font-size:22px;font-weight:800;color:#2563EB;">${lockInfo && lockInfo.daysRemaining !== undefined ? lockInfo.daysRemaining : 'Active'}</div></div>
+        <div><div style="font-size:12px;color:#64748B;font-weight:600;text-transform:uppercase;">Days Remaining</div><div style="font-size:22px;font-weight:800;color:#4F46E5;">${lockInfo && lockInfo.daysRemaining !== undefined ? lockInfo.daysRemaining : 'Active'}</div></div>
         <div style="border-left:1px solid #E2E8F0;"></div>
         <div><div style="font-size:12px;color:#64748B;font-weight:600;text-transform:uppercase;">Completion Date</div><div style="font-size:15px;font-weight:700;color:#0F172A;margin-top:4px;">${lockInfo && lockInfo.completionDate ? lockInfo.completionDate : 'Ongoing'}</div></div>
       </div>
       <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;">
-        <a href="/offer-letter?id=${encodeURIComponent(queryId)}" style="padding:12px 20px;background:#2563EB;color:#FFF;border-radius:10px;text-decoration:none;font-weight:700;font-size:14px;box-shadow:0 4px 12px rgba(37,99,235,0.25);">📄 View Active Offer Letter</a>
+        <a href="/intern-portal" style="padding:12px 20px;background:linear-gradient(135deg, #4338CA, #6366F1);color:#FFF;border-radius:10px;text-decoration:none;font-weight:700;font-size:14px;box-shadow:0 4px 12px rgba(79,70,229,0.25);">🔐 Open Intern Portal</a>
         <a href="/verify?id=${encodeURIComponent(queryId)}" style="padding:12px 20px;background:#F1F5F9;color:#334155;border-radius:10px;text-decoration:none;font-weight:700;font-size:14px;border:1px solid #CBD5E1;">🔍 Check Live Status</a>
       </div>
     </div>

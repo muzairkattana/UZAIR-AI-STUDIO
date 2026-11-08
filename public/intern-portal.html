@@ -7,7 +7,7 @@
   
   <!-- PWA & Mobile App Meta Tags -->
   <link rel="manifest" href="/manifest-intern.json">
-  <meta name="theme-color" content="#2563EB">
+  <meta name="theme-color" content="#4F46E5">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="default">
   <meta name="apple-mobile-web-app-title" content="InternPortal">
@@ -28,12 +28,12 @@
       --bg-body: #F8FAFC;
       --bg-card: #FFFFFF;
       --border-subtle: #E2E8F0;
-      --border-focus: #2563EB;
+      --border-focus: #4F46E5;
       --text-main: #0F172A;
       --text-muted: #64748B;
-      --primary: #2563EB;
-      --primary-hover: #1D4ED8;
-      --primary-light: #EFF6FF;
+      --primary: #4F46E5;
+      --primary-hover: #4338CA;
+      --primary-light: #EEF2FF;
       --success: #059669;
       --success-light: #ECFDF5;
       --warning: #D97706;
@@ -41,7 +41,7 @@
       --danger: #DC2626;
       --shadow-sm: 0 1px 3px rgba(15, 23, 42, 0.05);
       --shadow-md: 0 4px 12px rgba(15, 23, 42, 0.07);
-      --shadow-lg: 0 12px 28px rgba(15, 23, 42, 0.09);
+      --shadow-lg: 0 12px 28px rgba(79, 70, 229, 0.12);
       --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
       --font-mono: 'JetBrains Mono', monospace;
     }
@@ -65,7 +65,7 @@
 
     /* PWA Install Promotion Banner */
     .pwa-install-banner {
-      background: linear-gradient(135deg, #1E40AF 0%, #2563EB 100%);
+      background: linear-gradient(135deg, #3730A3 0%, #4F46E5 50%, #7C3AED 100%);
       color: #FFFFFF;
       padding: 10px 16px;
       display: none;
@@ -74,14 +74,14 @@
       gap: 12px;
       font-size: 0.85rem;
       font-weight: 600;
-      box-shadow: 0 2px 10px rgba(37, 99, 235, 0.25);
+      box-shadow: 0 2px 10px rgba(79, 70, 229, 0.25);
       position: sticky;
       top: 0;
       z-index: 100;
     }
     .pwa-install-banner .install-btn-pill {
       background: #FFFFFF;
-      color: #1E40AF;
+      color: #4338CA;
       border: none;
       padding: 6px 14px;
       border-radius: 999px;
@@ -195,18 +195,25 @@
       line-height: 1.2;
     }
     .header-avatar-circle {
-      width: 34px;
-      height: 34px;
+      width: 36px;
+      height: 36px;
       border-radius: 50%;
-      background: linear-gradient(135deg, #2563EB, #1D4ED8);
+      background: linear-gradient(135deg, #4F46E5 0%, #7C3AED 100%);
       color: #FFFFFF;
       display: flex;
       align-items: center;
       justify-content: center;
       font-weight: 800;
-      font-size: 0.8rem;
-      box-shadow: 0 2px 6px rgba(37,99,235,0.25);
+      font-size: 0.85rem;
+      box-shadow: 0 2px 8px rgba(79, 70, 229, 0.35);
       flex-shrink: 0;
+      cursor: pointer;
+      border: 1.5px solid rgba(255, 255, 255, 0.6);
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .header-avatar-circle:hover {
+      transform: scale(1.08);
+      box-shadow: 0 4px 14px rgba(124, 58, 237, 0.5);
     }
     .btn-header-logout {
       background: #F8FAFC;
@@ -282,7 +289,7 @@
       pointer-events: auto;
     }
     .portal-toast.success { background: #065F46; }
-    .portal-toast.info { background: #1E40AF; }
+    .portal-toast.info { background: #3730A3; }
     .portal-toast.warning { background: #92400E; }
 
     /* Portal Main Container */
@@ -313,16 +320,16 @@
       left: 0;
       right: 0;
       height: 4px;
-      background: linear-gradient(90deg, #2563EB 0%, #3B82F6 50%, #60A5FA 100%);
+      background: linear-gradient(90deg, #4338CA 0%, #6366F1 50%, #818CF8 100%);
     }
     .auth-badge-pill {
       display: inline-flex;
       align-items: center;
       gap: 6px;
       padding: 4px 12px;
-      background: #EFF6FF;
-      border: 1px solid #BFDBFE;
-      color: #1D4ED8;
+      background: #EEF2FF;
+      border: 1px solid #C7D2FE;
+      color: #4338CA;
       font-size: 0.75rem;
       font-weight: 700;
       border-radius: 999px;
@@ -477,7 +484,7 @@
       transition: color 0.15s;
     }
     .auth-back-link:hover {
-      color: #2563EB;
+      color: #4F46E5;
     }
     .auth-security-badge {
       font-size: 0.725rem;
@@ -568,12 +575,12 @@
 
     /* Welcome Hero Card */
     .welcome-card {
-      background: linear-gradient(135deg, #1E3A8A 0%, #2563EB 100%);
+      background: linear-gradient(135deg, #312E81 0%, #4338CA 50%, #6366F1 100%);
       color: #FFFFFF;
       border-radius: 16px;
       padding: 24px 28px;
       margin-bottom: 24px;
-      box-shadow: 0 8px 24px rgba(37, 99, 235, 0.2);
+      box-shadow: 0 8px 24px rgba(79, 70, 229, 0.25);
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -647,7 +654,7 @@
       margin-top: 8px;
     }
     .progress-bar-fill {
-      background: linear-gradient(90deg, #2563EB, #10B981);
+      background: linear-gradient(90deg, #4F46E5, #10B981);
       height: 100%;
       border-radius: 999px;
       transition: width 0.4s ease;
@@ -854,13 +861,20 @@
     }
     .btn-save-task {
       padding: 7px 14px;
-      background: #2563EB;
+      background: linear-gradient(135deg, #4338CA 0%, #4F46E5 50%, #7C3AED 100%);
       color: #FFFFFF;
       border: none;
       border-radius: 8px;
       font-size: 0.78rem;
       font-weight: 700;
       cursor: pointer;
+      box-shadow: 0 2px 6px rgba(79, 70, 229, 0.25);
+      transition: all 0.15s;
+    }
+    .btn-save-task:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 10px rgba(79, 70, 229, 0.35);
+    }
     }
 
     /* Mobile Bottom App Navigation Bar */
@@ -981,7 +995,7 @@
       transition: background 0.15s;
     }
     .btn-doc-print-trigger:hover {
-      background: #1D4ED8;
+      background: var(--primary-hover);
     }
     .btn-doc-open-tab {
       background: #FFFFFF;
@@ -1210,6 +1224,495 @@
         grid-template-columns: 1fr;
       }
     }
+    /* ============================================================
+       UNIVERSAL NOTIFICATION BELL & CENTER DROPDOWN
+       ============================================================ */
+    .uzair-notif-wrap {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+    }
+    .uzair-notif-bell-btn {
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      background: #FFFFFF;
+      border: 1.5px solid #CBD5E1;
+      color: #475569;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+      position: relative;
+      padding: 0;
+      flex-shrink: 0;
+    }
+    .uzair-notif-bell-btn:hover {
+      background: #EEF2FF;
+      border-color: #6366F1;
+      color: #4F46E5;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(79, 70, 229, 0.2);
+    }
+    .uzair-notif-badge {
+      position: absolute;
+      top: -4px;
+      right: -4px;
+      background: #EF4444;
+      color: #FFFFFF;
+      font-size: 0.65rem;
+      font-weight: 800;
+      min-width: 18px;
+      height: 18px;
+      padding: 0 4px;
+      border-radius: 999px;
+      border: 2px solid #FFFFFF;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 2px 6px rgba(239, 68, 68, 0.45);
+      line-height: 1;
+    }
+    .uzair-notif-dropdown {
+      position: absolute;
+      top: calc(100% + 10px);
+      right: 0;
+      width: 340px;
+      max-width: calc(100vw - 28px);
+      background: #FFFFFF;
+      border: 1px solid #E2E8F0;
+      border-radius: 16px;
+      box-shadow: 0 16px 40px -4px rgba(15, 23, 42, 0.18), 0 0 0 1px rgba(79, 70, 229, 0.08);
+      z-index: 9999;
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(-8px) scale(0.98);
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+      overflow: hidden;
+    }
+    .uzair-notif-dropdown.open {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0) scale(1);
+    }
+    .notif-dropdown-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 16px;
+      border-bottom: 1px solid #F1F5F9;
+      background: #F8FAFC;
+    }
+    .notif-count-pill {
+      background: #EEF2FF;
+      color: #4F46E5;
+      font-size: 0.7rem;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 999px;
+      border: 1px solid #C7D2FE;
+    }
+    .btn-notif-action {
+      background: #FFFFFF;
+      border: 1px solid #CBD5E1;
+      color: #475569;
+      padding: 4px 8px;
+      border-radius: 6px;
+      font-size: 0.72rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .btn-notif-action:hover {
+      background: #EEF2FF;
+      border-color: #6366F1;
+      color: #4F46E5;
+    }
+    .notif-dropdown-list {
+      max-height: 380px;
+      overflow-y: auto;
+      padding: 4px 0;
+    }
+    .notif-item {
+      padding: 11px 16px;
+      border-bottom: 1px solid #F8FAFC;
+      transition: background 0.15s;
+      cursor: pointer;
+      position: relative;
+    }
+    .notif-item.unread {
+      background: #F5F7FF;
+      border-left: 3px solid #4F46E5;
+    }
+    .notif-item:hover {
+      background: #F1F5F9;
+    }
+    .notif-item-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 8px;
+    }
+    .notif-item-title {
+      font-size: 0.825rem;
+      font-weight: 700;
+      color: #0F172A;
+      display: block;
+    }
+    .notif-item-time {
+      font-size: 0.68rem;
+      color: #94A3B8;
+      white-space: nowrap;
+    }
+    .notif-item-body {
+      font-size: 0.76rem;
+      color: #475569;
+      margin: 4px 0 0;
+      line-height: 1.35;
+    }
+    .notif-item-link {
+      display: inline-block;
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: #4F46E5;
+      text-decoration: none;
+      margin-top: 6px;
+    }
+    .notif-empty-state {
+      padding: 32px 20px;
+      text-align: center;
+      color: #64748B;
+    }
+
+    /* ============================================================
+       INTERACTIVE CANDIDATE PROFILE MODAL & TASK BLUEPRINT MODAL
+       ============================================================ */
+    .intern-modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.65);
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+      z-index: 10000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .intern-modal-backdrop.open {
+      opacity: 1;
+      visibility: visible;
+    }
+    .intern-modal-card {
+      background: #FFFFFF;
+      border-radius: 20px;
+      max-width: 520px;
+      width: 100%;
+      box-shadow: 0 25px 60px -10px rgba(15, 23, 42, 0.35);
+      overflow: hidden;
+      border: 1px solid #E2E8F0;
+      transform: translateY(12px) scale(0.97);
+      transition: transform 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+      max-height: 90vh;
+      display: flex;
+      flex-direction: column;
+    }
+    .intern-modal-backdrop.open .intern-modal-card {
+      transform: translateY(0) scale(1);
+    }
+    .profile-modal-header {
+      background: linear-gradient(135deg, #312E81 0%, #4338CA 55%, #6366F1 100%);
+      color: #FFFFFF;
+      padding: 22px 24px;
+      position: relative;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+    .profile-modal-avatar-wrap {
+      position: relative;
+      flex-shrink: 0;
+    }
+    .profile-modal-avatar {
+      width: 58px;
+      height: 58px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #4F46E5, #7C3AED);
+      border: 3px solid #FFFFFF;
+      color: #FFFFFF;
+      font-weight: 800;
+      font-size: 1.3rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
+    }
+    .profile-modal-verified-badge {
+      position: absolute;
+      bottom: -2px;
+      right: -2px;
+      background: #10B981;
+      color: #FFFFFF;
+      font-size: 0.7rem;
+      font-weight: 900;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      border: 2px solid #FFFFFF;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .profile-modal-heading h3 {
+      font-size: 1.25rem;
+      font-weight: 800;
+      color: #FFFFFF;
+      margin-bottom: 4px;
+      line-height: 1.2;
+    }
+    .profile-modal-id-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .profile-modal-id {
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      color: #E0E7FF;
+      background: rgba(255, 255, 255, 0.18);
+      padding: 2px 8px;
+      border-radius: 6px;
+    }
+    .btn-copy-id {
+      background: #FFFFFF;
+      border: none;
+      color: #4338CA;
+      font-size: 0.72rem;
+      font-weight: 700;
+      padding: 3px 8px;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: transform 0.15s;
+    }
+    .btn-copy-id:hover {
+      transform: scale(1.05);
+    }
+    .btn-modal-close {
+      position: absolute;
+      top: 14px;
+      right: 14px;
+      background: rgba(255, 255, 255, 0.2);
+      border: none;
+      color: #FFFFFF;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      font-size: 1.2rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      line-height: 1;
+      transition: background 0.15s;
+    }
+    .btn-modal-close:hover {
+      background: rgba(255, 255, 255, 0.35);
+    }
+    .profile-modal-body {
+      padding: 20px 24px 24px;
+      overflow-y: auto;
+    }
+    .profile-status-pill-banner {
+      background: #ECFDF5;
+      border: 1px solid #A7F3D0;
+      color: #065F46;
+      border-radius: 10px;
+      padding: 8px 14px;
+      font-size: 0.8rem;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 16px;
+    }
+    .status-indicator-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #10B981;
+      box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.25);
+    }
+    .profile-details-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+    .profile-detail-cell {
+      background: #F8FAFC;
+      border: 1px solid #E2E8F0;
+      border-radius: 10px;
+      padding: 10px 12px;
+    }
+    .profile-cell-label {
+      display: block;
+      font-size: 0.68rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      color: #64748B;
+      letter-spacing: 0.03em;
+      margin-bottom: 2px;
+    }
+    .profile-cell-val {
+      display: block;
+      font-size: 0.825rem;
+      font-weight: 700;
+      color: #0F172A;
+      word-break: break-word;
+      line-height: 1.3;
+    }
+    .profile-credentials-box {
+      background: #EEF2FF;
+      border: 1px dashed #C7D2FE;
+      border-radius: 12px;
+      padding: 12px 14px;
+      margin-bottom: 18px;
+    }
+    .profile-modal-actions {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .btn-profile-action {
+      flex: 1 1 180px;
+      padding: 10px 16px;
+      border-radius: 10px;
+      font-size: 0.825rem;
+      font-weight: 700;
+      cursor: pointer;
+      text-align: center;
+      transition: all 0.18s;
+      border: none;
+    }
+    .btn-profile-action.primary {
+      background: linear-gradient(135deg, #4338CA 0%, #4F46E5 50%, #7C3AED 100%);
+      color: #FFFFFF;
+      box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
+    }
+    .btn-profile-action.primary:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 6px 16px rgba(79, 70, 229, 0.4);
+    }
+    .btn-profile-action.secondary {
+      background: #F1F5F9;
+      color: #334155;
+      border: 1px solid #CBD5E1;
+    }
+    .btn-profile-action.secondary:hover {
+      background: #E2E8F0;
+    }
+
+    /* Task Blueprint Modal */
+    .task-guide-card {
+      max-width: 680px;
+    }
+    .task-guide-header {
+      background: linear-gradient(135deg, #1E1B4B 0%, #312E81 50%, #4338CA 100%);
+      color: #FFFFFF;
+      padding: 20px 24px;
+      position: relative;
+    }
+    .task-guide-meta {
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      color: #A5B4FC;
+      letter-spacing: 0.05em;
+      margin-bottom: 4px;
+    }
+    .task-guide-title {
+      font-size: 1.2rem;
+      font-weight: 800;
+      color: #FFFFFF;
+      margin: 0;
+    }
+    .task-guide-body {
+      padding: 22px 24px;
+      overflow-y: auto;
+      font-size: 0.85rem;
+      line-height: 1.5;
+      color: #334155;
+    }
+    .task-guide-section {
+      margin-bottom: 18px;
+    }
+    .task-guide-section-title {
+      font-size: 0.78rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      color: #0F172A;
+      letter-spacing: 0.04em;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .task-tools-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-bottom: 12px;
+    }
+    .task-tool-chip {
+      background: #EEF2FF;
+      border: 1px solid #C7D2FE;
+      color: #4338CA;
+      font-size: 0.72rem;
+      font-weight: 700;
+      padding: 3px 10px;
+      border-radius: 999px;
+    }
+    .task-steps-list {
+      background: #F8FAFC;
+      border: 1px solid #E2E8F0;
+      border-radius: 12px;
+      padding: 14px 18px;
+      list-style: none;
+      margin: 0 0 16px;
+    }
+    .task-steps-list li {
+      padding: 6px 0;
+      border-bottom: 1px dashed #E2E8F0;
+    }
+    .task-steps-list li:last-child {
+      border-bottom: none;
+    }
+    .task-code-box {
+      background: #0F172A;
+      color: #38BDF8;
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      padding: 12px 14px;
+      border-radius: 10px;
+      overflow-x: auto;
+      margin-bottom: 16px;
+    }
+    .btn-task-guide-print {
+      background: linear-gradient(135deg, #4338CA 0%, #4F46E5 50%, #7C3AED 100%);
+      color: #FFFFFF;
+      border: none;
+      border-radius: 8px;
+      padding: 10px 18px;
+      font-size: 0.825rem;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
   </style>
 </head>
 <body>
@@ -1300,7 +1803,7 @@
         <div class="form-group">
           <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
             <label class="form-label" for="loginPassword" style="margin-bottom:0;">Password</label>
-            <a href="https://wa.me/923433885835?text=Hi%20Muhammad%20Uzair,%20I%20forgot%20my%20Intern%20Portal%20password" target="_blank" style="font-size:0.75rem; color:#2563EB; text-decoration:none; font-weight:600;">Forgot Password?</a>
+            <a href="https://wa.me/923433885835?text=Hi%20Muhammad%20Uzair,%20I%20forgot%20my%20Intern%20Portal%20password" target="_blank" style="font-size:0.75rem; color:#4F46E5; text-decoration:none; font-weight:600;">Forgot Password?</a>
           </div>
           <div class="password-input-wrap">
             <input type="password" id="loginPassword" class="form-input" placeholder="Enter your portal password" required autocomplete="current-password">
@@ -1337,11 +1840,21 @@
           <div class="form-group">
             <label class="form-label" for="regDomain">Specialization Track</label>
             <select id="regDomain" class="form-select" required>
-              <option value="Web Development">Web Development (Full-Stack &amp; React/Node)</option>
-              <option value="Generative AI">Generative AI &amp; LLM Systems</option>
-              <option value="Data Science">Data Science &amp; Predictive Analytics</option>
-              <option value="Python Development">Python Backend &amp; Scripting</option>
-              <option value="Front-End Development">Front-End UI/UX Engineering</option>
+              <option value="Mobile App Development">Mobile App Development (Flutter, React Native &amp; Android/iOS)</option>
+              <option value="Generative AI" selected>Generative AI &amp; Autonomous LLM Agents</option>
+              <option value="Web Development">Full-Stack Web Development (MERN, Next.js &amp; Cloud)</option>
+              <option value="Python Development">Python Software Engineering &amp; Distributed Systems</option>
+              <option value="Data Science">Data Science, Machine Learning &amp; Predictive Analytics</option>
+              <option value="Cloud DevOps">Cloud DevOps, Docker, Kubernetes &amp; AWS</option>
+              <option value="Cyber Security">Cyber Security, Ethical Hacking &amp; Cloud Defense</option>
+              <option value="UI/UX Design">UI/UX Design Systems &amp; Product Strategy</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="regDuration">Internship Duration Track</label>
+            <select id="regDuration" class="form-select" required>
+              <option value="2 Months" selected>2 Months (8-Week Intensive Sprint - Certificate + LOR)</option>
+              <option value="6 Months">6 Months (24-Week Fellowship - Certificate + LOR + 6-Month Experience Letter)</option>
             </select>
           </div>
           <div class="form-group">
@@ -1459,18 +1972,18 @@
             <div>
               <div class="stat-card-title">Milestone Tasks</div>
               <div class="stat-card-value" id="statTasksCount">1 / 16</div>
-              <div class="stat-card-sub">Completed & Submitted</div>
+              <div class="stat-card-sub">Completed &amp; Submitted</div>
             </div>
-            <div style="font-size:0.72rem; color:#2563EB; font-weight:700; margin-top:8px;">Sequential Task Unlocking</div>
+            <div style="font-size:0.72rem; color:#4F46E5; font-weight:700; margin-top:8px;">Sequential Task Unlocking</div>
           </div>
 
           <div class="stat-card">
             <div>
               <div class="stat-card-title">Document Security</div>
-              <div class="stat-card-value" id="statCredentialStatus" style="font-size:1.1rem; color:#2563EB;">Offer Released</div>
+              <div class="stat-card-value" id="statCredentialStatus" style="font-size:1.1rem; color:#4F46E5;">Offer Released</div>
               <div class="stat-card-sub">Completion documents locked</div>
             </div>
-            <div style="font-size:0.72rem; color:#D97706; font-weight:700; margin-top:8px;">🔒 8-Week Lock Enforced</div>
+            <div style="font-size:0.72rem; color:#D97706; font-weight:700; margin-top:8px;">🔒 Tenure Lock Enforced</div>
           </div>
         </div>
 
@@ -1494,7 +2007,7 @@
             </div>
             <div>
               <span style="color:#64748B; font-size:0.75rem; display:block;">Registration ID:</span>
-              <strong id="badgeId" style="font-family:var(--font-mono); color:#1D4ED8;">-</strong>
+              <strong id="badgeId" style="font-family:var(--font-mono); color:#4338CA;">-</strong>
             </div>
             <div>
               <span style="color:#64748B; font-size:0.75rem; display:block;">Domain / Track:</span>
@@ -1653,7 +2166,7 @@
           <h3 style="font-size:1.05rem; font-weight:800; margin-bottom:14px; color:#0F172A;">👤 Registered Profile Summary</h3>
           <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(200px, 1fr)); gap:12px; font-size:0.85rem;">
             <div><span style="color:#64748B; font-size:0.75rem;">Full Name:</span><br><strong id="profName">-</strong></div>
-            <div><span style="color:#64748B; font-size:0.75rem;">Candidate ID:</span><br><strong id="profId" style="font-family:var(--font-mono); color:#2563EB;">-</strong></div>
+            <div><span style="color:#64748B; font-size:0.75rem;">Candidate ID:</span><br><strong id="profId" style="font-family:var(--font-mono); color:#4F46E5;">-</strong></div>
             <div><span style="color:#64748B; font-size:0.75rem;">Domain:</span><br><strong id="profDomain">-</strong></div>
             <div><span style="color:#64748B; font-size:0.75rem;">Institute:</span><br><strong id="profInstitute">-</strong></div>
             <div><span style="color:#64748B; font-size:0.75rem;">Degree:</span><br><strong id="profDegree">-</strong></div>
@@ -1726,6 +2239,137 @@
           <span>Rendering printable document...</span>
         </div>
         <iframe id="docPrintIframe" class="doc-print-iframe" title="Document Print Engine" src="about:blank"></iframe>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       INTERACTIVE CANDIDATE PROFILE DETAILS MODAL
+       ============================================================ -->
+  <div class="intern-modal-backdrop" id="internProfileModal" role="dialog" aria-modal="true" aria-labelledby="profileModalName">
+    <div class="intern-modal-card">
+      <div class="profile-modal-header">
+        <div class="profile-modal-avatar-wrap">
+          <div class="profile-modal-avatar" id="profileModalAvatar">U</div>
+          <div class="profile-modal-verified-badge" title="Official Verified Intern">✓</div>
+        </div>
+        <div class="profile-modal-heading" style="flex:1; min-width:0;">
+          <h3 id="profileModalName" style="white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">Candidate Name</h3>
+          <div class="profile-modal-id-row">
+            <span class="profile-modal-id" id="profileModalId">UAIS-INT-SAMPLE</span>
+            <button type="button" class="btn-copy-id" id="btnCopyProfileId" title="Copy Candidate ID">📋 Copy</button>
+          </div>
+        </div>
+        <button type="button" class="btn-modal-close" id="btnCloseProfileModal" aria-label="Close Profile Details">&times;</button>
+      </div>
+
+      <div class="profile-modal-body">
+        <div class="profile-status-pill-banner" id="profileModalStatusBanner">
+          <span class="status-indicator-dot"></span>
+          <strong id="profileModalStatusText">Active Verified Fellowship Candidate</strong>
+        </div>
+
+        <div class="profile-details-grid">
+          <div class="profile-detail-cell">
+            <span class="profile-cell-label">Registered Email</span>
+            <strong class="profile-cell-val" id="profileModalEmail">-</strong>
+          </div>
+          <div class="profile-detail-cell">
+            <span class="profile-cell-label">WhatsApp Contact</span>
+            <strong class="profile-cell-val" id="profileModalWhatsapp">-</strong>
+          </div>
+          <div class="profile-detail-cell">
+            <span class="profile-cell-label">Specialization Domain</span>
+            <strong class="profile-cell-val" id="profileModalDomain">-</strong>
+          </div>
+          <div class="profile-detail-cell">
+            <span class="profile-cell-label">Program Track &amp; Tenure</span>
+            <strong class="profile-cell-val" id="profileModalTrack">-</strong>
+          </div>
+          <div class="profile-detail-cell">
+            <span class="profile-cell-label">Academic Institute</span>
+            <strong class="profile-cell-val" id="profileModalInstitute">-</strong>
+          </div>
+          <div class="profile-detail-cell">
+            <span class="profile-cell-label">Degree Program</span>
+            <strong class="profile-cell-val" id="profileModalDegree">-</strong>
+          </div>
+          <div class="profile-detail-cell">
+            <span class="profile-cell-label">Enrollment Date</span>
+            <strong class="profile-cell-val" id="profileModalStartDate">-</strong>
+          </div>
+          <div class="profile-detail-cell">
+            <span class="profile-cell-label">Target Completion Date</span>
+            <strong class="profile-cell-val" id="profileModalEndDate">-</strong>
+          </div>
+        </div>
+
+        <div class="profile-credentials-box">
+          <div style="display:flex; align-items:center; gap:8px; margin-bottom:4px;">
+            <span style="font-size:1.1rem;">🏛️</span>
+            <strong style="font-size:0.85rem; color:#0F172A;">Uzair AI Studio Official Credential Vault</strong>
+          </div>
+          <p style="font-size:0.75rem; color:#64748B; line-height:1.4; margin:0;" id="profileModalCredDesc">
+            Your credentials (Offer Letter, LOR, Certificate, and 6-Month Experience Letter) are digitally verified and permanently accessible in the private Document Vault.
+          </p>
+        </div>
+
+        <div class="profile-modal-actions">
+          <button type="button" class="btn-profile-action primary" id="btnProfileGoSettings">⚙️ Open Security &amp; Settings</button>
+          <button type="button" class="btn-profile-action secondary" id="btnProfileClose">Close Profile</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       TASK INSTRUCTION GUIDE & BLUEPRINT MODAL
+       ============================================================ -->
+  <div class="intern-modal-backdrop" id="taskGuideModal" role="dialog" aria-modal="true" aria-labelledby="taskGuideTitle">
+    <div class="intern-modal-card task-guide-card">
+      <div class="task-guide-header">
+        <div class="task-guide-meta" id="taskGuideMeta">TECHNICAL SPRINT BLUEPRINT &bull; WEEK 1</div>
+        <h3 class="task-guide-title" id="taskGuideTitle">Task Instruction Guide</h3>
+        <button type="button" class="btn-modal-close" id="btnCloseTaskGuideModal" aria-label="Close Task Guide">&times;</button>
+      </div>
+
+      <div class="task-guide-body">
+        <div class="task-guide-section">
+          <div class="task-guide-section-title">📌 Sprint Objective &amp; Overview</div>
+          <p id="taskGuideDesc" style="color:#475569; margin-bottom:12px;"></p>
+          <div style="font-size:0.78rem; color:#0284C7; font-weight:700;">
+            Expected Deliverable: <span id="taskGuideDeliverable" style="color:#0F172A;"></span>
+          </div>
+        </div>
+
+        <div class="task-guide-section">
+          <div class="task-guide-section-title">🛠️ Required Tech Stack &amp; Tools</div>
+          <div class="task-tools-chips" id="taskGuideTools"></div>
+        </div>
+
+        <div class="task-guide-section">
+          <div class="task-guide-section-title">📋 Step-by-Step Implementation Roadmap</div>
+          <ol class="task-steps-list" id="taskGuideSteps"></ol>
+        </div>
+
+        <div class="task-guide-section" id="taskGuideCodeSection">
+          <div class="task-guide-section-title">💻 Code Blueprint / Starter Pattern</div>
+          <pre class="task-code-box" id="taskGuideCode"></pre>
+        </div>
+
+        <div class="task-guide-section">
+          <div class="task-guide-section-title">✅ Acceptance &amp; Evaluation Criteria</div>
+          <ul class="task-steps-list" id="taskGuideCriteria" style="list-style:disc; padding-left:32px;"></ul>
+        </div>
+
+        <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; margin-top:20px; padding-top:16px; border-top:1px solid #E2E8F0;">
+          <button type="button" class="btn-task-guide-print" id="btnPrintTaskGuide">
+            <span>🖨️ Print / Save Blueprint as PDF</span>
+          </button>
+          <button type="button" class="btn-profile-action secondary" id="btnCloseTaskGuideBottom" style="flex:0 0 auto; padding:8px 16px;">
+            Close Guide
+          </button>
+        </div>
       </div>
     </div>
   </div>

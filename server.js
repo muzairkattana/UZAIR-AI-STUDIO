@@ -96,6 +96,7 @@ const NEWSLETTER_FILE = path.join(DATA_DIR, 'newsletter.json');
 const INTERNSHIPS_FILE = path.join(DATA_DIR, 'internships.json');
 const SETTINGS_FILE = path.join(DATA_DIR, 'settings.json');
 const CURRICULUM_FILE = path.join(DATA_DIR, 'curriculum.json');
+const DOMAIN_CURRICULUMS_FILE = path.join(DATA_DIR, 'domain-curriculums.json');
 const NOTIFICATIONS_FILE = path.join(DATA_DIR, 'notifications.json');
 const crypto = require('crypto');
 
@@ -419,7 +420,9 @@ app.post('/api/internship/apply', (req, res) => {
 
   const now = new Date();
   const startDateStr = now.toISOString().split('T')[0];
-  const completionDate = new Date(now.getTime() + 60 * 24 * 60 * 1000 * 60);
+  const requestedDuration = (req.body.trackDuration || req.body.duration || '2 Months').includes('6') ? '6 Months' : '2 Months';
+  const durationDays = requestedDuration === '6 Months' ? 180 : 60;
+  const completionDate = new Date(now.getTime() + durationDays * 24 * 60 * 1000 * 60);
   const completionDateStr = completionDate.toISOString().split('T')[0];
 
   const newInternship = {
@@ -436,13 +439,21 @@ app.post('/api/internship/apply', (req, res) => {
     degree: degree ? degree.trim() : 'N/A',
     domain: domain,
     whatsappGroupJoined: whatsappGroupJoined || 'No',
-    program: 'Internship & Training Program - 2 Months',
+    program: requestedDuration === '6 Months' ? 'Advanced Engineering Fellowship - 6 Months' : 'Internship & Training Program - 2 Months',
     batch: currentSettings.batchName || '2026 AI Department Batch',
     startDate: startDateStr,
     completionDate: completionDateStr,
-    duration: '2 Months (60 Days)',
+    duration: requestedDuration === '6 Months' ? '6 Months (180 Days / 24 Weeks)' : '2 Months (60 Days / 8 Weeks)',
+    trackDuration: requestedDuration,
     mentor: 'Muhammad Uzair (Founder & Lead Architect)',
-    perks: [
+    perks: requestedDuration === '6 Months' ? [
+      'Official 6-Month Industry Experience Letter',
+      'Internship Completion Certificate',
+      'Letter of Recommendation by Founder Muhammad Uzair',
+      'MIT Artificial Intelligence Course (1080p Recorded Lectures, Slides & Books)',
+      'Enterprise Architecture & Production Portfolio',
+      'Flexible Self-Paced Schedule'
+    ] : [
       'Internship Completion Certificate',
       'Letter of Recommendation by Founder Muhammad Uzair',
       'MIT Artificial Intelligence Course (1080p Recorded Lectures, Slides & Books)',
@@ -534,7 +545,9 @@ app.post('/api/intern-portal/register', (req, res) => {
   const formattedName = fullName.trim().split(' ').map(w => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase()).join(' ');
   const now = new Date();
   const startDateStr = now.toISOString().split('T')[0];
-  const completionDate = new Date(now.getTime() + 60 * 24 * 60 * 1000 * 60);
+  const requestedDuration = (req.body.trackDuration || req.body.duration || '2 Months').includes('6') ? '6 Months' : '2 Months';
+  const durationDays = requestedDuration === '6 Months' ? 180 : 60;
+  const completionDate = new Date(now.getTime() + durationDays * 24 * 60 * 1000 * 60);
   const completionDateStr = completionDate.toISOString().split('T')[0];
   const cleanPassword = password.trim();
 
@@ -554,13 +567,21 @@ app.post('/api/intern-portal/register', (req, res) => {
     degree: (degree || 'BS Computer Science').trim(),
     domain: domain,
     whatsappGroupJoined: 'No',
-    program: 'Internship & Training Program - 2 Months',
+    program: requestedDuration === '6 Months' ? 'Advanced Engineering Fellowship - 6 Months' : 'Internship & Training Program - 2 Months',
     batch: currentSettings.batchName || '2026 AI Department Batch',
     startDate: startDateStr,
     completionDate: completionDateStr,
-    duration: '2 Months (60 Days)',
+    duration: requestedDuration === '6 Months' ? '6 Months (180 Days / 24 Weeks)' : '2 Months (60 Days / 8 Weeks)',
+    trackDuration: requestedDuration,
     mentor: 'Muhammad Uzair (Founder & Lead Architect)',
-    perks: [
+    perks: requestedDuration === '6 Months' ? [
+      'Official 6-Month Industry Experience Letter',
+      'Internship Completion Certificate',
+      'Letter of Recommendation by Founder Muhammad Uzair',
+      'MIT Artificial Intelligence Course (1080p Recorded Lectures, Slides & Books)',
+      'Enterprise Architecture & Production Portfolio',
+      'Flexible Self-Paced Schedule'
+    ] : [
       'Internship Completion Certificate',
       'Letter of Recommendation by Founder Muhammad Uzair',
       'MIT Artificial Intelligence Course (1080p Recorded Lectures, Slides & Books)',
@@ -763,8 +784,22 @@ app.post('/api/intern-portal/task-action', requireInternAuth, (req, res) => {
     };
   }
 
-  const weekTasks = [`w${weekNumber}_t1`, `w${weekNumber}_t2`];
-  const allWeekDone = weekTasks.every(tid => tp.completedTasks.includes(tid));
+  // Dynamic week tasks detection from domain curriculums or standard curriculum
+  let weekTaskIds = [];
+  try {
+    const domainData = readJsonFile(DOMAIN_CURRICULUMS_FILE);
+    const domainEntry = domainData?.domains?.[intern.domain] || Object.values(domainData?.domains || {})[0];
+    const weekObj = domainEntry?.weeks?.find(w => w.weekNumber === weekNumber);
+    if (weekObj?.tasks && weekObj.tasks.length > 0) {
+      weekTaskIds = weekObj.tasks.map(t => t.id);
+    }
+  } catch (e) {}
+  if (!weekTaskIds.length) {
+    weekTaskIds = [`w${weekNumber}_t1`, `w${weekNumber}_t2`];
+  }
+
+  const allWeekDone = (weekTaskIds.length > 0 && weekTaskIds.every(tid => tp.completedTasks.includes(tid))) ||
+                      tp.completedTasks.filter(tid => tid.includes(`_w${weekNumber}_`) || tid.startsWith(`w${weekNumber}_`)).length >= 2;
 
   if (allWeekDone && !tp.completedWeeks.includes(weekNumber)) {
     tp.completedWeeks.push(weekNumber);
@@ -790,12 +825,35 @@ app.post('/api/intern-portal/task-action', requireInternAuth, (req, res) => {
   });
 });
 
-// API: Intern Portal - Get 8-Week Curriculum
+// API: Intern Portal - Get Domain-Specific Curriculum (8-Week / 24-Week)
 app.get('/api/intern-portal/curriculum', (req, res) => {
-  const curriculum = readJsonFile(CURRICULUM_FILE);
+  const domainQuery = (req.query.domain || req.query.course || '').trim();
+  const domainData = readJsonFile(DOMAIN_CURRICULUMS_FILE);
+  const fallbackCurriculum = readJsonFile(CURRICULUM_FILE);
+
+  let matchedDomain = null;
+  const lower = domainQuery.toLowerCase();
+  if (lower.includes('mobile') || lower.includes('android') || lower.includes('ios') || lower.includes('flutter')) {
+    matchedDomain = 'Mobile App Development';
+  } else if (lower.includes('gen') || lower.includes('ai') || lower.includes('llm') || lower.includes('agent')) {
+    matchedDomain = 'Generative AI';
+  } else if (lower.includes('web') || lower.includes('front') || lower.includes('mern') || lower.includes('full-stack')) {
+    matchedDomain = 'Web Development';
+  } else if (lower.includes('python')) {
+    matchedDomain = 'Python Development';
+  } else if (lower.includes('data') || lower.includes('analytics') || lower.includes('machine learning')) {
+    matchedDomain = 'Data Science';
+  }
+
+  const selected = (matchedDomain && domainData?.domains?.[matchedDomain])
+    ? domainData.domains[matchedDomain]
+    : (domainData?.domains?.[domainQuery] || fallbackCurriculum);
+
   return res.json({
     success: true,
-    curriculum
+    domain: matchedDomain || domainQuery || 'Software Engineering',
+    curriculum: selected,
+    availableDomains: Object.keys(domainData?.domains || {})
   });
 });
 

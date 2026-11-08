@@ -288,6 +288,8 @@
       const institute = document.getElementById('regInstitute').value.trim();
       const degree = document.getElementById('regDegree').value.trim();
       const city = document.getElementById('regCity').value.trim();
+      const durationEl = document.getElementById('regDuration');
+      const trackDuration = durationEl ? durationEl.value : '2 Months';
       const btn = document.getElementById('btnRegisterSubmit');
 
       btn.disabled = true;
@@ -302,6 +304,7 @@
             email,
             password,
             domain,
+            trackDuration,
             whatsapp,
             institute,
             degree,
@@ -403,6 +406,83 @@
   });
 
   // ============================================================
+  // 3. CANDIDATE PROFILE DETAILS MODAL
+  // ============================================================
+  function openInternProfileModal() {
+    if (!currentIntern) return;
+    const modal = document.getElementById('internProfileModal');
+    if (!modal) return;
+
+    const initials = (currentIntern.fullName || 'U').split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
+    const avatarEl = document.getElementById('profileModalAvatar');
+    if (avatarEl) avatarEl.textContent = initials;
+
+    document.getElementById('profileModalName').textContent = currentIntern.fullName || 'Candidate';
+    document.getElementById('profileModalId').textContent = currentIntern.id || '-';
+    document.getElementById('profileModalEmail').textContent = currentIntern.email || '-';
+    document.getElementById('profileModalWhatsapp').textContent = currentIntern.whatsapp || '-';
+    document.getElementById('profileModalDomain').textContent = currentIntern.domain || '-';
+    
+    const trackDuration = currentIntern.trackDuration || (currentIntern.duration && currentIntern.duration.includes('6') ? '6 Months (24 Weeks)' : '2 Months (8 Weeks)');
+    document.getElementById('profileModalTrack').textContent = `${trackDuration} • ${currentIntern.isCompleted ? 'Completed' : `${currentIntern.daysRemaining || 60} Days Remaining`}`;
+    
+    document.getElementById('profileModalInstitute').textContent = currentIntern.institute || 'N/A';
+    document.getElementById('profileModalDegree').textContent = currentIntern.degree || 'N/A';
+    document.getElementById('profileModalStartDate').textContent = currentIntern.startDate || '-';
+    document.getElementById('profileModalEndDate').textContent = currentIntern.completionDate || '-';
+
+    const statusBanner = document.getElementById('profileModalStatusText');
+    if (statusBanner) {
+      statusBanner.textContent = currentIntern.isCompleted
+        ? '🎓 Certified Graduate • Official Credentials Awarded'
+        : `🟢 Active Verified Candidate • Remote Fellowship (${trackDuration})`;
+    }
+
+    modal.style.display = 'flex';
+    requestAnimationFrame(() => modal.classList.add('open'));
+  }
+
+  function closeInternProfileModal() {
+    const modal = document.getElementById('internProfileModal');
+    if (!modal) return;
+    modal.classList.remove('open');
+    setTimeout(() => { modal.style.display = 'none'; }, 220);
+  }
+
+  // Wire profile modal buttons
+  const btnCloseProfileModal = document.getElementById('btnCloseProfileModal');
+  if (btnCloseProfileModal) btnCloseProfileModal.addEventListener('click', closeInternProfileModal);
+
+  const btnProfileClose = document.getElementById('btnProfileClose');
+  if (btnProfileClose) btnProfileClose.addEventListener('click', closeInternProfileModal);
+
+  const btnCopyProfileId = document.getElementById('btnCopyProfileId');
+  if (btnCopyProfileId) {
+    btnCopyProfileId.addEventListener('click', () => {
+      if (currentIntern?.id) {
+        navigator.clipboard.writeText(currentIntern.id);
+        alert(`Candidate ID Copied: ${currentIntern.id}`);
+      }
+    });
+  }
+
+  const btnProfileGoSettings = document.getElementById('btnProfileGoSettings');
+  if (btnProfileGoSettings) {
+    btnProfileGoSettings.addEventListener('click', () => {
+      closeInternProfileModal();
+      const tabSettings = document.querySelector('[data-view="viewSettings"]');
+      if (tabSettings) tabSettings.click();
+    });
+  }
+
+  const internProfileModal = document.getElementById('internProfileModal');
+  if (internProfileModal) {
+    internProfileModal.addEventListener('click', (e) => {
+      if (e.target === internProfileModal) closeInternProfileModal();
+    });
+  }
+
+  // ============================================================
   // 4. PORTAL POPULATION & RENDERING
   // ============================================================
   function renderAuthenticatedPortal() {
@@ -411,7 +491,15 @@
     document.body.classList.add('portal-authenticated');
     authSection.style.display = 'none';
     dashboardSection.style.display = 'block';
-    if (userHeaderPill) userHeaderPill.style.display = 'flex';
+    if (userHeaderPill) {
+      userHeaderPill.style.display = 'flex';
+      userHeaderPill.style.cursor = 'pointer';
+      userHeaderPill.title = 'Click to view full candidate profile';
+      userHeaderPill.onclick = (e) => {
+        if (e.target && e.target.id === 'btnLogout') return;
+        openInternProfileModal();
+      };
+    }
 
     const internNotifWrap = document.getElementById('internNotifWrap');
     if (internNotifWrap) internNotifWrap.style.display = 'inline-flex';
@@ -429,12 +517,18 @@
       window.UzairNotifications.startPolling('intern');
     }
 
-    // Populate Header
+    // Populate Header & Connect Profile Click Trigger
     if (headerUserName) headerUserName.textContent = currentIntern.fullName;
     if (headerUserId) headerUserId.textContent = currentIntern.id;
     if (headerUserAvatar) {
       const initials = (currentIntern.fullName || 'U').split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
       headerUserAvatar.textContent = initials;
+      headerUserAvatar.style.cursor = 'pointer';
+      headerUserAvatar.title = 'Click to view full candidate profile';
+      headerUserAvatar.onclick = (e) => {
+        e.stopPropagation();
+        openInternProfileModal();
+      };
     }
 
     // Populate Hero & Metrics
@@ -706,12 +800,14 @@
     if (!container) return;
 
     try {
-      const res = await fetch('/api/intern-portal/curriculum');
+      const domainQuery = encodeURIComponent(currentIntern.domain || '');
+      const durationQuery = encodeURIComponent(currentIntern.trackDuration || currentIntern.duration || '');
+      const res = await fetch(`/api/intern-portal/curriculum?domain=${domainQuery}&duration=${durationQuery}`);
       const json = await res.json();
       if (json && json.success && json.curriculum) {
         currentCurriculum = json.curriculum;
         try {
-          localStorage.setItem('uzair_cached_curriculum', JSON.stringify(currentCurriculum));
+          localStorage.setItem(`uzair_cached_curriculum_${currentIntern.domain}`, JSON.stringify(currentCurriculum));
         } catch (e) {}
         renderCurriculumWeeks(currentCurriculum.weeks);
         return;
@@ -722,7 +818,7 @@
 
     // Offline cache fallback from localStorage
     try {
-      const cached = localStorage.getItem('uzair_cached_curriculum');
+      const cached = localStorage.getItem(`uzair_cached_curriculum_${currentIntern.domain}`) || localStorage.getItem('uzair_cached_curriculum');
       if (cached) {
         currentCurriculum = JSON.parse(cached);
         renderCurriculumWeeks(currentCurriculum.weeks);
@@ -751,7 +847,7 @@
     container.innerHTML = weeks.map(w => {
       const weekNum = w.weekNumber;
       
-      // Sequential Unlock Rule:
+      // Strict Sequential Unlock Rule:
       // Week 1 is always unlocked.
       // Week N is unlocked ONLY IF Week N-1 is in completedWeeks!
       const isUnlocked = weekNum === 1 || completedWeeks.includes(weekNum - 1) || currentIntern.isCompleted;
@@ -774,7 +870,12 @@
                 <h4>${t.title}</h4>
                 <p>${t.description}</p>
                 <div style="font-size:0.75rem; color:#64748B; margin-top:4px;">
-                  Deliverable: <strong style="color:#0284C7;">${t.deliverableType}</strong> &bull; <em>${t.hint}</em>
+                  Deliverable: <strong style="color:#0284C7;">${t.deliverableType}</strong> &bull; <em>${t.hint || ''}</em>
+                </div>
+                <div style="margin-top:8px;">
+                  <button type="button" class="btn-task-blueprint-open" onclick="window.triggerTaskGuide(${weekNum}, '${t.id}')" style="background:#EEF2FF; border:1px solid #C7D2FE; color:#4338CA; border-radius:6px; padding:4px 10px; font-size:0.75rem; font-weight:700; cursor:pointer; display:inline-flex; align-items:center; gap:5px; transition:all 0.15s;">
+                    <span>📄 Download Task Guide (PDF / Blueprint)</span>
+                  </button>
                 </div>
               </div>
             </div>
@@ -831,6 +932,106 @@
         const completed = chk.checked;
         await submitTaskAction(taskId, weekNum, completed);
       });
+    });
+  }
+
+  // Task Blueprint Guide Functions
+  window.triggerTaskGuide = function (weekNum, taskId) {
+    if (!currentCurriculum || !currentCurriculum.weeks) return;
+    const week = currentCurriculum.weeks.find(w => w.weekNumber === weekNum);
+    if (!week) return;
+    const task = week.tasks ? week.tasks.find(t => t.id === taskId) : null;
+    if (!task) return;
+    window.openTaskGuideModal(weekNum, week.title, task);
+  };
+
+  window.openTaskGuideModal = function (weekNum, weekTitle, task) {
+    const modal = document.getElementById('taskGuideModal');
+    if (!modal) return;
+
+    document.getElementById('taskGuideMeta').textContent = `TECHNICAL SPRINT BLUEPRINT • WEEK ${weekNum} • ${currentIntern.domain || 'ENGINEERING'}`;
+    document.getElementById('taskGuideTitle').textContent = task.title;
+    document.getElementById('taskGuideDesc').textContent = task.description;
+    document.getElementById('taskGuideDeliverable').textContent = `${task.deliverableType || 'GitHub Repository Link'} (Hint: ${task.hint || 'Follow studio conventions'})`;
+
+    // Tools
+    const toolsContainer = document.getElementById('taskGuideTools');
+    toolsContainer.innerHTML = '';
+    const toolsList = task.tools || ['Git', 'VS Code', 'Node.js / Python Runtime'];
+    toolsList.forEach(tool => {
+      const chip = document.createElement('span');
+      chip.className = 'task-tool-chip';
+      chip.textContent = tool;
+      toolsContainer.appendChild(chip);
+    });
+
+    // Steps
+    const stepsContainer = document.getElementById('taskGuideSteps');
+    stepsContainer.innerHTML = '';
+    const steps = task.steps || [
+      '1. Review repository architecture and clean coding conventions.',
+      '2. Create dedicated feature branch feat/' + (task.id || 'sprint') + '.',
+      '3. Implement modular logic and write passing unit tests.',
+      '4. Push clean commit to GitHub and verify automated pipeline.'
+    ];
+    steps.forEach(st => {
+      const li = document.createElement('li');
+      li.textContent = st;
+      stepsContainer.appendChild(li);
+    });
+
+    // Code
+    const codeEl = document.getElementById('taskGuideCode');
+    const codeSec = document.getElementById('taskGuideCodeSection');
+    if (task.codeTemplate) {
+      codeSec.style.display = 'block';
+      codeEl.textContent = task.codeTemplate;
+    } else {
+      codeSec.style.display = 'none';
+    }
+
+    // Criteria
+    const criteriaContainer = document.getElementById('taskGuideCriteria');
+    criteriaContainer.innerHTML = '';
+    const criteria = task.acceptanceCriteria || [
+      'Zero compilation or linting errors.',
+      'Unit tests pass with valid assertions.',
+      'Deliverable submitted via private intern portal.'
+    ];
+    criteria.forEach(c => {
+      const li = document.createElement('li');
+      li.textContent = c;
+      criteriaContainer.appendChild(li);
+    });
+
+    modal.style.display = 'flex';
+    requestAnimationFrame(() => modal.classList.add('open'));
+  };
+
+  window.closeTaskGuideModal = function () {
+    const modal = document.getElementById('taskGuideModal');
+    if (!modal) return;
+    modal.classList.remove('open');
+    setTimeout(() => { modal.style.display = 'none'; }, 220);
+  };
+
+  const btnCloseTaskGuideModal = document.getElementById('btnCloseTaskGuideModal');
+  if (btnCloseTaskGuideModal) btnCloseTaskGuideModal.addEventListener('click', window.closeTaskGuideModal);
+
+  const btnCloseTaskGuideBottom = document.getElementById('btnCloseTaskGuideBottom');
+  if (btnCloseTaskGuideBottom) btnCloseTaskGuideBottom.addEventListener('click', window.closeTaskGuideModal);
+
+  const taskGuideModal = document.getElementById('taskGuideModal');
+  if (taskGuideModal) {
+    taskGuideModal.addEventListener('click', (e) => {
+      if (e.target === taskGuideModal) window.closeTaskGuideModal();
+    });
+  }
+
+  const btnPrintTaskGuide = document.getElementById('btnPrintTaskGuide');
+  if (btnPrintTaskGuide) {
+    btnPrintTaskGuide.addEventListener('click', () => {
+      window.print();
     });
   }
 

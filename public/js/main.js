@@ -1246,6 +1246,7 @@ function initInternshipModule() {
       const institute = (document.getElementById('internInstitute')?.value || '').trim();
       const degree = document.getElementById('internDegree')?.value;
       const domain = document.querySelector('input[name="internDomain"]:checked')?.value;
+      const trackDuration = document.querySelector('input[name="internDuration"]:checked')?.value || '2 Months';
       const joinedWa = document.querySelector('input[name="internJoinedWa"]:checked')?.value || 'No';
       const confirmed = document.getElementById('internConfirmPolicy')?.checked;
 
@@ -1287,6 +1288,7 @@ function initInternshipModule() {
             institute,
             degree,
             domain,
+            trackDuration,
             whatsappGroupJoined: joinedWa
           })
         });
@@ -1301,7 +1303,7 @@ function initInternshipModule() {
         }
 
         if (!response.ok || !result.success) {
-          showAlert(result.message || 'Error submitting application. Please try again or use the Google Form option.', 'error');
+          showAlert(result.message || 'Error submitting application. Please try again.', 'error');
           submitBtn.disabled = false;
           submitBtn.innerHTML = originalBtnText;
           return;
@@ -1312,13 +1314,9 @@ function initInternshipModule() {
         if (successCard) {
           document.getElementById('resReceiptId').textContent = result.referenceId;
           document.getElementById('resReceiptName').textContent = result.data.fullName;
-          document.getElementById('resReceiptDomain').textContent = result.data.domain;
+          document.getElementById('resReceiptDomain').textContent = `${result.data.domain} (${result.data.trackDuration || '2 Months'})`;
           document.getElementById('resReceiptEmail').textContent = result.data.email;
 
-          const btnOffer = document.getElementById('btnReceiptOfferLetter');
-          if (btnOffer) {
-            btnOffer.href = `/offer-letter.html?id=${result.referenceId}`;
-          }
           const btnVerify = document.getElementById('btnReceiptVerify');
           if (btnVerify) {
             btnVerify.href = `/verify.html?id=${result.referenceId}`;
@@ -2013,43 +2011,20 @@ function initInternshipModule() {
         const app = json.data;
         const isCompleted = app.isCompleted || (app.status || '').toLowerCase().includes('completed') || app.daysRemaining === 0;
 
-        // Certificate & Letter of Recommendation buttons logic:
-        // STRICT RULE: Only shown / unlocked after completing the full internship duration!
-        let certButtonHtml = '';
-        let lorButtonHtml = '';
-        let expButtonHtml = '';
-        if (isCompleted) {
-          certButtonHtml = `
-            <a href="/certificate/${encodeURIComponent(app.id)}" target="_blank" class="btn btn-primary btn-sm" style="background:linear-gradient(135deg, #F59E0B, #D97706); border:none; box-shadow:0 4px 12px rgba(245, 158, 11, 0.35);">
-              <span>🎓 View Certificate of Completion</span>
-            </a>
-          `;
-          lorButtonHtml = `
-            <a href="/recommendation-letter/${encodeURIComponent(app.id)}" target="_blank" class="btn btn-outline btn-sm" style="border-color:#2563EB; color:#1D4ED8;">
-              <span>📜 View Letter of Recommendation</span>
-            </a>
-          `;
-          expButtonHtml = `
-            <a href="/experience-letter/${encodeURIComponent(app.id)}" target="_blank" class="btn btn-outline btn-sm" style="border-color:#8B5CF6; color:#6D28D9;">
-              <span>💼 View Experience Letter</span>
-            </a>
-          `;
-        }
-
         statusResult.className = 'status-result-area found';
         statusResult.innerHTML = `
           <div class="result-success-box">
             <!-- Official Verified Digital Badge -->
-            <div class="verified-badge-card" style="background:linear-gradient(135deg, #FFFFFF 0%, #F0FDF4 100%); border:2px solid #86EFAC; border-radius:14px; padding:18px; box-shadow:0 8px 24px rgba(16,185,129,0.12); margin-bottom:16px;">
-              <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; border-bottom:1px solid #DCFCE7; padding-bottom:12px; margin-bottom:14px;">
+            <div class="verified-badge-card" style="background:linear-gradient(135deg, #FFFFFF 0%, #F5F3FF 100%); border:2px solid #A5B4FC; border-radius:14px; padding:18px; box-shadow:0 8px 24px rgba(79,70,229,0.12); margin-bottom:16px;">
+              <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; border-bottom:1px solid #E0E7FF; padding-bottom:12px; margin-bottom:14px;">
                 <div style="display:flex; align-items:center; gap:8px;">
-                  <span style="display:inline-flex; align-items:center; justify-content:center; width:34px; height:34px; background:#10B981; color:#fff; border-radius:50%; font-size:1.1rem; box-shadow:0 2px 8px rgba(16,185,129,0.35);">✓</span>
+                  <span style="display:inline-flex; align-items:center; justify-content:center; width:34px; height:34px; background:linear-gradient(135deg, #4338CA, #6366F1); color:#fff; border-radius:50%; font-size:1.1rem; box-shadow:0 2px 8px rgba(79,70,229,0.35);">✓</span>
                   <div>
-                    <strong style="color:#065F46; font-size:0.95rem; display:block; letter-spacing:0.5px;">OFFICIALLY VERIFIED CANDIDATE</strong>
-                    <small style="color:#047857; font-size:0.75rem;">Uzair AI Studio • Autonomous Verification System</small>
+                    <strong style="color:#312E81; font-size:0.95rem; display:block; letter-spacing:0.5px;">OFFICIALLY VERIFIED CANDIDATE</strong>
+                    <small style="color:#4338CA; font-size:0.75rem;">Uzair AI Studio • Autonomous Verification System</small>
                   </div>
                 </div>
-                <span class="res-id" style="font-family:'JetBrains Mono', monospace; font-weight:700; color:#1D4ED8; background:#EFF6FF; border:1px solid #BFDBFE; padding:4px 10px; border-radius:6px; font-size:0.85rem;">
+                <span class="res-id" style="font-family:'JetBrains Mono', monospace; font-weight:700; color:#4338CA; background:#EEF2FF; border:1px solid #C7D2FE; padding:4px 10px; border-radius:6px; font-size:0.85rem;">
                   ${app.id}
                 </span>
               </div>
@@ -2061,7 +2036,7 @@ function initInternshipModule() {
                 </div>
                 <div>
                   <span style="font-size:0.75rem; color:#64748B; display:block;">Track & Specialization</span>
-                  <span class="domain-tag" style="display:inline-block; margin-top:2px;">${app.domain}</span>
+                  <span class="domain-tag" style="display:inline-block; margin-top:2px; background:#EEF2FF; color:#4338CA; border:1px solid #C7D2FE;">${app.domain}</span>
                 </div>
                 <div>
                   <span style="font-size:0.75rem; color:#64748B; display:block;">Academic Institution</span>
@@ -2069,8 +2044,8 @@ function initInternshipModule() {
                 </div>
                 <div>
                   <span style="font-size:0.75rem; color:#64748B; display:block;">Internship Status</span>
-                  <span style="font-weight:700; font-size:0.85rem; color:${isCompleted ? '#059669' : '#0284C7'};">
-                    ${isCompleted ? '🎓 Certified Graduate' : '🟢 Active Intern (Remote Track)'}
+                  <span style="font-weight:700; font-size:0.85rem; color:${isCompleted ? '#059669' : '#4338CA'};">
+                    ${isCompleted ? '🎓 Certified Graduate' : '🟣 Active Candidate (Remote Track)'}
                   </span>
                 </div>
               </div>
@@ -2078,44 +2053,33 @@ function initInternshipModule() {
               <!-- Timeline Progress Bar -->
               <div style="background:#FFFFFF; border:1px solid #E2E8F0; border-radius:10px; padding:10px 14px; margin-bottom:14px;">
                 <div style="display:flex; justify-content:space-between; align-items:center; font-size:0.8rem; margin-bottom:6px; flex-wrap:wrap; gap:6px;">
-                  <span style="color:#64748B;">Duration: <strong>${app.duration || '2 Months'}</strong> (Started: ${app.startDate})</span>
-                  <span style="color:${isCompleted ? '#059669' : '#0284C7'}; font-weight:800;">
+                  <span style="color:#64748B;">Duration: <strong>${app.duration || app.trackDuration || '2 Months'}</strong> (Started: ${app.startDate})</span>
+                  <span style="color:${isCompleted ? '#059669' : '#4338CA'}; font-weight:800;">
                     ${isCompleted ? '🎓 Program Completed & Certified' : `⏳ ${app.daysRemaining} Days Remaining (Target: ${app.completionDate})`}
                   </span>
                 </div>
                 <div style="background:#E2E8F0; height:8px; border-radius:999px; overflow:hidden;">
-                  <div style="background:linear-gradient(90deg, #2563EB, #10B981); height:100%; width:${isCompleted ? 100 : Math.max(10, app.progressPercent || 15)}%; border-radius:999px;"></div>
+                  <div style="background:linear-gradient(90deg, #4F46E5, #10B981); height:100%; width:${isCompleted ? 100 : Math.max(10, app.progressPercent || 15)}%; border-radius:999px;"></div>
                 </div>
               </div>
 
               <!-- Notice & Document Vault Access -->
-              <div class="res-notice" style="background:#EFF6FF; border:1.5px dashed #93C5FD; border-radius:10px; padding:12px; font-size:0.825rem; color:#1E3A8A; margin-bottom:14px; line-height:1.5; display:flex; align-items:center; gap:10px;">
+              <div class="res-notice" style="background:#EEF2FF; border:1.5px dashed #A5B4FC; border-radius:10px; padding:12px; font-size:0.825rem; color:#312E81; margin-bottom:14px; line-height:1.5; display:flex; align-items:center; gap:10px;">
                 <span style="font-size:1.3rem;">🔒</span>
                 <div>
-                  <strong>Official Document Vault Security:</strong> For authenticity and candidate privacy, official printable Offer Letters, Certificates, and Letters of Recommendation are stored securely in your private <strong>Intern Portal</strong>. Please sign in below to view and download your documents.
+                  <strong>Official Document Security & Candidate Privacy:</strong> For authenticity, official printable Offer Letters, Letters of Recommendation, and Certificates are stored securely in your private <strong>Intern Portal</strong>. Please sign in to your intern account to access your official documents.
                 </div>
               </div>
 
-              <!-- Action Buttons (Quick Access & Intern Portal) -->
+              <!-- Action Buttons (Portal Sign-in & Verified Public Credentials) -->
               <div style="display:flex; gap:10px; flex-wrap:wrap; align-items:center;">
-                <a href="/intern-portal" class="btn btn-primary" style="display:inline-flex; align-items:center; gap:8px; padding:10px 20px; font-weight:700; background:linear-gradient(135deg, #2563EB, #1D4ED8); box-shadow:0 4px 14px rgba(37,99,235,0.3);">
+                <a href="/intern-portal" class="btn btn-primary" style="display:inline-flex; align-items:center; gap:8px; padding:10px 20px; font-weight:700; background:linear-gradient(135deg, #4338CA, #6366F1); box-shadow:0 4px 14px rgba(79,70,229,0.3);">
                   <span>🔐 Sign In to Intern Portal &rarr;</span>
                 </a>
-                <a href="/offer-letter?id=${encodeURIComponent(app.id)}" target="_blank" class="btn btn-outline btn-sm" style="border-color:#2563EB; color:#1D4ED8; font-weight:700;">
-                  <span>📄 View Offer Letter</span>
-                </a>
-                ${isCompleted ? `
-                  <a href="/certificate?id=${encodeURIComponent(app.id)}" target="_blank" class="btn btn-outline btn-sm" style="border-color:#F59E0B; color:#D97706; font-weight:700;">
-                    <span>🎓 View Certificate</span>
-                  </a>
-                  <a href="/recommendation-letter?id=${encodeURIComponent(app.id)}" target="_blank" class="btn btn-outline btn-sm" style="border-color:#10B981; color:#047857; font-weight:700;">
-                    <span>📜 View LOR</span>
-                  </a>
-                ` : ''}
-                <a href="/verify?id=${encodeURIComponent(app.id)}" target="_blank" class="btn btn-outline btn-sm" style="border-color:#0284C7; color:#0369A1;">
+                <a href="/verify?id=${encodeURIComponent(app.id)}" target="_blank" class="btn btn-outline btn-sm" style="border-color:#4F46E5; color:#4338CA; font-weight:700;">
                   <span>🛡️ Full Verification Sheet</span>
                 </a>
-                <button type="button" class="btn btn-outline btn-sm" id="btnStatusDownloadBadge" style="border-color:#2563EB; color:#1D4ED8; font-weight:700;">
+                <button type="button" class="btn btn-outline btn-sm" id="btnStatusDownloadBadge" style="border-color:#4F46E5; color:#4338CA; font-weight:700;">
                   <span>🖼️ Save Verified Badge (PNG)</span>
                 </button>
                 <a href="https://wa.me/923433885835?text=${encodeURIComponent(`Hi Coordinator, checking registration status for ${app.fullName} (${app.id})`)}" target="_blank" class="btn btn-whatsapp btn-sm">
