@@ -2065,14 +2065,6 @@ function initInternshipModule() {
                 </div>
               </div>
 
-              <!-- Notice & Document Vault Access -->
-              <div class="res-notice" style="background:#EEF2FF; border:1.5px dashed #A5B4FC; border-radius:10px; padding:12px; font-size:0.825rem; color:#312E81; margin-bottom:14px; line-height:1.5; display:flex; align-items:center; gap:10px;">
-                <span style="font-size:1.3rem;">🔒</span>
-                <div>
-                  <strong>Official Document Security & Candidate Privacy:</strong> For authenticity, official printable Offer Letters, Letters of Recommendation, and Certificates are stored securely in your private <strong>Intern Portal</strong>. Please sign in to your intern account to access your official documents.
-                </div>
-              </div>
-
               <!-- Action Buttons (Portal Sign-in & Verified Public Credentials) -->
               <div style="display:flex; gap:10px; flex-wrap:wrap; align-items:center;">
                 <a href="/intern-portal" class="btn btn-primary" style="display:inline-flex; align-items:center; gap:8px; padding:10px 20px; font-weight:700; background:linear-gradient(135deg, #4338CA, #6366F1); box-shadow:0 4px 14px rgba(79,70,229,0.3);">
