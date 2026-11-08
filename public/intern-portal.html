@@ -1082,6 +1082,58 @@
       background: #000000;
     }
 
+    /* Task Action Blueprint & Guide Buttons */
+    .task-actions-row {
+      margin-top: 10px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: center;
+    }
+    .btn-view-task-assignment {
+      display: inline-flex !important;
+      align-items: center;
+      gap: 7px;
+      padding: 7px 14px;
+      background: linear-gradient(135deg, #090D16 0%, #0F172A 50%, #1E293B 100%) !important;
+      color: #FFFFFF !important;
+      border: 1px solid rgba(255, 255, 255, 0.22) !important;
+      border-radius: 7px;
+      font-size: 0.78rem;
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: 0 2px 7px rgba(15, 23, 42, 0.25);
+      transition: all 0.15s ease;
+      text-decoration: none;
+    }
+    .btn-view-task-assignment:hover {
+      background: #000000 !important;
+      border-color: rgba(255, 255, 255, 0.45) !important;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(15, 23, 42, 0.4);
+    }
+    .btn-view-task-guide {
+      display: inline-flex !important;
+      align-items: center;
+      gap: 6px;
+      padding: 7px 14px;
+      background: #F1F5F9 !important;
+      color: #334155 !important;
+      border: 1px solid #CBD5E1 !important;
+      border-radius: 7px;
+      font-size: 0.78rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      text-decoration: none;
+    }
+    .btn-view-task-guide:hover {
+      background: #E2E8F0 !important;
+      color: #0F172A !important;
+      border-color: #94A3B8 !important;
+      transform: translateY(-1px);
+    }
+
     /* Mobile Bottom App Navigation Bar */
     .mobile-app-bar {
       display: none !important; /* Strictly hidden unless portal-authenticated on mobile */
@@ -2699,6 +2751,6 @@
   <!-- Client-Side JavaScript Logic -->
   <script src="/js/uzair-notifications.js"></script>
   <script src="/js/local-db.js"></script>
-  <script src="/js/intern-portal.js?v=3.3"></script>
+  <script src="/js/intern-portal.js?v=4.0"></script>
 </body>
 </html>

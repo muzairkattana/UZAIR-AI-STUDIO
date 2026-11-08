@@ -979,11 +979,11 @@
                 <div style="font-size:0.75rem; color:#64748B; margin-top:4px;">
                   Deliverable: <strong style="color:#0284C7;">${t.deliverableType}</strong> &bull; <em>${t.hint || ''}</em>
                 </div>
-                <div style="margin-top:8px; display:flex; flex-wrap:wrap; gap:8px;">
-                  <button type="button" class="btn-task-blueprint-open" onclick="window.viewTaskAssignmentDoc(${weekNum}, '${t.id}')" style="background:linear-gradient(135deg, #090D16, #0F172A); border:1px solid rgba(255,255,255,0.2); color:#FFFFFF; border-radius:6px; padding:6px 14px; font-size:0.75rem; font-weight:700; cursor:pointer; display:inline-flex; align-items:center; gap:6px; box-shadow:0 2px 6px rgba(15,23,42,0.25); transition:all 0.15s;">
+                <div class="task-actions-row">
+                  <button type="button" class="btn-view-task-assignment" onclick="window.viewTaskAssignmentDoc(${weekNum}, '${t.id}')">
                     <span>📜 View Task Assignment</span>
                   </button>
-                  <button type="button" class="btn-task-blueprint-open" onclick="window.triggerTaskGuide(${weekNum}, '${t.id}')" style="background:#F1F5F9; border:1px solid #CBD5E1; color:#334155; border-radius:6px; padding:6px 14px; font-size:0.75rem; font-weight:700; cursor:pointer; display:inline-flex; align-items:center; gap:6px; transition:all 0.15s;">
+                  <button type="button" class="btn-view-task-guide" onclick="window.triggerTaskGuide(${weekNum}, '${t.id}')">
                     <span>📋 Quick Specification &amp; Code</span>
                   </button>
                 </div>
