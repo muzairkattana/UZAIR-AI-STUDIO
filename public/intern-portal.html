@@ -2179,7 +2179,28 @@
       right: 0;
       width: 140px;
       height: 60px;
-      z-index: 10;
+      z-index: 12;
+      background: transparent;
+      pointer-events: auto;
+    }
+    /* Shield bottom-left link button and bottom-right "Watch on YouTube" pill */
+    .mit-video-bottom-left-shield {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 80px;
+      height: 52px;
+      z-index: 12;
+      background: transparent;
+      pointer-events: auto;
+    }
+    .mit-video-bottom-right-shield {
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      width: 200px;
+      height: 56px;
+      z-index: 12;
       background: transparent;
       pointer-events: auto;
     }
@@ -2698,6 +2719,8 @@
           <div class="mit-video-player-card">
             <div class="mit-video-aspect-wrap">
               <div class="mit-video-top-shield" title="Uzair AI Studio In-Portal Player" aria-hidden="true"></div>
+              <div class="mit-video-bottom-left-shield" title="Uzair AI Studio In-Portal Player" aria-hidden="true"></div>
+              <div class="mit-video-bottom-right-shield" title="Uzair AI Studio In-Portal Player" aria-hidden="true"></div>
               <iframe 
                 id="mitVideoPlayerFrame" 
                 src="https://www.youtube-nocookie.com/embed/TjZBTDzGeGg?autoplay=0&rel=0&modestbranding=1" 

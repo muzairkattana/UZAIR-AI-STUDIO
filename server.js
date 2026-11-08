@@ -105,7 +105,30 @@ function hashPassword(pw) {
   return crypto.createHash('sha256').update(String(pw || '')).digest('hex');
 }
 
-const activeInternSessions = new Map();
+const SESSIONS_FILE = path.join(DATA_DIR, 'intern_sessions.json');
+
+function loadPersistedSessions() {
+  try {
+    if (fs.existsSync(SESSIONS_FILE)) {
+      const data = JSON.parse(fs.readFileSync(SESSIONS_FILE, 'utf8') || '{}');
+      return new Map(Object.entries(data));
+    }
+  } catch (err) {
+    console.error('Error loading intern sessions:', err);
+  }
+  return new Map();
+}
+
+function savePersistedSessions() {
+  try {
+    const obj = Object.fromEntries(activeInternSessions);
+    fs.writeFileSync(SESSIONS_FILE, JSON.stringify(obj, null, 2), 'utf8');
+  } catch (err) {
+    console.error('Error saving intern sessions:', err);
+  }
+}
+
+const activeInternSessions = loadPersistedSessions();
 
 function generateInternToken(id) {
   return `UAIS-INT-SES-${id}-${Date.now()}-${crypto.randomBytes(8).toString('hex')}`;
@@ -183,7 +206,22 @@ function requireInternAuth(req, res, next) {
     return res.status(401).json({ success: false, message: 'Authentication required. Please sign in to your Intern Portal.' });
   }
 
-  const session = activeInternSessions.get(token);
+  let session = activeInternSessions.get(token);
+  if (!session || !session.internId) {
+    // Graceful recovery from structured valid token (UAIS-INT-SES-<id>-...)
+    if (token.startsWith('UAIS-INT-SES-')) {
+      const parts = token.split('-');
+      // format: UAIS-INT-SES-<candidateId>-<timestamp>-<randomHex>
+      // e.g. UAIS-INT-SES-UZ-INT-12345-... or UAIS-INT-SES-UAIS-INT-...
+      const match = token.match(/^UAIS-INT-SES-(.+)-d+-[0-9a-fA-F]+$/);
+      if (match && match[1]) {
+        session = { internId: match[1], createdAt: Date.now() };
+        activeInternSessions.set(token, session);
+        savePersistedSessions();
+      }
+    }
+  }
+
   if (!session || !session.internId) {
     return res.status(401).json({ success: false, message: 'Session expired or invalid. Please sign in again.' });
   }

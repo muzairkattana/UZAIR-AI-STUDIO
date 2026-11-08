@@ -488,7 +488,8 @@
     document.getElementById('profileModalDomain').textContent = currentIntern.domain || '-';
     
     const trackDuration = currentIntern.trackDuration || (currentIntern.duration && currentIntern.duration.includes('6') ? '6 Months (24 Weeks)' : '2 Months (8 Weeks)');
-    document.getElementById('profileModalTrack').textContent = `${trackDuration} • ${currentIntern.isCompleted ? 'Completed' : `${internDays || 60} Days Remaining`}`;
+    const safeDays = (currentIntern.daysRemaining !== undefined && currentIntern.daysRemaining !== null) ? currentIntern.daysRemaining : (currentIntern.isCompleted ? 0 : 60);
+    document.getElementById('profileModalTrack').textContent = `${trackDuration} • ${currentIntern.isCompleted ? 'Completed' : `${safeDays} Days Remaining`}`;
     
     document.getElementById('profileModalInstitute').textContent = currentIntern.institute || 'N/A';
     document.getElementById('profileModalDegree').textContent = currentIntern.degree || 'N/A';
@@ -551,6 +552,7 @@
   // ============================================================
   function renderAuthenticatedPortal() {
     if (!currentIntern) return;
+    const internDays = (currentIntern.daysRemaining !== undefined && currentIntern.daysRemaining !== null) ? currentIntern.daysRemaining : (currentIntern.isCompleted ? 0 : 60);
 
     document.body.classList.add('portal-authenticated');
     authSection.style.display = 'none';
@@ -1833,6 +1835,23 @@
   async function initPortal() {
     const token = localStorage.getItem(TOKEN_KEY);
     if (token) {
+      let restored = false;
+
+      // First try local cache/IndexedDB instantly so user never gets logged out on refresh
+      if (window.UzairLocalDB) {
+        try {
+          const sess = await window.UzairLocalDB.getInternSession();
+          if (sess && sess.profile) {
+            currentIntern = sess.profile;
+            renderAuthenticatedPortal();
+            restored = true;
+          }
+        } catch (dbErr) {
+          console.error('[Intern Portal] Failed to read cached profile:', dbErr);
+        }
+      }
+
+      // Then verify / refresh with backend
       try {
         const res = await fetch('/api/intern-portal/me', {
           headers: { 'Authorization': `Bearer ${token}` }
@@ -1846,25 +1865,19 @@
           renderAuthenticatedPortal();
           updateInternNetworkStatus(true);
           return;
+        } else if (!restored) {
+          // Token definitively expired / rejected by server
+          localStorage.removeItem(TOKEN_KEY);
         }
       } catch (e) {
-        console.warn('[Intern Portal] Network offline during token check, querying IndexedDB:', e);
-      }
-
-      // Offline fallback: load cached intern profile from IndexedDB
-      if (window.UzairLocalDB) {
-        try {
-          const sess = await window.UzairLocalDB.getInternSession();
-          if (sess && sess.profile) {
-            currentIntern = sess.profile;
-            renderAuthenticatedPortal();
-            updateInternNetworkStatus(false);
-            return;
-          }
-        } catch (dbErr) {
-          console.error('[Intern Portal] Failed to read cached profile:', dbErr);
+        console.warn('[Intern Portal] Network offline during token check:', e);
+        if (restored) {
+          updateInternNetworkStatus(false);
+          return;
         }
       }
+
+      if (restored) return;
     }
 
     // Default to Auth Section (unauthenticated state)
