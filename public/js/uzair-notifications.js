@@ -393,7 +393,7 @@
 
     // Background polling for server notifications
     startPolling(role = 'client', targetId = null, intervalMs = 8000) {
-      let lastTimestamp = Date.now() - 60000;
+      let lastTimestamp = 0; // Fetch all current active notifications on initial connection
 
       const poll = async () => {
         try {

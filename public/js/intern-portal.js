@@ -597,7 +597,7 @@
         dropdownId: 'notifCenterIntern',
         role: 'intern'
       });
-      window.UzairNotifications.startPolling('intern');
+      window.UzairNotifications.startPolling('intern', currentIntern ? currentIntern.id : null, 6000);
     }
 
     // Populate Header & Connect Profile Click Trigger

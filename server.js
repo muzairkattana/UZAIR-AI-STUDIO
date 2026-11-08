@@ -695,6 +695,31 @@ app.post('/api/intern-portal/login', (req, res) => {
 
   const token = generateInternToken(found.id);
   activeInternSessions.set(token, { internId: found.id, createdAt: Date.now() });
+  savePersistedSessions();
+
+  // Seed live welcome notifications for intern if not present
+  try {
+    const existingNotifs = readNotifications();
+    const hasNotif = existingNotifs.some(n => n.targetId === found.id && n.role === 'intern');
+    if (!hasNotif) {
+      pushServerNotification({
+        role: 'intern',
+        targetId: found.id,
+        title: '🎓 Welcome to Uzair AI Studio Portal',
+        body: 'Welcome ' + found.fullName + '! Your ' + (found.trackDuration || '2-Month') + ' ' + found.domain + ' fellowship track is live. Track your weekly milestones and official credentials.',
+        url: '/intern-portal',
+        tag: 'intern_welcome'
+      });
+      pushServerNotification({
+        role: 'intern',
+        targetId: found.id,
+        title: '📜 Official Offer Letter Ready',
+        body: 'Your official formal Internship Offer Letter has been generated. You can view, verify, and direct print it anytime from the Document Vault.',
+        url: '/intern-portal',
+        tag: 'offer_ready'
+      });
+    }
+  } catch(e) {}
 
   return res.json({
     success: true,
@@ -706,6 +731,30 @@ app.post('/api/intern-portal/login', (req, res) => {
 
 // API: Intern Portal - Get Current Intern Session & Progress
 app.get('/api/intern-portal/me', requireInternAuth, (req, res) => {
+  // Ensure default notifications exist for this intern
+  try {
+    const existingNotifs = readNotifications();
+    const hasNotif = existingNotifs.some(n => n.targetId === req.intern.id && n.role === 'intern');
+    if (!hasNotif) {
+      pushServerNotification({
+        role: 'intern',
+        targetId: req.intern.id,
+        title: '🎓 Welcome to Uzair AI Studio Portal',
+        body: 'Welcome ' + req.intern.fullName + '! Your ' + (req.intern.trackDuration || '2-Month') + ' ' + req.intern.domain + ' track is active. Review your weekly milestones & credentials.',
+        url: '/intern-portal',
+        tag: 'intern_welcome'
+      });
+      pushServerNotification({
+        role: 'intern',
+        targetId: req.intern.id,
+        title: '📜 Official Offer Letter Ready',
+        body: 'Your official formal Internship Offer Letter is ready in the Document Vault. Direct print and download anytime.',
+        url: '/intern-portal',
+        tag: 'offer_ready'
+      });
+    }
+  } catch(e) {}
+
   return res.json({
     success: true,
     intern: sanitizeInternForClient(req.intern)

@@ -340,13 +340,17 @@
     "password": "UAIS-INT-MVZKSFZF",
     "passwordHash": "1668e1aef329e94a2c37d4903fe1ded534cb8d4623eccdff6cdcd03ac1e3bcfd",
     "tasksProgress": {
-      "currentWeek": 1,
-      "completedWeeks": [],
+      "currentWeek": 3,
+      "completedWeeks": [
+        1
+      ],
       "completedTasks": [
-        "w1_t1"
+        "w1_t1",
+        "ds_w1_t1"
       ],
       "submissions": {}
-    }
+    },
+    "updatedAt": "2026-11-08T20:51:30.422Z"
   },
   {
     "id": "UAIS-INT-MU01COMP",
