@@ -114,16 +114,17 @@
       position: sticky;
       top: 0;
       z-index: 90;
-      box-shadow: var(--shadow-sm);
+      box-shadow: 0 1px 3px rgba(15, 23, 42, 0.05);
     }
     .header-container {
       max-width: 1200px;
       margin: 0 auto;
-      padding: 12px 20px;
+      padding: 10px 16px;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 16px;
+      gap: 12px;
+      box-sizing: border-box;
     }
     .header-brand {
       display: flex;
@@ -131,32 +132,71 @@
       gap: 10px;
       text-decoration: none;
       color: var(--text-main);
+      flex-shrink: 0;
+      min-width: 0;
     }
     .header-brand img {
-      width: 36px;
-      height: 36px;
+      width: 34px;
+      height: 34px;
       border-radius: 8px;
+      flex-shrink: 0;
+    }
+    .header-brand-text {
+      min-width: 0;
     }
     .header-brand-text h1 {
-      font-size: 1rem;
+      font-size: 0.975rem;
       font-weight: 800;
       letter-spacing: -0.3px;
       color: #0F172A;
+      line-height: 1.15;
+      white-space: nowrap;
     }
-    .header-brand-text span {
+    .header-brand-text h1 span {
+      color: var(--primary);
+    }
+    .header-portal-sub {
       display: block;
-      font-size: 0.72rem;
+      font-size: 0.68rem;
       color: var(--text-muted);
       font-weight: 600;
+      white-space: nowrap;
     }
     .header-user-status {
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 8px;
+      flex-shrink: 0;
+    }
+    .user-header-pill {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-shrink: 0;
+    }
+    .user-info-text {
+      text-align: right;
+    }
+    .user-info-text strong {
+      font-size: 0.825rem;
+      display: block;
+      color: #0F172A;
+      max-width: 130px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      line-height: 1.2;
+    }
+    .user-info-text span {
+      font-family: var(--font-mono);
+      font-size: 0.68rem;
+      color: var(--primary);
+      display: block;
+      line-height: 1.2;
     }
     .header-avatar-circle {
-      width: 38px;
-      height: 38px;
+      width: 34px;
+      height: 34px;
       border-radius: 50%;
       background: linear-gradient(135deg, #2563EB, #1D4ED8);
       color: #FFFFFF;
@@ -164,9 +204,86 @@
       align-items: center;
       justify-content: center;
       font-weight: 800;
-      font-size: 0.85rem;
-      box-shadow: 0 2px 6px rgba(37,99,235,0.3);
+      font-size: 0.8rem;
+      box-shadow: 0 2px 6px rgba(37,99,235,0.25);
+      flex-shrink: 0;
     }
+    .btn-header-logout {
+      background: #F8FAFC;
+      color: #475569;
+      padding: 6px 12px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      border: 1px solid #CBD5E1;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.15s;
+      flex-shrink: 0;
+      white-space: nowrap;
+    }
+    .btn-header-logout:hover {
+      background: #FEF2F2;
+      border-color: #FECACA;
+      color: #DC2626;
+    }
+    .offline-dot-pill {
+      display: none;
+      align-items: center;
+      gap: 4px;
+      background: #FEF3C7;
+      color: #92400E;
+      border: 1px solid #FCD34D;
+      padding: 3px 8px;
+      border-radius: 999px;
+      font-size: 0.68rem;
+      font-weight: 800;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+    .intern-offline-banner {
+      display: none;
+      background: #FFFBEB;
+      border-bottom: 1px solid #FDE68A;
+      color: #92400E;
+      padding: 8px 16px;
+      font-size: 0.78rem;
+      text-align: center;
+      line-height: 1.4;
+      font-weight: 600;
+    }
+
+    /* Toast Notification for Direct In-Page Print Actions */
+    .portal-toast {
+      position: fixed;
+      bottom: 80px;
+      left: 50%;
+      transform: translateX(-50%) translateY(20px);
+      background: #0F172A;
+      color: #FFFFFF;
+      padding: 10px 18px;
+      border-radius: 999px;
+      font-size: 0.825rem;
+      font-weight: 700;
+      box-shadow: 0 10px 25px rgba(15, 23, 42, 0.25);
+      z-index: 9999;
+      opacity: 0;
+      pointer-events: none;
+      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      max-width: 90vw;
+      text-align: center;
+      box-sizing: border-box;
+    }
+    .portal-toast.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+      pointer-events: auto;
+    }
+    .portal-toast.success { background: #065F46; }
+    .portal-toast.info { background: #1E40AF; }
+    .portal-toast.warning { background: #92400E; }
 
     /* Portal Main Container */
     .portal-main {
@@ -794,11 +911,14 @@
 
     /* Responsive Media Queries */
     @media (max-width: 768px) {
+      .hide-on-mobile {
+        display: none !important;
+      }
       .portal-main {
         padding: 16px 14px 40px;
       }
       body.portal-authenticated .portal-main {
-        padding-bottom: calc(76px + env(safe-area-inset-bottom, 0px));
+        padding-bottom: calc(96px + env(safe-area-inset-bottom, 0px)) !important;
       }
       body.portal-authenticated .mobile-app-bar {
         display: flex !important;
@@ -808,41 +928,51 @@
       }
       .header-container {
         padding: 10px 14px;
+        gap: 8px;
       }
       .header-brand img {
-        width: 32px;
-        height: 32px;
+        width: 30px;
+        height: 30px;
       }
       .header-brand-text h1 {
-        font-size: 0.925rem;
+        font-size: 0.885rem;
       }
-      .header-brand-text span {
-        font-size: 0.68rem;
+      .header-portal-sub {
+        font-size: 0.62rem;
+      }
+      .btn-header-logout {
+        padding: 5px 9px;
+        font-size: 0.72rem;
+      }
+      .header-avatar-circle {
+        width: 30px;
+        height: 30px;
+        font-size: 0.75rem;
       }
       .welcome-card {
-        padding: 20px 16px;
+        padding: 18px 16px;
         flex-direction: column;
         align-items: stretch;
-        gap: 16px;
+        gap: 14px;
       }
       .welcome-meta h2 {
         font-size: 1.25rem;
       }
       .stats-grid-4 {
         grid-template-columns: repeat(2, 1fr);
-        gap: 10px;
+        gap: 8px;
       }
       .stat-card {
-        padding: 14px 12px;
+        padding: 12px 10px;
       }
       .stat-card-title {
-        font-size: 0.72rem;
+        font-size: 0.7rem;
       }
       .stat-card-value {
-        font-size: 1.2rem;
+        font-size: 1.15rem;
       }
       .stat-card-sub {
-        font-size: 0.7rem;
+        font-size: 0.68rem;
       }
       .vault-grid {
         grid-template-columns: 1fr;
@@ -869,15 +999,32 @@
 
     @media (max-width: 480px) {
       .stats-grid-4 {
-        grid-template-columns: 1fr;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 8px;
       }
       .app-bar-item {
         padding: 4px 6px;
         font-size: 0.65rem;
-        min-width: 54px;
+        min-width: 50px;
       }
       .app-bar-icon {
         font-size: 1.15rem;
+      }
+    }
+
+    @media (max-width: 380px) {
+      .header-portal-sub {
+        display: none;
+      }
+      .header-brand-text h1 {
+        font-size: 0.825rem;
+      }
+      .btn-header-logout {
+        padding: 4px 7px;
+        font-size: 0.68rem;
+      }
+      .stats-grid-4 {
+        grid-template-columns: 1fr;
       }
     }
   </style>
@@ -899,30 +1046,33 @@
   <!-- App Header -->
   <header class="portal-header">
     <div class="header-container">
-      <a href="/" class="header-brand">
+      <a href="/" class="header-brand" title="Uzair AI Studio">
         <img src="/assets/uzairaistudio.png" alt="Uzair AI Studio Official Seal">
         <div class="header-brand-text">
-          <h1>Uzair AI Studio</h1>
-          <span>Official Remote Intern Command Portal</span>
+          <h1>Uzair <span>AI Studio</span></h1>
+          <span class="header-portal-sub">Intern Command Portal</span>
         </div>
       </a>
 
       <!-- User Session Control -->
-      <div class="header-user-status" id="headerUserStatus" style="display:flex; align-items:center; gap:8px;">
-        <div id="internOfflineBadge" style="display:none; align-items:center; gap:6px; font-size:0.75rem; font-weight:700; padding:4px 10px; border-radius:999px; background:#FEF3C7; color:#92400E; border:1px solid #FCD34D;">
-          <span>⚡ Offline Mode (Cached Data)</span>
-        </div>
-        <div id="userHeaderPill" style="display:none; align-items:center; gap:10px;">
-          <div style="text-align:right;" class="hide-on-mobile">
-            <strong id="headerUserName" style="font-size:0.85rem; display:block; color:#0F172A;">-</strong>
-            <span id="headerUserId" style="font-family:var(--font-mono); font-size:0.7rem; color:var(--primary);">-</span>
+      <div class="header-user-status" id="headerUserStatus">
+        <span id="internOfflineHeaderDot" class="offline-dot-pill" title="Offline Mode: Cached Data">⚡ Offline</span>
+        <div id="userHeaderPill" class="user-header-pill" style="display:none;">
+          <div class="user-info-text hide-on-mobile">
+            <strong id="headerUserName">-</strong>
+            <span id="headerUserId">-</span>
           </div>
           <div class="header-avatar-circle" id="headerUserAvatar">U</div>
-          <button type="button" id="btnLogout" class="vault-btn" style="background:#F1F5F9; color:#475569; padding:6px 12px; font-size:0.75rem; border:1px solid #CBD5E1;" title="Sign out of portal">Logout</button>
+          <button type="button" id="btnLogout" class="btn-header-logout" title="Sign out of portal">Logout</button>
         </div>
       </div>
     </div>
   </header>
+
+  <!-- Slim Offline Notification Banner (Appears only when disconnected) -->
+  <div id="internOfflineBanner" class="intern-offline-banner">
+    <span>⚡ <strong>Offline Mode:</strong> Viewing cached profile &amp; 8-week curriculum. Tasks and notes are saved locally.</span>
+  </div>
 
   <!-- Main Content Viewport -->
   <main class="portal-main">
@@ -1342,6 +1492,9 @@
       <button type="button" id="btnCloseIosModal" class="btn-submit" style="padding:10px;">Got It</button>
     </div>
   </div>
+
+  <!-- Direct In-Page Print Toast Notification -->
+  <div id="portalToast" class="portal-toast"></div>
 
   <!-- Client-Side JavaScript Logic -->
   <script src="/js/local-db.js"></script>

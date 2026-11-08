@@ -91,6 +91,92 @@
   }
 
   // ============================================================
+  // DIRECT IN-PAGE PRINT ENGINE & TOAST NOTIFICATION
+  // ============================================================
+  let portalToastTimer = null;
+  function showPortalToast(msg, type = 'info') {
+    const toast = document.getElementById('portalToast');
+    if (!toast) return;
+    toast.textContent = msg;
+    toast.className = `portal-toast show ${type}`;
+    if (portalToastTimer) clearTimeout(portalToastTimer);
+    portalToastTimer = setTimeout(() => {
+      toast.classList.remove('show');
+    }, 3800);
+  }
+
+  window.directPrintDocument = function(rawUrl, docTitle, candidateName) {
+    if (!rawUrl || rawUrl === '#' || rawUrl.endsWith('#')) {
+      showPortalToast('⚠️ Document link is not ready yet.', 'warning');
+      return;
+    }
+
+    const cleanName = candidateName || (currentIntern ? currentIntern.fullName : 'Intern');
+    const cleanTitle = docTitle || 'Official Document';
+
+    showPortalToast(`🖨️ Opening print dialog for ${cleanTitle}...`, 'info');
+
+    // Remove existing frame if any to ensure clean print cycle
+    const oldFrame = document.getElementById('internDocumentPrintFrame');
+    if (oldFrame) {
+      try { oldFrame.remove(); } catch(e) {}
+    }
+
+    const printFrame = document.createElement('iframe');
+    printFrame.id = 'internDocumentPrintFrame';
+    printFrame.name = 'internDocumentPrintFrame';
+    // Standard A4 dimensions for rendering print engine off-screen
+    printFrame.style.position = 'fixed';
+    printFrame.style.left = '-9999px';
+    printFrame.style.top = '-9999px';
+    printFrame.style.width = '794px';
+    printFrame.style.height = '1123px';
+    printFrame.style.border = 'none';
+    printFrame.style.opacity = '0';
+    printFrame.style.pointerEvents = 'none';
+    printFrame.style.zIndex = '-9999';
+    document.body.appendChild(printFrame);
+
+    const sep = rawUrl.includes('?') ? '&' : '?';
+    const targetUrl = `${rawUrl}${sep}autoprint=1&ts=${Date.now()}`;
+
+    let printExecuted = false;
+    const executePrint = () => {
+      if (printExecuted) return;
+      printExecuted = true;
+      try {
+        if (printFrame.contentWindow) {
+          printFrame.contentWindow.focus();
+          printFrame.contentWindow.print();
+          showPortalToast(`✅ Ready to print: ${cleanTitle}`, 'success');
+        }
+      } catch (err) {
+        console.warn('Direct print execution fallback:', err);
+        window.open(rawUrl, '_blank');
+      }
+    };
+
+    // 1. PostMessage notification from inside document once painted
+    const handleMsg = (ev) => {
+      if (ev.data && ev.data.type === 'UZAIR_DOC_PRINTED') {
+        window.removeEventListener('message', handleMsg);
+        executePrint();
+      }
+    };
+    window.addEventListener('message', handleMsg);
+
+    // 2. Fallback timeout after frame load in case postMessage didn't fire
+    printFrame.onload = () => {
+      setTimeout(() => {
+        window.removeEventListener('message', handleMsg);
+        executePrint();
+      }, 750);
+    };
+
+    printFrame.src = targetUrl;
+  };
+
+  // ============================================================
   // 2. AUTHENTICATION & SESSION MANAGEMENT
   // ============================================================
   function showAuthAlert(msg, type = 'error') {
@@ -408,7 +494,15 @@
 
     // Offer Letter
     const btnOffer = document.getElementById('btnVaultOffer');
-    if (btnOffer) btnOffer.href = `/offer-letter/${encodeURIComponent(currentIntern.id)}`;
+    if (btnOffer) {
+      const offerUrl = `/offer-letter/${encodeURIComponent(currentIntern.id)}`;
+      btnOffer.href = offerUrl;
+      btnOffer.innerHTML = '<span>🖨️ Direct Print Offer Letter</span>';
+      btnOffer.onclick = (e) => {
+        e.preventDefault();
+        window.directPrintDocument(offerUrl, 'Internship Offer Letter', currentIntern.fullName);
+      };
+    }
 
     // Letter of Recommendation
     const btnLor = document.getElementById('btnVaultLor');
@@ -419,8 +513,13 @@
       badgeLor.textContent = '✓ Officially Awarded';
       descLor.textContent = 'Official Letter of Recommendation issued and signed by Founder Muhammad Uzair.';
       btnLor.className = 'vault-btn primary';
-      btnLor.href = `/recommendation-letter/${encodeURIComponent(currentIntern.id)}`;
-      btnLor.innerHTML = '<span>📜 Download / Print LOR</span>';
+      const lorUrl = `/recommendation-letter/${encodeURIComponent(currentIntern.id)}`;
+      btnLor.href = lorUrl;
+      btnLor.innerHTML = '<span>🖨️ Direct Print LOR</span>';
+      btnLor.onclick = (e) => {
+        e.preventDefault();
+        window.directPrintDocument(lorUrl, 'Letter of Recommendation (LOR)', currentIntern.fullName);
+      };
     } else {
       badgeLor.className = 'vault-card-badge badge-locked';
       badgeLor.textContent = `🔒 Time-Locked (${currentIntern.daysRemaining} days remaining)`;
@@ -443,8 +542,13 @@
       badgeCert.textContent = '✓ Officially Awarded';
       descCert.textContent = 'Official Certificate of Completion with gold ribbon seal, dual signatures, and live QR verification.';
       btnCert.className = 'vault-btn gold';
-      btnCert.href = `/certificate/${encodeURIComponent(currentIntern.id)}`;
-      btnCert.innerHTML = '<span>🎓 Download / Print Certificate</span>';
+      const certUrl = `/certificate/${encodeURIComponent(currentIntern.id)}`;
+      btnCert.href = certUrl;
+      btnCert.innerHTML = '<span>🖨️ Direct Print Certificate</span>';
+      btnCert.onclick = (e) => {
+        e.preventDefault();
+        window.directPrintDocument(certUrl, 'Certificate of Completion', currentIntern.fullName);
+      };
     } else {
       badgeCert.className = 'vault-card-badge badge-locked';
       badgeCert.textContent = `🔒 Time-Locked (${currentIntern.daysRemaining} days remaining)`;
@@ -468,8 +572,13 @@
       descExp.textContent = 'Official software engineering experience credential signed by Lead Architect Muhammad Uzair.';
       btnExp.className = 'vault-btn primary';
       btnExp.style.background = '#8B5CF6';
-      btnExp.href = `/experience-letter/${encodeURIComponent(currentIntern.id)}`;
-      btnExp.innerHTML = '<span>💼 Download / Print Experience Letter</span>';
+      const expUrl = `/experience-letter/${encodeURIComponent(currentIntern.id)}`;
+      btnExp.href = expUrl;
+      btnExp.innerHTML = '<span>🖨️ Direct Print Experience Letter</span>';
+      btnExp.onclick = (e) => {
+        e.preventDefault();
+        window.directPrintDocument(expUrl, 'Experience Letter', currentIntern.fullName);
+      };
     } else {
       badgeExp.className = 'vault-card-badge badge-locked';
       badgeExp.textContent = '🔒 Time-Locked';
@@ -767,9 +876,10 @@
   // 6. INITIALIZATION & SESSION RESTORATION (OFFLINE INDEXEDDB)
   // ============================================================
   function updateInternNetworkStatus(isOnline) {
-    const badge = document.getElementById('internOfflineBadge');
-    if (!badge) return;
-    badge.style.display = isOnline ? 'none' : 'inline-flex';
+    const dot = document.getElementById('internOfflineHeaderDot');
+    const banner = document.getElementById('internOfflineBanner');
+    if (dot) dot.style.display = isOnline ? 'none' : 'inline-flex';
+    if (banner) banner.style.display = isOnline ? 'none' : 'block';
   }
 
   window.addEventListener('online', () => {
