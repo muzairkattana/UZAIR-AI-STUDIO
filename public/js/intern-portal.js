@@ -131,9 +131,6 @@
     if (loader) loader.style.display = 'flex';
     modal.style.display = 'flex';
 
-    const sep = rawUrl.includes('?') ? '&' : '?';
-    const targetUrl = `${rawUrl}${sep}ts=${Date.now()}`;
-
     let autoPrinted = false;
     const triggerPrint = () => {
       try {
@@ -152,7 +149,10 @@
 
     const closeModal = () => {
       modal.style.display = 'none';
-      if (iframe) iframe.src = 'about:blank';
+      if (iframe) {
+        iframe.removeAttribute('srcdoc');
+        iframe.src = 'about:blank';
+      }
     };
 
     if (btnClose) btnClose.onclick = closeModal;
@@ -174,8 +174,25 @@
       }
     };
 
-    iframe.src = targetUrl;
+    if (rawUrl.startsWith('srcdoc:')) {
+      const htmlContent = rawUrl.substring(7);
+      iframe.removeAttribute('src');
+      iframe.srcdoc = htmlContent;
+      if (btnOpenTab) {
+        btnOpenTab.style.display = 'none';
+      }
+    } else {
+      if (btnOpenTab) btnOpenTab.style.display = 'inline-flex';
+      const sep = rawUrl.includes('?') ? '&' : '?';
+      iframe.removeAttribute('srcdoc');
+      iframe.src = `${rawUrl}${sep}ts=${Date.now()}`;
+    }
     showPortalToast(`Rendering ${cleanTitle}...`, 'info');
+  };
+
+  // Dedicated in-portal HTML document print trigger (Offline-ready)
+  window.printDocumentContentInPortal = function(htmlContent, docTitle) {
+    window.directPrintDocument(`srcdoc:${htmlContent}`, docTitle);
   };
 
   // ============================================================
@@ -942,9 +959,12 @@
                 <div style="font-size:0.75rem; color:#64748B; margin-top:4px;">
                   Deliverable: <strong style="color:#0284C7;">${t.deliverableType}</strong> &bull; <em>${t.hint || ''}</em>
                 </div>
-                <div style="margin-top:8px;">
-                  <button type="button" class="btn-task-blueprint-open" onclick="window.triggerTaskGuide(${weekNum}, '${t.id}')" style="background:#EEF2FF; border:1px solid #C7D2FE; color:#4338CA; border-radius:6px; padding:4px 10px; font-size:0.75rem; font-weight:700; cursor:pointer; display:inline-flex; align-items:center; gap:5px; transition:all 0.15s;">
-                    <span>📄 Download Task Guide (PDF / Blueprint)</span>
+                <div style="margin-top:8px; display:flex; flex-wrap:wrap; gap:8px;">
+                  <button type="button" class="btn-task-blueprint-open" onclick="window.printTaskGuidePdf(${weekNum}, '${t.id}')" style="background:linear-gradient(135deg, #4F46E5, #6366F1); border:none; color:#FFFFFF; border-radius:6px; padding:6px 12px; font-size:0.75rem; font-weight:700; cursor:pointer; display:inline-flex; align-items:center; gap:6px; box-shadow:0 2px 6px rgba(79,70,229,0.25); transition:all 0.15s;">
+                    <span>📄 Direct Print Task PDF / Blueprint</span>
+                  </button>
+                  <button type="button" class="btn-task-blueprint-open" onclick="window.triggerTaskGuide(${weekNum}, '${t.id}')" style="background:#F1F5F9; border:1px solid #CBD5E1; color:#334155; border-radius:6px; padding:6px 12px; font-size:0.75rem; font-weight:600; cursor:pointer; display:inline-flex; align-items:center; gap:5px; transition:all 0.15s;">
+                    <span>🔍 View Guide Modal</span>
                   </button>
                 </div>
               </div>
@@ -1005,6 +1025,510 @@
     });
   }
 
+  // ============================================================
+  // TASK SPECIFICATION & ARCHITECTURE BLUEPRINT PRINTABLE PDF ENGINE (OFFLINE)
+  // ============================================================
+  function escapeHtml(str) {
+    if (!str) return '';
+    return String(str)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#039;');
+  }
+
+  window.generateTaskSpecPdfHtml = function (weekNum, weekTitle, task, intern) {
+    const candidateName = intern?.fullName || 'Engineering Intern';
+    const candidateId = intern?.id || 'UAIS-INT-CANDIDATE';
+    const domainTrack = intern?.domain || 'Software Engineering & AI';
+    const trackDuration = intern?.trackDuration || intern?.duration || '8 Weeks (2 Months)';
+    const taskTitle = task?.title || 'Technical Sprint Milestone';
+    const taskDesc = task?.description || '';
+    const deliverable = task?.deliverableType || 'GitHub Repository & Working Implementation';
+    const hint = task?.hint || 'Follow production-grade clean code conventions.';
+    const tools = task?.tools || ['Git', 'VS Code', 'Modern Engineering Runtime'];
+    const steps = task?.steps || [
+      'Review engineering specifications and establish clean repository structure.',
+      'Implement modular architecture and robust error handling.',
+      'Write comprehensive unit tests ensuring high code coverage.',
+      'Submit GitHub pull request link through private intern portal.'
+    ];
+    const codeSnippet = task?.codeTemplate || '';
+    const criteria = task?.acceptanceCriteria || [
+      'Production-grade implementation with zero unhandled exceptions.',
+      'Documented README with installation, architecture diagram, and execution guide.',
+      'Unit tests passing successfully before pull request submission.'
+    ];
+
+    const todayDate = new Date().toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric'
+    });
+
+    const verifyUrl = `${window.location.origin}/verify?id=${encodeURIComponent(candidateId)}`;
+
+    return `<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Task Blueprint - Week ${weekNum}: ${escapeHtml(taskTitle)}</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  @page {
+    size: A4 portrait;
+    margin: 12mm 14mm 14mm 14mm;
+  }
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+  body {
+    font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    color: #0F172A;
+    background: #FFFFFF;
+    line-height: 1.5;
+    font-size: 13px;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+  .doc-wrapper {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 24px;
+    border: 1px solid #E2E8F0;
+    border-radius: 12px;
+    background: #FFFFFF;
+    position: relative;
+  }
+  @media print {
+    body {
+      background: #FFFFFF !important;
+    }
+    .doc-wrapper {
+      border: none !important;
+      padding: 0 !important;
+      max-width: 100% !important;
+    }
+    .no-print {
+      display: none !important;
+    }
+  }
+  /* Executive Header */
+  .doc-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 2px solid #4F46E5;
+    padding-bottom: 14px;
+    margin-bottom: 16px;
+  }
+  .doc-brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .doc-brand-logo {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: #0F172A;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #FFFFFF;
+    font-weight: 800;
+    font-size: 18px;
+    border: 2px solid #6366F1;
+  }
+  .doc-brand-info h1 {
+    font-size: 17px;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    color: #0F172A;
+    line-height: 1.1;
+  }
+  .doc-brand-info h1 span {
+    color: #4F46E5;
+  }
+  .doc-brand-info p {
+    font-size: 11px;
+    font-weight: 600;
+    color: #64748B;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-top: 2px;
+  }
+  .doc-meta-badge {
+    text-align: right;
+  }
+  .doc-spec-badge {
+    display: inline-block;
+    background: #EEF2FF;
+    border: 1px solid #C7D2FE;
+    color: #4338CA;
+    font-size: 11px;
+    font-weight: 800;
+    padding: 3px 10px;
+    border-radius: 6px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    margin-bottom: 4px;
+  }
+  .doc-date {
+    font-size: 11px;
+    color: #64748B;
+    font-weight: 500;
+  }
+
+  /* Candidate Context Bar */
+  .candidate-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: #F8FAFC;
+    border: 1px solid #E2E8F0;
+    border-radius: 8px;
+    overflow: hidden;
+    margin-bottom: 18px;
+    font-size: 11.5px;
+  }
+  .candidate-table td {
+    padding: 7px 12px;
+    border: 1px solid #E2E8F0;
+  }
+  .candidate-table .lbl {
+    font-weight: 700;
+    color: #475569;
+    text-transform: uppercase;
+    font-size: 10px;
+    letter-spacing: 0.05em;
+    background: #F1F5F9;
+    width: 18%;
+  }
+  .candidate-table .val {
+    font-weight: 700;
+    color: #0F172A;
+    width: 32%;
+  }
+
+  /* Task Banner */
+  .task-banner {
+    background: linear-gradient(135deg, #1E1B4B 0%, #312E81 50%, #4338CA 100%);
+    color: #FFFFFF;
+    border-radius: 8px;
+    padding: 14px 18px;
+    margin-bottom: 18px;
+  }
+  .task-banner .sprint-tag {
+    font-size: 10.5px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #A5B4FC;
+    margin-bottom: 4px;
+  }
+  .task-banner h2 {
+    font-size: 18px;
+    font-weight: 800;
+    line-height: 1.25;
+    color: #FFFFFF;
+    margin-bottom: 6px;
+  }
+  .task-banner p {
+    font-size: 12px;
+    color: #E0E7FF;
+    line-height: 1.45;
+  }
+
+  /* Section Styles */
+  .section-block {
+    margin-bottom: 16px;
+  }
+  .section-title {
+    font-size: 12px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: #1E293B;
+    border-left: 3px solid #4F46E5;
+    padding-left: 8px;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .section-title span.badge {
+    background: #F1F5F9;
+    border: 1px solid #E2E8F0;
+    color: #475569;
+    font-size: 10px;
+    font-weight: 700;
+    padding: 1px 6px;
+    border-radius: 4px;
+    text-transform: none;
+  }
+
+  /* Deliverable Card */
+  .deliverable-callout {
+    background: #F0FDF4;
+    border: 1px solid #BBF7D0;
+    border-left: 4px solid #16A34A;
+    border-radius: 6px;
+    padding: 10px 14px;
+    margin-bottom: 14px;
+    font-size: 12px;
+  }
+  .deliverable-callout strong {
+    color: #15803D;
+  }
+  .deliverable-callout em {
+    color: #475569;
+    font-style: normal;
+  }
+
+  /* Tools Tags */
+  .tools-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 14px;
+  }
+  .tool-tag {
+    background: #F8FAFC;
+    border: 1px solid #CBD5E1;
+    color: #1E293B;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 3px 10px;
+    border-radius: 5px;
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  /* Steps List */
+  .steps-ol {
+    padding-left: 20px;
+    margin-bottom: 14px;
+    color: #334155;
+    font-size: 12px;
+  }
+  .steps-ol li {
+    margin-bottom: 6px;
+    line-height: 1.45;
+  }
+
+  /* Code Scaffolding Box */
+  .code-pre {
+    background: #0B1120;
+    color: #38BDF8;
+    border: 1px solid #1E293B;
+    border-radius: 8px;
+    padding: 12px 14px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    line-height: 1.5;
+    overflow-x: auto;
+    margin-bottom: 14px;
+    white-space: pre-wrap;
+    word-break: break-all;
+  }
+
+  /* Criteria List */
+  .criteria-ul {
+    list-style: none;
+    padding: 0;
+    margin-bottom: 14px;
+  }
+  .criteria-ul li {
+    position: relative;
+    padding-left: 20px;
+    margin-bottom: 6px;
+    font-size: 12px;
+    color: #334155;
+    line-height: 1.4;
+  }
+  .criteria-ul li::before {
+    content: "✓";
+    position: absolute;
+    left: 0;
+    top: 0;
+    color: #16A34A;
+    font-weight: 900;
+    font-size: 12px;
+  }
+
+  /* Verification Footer & Signoff */
+  .doc-footer {
+    border-top: 1px solid #E2E8F0;
+    padding-top: 14px;
+    margin-top: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+  }
+  .eval-signoff {
+    font-size: 11px;
+    color: #475569;
+    line-height: 1.4;
+  }
+  .eval-signoff strong {
+    color: #0F172A;
+    font-size: 12px;
+  }
+  .verification-seal {
+    text-align: right;
+    font-size: 10px;
+    color: #64748B;
+  }
+  .verification-seal strong {
+    color: #4F46E5;
+    font-size: 11px;
+    display: block;
+  }
+  .watermark {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) rotate(-30deg);
+    font-size: 60px;
+    font-weight: 900;
+    color: rgba(79, 70, 229, 0.035);
+    letter-spacing: 0.15em;
+    pointer-events: none;
+    white-space: nowrap;
+    text-transform: uppercase;
+  }
+</style>
+</head>
+<body>
+<div class="doc-wrapper">
+  <div class="watermark">UZAIR AI STUDIO • OFFICIAL</div>
+
+  <!-- Header -->
+  <div class="doc-header">
+    <div class="doc-brand">
+      <div class="doc-brand-logo">UA</div>
+      <div class="doc-brand-info">
+        <h1>Uzair <span>AI Studio</span></h1>
+        <p>Software Engineering &bull; Task Specification Guide</p>
+      </div>
+    </div>
+    <div class="doc-meta-badge">
+      <div class="doc-spec-badge">Sprint Task Guide &bull; Week ${weekNum}</div>
+      <div class="doc-date">Generated: ${todayDate}</div>
+    </div>
+  </div>
+
+  <!-- Candidate Context Table -->
+  <table class="candidate-table">
+    <tr>
+      <td class="lbl">Candidate</td>
+      <td class="val">${escapeHtml(candidateName)}</td>
+      <td class="lbl">Candidate ID</td>
+      <td class="val" style="font-family:'JetBrains Mono',monospace; color:#4F46E5;">${escapeHtml(candidateId)}</td>
+    </tr>
+    <tr>
+      <td class="lbl">Specialization</td>
+      <td class="val">${escapeHtml(domainTrack)}</td>
+      <td class="lbl">Tenure Track</td>
+      <td class="val">${escapeHtml(trackDuration)}</td>
+    </tr>
+    <tr>
+      <td class="lbl">Milestone</td>
+      <td class="val">Week ${weekNum}: ${escapeHtml(weekTitle)}</td>
+      <td class="lbl">Lead Mentor</td>
+      <td class="val">Muhammad Uzair (Founder & Lead Architect)</td>
+    </tr>
+  </table>
+
+  <!-- Task Banner -->
+  <div class="task-banner">
+    <div class="sprint-tag">Sprint Task Specification • ID: ${escapeHtml(task?.id || 'TASK-SPEC')}</div>
+    <h2>${escapeHtml(taskTitle)}</h2>
+    <p>${escapeHtml(taskDesc)}</p>
+  </div>
+
+  <!-- Deliverable Specification -->
+  <div class="deliverable-callout">
+    <strong>🎯 Required Deliverable:</strong> ${escapeHtml(deliverable)}<br>
+    <em>💡 Architectural Hint: ${escapeHtml(hint)}</em>
+  </div>
+
+  <!-- Tools & Tech Stack -->
+  <div class="section-block">
+    <div class="section-title">Required Technology Stack &amp; Tools</div>
+    <div class="tools-list">
+      ${tools.map(tool => `<span class="tool-tag">${escapeHtml(tool)}</span>`).join('')}
+    </div>
+  </div>
+
+  <!-- Step-by-Step Implementation Roadmap -->
+  <div class="section-block">
+    <div class="section-title">Step-by-Step Engineering Roadmap</div>
+    <ol class="steps-ol">
+      ${steps.map(st => `<li>${escapeHtml(st)}</li>`).join('')}
+    </ol>
+  </div>
+
+  ${codeSnippet ? `
+  <!-- Starter Code & Architectural Scaffolding -->
+  <div class="section-block">
+    <div class="section-title">Architectural Starter Pattern / Code Template</div>
+    <pre class="code-pre">${escapeHtml(codeSnippet)}</pre>
+  </div>
+  ` : ''}
+
+  <!-- Acceptance Criteria -->
+  <div class="section-block">
+    <div class="section-title">Acceptance &amp; Evaluation Criteria</div>
+    <ul class="criteria-ul">
+      ${criteria.map(cr => `<li>${escapeHtml(cr)}</li>`).join('')}
+    </ul>
+  </div>
+
+  <!-- Signoff & Verification Footer -->
+  <div class="doc-footer">
+    <div class="eval-signoff">
+      Approved for Remote Engineering Sprints:<br>
+      <strong>Muhammad Uzair</strong><br>
+      Lead Architect & Founder, Uzair AI Studio
+    </div>
+    <div class="verification-seal">
+      <strong>OFFICIAL SPECIFICATION</strong>
+      Candidate Submission Portal: /intern-portal<br>
+      Verification ID: ${escapeHtml(candidateId)}
+    </div>
+  </div>
+</div>
+</body>
+</html>`;
+  };
+
+  // Direct In-Portal Print for Task PDF
+  window.printTaskGuidePdf = function (weekNum, taskId) {
+    if (!currentCurriculum || !currentCurriculum.weeks) {
+      showPortalToast('Curriculum data is still loading. Please retry.', 'warning');
+      return;
+    }
+    const week = currentCurriculum.weeks.find(w => w.weekNumber === weekNum);
+    if (!week) {
+      showPortalToast(`Week ${weekNum} could not be located.`, 'warning');
+      return;
+    }
+    const task = week.tasks ? week.tasks.find(t => t.id === taskId) : null;
+    if (!task) {
+      showPortalToast('Task details could not be found.', 'warning');
+      return;
+    }
+
+    const html = window.generateTaskSpecPdfHtml(weekNum, week.title, task, currentIntern);
+    window.printDocumentContentInPortal(html, `Task Blueprint - Week ${weekNum}: ${task.title}`);
+  };
+
   // Task Blueprint Guide Functions
   window.triggerTaskGuide = function (weekNum, taskId) {
     if (!currentCurriculum || !currentCurriculum.weeks) return;
@@ -1018,6 +1542,9 @@
   window.openTaskGuideModal = function (weekNum, weekTitle, task) {
     const modal = document.getElementById('taskGuideModal');
     if (!modal) return;
+
+    modal.dataset.currentWeek = weekNum;
+    modal.dataset.currentTaskId = task.id;
 
     document.getElementById('taskGuideMeta').textContent = `TECHNICAL SPRINT BLUEPRINT • WEEK ${weekNum} • ${currentIntern.domain || 'ENGINEERING'}`;
     document.getElementById('taskGuideTitle').textContent = task.title;
@@ -1101,7 +1628,15 @@
   const btnPrintTaskGuide = document.getElementById('btnPrintTaskGuide');
   if (btnPrintTaskGuide) {
     btnPrintTaskGuide.addEventListener('click', () => {
-      window.print();
+      const modal = document.getElementById('taskGuideModal');
+      const weekNum = parseInt(modal?.dataset?.currentWeek || '1', 10);
+      const taskId = modal?.dataset?.currentTaskId;
+      window.closeTaskGuideModal();
+      if (taskId) {
+        window.printTaskGuidePdf(weekNum, taskId);
+      } else {
+        window.print();
+      }
     });
   }
 
