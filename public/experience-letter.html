@@ -337,7 +337,21 @@ async function initExperienceLetter() {
   document.title = 'Experience Letter – ' + DATA.name;
 }
 
-initExperienceLetter();
+initExperienceLetter().then(() => {
+  if (q.get('autoprint') === '1' || q.get('autoprint') === 'true' || q.get('print') === '1') {
+    setTimeout(() => {
+      try {
+        window.focus();
+        window.print();
+        if (window.parent && window.parent !== window) {
+          window.parent.postMessage({ type: 'UZAIR_DOC_PRINTED', url: window.location.href }, '*');
+        }
+      } catch (err) {
+        console.warn('Experience letter auto-print failed:', err);
+      }
+    }, 450);
+  }
+});
 
 let Sc=1,rx=0,ry=0;
 const apply=()=>{ $('stage').style.transform='perspective(2400px) scale('+Sc+') rotateX('+rx+'deg) rotateY('+ry+'deg)'; };

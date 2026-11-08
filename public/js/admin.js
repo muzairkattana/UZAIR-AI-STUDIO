@@ -192,13 +192,23 @@ function initAdminAuth() {
     try {
       const savedUser = JSON.parse(localStorage.getItem('uzair_admin_user') || '{}');
       const nameEl = document.getElementById('adminUserName');
-      if (nameEl && (savedUser.name || savedUser.email)) {
-        nameEl.textContent = savedUser.name || savedUser.email;
-        const subEl = nameEl.nextElementSibling;
-        if (subEl && savedUser.email) {
-          subEl.textContent = savedUser.email;
-          subEl.title = `Authorized Administrator: ${savedUser.email}`;
-        }
+      const emailEl = document.getElementById('adminUserEmail');
+      const initialsEl = document.getElementById('adminUserInitials');
+
+      const displayName = savedUser.name || 'Muhammad Uzair';
+      const displayEmail = savedUser.email || 'kmuzairkhan123@gmail.com';
+
+      if (nameEl) nameEl.textContent = displayName;
+      if (emailEl) {
+        emailEl.textContent = displayEmail;
+        emailEl.title = `Authorized Administrator: ${displayEmail}`;
+      }
+      if (initialsEl) {
+        const parts = displayName.trim().split(/\s+/);
+        const initials = parts.length > 1
+          ? (parts[0][0] + parts[parts.length - 1][0]).toUpperCase()
+          : displayName.slice(0, 2).toUpperCase();
+        initialsEl.textContent = initials || 'MU';
       }
     } catch (e) {}
 
@@ -546,10 +556,10 @@ function filterAndRenderInterns() {
         </td>
         <td>
           <div class="action-btns-group">
-            <a href="/certificate?id=${i.id}" target="_blank" class="btn-act cert" style="background:#F59E0B; color:#FFFFFF;" title="View & Print Official Completion Certificate">🎓 Cert</a>
-            <a href="/offer-letter?id=${i.id}" target="_blank" class="btn-act primary" title="View & Print Official Offer Letter">📄 Offer</a>
-            <a href="/recommendation-letter?id=${i.id}" target="_blank" class="btn-act lor" title="View & Print Official Recommendation Letter">📜 LOR</a>
-            <a href="/experience-letter?id=${i.id}" target="_blank" class="btn-act" style="background:#8B5CF6; color:#FFFFFF;" title="View & Print Official Experience Letter">💼 Exp</a>
+            <a href="/certificate?id=${i.id}" onclick="event.preventDefault(); directPrintDocument(this.href, 'Completion Certificate', '${i.fullName.replace(/'/g, "\\'")}')" class="btn-act cert" style="background:#F59E0B; color:#FFFFFF;" title="Directly Print Official Completion Certificate (Right-click to open preview)">🖨️ Cert</a>
+            <a href="/offer-letter?id=${i.id}" onclick="event.preventDefault(); directPrintDocument(this.href, 'Offer Letter', '${i.fullName.replace(/'/g, "\\'")}')" class="btn-act primary" title="Directly Print Official Offer Letter (Right-click to open preview)">🖨️ Offer</a>
+            <a href="/recommendation-letter?id=${i.id}" onclick="event.preventDefault(); directPrintDocument(this.href, 'Recommendation Letter (LOR)', '${i.fullName.replace(/'/g, "\\'")}')" class="btn-act lor" title="Directly Print Official Recommendation Letter (Right-click to open preview)">🖨️ LOR</a>
+            <a href="/experience-letter?id=${i.id}" onclick="event.preventDefault(); directPrintDocument(this.href, 'Experience Letter', '${i.fullName.replace(/'/g, "\\'")}')" class="btn-act" style="background:#8B5CF6; color:#FFFFFF;" title="Directly Print Official Experience Letter (Right-click to open preview)">🖨️ Exp</a>
             <a href="/verify?id=${i.id}" target="_blank" class="btn-act" title="Live QR Credential Verification">🛡️ QR</a>
             <button type="button" class="btn-act wa" onclick="openCandidateWhatsApp('${i.id}')" title="Send Official Links to Candidate via WhatsApp">💬 WA</button>
             <button type="button" class="btn-act" onclick="openEditModal('${i.id}')" title="Edit candidate records & dates">✏️</button>
@@ -617,10 +627,10 @@ function filterAndRenderInterns() {
           </div>
 
           <div class="cand-card-actions">
-            <a href="/certificate?id=${i.id}" target="_blank" class="btn-act cert" style="background:#F59E0B; color:#FFFFFF;" title="View & Print Official Completion Certificate">🎓 Cert</a>
-            <a href="/offer-letter?id=${i.id}" target="_blank" class="btn-act primary" title="View & Print Official Offer Letter">📄 Offer</a>
-            <a href="/recommendation-letter?id=${i.id}" target="_blank" class="btn-act lor" title="View & Print Official Recommendation Letter">📜 LOR</a>
-            <a href="/experience-letter?id=${i.id}" target="_blank" class="btn-act" style="background:#8B5CF6; color:#FFFFFF;" title="View & Print Official Experience Letter">💼 Exp</a>
+            <a href="/certificate?id=${i.id}" onclick="event.preventDefault(); directPrintDocument(this.href, 'Completion Certificate', '${i.fullName.replace(/'/g, "\\'")}')" class="btn-act cert" style="background:#F59E0B; color:#FFFFFF;" title="Directly Print Official Completion Certificate (Right-click to open preview)">🖨️ Cert</a>
+            <a href="/offer-letter?id=${i.id}" onclick="event.preventDefault(); directPrintDocument(this.href, 'Offer Letter', '${i.fullName.replace(/'/g, "\\'")}')" class="btn-act primary" title="Directly Print Official Offer Letter (Right-click to open preview)">🖨️ Offer</a>
+            <a href="/recommendation-letter?id=${i.id}" onclick="event.preventDefault(); directPrintDocument(this.href, 'Recommendation Letter (LOR)', '${i.fullName.replace(/'/g, "\\'")}')" class="btn-act lor" title="Directly Print Official Recommendation Letter (Right-click to open preview)">🖨️ LOR</a>
+            <a href="/experience-letter?id=${i.id}" onclick="event.preventDefault(); directPrintDocument(this.href, 'Experience Letter', '${i.fullName.replace(/'/g, "\\'")}')" class="btn-act" style="background:#8B5CF6; color:#FFFFFF;" title="Directly Print Official Experience Letter (Right-click to open preview)">🖨️ Exp</a>
             <a href="/verify?id=${i.id}" target="_blank" class="btn-act" title="Live QR Credential Verification">🛡️ QR</a>
             <button type="button" class="btn-act wa" onclick="openCandidateWhatsApp('${i.id}')" title="Send Official Links to Candidate via WhatsApp">💬 WA</button>
             <button type="button" class="btn-act" onclick="openEditModal('${i.id}')" title="Edit candidate records & dates">✏️ Edit</button>
@@ -728,14 +738,29 @@ window.openEditModal = function(id) {
   document.getElementById('editBatch').value = intern.batch || '2026 AI Department Batch';
   document.getElementById('editNotes').value = intern.notes || '';
 
-  // Direct letter links
+  // Direct letter links with 1-click direct print
   const modalCert = document.getElementById('modalCertLink');
-  if (modalCert) modalCert.href = `/certificate?id=${intern.id}`;
-  document.getElementById('modalOfferLink').href = `/offer-letter?id=${intern.id}`;
-  document.getElementById('modalLorLink').href = `/recommendation-letter?id=${intern.id}`;
+  if (modalCert) {
+    modalCert.href = `/certificate?id=${intern.id}`;
+    modalCert.onclick = (e) => { e.preventDefault(); directPrintDocument(modalCert.href, 'Completion Certificate', intern.fullName); };
+  }
+  const modalOffer = document.getElementById('modalOfferLink');
+  if (modalOffer) {
+    modalOffer.href = `/offer-letter?id=${intern.id}`;
+    modalOffer.onclick = (e) => { e.preventDefault(); directPrintDocument(modalOffer.href, 'Offer Letter', intern.fullName); };
+  }
+  const modalLor = document.getElementById('modalLorLink');
+  if (modalLor) {
+    modalLor.href = `/recommendation-letter?id=${intern.id}`;
+    modalLor.onclick = (e) => { e.preventDefault(); directPrintDocument(modalLor.href, 'Recommendation Letter (LOR)', intern.fullName); };
+  }
   const modalExp = document.getElementById('modalExpLink');
-  if (modalExp) modalExp.href = `/experience-letter?id=${intern.id}`;
-  document.getElementById('modalVerifyLink').href = `/verify?id=${intern.id}`;
+  if (modalExp) {
+    modalExp.href = `/experience-letter?id=${intern.id}`;
+    modalExp.onclick = (e) => { e.preventDefault(); directPrintDocument(modalExp.href, 'Experience Letter', intern.fullName); };
+  }
+  const modalVerify = document.getElementById('modalVerifyLink');
+  if (modalVerify) modalVerify.href = `/verify?id=${intern.id}`;
 
   document.getElementById('editInternModal').style.display = 'flex';
 };
@@ -755,6 +780,108 @@ window.deleteIntern = async function(id, name) {
   } catch (err) {
     alert('Error deleting intern record.');
   }
+};
+
+/* ============================================================
+   ADMIN DIRECT PRINT ENGINE & TOAST NOTIFIER
+   Triggers instant print dialog for official candidate documents
+   without navigating away to another page.
+   ============================================================ */
+window.showAdminToast = function(message, type = 'info') {
+  let toast = document.getElementById('adminGlobalToast');
+  if (!toast) {
+    toast = document.createElement('div');
+    toast.id = 'adminGlobalToast';
+    toast.className = 'admin-toast';
+    document.body.appendChild(toast);
+  }
+
+  const iconMap = {
+    info: 'ℹ️',
+    success: '✅',
+    warning: '⚠️',
+    error: '❌'
+  };
+
+  toast.className = `admin-toast ${type} show`;
+  toast.innerHTML = `<span class="toast-icon">${iconMap[type] || 'ℹ️'}</span><span class="toast-msg">${message}</span>`;
+
+  clearTimeout(window.__adminToastTimer);
+  window.__adminToastTimer = setTimeout(() => {
+    toast.classList.remove('show');
+  }, 4200);
+};
+
+window.directPrintDocument = function(rawUrl, docTitle, candidateName) {
+  if (!rawUrl || rawUrl === '#' || rawUrl.endsWith('#')) {
+    window.showAdminToast('⚠️ Document link is not ready yet.', 'warning');
+    return;
+  }
+
+  const cleanName = candidateName || 'Candidate';
+  const cleanTitle = docTitle || 'Official Document';
+
+  window.showAdminToast(`🖨️ Opening print dialog for ${cleanTitle} (${cleanName})...`, 'info');
+
+  // Remove existing frame if any to ensure clean print cycle
+  const oldFrame = document.getElementById('adminDocumentPrintFrame');
+  if (oldFrame) {
+    try { oldFrame.remove(); } catch(e) {}
+  }
+
+  const printFrame = document.createElement('iframe');
+  printFrame.id = 'adminDocumentPrintFrame';
+  printFrame.name = 'adminDocumentPrintFrame';
+  // Use exact standard A4 proportions for accurate print layout engine, positioned off-screen
+  printFrame.style.position = 'fixed';
+  printFrame.style.left = '-9999px';
+  printFrame.style.top = '-9999px';
+  printFrame.style.width = '794px';
+  printFrame.style.height = '1123px';
+  printFrame.style.border = 'none';
+  printFrame.style.opacity = '0';
+  printFrame.style.pointerEvents = 'none';
+  printFrame.style.zIndex = '-9999';
+  document.body.appendChild(printFrame);
+
+  const sep = rawUrl.includes('?') ? '&' : '?';
+  const targetUrl = `${rawUrl}${sep}autoprint=1&ts=${Date.now()}`;
+
+  let printExecuted = false;
+  const executePrint = () => {
+    if (printExecuted) return;
+    printExecuted = true;
+    try {
+      if (printFrame.contentWindow) {
+        printFrame.contentWindow.focus();
+        printFrame.contentWindow.print();
+        window.showAdminToast(`✅ Ready to print: ${cleanName}'s ${cleanTitle}`, 'success');
+      }
+    } catch (err) {
+      console.warn('Direct print execution fallback:', err);
+      // Graceful fallback to opening in new tab if iframe printing is restricted
+      window.open(rawUrl, '_blank');
+    }
+  };
+
+  // 1. PostMessage notification from inside the document once async data & QR are painted
+  const handleMsg = (ev) => {
+    if (ev.data && ev.data.type === 'UZAIR_DOC_PRINTED') {
+      window.removeEventListener('message', handleMsg);
+      executePrint();
+    }
+  };
+  window.addEventListener('message', handleMsg);
+
+  // 2. Fallback timeout after frame load in case postMessage didn't fire
+  printFrame.onload = () => {
+    setTimeout(() => {
+      window.removeEventListener('message', handleMsg);
+      executePrint();
+    }, 750);
+  };
+
+  printFrame.src = targetUrl;
 };
 
 /* ============================================================

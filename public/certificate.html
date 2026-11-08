@@ -349,7 +349,21 @@ async function initCertificate() {
   document.title = 'Certificate – ' + DATA.name;
 }
 
-initCertificate();
+initCertificate().then(() => {
+  if (q.get('autoprint') === '1' || q.get('autoprint') === 'true' || q.get('print') === '1') {
+    setTimeout(() => {
+      try {
+        window.focus();
+        window.print();
+        if (window.parent && window.parent !== window) {
+          window.parent.postMessage({ type: 'UZAIR_DOC_PRINTED', url: window.location.href }, '*');
+        }
+      } catch (err) {
+        console.warn('Certificate auto-print failed:', err);
+      }
+    }, 450);
+  }
+});
 
 /* scalloped seal edge */
 (function(){ const n=40,p=[]; for(let i=0;i<n*2;i++){ const a=i/(n*2)*Math.PI*2, r=i%2?46:50; p.push((50+r*Math.cos(a)).toFixed(2)+'% '+(50+r*Math.sin(a)).toFixed(2)+'%'); }

@@ -13,3 +13,4 @@ admin_qr_session.html
 .DS_Store
 Thumbs.db
 *.log
+govtrack/

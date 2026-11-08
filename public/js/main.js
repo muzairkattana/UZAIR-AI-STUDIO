@@ -11,6 +11,7 @@
 
 document.addEventListener('DOMContentLoaded', () => {
   initNavbar();
+  initBackToTop();
   initHeroInteractive();
   initArchitecturePlanner();
   initPortfolioFilter();
@@ -73,6 +74,26 @@ function initNavbar() {
   );
 
   sections.forEach(sec => observer.observe(sec));
+}
+
+/* ============================================================
+   FLOATING BACK TO TOP BUTTON
+   ============================================================ */
+function initBackToTop() {
+  const btn = document.getElementById('btnBackToTop');
+  if (!btn) return;
+
+  window.addEventListener('scroll', () => {
+    if (window.scrollY > 350) {
+      btn.classList.add('show');
+    } else {
+      btn.classList.remove('show');
+    }
+  });
+
+  btn.addEventListener('click', () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
 }
 
 /* ============================================================
@@ -155,6 +176,22 @@ function initArchitecturePlanner() {
       card.classList.add('selected');
       currentType = card.dataset.type;
       recalculate();
+    });
+  });
+
+  // Deep-link from Service Action buttons (data-plan-target)
+  document.querySelectorAll('[data-plan-target]').forEach(link => {
+    link.addEventListener('click', () => {
+      const targetType = link.dataset.planTarget;
+      if (targetType && typeConfig[targetType]) {
+        const matchingCard = estimator.querySelector(`.type-select-card[data-type="${targetType}"]`);
+        if (matchingCard) {
+          typeCards.forEach(c => c.classList.remove('selected'));
+          matchingCard.classList.add('selected');
+          currentType = targetType;
+          recalculate();
+        }
+      }
     });
   });
 
@@ -2020,11 +2057,22 @@ function initInternshipModule() {
                 </div>
               </div>
 
-              <!-- Action Buttons (Redirecting to Intern Portal for Documents) -->
+              <!-- Action Buttons (Quick Access & Intern Portal) -->
               <div style="display:flex; gap:10px; flex-wrap:wrap; align-items:center;">
                 <a href="/intern-portal" class="btn btn-primary" style="display:inline-flex; align-items:center; gap:8px; padding:10px 20px; font-weight:700; background:linear-gradient(135deg, #2563EB, #1D4ED8); box-shadow:0 4px 14px rgba(37,99,235,0.3);">
-                  <span>🔐 Sign In to Intern Portal to Download Documents &rarr;</span>
+                  <span>🔐 Sign In to Intern Portal &rarr;</span>
                 </a>
+                <a href="/offer-letter?id=${encodeURIComponent(app.id)}" target="_blank" class="btn btn-outline btn-sm" style="border-color:#2563EB; color:#1D4ED8; font-weight:700;">
+                  <span>📄 View Offer Letter</span>
+                </a>
+                ${isCompleted ? `
+                  <a href="/certificate?id=${encodeURIComponent(app.id)}" target="_blank" class="btn btn-outline btn-sm" style="border-color:#F59E0B; color:#D97706; font-weight:700;">
+                    <span>🎓 View Certificate</span>
+                  </a>
+                  <a href="/recommendation-letter?id=${encodeURIComponent(app.id)}" target="_blank" class="btn btn-outline btn-sm" style="border-color:#10B981; color:#047857; font-weight:700;">
+                    <span>📜 View LOR</span>
+                  </a>
+                ` : ''}
                 <a href="/verify?id=${encodeURIComponent(app.id)}" target="_blank" class="btn btn-outline btn-sm" style="border-color:#0284C7; color:#0369A1;">
                   <span>🛡️ Full Verification Sheet</span>
                 </a>

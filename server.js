@@ -2033,7 +2033,7 @@ app.post('/api/chat', (req, res) => {
   if (text.includes('contact') || text.includes('call') || text.includes('email') || text.includes('hire') || text.includes('phone') || text.includes('whatsapp') || text.includes('founder') || text.includes('owner') || text.includes('uzair')) {
     botReply = `You can connect directly with our Founder & Lead Architect, **Muhammad Uzair**:
 • 📱 **WhatsApp & Direct Call**: [+92 343 3885835](https://wa.me/923433885835)
-• ✉️ **Email**: [kmuzairkah123@gmail.com](mailto:kmuzairkah123@gmail.com)
+• ✉️ **Email**: [kmuzairkhan123@gmail.com](mailto:kmuzairkhan123@gmail.com)
 • 📍 **Headquarters**: Mardan, KPK, Pakistan
 • ⚡ Or submit your project brief on this page for a formal response within 2 hours!`;
     suggestedActions = ['Chat on WhatsApp', 'Open Architecture Planner', 'Book Strategy Call'];

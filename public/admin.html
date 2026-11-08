@@ -9,7 +9,7 @@
   <style>
     /* Admin Portal Executive Dashboard Styles */
     :root {
-      --admin-sidebar-w: 260px;
+      --admin-sidebar-w: 275px;
     }
     body.admin-body {
       background: #F1F5F9;
@@ -403,40 +403,124 @@
     .sidebar-nav-link .nav-icon {
       font-size: 1.15rem;
     }
+    /* Executive Sidebar User Profile Card */
     .sidebar-footer {
-      padding: 16px;
+      padding: 14px 14px 16px;
       border-top: 1px solid rgba(255, 255, 255, 0.08);
+      margin-top: auto;
+      background: linear-gradient(180deg, transparent 0%, rgba(0, 0, 0, 0.3) 100%);
     }
-    .admin-user-pill {
+    .admin-profile-card {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 12px;
+      padding: 10px 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      transition: all 0.2s ease;
+    }
+    .admin-profile-card:hover {
+      background: rgba(255, 255, 255, 0.06);
+      border-color: rgba(255, 255, 255, 0.15);
+    }
+    .admin-profile-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      min-width: 0;
+    }
+    .admin-avatar-box {
+      position: relative;
+      width: 38px;
+      height: 38px;
+      border-radius: 10px;
+      background: linear-gradient(135deg, #2563EB, #1D4ED8);
+      color: #FFFFFF;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 0.85rem;
+      letter-spacing: 0.5px;
+      flex-shrink: 0;
+      box-shadow: 0 4px 12px rgba(37, 99, 235, 0.35);
+    }
+    .admin-avatar-box .status-indicator-online {
+      position: absolute;
+      bottom: -2px;
+      right: -2px;
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      background: #10B981;
+      border: 2px solid #0F172A;
+    }
+    .admin-user-meta {
+      flex: 1;
+      min-width: 0;
+      overflow: hidden;
+    }
+    .admin-user-name {
+      font-size: 0.85rem;
+      font-weight: 800;
+      color: #FFFFFF;
+      line-height: 1.25;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .admin-user-email {
+      font-size: 0.72rem;
+      color: #38BDF8;
+      line-height: 1.3;
+      margin-top: 2px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      font-family: 'JetBrains Mono', monospace;
+    }
+    .admin-profile-actions {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 10px;
-      background: rgba(255, 255, 255, 0.05);
-      padding: 8px 12px;
-      border-radius: 10px;
+      gap: 8px;
+      padding-top: 8px;
+      border-top: 1px solid rgba(255, 255, 255, 0.06);
     }
-    .admin-user-info strong {
-      display: block;
-      font-size: 0.825rem;
-      color: #FFFFFF;
-    }
-    .admin-user-info span {
-      font-size: 0.68rem;
-      color: #38BDF8;
-    }
-    .btn-logout {
-      background: transparent;
-      border: none;
-      color: #EF4444;
-      cursor: pointer;
-      font-size: 0.8rem;
+    .admin-role-badge {
+      font-size: 0.65rem;
       font-weight: 700;
-      padding: 4px 8px;
-      border-radius: 6px;
+      color: #60A5FA;
+      background: rgba(37, 99, 235, 0.15);
+      border: 1px solid rgba(96, 165, 250, 0.25);
+      border-radius: 5px;
+      padding: 2px 7px;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      white-space: nowrap;
     }
-    .btn-logout:hover {
-      background: rgba(239, 68, 68, 0.15);
+    .btn-sidebar-logout {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      background: rgba(239, 68, 68, 0.1);
+      border: 1px solid rgba(239, 68, 68, 0.25);
+      color: #F87171;
+      font-size: 0.72rem;
+      font-weight: 700;
+      padding: 4px 9px;
+      border-radius: 6px;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: all 0.18s ease;
+    }
+    .btn-sidebar-logout:hover {
+      background: #EF4444;
+      border-color: #EF4444;
+      color: #FFFFFF;
+      box-shadow: 0 4px 12px rgba(239, 68, 68, 0.35);
+      transform: translateY(-1px);
     }
 
     /* Main Admin Workspace */
@@ -1457,6 +1541,39 @@
         margin-top: 6px;
       }
     }
+
+    /* Admin Direct Print Toast Notification */
+    .admin-toast {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      background: #0F172A;
+      color: #FFFFFF;
+      padding: 12px 18px;
+      border-radius: 10px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      box-shadow: 0 12px 30px rgba(15, 23, 42, 0.25);
+      z-index: 99999;
+      opacity: 0;
+      transform: translateY(16px);
+      pointer-events: none;
+      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .admin-toast.show {
+      opacity: 1;
+      transform: translateY(0);
+      pointer-events: auto;
+    }
+    .admin-toast.info { border-left: 4px solid #2563EB; }
+    .admin-toast.success { border-left: 4px solid #10B981; }
+    .admin-toast.warning { border-left: 4px solid #F59E0B; }
+    .admin-toast.error { border-left: 4px solid #EF4444; }
+    .admin-toast .toast-icon { font-size: 1rem; }
+    .admin-toast .toast-msg { line-height: 1.4; }
   </style>
 </head>
 <body class="admin-body">
@@ -1573,12 +1690,28 @@
       </ul>
 
       <div class="sidebar-footer">
-        <div class="admin-user-pill">
-          <div class="admin-user-info">
-            <strong id="adminUserName">Muhammad Uzair</strong>
-            <span>Founder & Architect</span>
+        <div class="admin-profile-card">
+          <div class="admin-profile-header">
+            <div class="admin-avatar-box">
+              <span id="adminUserInitials">MU</span>
+              <span class="status-indicator-online" title="Administrator Online"></span>
+            </div>
+            <div class="admin-user-meta">
+              <div class="admin-user-name" id="adminUserName">Muhammad Uzair</div>
+              <div class="admin-user-email" id="adminUserEmail" title="kmuzairkhan123@gmail.com">kmuzairkhan123@gmail.com</div>
+            </div>
           </div>
-          <button type="button" class="btn-logout" id="btnLogout" title="Log out">Sign Out</button>
+          <div class="admin-profile-actions">
+            <span class="admin-role-badge">👑 Master Admin</span>
+            <button type="button" class="btn-sidebar-logout" id="btnLogout" title="Sign out of Administrator Session">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                <polyline points="16 17 21 12 16 7"></polyline>
+                <line x1="21" y1="12" x2="9" y2="12"></line>
+              </svg>
+              <span>Sign Out</span>
+            </button>
+          </div>
         </div>
       </div>
     </aside>
@@ -1705,7 +1838,10 @@
                   <th>Contact & WA Group</th>
                   <th>Portal Credentials</th>
                   <th>Internship Status</th>
-                  <th style="min-width:210px;">Official Document Actions</th>
+                  <th style="min-width:230px;">
+                    <span style="display:block;">Official Document Actions</span>
+                    <span style="display:inline-block; font-size:0.65rem; color:#2563EB; font-weight:700; text-transform:none; background:#EFF6FF; border:1px solid #BFDBFE; border-radius:4px; padding:1px 5px; margin-top:2px;">🖨️ 1-Click Direct Print</span>
+                  </th>
                 </tr>
               </thead>
               <tbody id="internsTableBody">
@@ -2209,13 +2345,16 @@
 
         <!-- Quick Document Links inside Modal -->
         <div style="background:#F8FAFC; border:1px solid #E2E8F0; border-radius:10px; padding:12px; margin-bottom:16px; display:flex; gap:8px; align-items:center; justify-content:space-between; flex-wrap:wrap;">
-          <span style="font-size:0.8rem; font-weight:700; color:#475569;">Candidate Documents:</span>
+          <div>
+            <span style="font-size:0.8rem; font-weight:700; color:#475569; display:block;">Candidate Official Documents</span>
+            <small style="font-size:0.7rem; color:#2563EB; font-weight:600;">🖨️ Click to directly print document without leaving page</small>
+          </div>
           <div style="display:flex; gap:6px; flex-wrap:wrap;">
-            <a id="modalCertLink" href="#" target="_blank" class="btn btn-primary btn-sm" style="background:linear-gradient(135deg, #F59E0B, #D97706); border:none; color:#FFFFFF;">🎓 Certificate</a>
-            <a id="modalOfferLink" href="#" target="_blank" class="btn btn-outline btn-sm">📄 Offer Letter</a>
-            <a id="modalLorLink" href="#" target="_blank" class="btn btn-outline btn-sm">📜 Recommendation</a>
-            <a id="modalExpLink" href="#" target="_blank" class="btn btn-outline btn-sm">💼 Exp Letter</a>
-            <a id="modalVerifyLink" href="#" target="_blank" class="btn btn-outline btn-sm">🔍 QR Badge</a>
+            <a id="modalCertLink" href="#" class="btn btn-primary btn-sm" style="background:linear-gradient(135deg, #F59E0B, #D97706); border:none; color:#FFFFFF;" title="Directly Print Official Certificate">🖨️ Cert</a>
+            <a id="modalOfferLink" href="#" class="btn btn-outline btn-sm" title="Directly Print Official Offer Letter">🖨️ Offer</a>
+            <a id="modalLorLink" href="#" class="btn btn-outline btn-sm" title="Directly Print Official Recommendation Letter">🖨️ LOR</a>
+            <a id="modalExpLink" href="#" class="btn btn-outline btn-sm" title="Directly Print Official Experience Letter">🖨️ Exp</a>
+            <a id="modalVerifyLink" href="#" target="_blank" class="btn btn-outline btn-sm" title="Live QR Credential Verification Sheet">🔍 QR Badge</a>
           </div>
         </div>
 
