@@ -49,13 +49,25 @@
         <li><a href="#planner" class="nav-link">Sprint Planner</a></li>
         <li><a href="#portfolio" class="nav-link">Case Studies</a></li>
         <li><a href="#internship" class="nav-link nav-intern-link"><span class="intern-dot"></span>Internship <span class="nav-intern-tag">2-Mo</span></a></li>
-        <li><a href="/intern-portal" class="nav-link" style="color:#2563EB; font-weight:700;">🔐 Intern Portal</a></li>
+        <li><a href="/intern-portal" class="nav-link" style="color:var(--primary); font-weight:700;">Intern Portal</a></li>
         <li><a href="#process" class="nav-link">Process</a></li>
         <li><a href="#contact" class="nav-link">Contact</a></li>
       </ul>
 
       <!-- Action Buttons -->
       <div class="nav-actions">
+        <!-- Universal Real-Time Notification Bell -->
+        <div class="nav-notif-wrap">
+          <button type="button" class="btn-nav-notif" id="notifBellBtn" aria-label="Notifications" title="Real-Time Alerts &amp; Updates">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+              <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+            </svg>
+            <span class="notif-badge" id="notifBadgeCount" style="display:none;">0</span>
+          </button>
+          <div class="notif-center-dropdown" id="notifCenterDropdown"></div>
+        </div>
+
         <!-- Desktop Primary CTA -->
         <a href="#contact" class="btn btn-primary btn-sm btn-nav-cta">Start Project</a>
         
@@ -136,10 +148,10 @@
           Founded and directed by <strong>Muhammad Uzair</strong> in Mardan, KPK, Pakistan. We partner with ambitious startups and enterprises worldwide to architect, code, and deploy resilient digital products.
         </p>
 
-        <!-- CTA Buttons (Modern 10px Squircles with Radiant Elevation) -->
+        <!-- CTA Buttons -->
         <div class="hero-cta-group">
           <a href="#planner" class="btn btn-primary btn-lg">
-            <span>🚀 Plan Architecture & Sprints</span>
+            <span>Plan Architecture &amp; Sprints</span>
           </a>
           <a href="https://wa.me/923433885835?text=Hi%20Muhammad%20Uzair,%20I%20would%20like%20to%20discuss%20a%20new%20project" target="_blank" class="btn btn-whatsapp btn-lg" aria-label="Chat with Muhammad Uzair on WhatsApp">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766 0-3.18-2.588-5.771-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.299.045-.677.063-1.092-.069-.252-.08-.575-.187-.988-.365-1.739-.751-2.874-2.502-2.961-2.617-.087-.116-.708-.94-.708-1.793s.448-1.273.607-1.446c.159-.173.346-.217.462-.217l.332.007c.106.005.249-.04.39.299.144.35.49 1.196.533 1.284.043.088.072.191.014.306-.058.115-.087.188-.173.289l-.26.303c-.087.087-.177.181-.076.355.101.173.449.741.963 1.2 0.662.591 1.221.774 1.394.861.174.086.275.072.376-.044.102-.115.434-.506.549-.68.116-.173.232-.144.39-.086.159.058 1.011.477 1.184.564.173.086.289.13.332.202.043.072.043.419-.101.824z"/></svg>
@@ -149,28 +161,34 @@
 
         <!-- Micro Direct Channel Note -->
         <div class="hero-channel-note">
-          <span class="note-bullet">⚡</span>
-          <span>Guaranteed 2-Hour Response • Direct Access to Muhammad Uzair • 100% IP Handover</span>
+          <span class="note-bullet">✓</span>
+          <span>Guaranteed 2-Hour Response &bull; Direct Access to Muhammad Uzair &bull; 100% IP Handover</span>
         </div>
 
         <!-- Trust Proof Bar -->
         <div class="hero-proof-bar">
           <div class="proof-item">
-            <div class="proof-icon">★</div>
+            <div class="proof-icon">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" style="color:#F59E0B;"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+            </div>
             <div class="proof-text">
               <strong>4.9 / 5.0 Rating</strong>
               <span>Verified Client Satisfaction</span>
             </div>
           </div>
           <div class="proof-item">
-            <div class="proof-icon">⚡</div>
+            <div class="proof-icon">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" style="color:var(--primary);"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+            </div>
             <div class="proof-text">
               <strong>99.8% On-Time</strong>
               <span>Bi-Weekly Agile Sprints</span>
             </div>
           </div>
           <div class="proof-item">
-            <div class="proof-icon">🛡️</div>
+            <div class="proof-icon">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" style="color:#10B981;"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+            </div>
             <div class="proof-text">
               <strong>100% IP Ownership</strong>
               <span>Protected by Strict NDA</span>
@@ -212,13 +230,13 @@
           <!-- Capability Switcher Tabs -->
           <div class="hero-tabs-nav" id="heroTabsNav">
             <button type="button" class="hero-tab-pill active" data-tab="saas">
-              <span>⚡ Cloud SaaS</span>
+              <span>Cloud SaaS</span>
             </button>
             <button type="button" class="hero-tab-pill" data-tab="mobile">
-              <span>📱 Mobile Apps</span>
+              <span>Mobile Apps</span>
             </button>
             <button type="button" class="hero-tab-pill" data-tab="ai">
-              <span>🤖 AI Neural Core</span>
+              <span>AI Neural Core</span>
             </button>
           </div>
 
@@ -246,15 +264,24 @@
               </div>
             </div>
 
-            <!-- Dynamic Tech Stack Cloud -->
+            <!-- Dynamic Tech Stack Cloud (Zero Overlapping Pill) -->
             <div>
               <div class="hero-tech-label">Architecture Stack</div>
               <div class="tech-tags-cloud" id="heroTechTags">
-                <span class="tech-tag">▲ Next.js 15 & React 19</span>
-                <span class="tech-tag">☁️ Cloud Native AWS</span>
-                <span class="tech-tag">🐘 PostgreSQL</span>
-                <span class="tech-tag">🐳 Docker CI/CD</span>
-                <span class="tech-tag">🛡️ SOC2 Security</span>
+                <span class="tech-tag">Next.js 15 &amp; React 19</span>
+                <span class="tech-tag">Cloud Native AWS</span>
+                <span class="tech-tag">PostgreSQL</span>
+                <span class="tech-tag">Docker CI/CD</span>
+                <span class="tech-tag">SOC2 Security</span>
+              </div>
+
+              <!-- Dedicated Founder Dock Pill Beneath Tags -->
+              <div class="hero-founder-dock">
+                <img src="/assets/uzairaistudio.png" alt="Uzair AI Studio Official Icon" style="width:24px; height:24px; border-radius:6px; flex-shrink:0;">
+                <div>
+                  <strong style="font-size:0.78rem; display:block; line-height:1.2;">Muhammad Uzair</strong>
+                  <span style="font-size:0.68rem; color:#10B981; font-weight:700;">● Active Engineering Sprint</span>
+                </div>
               </div>
             </div>
           </div>
@@ -282,15 +309,6 @@
     warranty: <span class="c-str">'180 Days Active SLA'</span>
   });
 }</code></pre>
-            </div>
-          </div>
-
-          <!-- Floating Verified Founder Badge -->
-          <div class="floating-card-pill">
-            <img src="/assets/uzairaistudio.png" alt="Uzair AI Studio Official Icon" style="width:28px; height:28px; border-radius:6px; flex-shrink:0;">
-            <div>
-              <strong style="font-size:0.8rem; display:block; line-height:1.2;">Muhammad Uzair</strong>
-              <span style="font-size:0.7rem; color:#10B981; font-weight:700;">● Active Engineering Sprint</span>
             </div>
           </div>
 
@@ -451,351 +469,179 @@
     </div>
   </section>
 
-  <!-- INTERACTIVE ARCHITECTURE & SPRINT PLANNER (EXECUTIVE ENGINE) -->
+  <!-- STREAMLINED PROJECT INTAKE & ARCHITECTURE CONSULTATION STUDIO -->
   <section class="section" id="planner" style="background:var(--bg-surface-subtle);">
     <div class="container">
       <div class="section-header">
-        <span class="section-badge">Sprint & Architecture Engine</span>
-        <h2 class="section-title">Interactive Project Architecture Planner</h2>
+        <span class="section-badge">Client Consultation &amp; Intake</span>
+        <h2 class="section-title">Project Architecture &amp; Consultation Studio</h2>
         <p class="section-desc">
-          Plan your technical roadmap from rapid MVP to enterprise scale with complete architectural transparency. Select your required digital capabilities, fine-tune tech stack specifications, and instantly dispatch your project brief.
+          Specify your core project requirements or upload your specifications. Founder &amp; Lead Architect Muhammad Uzair will personally review your brief and contact you directly via WhatsApp or Email within 2 hours.
         </p>
       </div>
 
-      <div class="estimator-wrapper" id="projectEstimator">
-        
-        <!-- Mode Switcher Bar -->
-        <div class="planner-mode-bar">
-          <div class="planner-mode-toggle">
-            <button type="button" class="planner-mode-btn active" id="btnModeQuick" data-mode="quick">
-              <span>⚡ Standard Blueprint</span>
+      <div class="intake-studio-card" id="projectEstimator">
+        <form id="plannerClientForm">
+          <!-- Step 1: Quick Platform Selector Pills -->
+          <div class="intake-pills-row" id="intakePlatformPills">
+            <button type="button" class="intake-pill-btn active" data-type="web">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>
+              <span>Web Platform &amp; SaaS</span>
             </button>
-            <button type="button" class="planner-mode-btn" id="btnModeAdvanced" data-mode="advanced">
-              <span>🛠️ Deep Enterprise Stack</span>
+            <button type="button" class="intake-pill-btn" data-type="mobile">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"></rect><line x1="12" y1="18" x2="12.01" y2="18"></line></svg>
+              <span>Mobile App (iOS &amp; Android)</span>
+            </button>
+            <button type="button" class="intake-pill-btn" data-type="ai">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="4" width="16" height="16" rx="2"></rect><rect x="9" y="9" width="6" height="6"></rect><line x1="9" y1="1" x2="9" y2="4"></line><line x1="15" y1="1" x2="15" y2="4"></line><line x1="9" y1="20" x2="9" y2="23"></line><line x1="15" y1="20" x2="15" y2="23"></line></svg>
+              <span>Autonomous AI &amp; Agents</span>
+            </button>
+            <button type="button" class="intake-pill-btn" data-type="software">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>
+              <span>Enterprise Software / ERP</span>
+            </button>
+            <button type="button" class="intake-pill-btn" data-type="fullsuite">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"></path><path d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"></path></svg>
+              <span>Full Digital Ecosystem</span>
             </button>
           </div>
-          <div class="planner-mode-hint">
-            <span>💡 All parameters are completely optional & flexible &bull; Zero forced restrictions</span>
-          </div>
-        </div>
 
-        <!-- Step 1: Project Type -->
-        <div style="margin-bottom:24px;">
-          <div class="planner-step-header">
-            <h3 class="planner-step-title">
-              <span>1. Select Core System Platform</span>
-            </h3>
-            <span class="planner-step-badge">Single Choice</span>
-          </div>
-          <div class="estimator-grid-selection">
-            <div class="select-card type-select-card selected" data-type="web">
-              <div class="card-icon-svg">
-                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>
+          <!-- Step 2: 2-Column Responsive Client Details & Scope Intake -->
+          <div class="intake-form-grid">
+            <!-- Left Column: Client Contact Information -->
+            <div class="intake-col">
+              <div class="intake-group">
+                <label class="intake-label" for="plannerClientName">
+                  Client Full Name <span class="req">*</span>
+                </label>
+                <input type="text" id="plannerClientName" class="intake-input" placeholder="e.g. Kamran Katana" required>
               </div>
-              <div class="select-card-title">Web Platform / SaaS</div>
-              <div class="select-card-desc">Next.js 15, React, Scaled APIs</div>
-            </div>
-            <div class="select-card type-select-card" data-type="mobile">
-              <div class="card-icon-svg">
-                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"></rect><line x1="12" y1="18" x2="12.01" y2="18"></line></svg>
-              </div>
-              <div class="select-card-title">Mobile Application</div>
-              <div class="select-card-desc">iOS, Android, Flutter & Swift</div>
-            </div>
-            <div class="select-card type-select-card" data-type="ai">
-              <div class="card-icon-svg">
-                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="4" width="16" height="16" rx="2"></rect><rect x="9" y="9" width="6" height="6"></rect><line x1="9" y1="1" x2="9" y2="4"></line><line x1="15" y1="1" x2="15" y2="4"></line><line x1="9" y1="20" x2="9" y2="23"></line><line x1="15" y1="20" x2="15" y2="23"></line></svg>
-              </div>
-              <div class="select-card-title">Autonomous AI & Agents</div>
-              <div class="select-card-desc">Custom LLMs, Swarms & RAG</div>
-            </div>
-            <div class="select-card type-select-card" data-type="software">
-              <div class="card-icon-svg">
-                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>
-              </div>
-              <div class="select-card-title">Enterprise Software / ERP</div>
-              <div class="select-card-desc">Distributed Cloud Microservices</div>
-            </div>
-            <div class="select-card type-select-card" data-type="fullsuite">
-              <div class="card-icon-svg">
-                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"></path><path d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"></path></svg>
-              </div>
-              <div class="select-card-title">Full Digital Ecosystem</div>
-              <div class="select-card-desc">Web + Mobile + AI Neural Squad</div>
-            </div>
-          </div>
-        </div>
 
-        <!-- Step 2: Key Features Selection -->
-        <div style="margin-bottom:24px;">
-          <div class="planner-step-header">
-            <h3 class="planner-step-title">
-              <span>2. Choose Desired Architecture Modules</span>
-            </h3>
-            <span class="planner-step-badge">Multi-Select Toggle</span>
-          </div>
-          <div class="estimator-grid-selection">
-            <div class="select-card feature-select-card selected" data-feature="auth">
-              <div class="card-icon-svg">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+              <div class="intake-group">
+                <label class="intake-label" for="plannerClientWhatsapp">
+                  WhatsApp Number (with Country Code) <span class="req">*</span>
+                </label>
+                <input type="tel" id="plannerClientWhatsapp" class="intake-input" placeholder="e.g. +92 343 3885835" required>
               </div>
-              <div class="select-card-title">User Auth & RBAC</div>
-              <div class="select-card-desc">OAuth 2.0, Roles & Multi-Tenancy</div>
-            </div>
-            <div class="select-card feature-select-card" data-feature="payment">
-              <div class="card-icon-svg">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"></rect><line x1="1" y1="10" x2="23" y2="10"></line></svg>
-              </div>
-              <div class="select-card-title">Global Payments & Billing</div>
-              <div class="select-card-desc">Stripe, Subscriptions & Invoicing</div>
-            </div>
-            <div class="select-card feature-select-card selected" data-feature="ai_agent">
-              <div class="card-icon-svg">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
-              </div>
-              <div class="select-card-title">Custom AI Copilot / Agent</div>
-              <div class="select-card-desc">Fine-Tuned LLMs & Tool Calling</div>
-            </div>
-            <div class="select-card feature-select-card" data-feature="realtime_chat">
-              <div class="card-icon-svg">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
-              </div>
-              <div class="select-card-title">Real-Time Data Sync</div>
-              <div class="select-card-desc">WebSockets, Live Streams & Alerts</div>
-            </div>
-            <div class="select-card feature-select-card selected" data-feature="admin_dashboard">
-              <div class="card-icon-svg">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><ellipse cx="12" cy="5" rx="9" ry="3"></ellipse><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"></path><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"></path></svg>
-              </div>
-              <div class="select-card-title">Executive Admin & Telemetry</div>
-              <div class="select-card-desc">Live KPI Visualizers & Auditing</div>
-            </div>
-            <div class="select-card feature-select-card" data-feature="cloud_devops">
-              <div class="card-icon-svg">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"></path></svg>
-              </div>
-              <div class="select-card-title">CI/CD & Cloud DevOps</div>
-              <div class="select-card-desc">Docker, AWS/GCP Zero-Downtime</div>
-            </div>
-            <div class="select-card feature-select-card" data-feature="vector_rag">
-              <div class="card-icon-svg">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
-              </div>
-              <div class="select-card-title">Vector Search & RAG</div>
-              <div class="select-card-desc">Pinecone, ChromaDB & Semantic AI</div>
-            </div>
-            <div class="select-card feature-select-card" data-feature="security_audit">
-              <div class="card-icon-svg">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
-              </div>
-              <div class="select-card-title">Security & Compliance</div>
-              <div class="select-card-desc">End-to-End Encryption, GDPR Ready</div>
-            </div>
-          </div>
-        </div>
 
-        <!-- Step 3: Advanced Architecture Specifications (Collapsible / Advanced Mode) -->
-        <div class="planner-advanced-tray" id="plannerAdvancedTray" style="display:none;">
-          <div class="advanced-tray-header" id="btnToggleAdvancedTray">
-            <h4 class="advanced-tray-title">
-              <span>🛠️ Advanced Technical Stack & Infrastructure Specifications</span>
-            </h4>
-            <span class="advanced-toggle-indicator" id="advancedToggleText">Expand All Specs ▾</span>
-          </div>
+              <div class="intake-group">
+                <label class="intake-label" for="plannerClientEmail">
+                  Work / Personal Email <span class="req">*</span>
+                </label>
+                <input type="email" id="plannerClientEmail" class="intake-input" placeholder="e.g. kamran@company.com" required>
+              </div>
 
-          <div class="advanced-tray-body" id="advancedTrayContent">
-            <!-- AI Engine -->
-            <div class="advanced-group-box">
-              <label>AI Model Foundation</label>
-              <div class="planner-chip-group" data-stack-group="aiModel">
-                <span class="planner-chip selected" data-value="OpenAI GPT-4o">OpenAI GPT-4o</span>
-                <span class="planner-chip" data-value="Claude 3.5 Sonnet">Claude 3.5</span>
-                <span class="planner-chip" data-value="Gemini 1.5 Pro">Gemini 1.5 Pro</span>
-                <span class="planner-chip" data-value="Local Llama 3">Local Llama 3</span>
-                <span class="planner-chip" data-value="None">No AI Needed</span>
+              <div class="intake-group">
+                <label class="intake-label" for="plannerClientAddress">
+                  Address / City &amp; Country <span class="req">*</span>
+                </label>
+                <input type="text" id="plannerClientAddress" class="intake-input" placeholder="e.g. Islamabad, Pakistan or London, UK" required>
+              </div>
+
+              <div class="intake-group">
+                <label class="intake-label" for="plannerContactPref">
+                  Preferred Contact Method
+                </label>
+                <select id="plannerContactPref" class="intake-select">
+                  <option value="WhatsApp" selected>WhatsApp (Fastest Response within 2h)</option>
+                  <option value="Phone Call">Direct Phone Call</option>
+                  <option value="Email">Email Formal Proposal</option>
+                </select>
               </div>
             </div>
 
-            <!-- Primary Database -->
-            <div class="advanced-group-box">
-              <label>Primary Database Engine</label>
-              <div class="planner-chip-group" data-stack-group="database">
-                <span class="planner-chip selected" data-value="PostgreSQL / Supabase">PostgreSQL / Supabase</span>
-                <span class="planner-chip" data-value="MongoDB Atlas">MongoDB Atlas</span>
-                <span class="planner-chip" data-value="Redis In-Memory">Redis Cache</span>
-                <span class="planner-chip" data-value="Vector Embeddings DB">Vector DB</span>
-                <span class="planner-chip" data-value="Flexible">Studio Recommended</span>
+            <!-- Right Column: Project Field, Blanks Filling & Budget -->
+            <div class="intake-col">
+              <div class="intake-group">
+                <label class="intake-label" for="plannerProjectTitleSelect">
+                  Project Title / Field <span class="req">*</span>
+                </label>
+                <select id="plannerProjectTitleSelect" class="intake-select" style="margin-bottom:8px;">
+                  <option value="Custom Web SaaS Application" selected>Custom Web SaaS Application</option>
+                  <option value="Cross-Platform iOS & Android Mobile App">Cross-Platform iOS &amp; Android Mobile App</option>
+                  <option value="Autonomous AI Agent & Multi-Model Pipeline">Autonomous AI Agent &amp; Multi-Model Pipeline</option>
+                  <option value="Enterprise ERP / Supply Chain Portal">Enterprise ERP / Supply Chain Portal</option>
+                  <option value="High-Performance E-Commerce Platform">High-Performance E-Commerce Platform</option>
+                  <option value="custom">Fill in Blanks / Custom Project Specification...</option>
+                </select>
+                <input type="text" id="plannerProjectTitleCustom" class="intake-input" placeholder="Specify project title or field in blanks..." style="display:none;">
               </div>
-            </div>
 
-            <!-- Cloud Infrastructure -->
-            <div class="advanced-group-box">
-              <label>Cloud & Hosting Provider</label>
-              <div class="planner-chip-group" data-stack-group="cloud">
-                <span class="planner-chip selected" data-value="Amazon Web Services (AWS)">Amazon AWS</span>
-                <span class="planner-chip" data-value="Google Cloud Platform (GCP)">Google Cloud</span>
-                <span class="planner-chip" data-value="Microsoft Azure">Microsoft Azure</span>
-                <span class="planner-chip" data-value="Vercel & Cloudflare">Vercel / Cloudflare</span>
-                <span class="planner-chip" data-value="Private Dedicated VPS">Private VPS</span>
+              <div class="intake-group">
+                <label class="intake-label" for="plannerBudgetTier">
+                  Target Investment Tier
+                </label>
+                <select id="plannerBudgetTier" class="intake-select">
+                  <option value="Discuss with Muhammad Uzair" selected>Flexible / Discuss with Founder</option>
+                  <option value="Rapid Prototype / Startup MVP">Rapid Prototype / Startup MVP</option>
+                  <option value="Scaling Product / Growth Release">Scaling Product / Growth Release</option>
+                  <option value="Enterprise Transformation">Enterprise Transformation</option>
+                </select>
               </div>
-            </div>
 
-            <!-- Design & Wireframe Status -->
-            <div class="advanced-group-box">
-              <label>Design & Asset Readiness</label>
-              <div class="planner-chip-group" data-stack-group="design">
-                <span class="planner-chip selected" data-value="Figma Ready">Figma Designs Ready</span>
-                <span class="planner-chip" data-value="Wireframes Only">Rough Wireframes</span>
-                <span class="planner-chip" data-value="Brand Identity Exists">Brand Assets Only</span>
-                <span class="planner-chip" data-value="Design From Scratch">Full UI/UX From Scratch</span>
+              <div class="intake-group">
+                <label class="intake-label" for="plannerClientNotes">
+                  Project Vision &amp; Deliverables (Fill in blanks / requirements)
+                </label>
+                <textarea id="plannerClientNotes" class="intake-textarea" placeholder="Describe your project vision: target users, key integrations (Stripe, OpenAI), design readiness, or deadlines..."></textarea>
               </div>
             </div>
           </div>
-        </div>
 
-        <!-- Step 4: Velocity & Cadence -->
-        <div style="margin-bottom:24px;">
-          <div class="planner-step-header">
-            <h3 class="planner-step-title">
-              <span>3. Target Velocity & Sprint Cadence</span>
-            </h3>
-            <span class="planner-step-badge">Pacing Model</span>
-          </div>
-          <div class="planner-speed-grid">
-            <label class="speed-option-card selected">
-              <input type="radio" name="timelineSpeed" value="standard" checked>
-              <div>
-                <div class="speed-title">Standard Agile Cadence</div>
-                <div class="speed-sub">Balanced bi-weekly sprints, staging access & continuous code reviews.</div>
-              </div>
+          <!-- Interactive Drag-and-Drop Specs / File Upload Zone -->
+          <div class="intake-group" style="margin-top:6px;">
+            <label class="intake-label">
+              Upload Project Specs, Wireframes or PRD (Optional)
             </label>
-            <label class="speed-option-card">
-              <input type="radio" name="timelineSpeed" value="express">
-              <div>
-                <div class="speed-title">⚡ Express Fast-Track</div>
-                <div class="speed-sub">Dedicated engineering squad allocated exclusively for rapid milestone release.</div>
+            <div class="intake-dropzone" id="plannerDropzone">
+              <input type="file" id="plannerFileInput" multiple accept=".pdf,.doc,.docx,.png,.jpg,.jpeg,.zip" style="display:none;">
+              <div class="intake-dropzone-content">
+                <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color:var(--primary);"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+                <span class="dropzone-title">Drag &amp; drop project specifications or click to browse</span>
+                <span class="dropzone-sub">Supports PDF, DOCX, PNG, JPG, or ZIP (Max 25MB)</span>
               </div>
-            </label>
-            <label class="speed-option-card">
-              <input type="radio" name="timelineSpeed" value="relaxed">
-              <div>
-                <div class="speed-title">Phased Milestone Roadmapping</div>
-                <div class="speed-sub">Multi-stage architecture rollout for complex corporate or enterprise governance.</div>
-              </div>
-            </label>
+            </div>
+            <div class="attached-files-list" id="plannerFilesList"></div>
+          </div>
+
+          <!-- Bottom Action Buttons & Trust Badges -->
+          <div class="intake-actions-bar">
+            <div class="intake-submit-btns">
+              <button type="submit" class="btn-intake-submit" id="btnPlannerSubmit">
+                <span>Submit Project Brief</span>
+              </button>
+              <button type="button" class="btn-intake-wa" id="btnPlannerWhatsApp">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766 0-3.18-2.588-5.771-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.299.045-.677.063-1.092-.069-.252-.08-.575-.187-.988-.365-1.739-.751-2.874-2.502-2.961-2.617-.087-.116-.708-.94-.708-1.793s.448-1.273.607-1.446c.159-.173.346-.217.462-.217l.332.007c.106.005.249-.04.39.299.144.35.49 1.196.533 1.284.043.088.072.191.014.306-.058.115-.087.188-.173.289l-.26.303c-.087.087-.177.181-.076.355.101.173.449.741.963 1.2 0.662.591 1.221.774 1.394.861.174.086.275.072.376-.044.102-.115.434-.506.549-.68.116-.173.232-.144.39-.086.159.058 1.011.477 1.184.564.173.086.289.13.332.202.043.072.043.419-.101.824z"/></svg>
+                <span>Discuss on WhatsApp</span>
+              </button>
+            </div>
+
+            <div class="intake-trust-badges">
+              <span>100% Client IP Handover</span>
+              <span>&bull;</span>
+              <span>Protected by Mutual NDA</span>
+              <span>&bull;</span>
+              <span>Guaranteed 2-Hour Response</span>
+            </div>
+          </div>
+        </form>
+
+        <!-- Success Confirmation Card -->
+        <div id="plannerSuccessBox" class="cockpit-success-card" style="display:none; padding:24px; text-align:center;">
+          <div style="width:48px; height:48px; border-radius:50%; background:#DCFCE7; color:#10B981; display:flex; align-items:center; justify-content:center; margin:0 auto 12px; font-size:1.4rem; font-weight:800;">✓</div>
+          <h4 style="color:#065F46; font-size:1.25rem; margin:0 0 6px; font-weight:800;">Project Brief Dispatched Successfully!</h4>
+          <p id="plannerSuccessMsg" style="color:#047857; font-size:0.9rem; margin:0 auto 16px; max-width:540px; line-height:1.5;">
+            Your project brief has been recorded and delivered directly to Founder &amp; Lead Architect Muhammad Uzair. Reference ID: <strong id="plannerSuccessRefId">-</strong>
+          </p>
+          <div style="display:flex; justify-content:center; gap:10px; flex-wrap:wrap;">
+            <button type="button" class="btn-intake-wa" id="btnSuccessWaChat" style="padding:10px 20px;">
+              Open WhatsApp with Reference ID
+            </button>
+            <button type="button" class="btn btn-outline btn-sm" id="btnResetPlannerForm" style="padding:10px 18px; font-size:0.85rem;">
+              Submit Another Brief
+            </button>
           </div>
         </div>
-
-        <!-- Step 5: Real-Time Architecture Cockpit & Client Brief Submission (Compact & Powerful) -->
-        <div class="planner-cockpit-card">
-          <!-- Top Live KPI Summary Strip -->
-          <div class="cockpit-top-summary">
-            <div class="cockpit-kpi-item">
-              <span class="cockpit-kpi-label">Architecture Complexity</span>
-              <span class="cockpit-kpi-val" id="calcArchitectureTier">Growth Ready</span>
-              <span class="cockpit-kpi-sub" id="calcSquad">Lead Full-Stack + UI/UX + QA</span>
-            </div>
-            <div class="cockpit-kpi-item">
-              <span class="cockpit-kpi-label">Estimated Delivery</span>
-              <span class="cockpit-kpi-val" id="calcTimeline">4 Weeks (2 Sprints)</span>
-              <span class="cockpit-kpi-sub">Bi-weekly live demo builds &amp; staging access</span>
-            </div>
-            <div class="cockpit-kpi-item" style="text-align:right;">
-              <span class="cockpit-kpi-label">IP Transfer &amp; Warranty</span>
-              <span class="cockpit-kpi-val" style="font-size:0.95rem; color:#A7F3D0;">100% Client Ownership</span>
-              <span class="cockpit-kpi-sub">6 Months Post-Launch Warranty SLA</span>
-            </div>
-          </div>
-
-          <!-- Active Modules Cloud Strip -->
-          <div class="cockpit-modules-cloud" id="calcModulesCloud">
-            <span class="cockpit-module-tag">🔐 User Auth</span>
-            <span class="cockpit-module-tag">🧠 Custom AI Copilot</span>
-            <span class="cockpit-module-tag">📊 Admin Telemetry</span>
-          </div>
-
-          <!-- Integrated Client Brief Intake (Non-Restrictive / Optional) -->
-          <div class="cockpit-form-wrap">
-            <div class="cockpit-form-title">
-              <span>🚀 Dispatch Architecture Brief Directly to Founder</span>
-            </div>
-            <div class="cockpit-form-desc">
-              Provide your details below to receive a formal statement of work and custom engineering blueprint. All fields are completely optional &mdash; fill what you wish!
-            </div>
-
-            <form id="plannerClientForm">
-              <div class="cockpit-form-grid">
-                <div class="cockpit-input-group">
-                  <label for="plannerClientName">Full Name (Optional)</label>
-                  <input type="text" id="plannerClientName" class="cockpit-input" placeholder="e.g. Alex Morgan">
-                </div>
-                <div class="cockpit-input-group">
-                  <label for="plannerClientContact">Email Address or WhatsApp Number</label>
-                  <input type="text" id="plannerClientContact" class="cockpit-input" placeholder="e.g. alex@startup.com or +1 234 567 890">
-                </div>
-                <div class="cockpit-input-group">
-                  <label for="plannerClientCompany">Company / Project Name (Optional)</label>
-                  <input type="text" id="plannerClientCompany" class="cockpit-input" placeholder="e.g. Nexus AI Health">
-                </div>
-                <div class="cockpit-input-group">
-                  <label for="plannerBudgetTier">Target Investment Tier (Optional)</label>
-                  <select id="plannerBudgetTier" class="cockpit-input">
-                    <option value="Flexible / Custom Scope" selected>Flexible / Discuss with Founder</option>
-                    <option value="Rapid Prototype / Startup MVP">Rapid Prototype / Startup MVP</option>
-                    <option value="Scaling Product / Commercial Growth">Scaling Product / Growth</option>
-                    <option value="Enterprise Digital Transformation">Enterprise Digital Transformation</option>
-                  </select>
-                </div>
-              </div>
-
-              <div class="cockpit-input-group">
-                <label for="plannerClientNotes">Project Vision &amp; Specific Requirements (Optional)</label>
-                <textarea id="plannerClientNotes" class="cockpit-textarea" placeholder="Mention any specific third-party integrations, target launch timeline, or key feature requirements..."></textarea>
-              </div>
-
-              <!-- Action Buttons Row -->
-              <div class="cockpit-actions-row">
-                <button type="submit" class="btn-cockpit-submit" id="btnPlannerSubmit">
-                  <span>🚀 Submit Architecture Brief</span>
-                </button>
-                <button type="button" class="btn-cockpit-wa" id="btnPlannerWhatsApp">
-                  <span>💬 Discuss on WhatsApp</span>
-                </button>
-                <button type="button" class="btn-cockpit-copy" id="btnPlannerCopy">
-                  <span>📋 Copy Blueprint Specs</span>
-                </button>
-                <button type="button" class="btn btn-outline btn-sm" id="btnApplyEstimate" style="padding:10px 14px; font-size:0.82rem;">
-                  <span>🎯 Fill Full Form Below &darr;</span>
-                </button>
-              </div>
-            </form>
-
-            <!-- Success Confirmation Card (Hidden Initially) -->
-            <div id="plannerSuccessBox" class="cockpit-success-card" style="display:none;">
-              <div style="font-size:1.8rem; margin-bottom:4px;">🎉</div>
-              <h4 style="color:#065F46; font-size:1.15rem; margin:0 0 4px; font-weight:800;">Architecture Blueprint Dispatched Successfully!</h4>
-              <p id="plannerSuccessMsg" style="color:#047857; font-size:0.875rem; margin:0 0 12px; line-height:1.4;">
-                Your project specification has been delivered directly to Founder Muhammad Uzair. Reference ID: <strong id="plannerSuccessRefId">-</strong>
-              </p>
-              <div style="display:flex; justify-content:center; gap:10px; flex-wrap:wrap;">
-                <button type="button" class="btn-cockpit-wa" id="btnSuccessWaChat" style="padding:8px 18px; font-size:0.85rem;">
-                  💬 Open WhatsApp with Reference ID
-                </button>
-                <button type="button" class="btn-cockpit-copy" id="btnResetPlannerForm" style="padding:8px 16px; font-size:0.82rem;">
-                  Edit Architecture Specifications
-                </button>
-              </div>
-            </div>
-
-            <!-- Trust Signals Strip -->
-            <div class="cockpit-trust-strip">
-              <span>🛡️ 100% Complete Client IP Ownership</span>
-              <span>🔒 Mutual NDA Protected</span>
-              <span>⚡ Guaranteed 2-Hour Response from Lead Architect Muhammad Uzair</span>
-            </div>
-          </div>
-        </div>
-
       </div>
     </div>
   </section>
@@ -1773,15 +1619,21 @@
         <!-- Touch-Friendly Contact Badges -->
         <div class="footer-contact-list">
           <div class="footer-contact-item">
-            <span class="footer-contact-icon">📍</span>
+            <span class="footer-contact-icon">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+            </span>
             <span>Mardan, KPK, Pakistan</span>
           </div>
           <a href="https://wa.me/923433885835" target="_blank" class="footer-contact-item footer-contact-link">
-            <span class="footer-contact-icon">📞</span>
+            <span class="footer-contact-icon">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
+            </span>
             <span>WhatsApp / Direct: <strong>+92 343 3885835</strong></span>
           </a>
           <a href="mailto:kmuzairkhan123@gmail.com" class="footer-contact-item footer-contact-link">
-            <span class="footer-contact-icon">✉️</span>
+            <span class="footer-contact-icon">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+            </span>
             <span>Email: <strong>kmuzairkhan123@gmail.com</strong></span>
           </a>
         </div>
@@ -1825,8 +1677,8 @@
       <div class="footer-links-col">
         <h4 class="footer-col-title">Studio Links</h4>
         <ul class="footer-links-list">
-          <li><a href="#internship" style="color:var(--primary); font-weight:700;">🎓 2-Month Internship Program</a></li>
-          <li><a href="/admin" target="_blank" style="color:var(--text-muted); font-size:0.8rem;">🔒 Executive Admin Hub</a></li>
+          <li><a href="#internship" style="color:var(--primary); font-weight:700;">2-Month Internship Program</a></li>
+          <li><a href="/admin" target="_blank" style="color:var(--text-muted); font-size:0.8rem;">Executive Admin Hub</a></li>
           <li><a href="#planner">Architecture Sprint Planner</a></li>
           <li><a href="#portfolio">Featured Case Studies</a></li>
           <li><a href="#process">Our 4-Step Process</a></li>
@@ -1839,7 +1691,7 @@
       <div class="footer-newsletter-col">
         <div class="newsletter-card">
           <div class="newsletter-card-header">
-            <span style="font-size:1.1rem;">📬</span>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color:var(--primary);"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
             <h4 class="footer-col-title" style="margin-bottom:0;">Studio Newsletter</h4>
           </div>
           <p class="newsletter-desc">
@@ -1849,7 +1701,7 @@
             <input type="email" id="newsletterEmail" placeholder="your@email.com" required>
             <button type="submit" class="btn btn-primary btn-sm">Join</button>
           </form>
-          <span class="newsletter-sub-note">🔒 Zero spam. Unsubscribe anytime.</span>
+          <span class="newsletter-sub-note">No spam. Unsubscribe anytime.</span>
         </div>
       </div>
     </div>
@@ -1870,6 +1722,7 @@
   </footer>
 
   <!-- Scripts -->
+  <script src="/js/uzair-notifications.js"></script>
   <script src="/js/firebase-client.js"></script>
   <script src="/js/qrcode.js"></script>
   <script src="/js/jsqr.min.js"></script>

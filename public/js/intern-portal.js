@@ -107,73 +107,75 @@
 
   window.directPrintDocument = function(rawUrl, docTitle, candidateName) {
     if (!rawUrl || rawUrl === '#' || rawUrl.endsWith('#')) {
-      showPortalToast('⚠️ Document link is not ready yet.', 'warning');
+      showPortalToast('Document link is not ready yet.', 'warning');
       return;
     }
 
-    const cleanName = candidateName || (currentIntern ? currentIntern.fullName : 'Intern');
     const cleanTitle = docTitle || 'Official Document';
+    const modal = document.getElementById('docPrintModal');
+    const modalTitle = document.getElementById('docPrintModalTitle');
+    const iframe = document.getElementById('docPrintIframe');
+    const loader = document.getElementById('docPrintLoading');
+    const btnPrint = document.getElementById('btnTriggerModalPrint');
+    const btnOpenTab = document.getElementById('btnDocPrintOpenTab');
+    const btnClose = document.getElementById('btnCloseDocPrintModal');
+    const backdrop = document.getElementById('docPrintBackdrop');
 
-    showPortalToast(`🖨️ Opening print dialog for ${cleanTitle}...`, 'info');
-
-    // Remove existing frame if any to ensure clean print cycle
-    const oldFrame = document.getElementById('internDocumentPrintFrame');
-    if (oldFrame) {
-      try { oldFrame.remove(); } catch(e) {}
+    if (!modal || !iframe) {
+      window.open(rawUrl, '_blank');
+      return;
     }
 
-    const printFrame = document.createElement('iframe');
-    printFrame.id = 'internDocumentPrintFrame';
-    printFrame.name = 'internDocumentPrintFrame';
-    // Standard A4 dimensions for rendering print engine off-screen
-    printFrame.style.position = 'fixed';
-    printFrame.style.left = '-9999px';
-    printFrame.style.top = '-9999px';
-    printFrame.style.width = '794px';
-    printFrame.style.height = '1123px';
-    printFrame.style.border = 'none';
-    printFrame.style.opacity = '0';
-    printFrame.style.pointerEvents = 'none';
-    printFrame.style.zIndex = '-9999';
-    document.body.appendChild(printFrame);
+    if (modalTitle) modalTitle.textContent = cleanTitle;
+    if (btnOpenTab) btnOpenTab.href = rawUrl;
+    if (loader) loader.style.display = 'flex';
+    modal.style.display = 'flex';
 
     const sep = rawUrl.includes('?') ? '&' : '?';
-    const targetUrl = `${rawUrl}${sep}autoprint=1&ts=${Date.now()}`;
+    const targetUrl = `${rawUrl}${sep}ts=${Date.now()}`;
 
-    let printExecuted = false;
-    const executePrint = () => {
-      if (printExecuted) return;
-      printExecuted = true;
+    let autoPrinted = false;
+    const triggerPrint = () => {
       try {
-        if (printFrame.contentWindow) {
-          printFrame.contentWindow.focus();
-          printFrame.contentWindow.print();
-          showPortalToast(`✅ Ready to print: ${cleanTitle}`, 'success');
+        if (iframe.contentWindow) {
+          iframe.contentWindow.focus();
+          iframe.contentWindow.print();
         }
       } catch (err) {
-        console.warn('Direct print execution fallback:', err);
-        window.open(rawUrl, '_blank');
+        console.warn('In-modal print notice:', err);
       }
     };
 
-    // 1. PostMessage notification from inside document once painted
-    const handleMsg = (ev) => {
-      if (ev.data && ev.data.type === 'UZAIR_DOC_PRINTED') {
-        window.removeEventListener('message', handleMsg);
-        executePrint();
+    if (btnPrint) {
+      btnPrint.onclick = () => triggerPrint();
+    }
+
+    const closeModal = () => {
+      modal.style.display = 'none';
+      if (iframe) iframe.src = 'about:blank';
+    };
+
+    if (btnClose) btnClose.onclick = closeModal;
+    if (backdrop) backdrop.onclick = closeModal;
+
+    const escListener = (e) => {
+      if (e.key === 'Escape' && modal.style.display === 'flex') {
+        closeModal();
+        document.removeEventListener('keydown', escListener);
       }
     };
-    window.addEventListener('message', handleMsg);
+    document.addEventListener('keydown', escListener);
 
-    // 2. Fallback timeout after frame load in case postMessage didn't fire
-    printFrame.onload = () => {
-      setTimeout(() => {
-        window.removeEventListener('message', handleMsg);
-        executePrint();
-      }, 750);
+    iframe.onload = () => {
+      if (loader) loader.style.display = 'none';
+      if (!autoPrinted) {
+        autoPrinted = true;
+        setTimeout(triggerPrint, 400);
+      }
     };
 
-    printFrame.src = targetUrl;
+    iframe.src = targetUrl;
+    showPortalToast(`Rendering ${cleanTitle}...`, 'info');
   };
 
   // ============================================================
@@ -410,6 +412,22 @@
     authSection.style.display = 'none';
     dashboardSection.style.display = 'block';
     if (userHeaderPill) userHeaderPill.style.display = 'flex';
+
+    const internNotifWrap = document.getElementById('internNotifWrap');
+    if (internNotifWrap) internNotifWrap.style.display = 'inline-flex';
+
+    const mobileAppBar = document.getElementById('mobileAppBar');
+    if (mobileAppBar && window.innerWidth <= 768) mobileAppBar.style.display = 'flex';
+
+    if (window.UzairNotifications) {
+      window.UzairNotifications.initBell({
+        bellBtnId: 'notifBellBtnIntern',
+        badgeId: 'notifBadgeCountIntern',
+        dropdownId: 'notifCenterIntern',
+        role: 'intern'
+      });
+      window.UzairNotifications.startPolling('intern');
+    }
 
     // Populate Header
     if (headerUserName) headerUserName.textContent = currentIntern.fullName;
@@ -943,6 +961,8 @@
     document.body.classList.remove('portal-authenticated');
     const mobileAppBar = document.getElementById('mobileAppBar');
     if (mobileAppBar) mobileAppBar.style.display = 'none';
+    const internNotifWrap = document.getElementById('internNotifWrap');
+    if (internNotifWrap) internNotifWrap.style.display = 'none';
     if (userHeaderPill) userHeaderPill.style.display = 'none';
     if (authSection) authSection.style.display = 'block';
     if (dashboardSection) dashboardSection.style.display = 'none';

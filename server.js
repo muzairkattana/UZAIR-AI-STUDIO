@@ -96,6 +96,7 @@ const NEWSLETTER_FILE = path.join(DATA_DIR, 'newsletter.json');
 const INTERNSHIPS_FILE = path.join(DATA_DIR, 'internships.json');
 const SETTINGS_FILE = path.join(DATA_DIR, 'settings.json');
 const CURRICULUM_FILE = path.join(DATA_DIR, 'curriculum.json');
+const NOTIFICATIONS_FILE = path.join(DATA_DIR, 'notifications.json');
 const crypto = require('crypto');
 
 // Password and Token Helpers for Intern Portal
@@ -221,6 +222,34 @@ function writeJsonFile(filePath, data) {
     console.error(`Error writing ${filePath}:`, err);
     return false;
   }
+}
+
+function readNotifications() {
+  return readJsonFile(NOTIFICATIONS_FILE);
+}
+
+function writeNotifications(data) {
+  return writeJsonFile(NOTIFICATIONS_FILE, data);
+}
+
+function pushServerNotification({ role = 'admin', title, body, url = '/', targetId = null, tag = 'alert' }) {
+  const notifs = readNotifications();
+  const newNotif = {
+    id: 'NOTIF-' + Date.now().toString(36).toUpperCase() + '-' + Math.floor(Math.random() * 1000),
+    role, // 'admin', 'intern', 'client', 'all'
+    targetId,
+    title,
+    body,
+    url,
+    tag,
+    read: false,
+    timestamp: Date.now(),
+    createdAt: new Date().toISOString()
+  };
+  notifs.unshift(newNotif);
+  if (notifs.length > 100) notifs.length = 100;
+  writeNotifications(notifs);
+  return newNotif;
 }
 
 function readSettings() {
@@ -1922,16 +1951,20 @@ app.get('/api/admin/stats', requireAdminAuth, (req, res) => {
 app.post('/api/estimate', (req, res) => {
   const { 
     projectType, 
+    projectTitle,
     platforms, 
     features, 
     timelineSpeed, 
     name, 
     email, 
     phone, 
+    whatsapp,
+    address,
     notes,
     company,
     budgetTier,
-    advancedStack
+    advancedStack,
+    attachments
   } = req.body || {};
 
   const typeConfig = {
@@ -1958,11 +1991,14 @@ app.post('/api/estimate', (req, res) => {
 
   const planId = 'PLAN-' + Date.now().toString(36).toUpperCase();
   const contactName = (name && name.trim()) ? name.trim() : 'Prospective Client';
-  const contactEmail = (email && email.trim()) ? email.trim() : (phone ? `${phone.replace(/\D/g, '')}@client.whatsapp` : 'client@architecture.direct');
-  const contactPhone = phone ? phone.trim() : 'Not provided';
+  const contactPhone = (whatsapp && whatsapp.trim()) ? whatsapp.trim() : (phone ? phone.trim() : 'Not provided');
+  const contactEmail = (email && email.trim()) ? email.trim() : (contactPhone !== 'Not provided' ? `${contactPhone.replace(/\D/g, '')}@client.whatsapp` : 'client@architecture.direct');
+  const contactAddress = (address && address.trim()) ? address.trim() : 'Not specified';
+  const customTitle = (projectTitle && projectTitle.trim()) ? projectTitle.trim() : selected.label;
 
   const planResult = {
     id: planId,
+    projectTitle: customTitle,
     projectType: selected.label,
     architectureComplexity: featureList.length > 4 ? 'Enterprise Scale' : (featureList.length > 2 ? 'Growth Ready' : 'MVP Standard'),
     recommendedSquad: selected.squad,
@@ -1973,12 +2009,17 @@ app.post('/api/estimate', (req, res) => {
     selectedFeatures: featureList,
     advancedStack: advancedStack || {},
     company: company ? company.trim() : 'Not specified',
+    address: contactAddress,
+    whatsapp: contactPhone,
     budgetTier: budgetTier || 'Flexible / Custom Scope',
     notes: notes ? notes.trim() : '',
+    attachments: Array.isArray(attachments) ? attachments.map(a => ({ name: a.name, size: a.size, type: a.type })) : [],
     contactInfo: { 
       name: contactName, 
       email: contactEmail, 
       phone: contactPhone,
+      whatsapp: contactPhone,
+      address: contactAddress,
       company: company ? company.trim() : 'Not specified'
     },
     generatedAt: new Date().toISOString()
@@ -1996,26 +2037,103 @@ app.post('/api/estimate', (req, res) => {
     name: contactName,
     email: contactEmail,
     phone: contactPhone,
-    service: `Architecture Blueprint: ${selected.label}`,
+    whatsapp: contactPhone,
+    address: contactAddress,
+    service: `Project Intake: ${customTitle}`,
     projectScale: planResult.architectureComplexity,
     timeline: sprintDuration,
-    message: `[Architecture Engine Submission]
-Project Type: ${selected.label}
-Selected Modules: ${featureList.join(', ') || 'Core Platform'}
-AI & Tech Stack: ${advancedStack ? JSON.stringify(advancedStack) : 'Standard Agile'}
-Budget Tier: ${planResult.budgetTier}
-Client Notes: ${notes || 'None provided'}`,
+    message: `[Project Intake & Architecture Brief]
+Project Title: ${customTitle}
+Category: ${selected.label}
+Selected Capabilities: ${featureList.join(', ') || 'Core Platform'}
+Client Address: ${contactAddress}
+Client WhatsApp: ${contactPhone}
+Target Investment Tier: ${planResult.budgetTier}
+Client Vision & Requirements: ${notes || 'None provided'}
+Attachments: ${planResult.attachments.length ? planResult.attachments.map(a => a.name).join(', ') : 'None'}`,
     createdAt: new Date().toISOString(),
     status: 'New'
   };
   submissions.unshift(newSubmission);
   writeJsonFile(SUBMISSIONS_FILE, submissions);
 
+  // 3. Dispatch real-time notifications with audio trigger
+  pushServerNotification({
+    role: 'admin',
+    title: '🚀 New Client Project Intake',
+    body: `${contactName} submitted project: ${customTitle}. WhatsApp: ${contactPhone}. Location: ${contactAddress}`,
+    url: '/admin#tabConsultations',
+    tag: 'client_lead'
+  });
+
+  pushServerNotification({
+    role: 'client',
+    title: '✅ Project Blueprint Dispatched',
+    body: `Your project brief (${planId}) was delivered directly to Founder Muhammad Uzair. We will contact you within 2 hours.`,
+    url: '#planner',
+    tag: 'client_confirm'
+  });
+
   res.json({
     success: true,
     message: `Blueprint registered successfully! Ref: ${planId}`,
     data: planResult
   });
+});
+
+// ============================================================
+// API: REAL-TIME NOTIFICATIONS ENGINE
+// ============================================================
+app.get('/api/notifications', (req, res) => {
+  const { role, targetId, since } = req.query;
+  let notifs = readNotifications();
+
+  if (role && role !== 'all') {
+    notifs = notifs.filter(n => n.role === role || n.role === 'all');
+  }
+
+  if (targetId) {
+    notifs = notifs.filter(n => !n.targetId || n.targetId === targetId);
+  }
+
+  if (since) {
+    const sinceTs = parseInt(since, 10);
+    if (!isNaN(sinceTs)) {
+      notifs = notifs.filter(n => (n.timestamp || 0) > sinceTs);
+    }
+  }
+
+  res.json({
+    success: true,
+    notifications: notifs.slice(0, 30),
+    unreadCount: notifs.filter(n => !n.read).length
+  });
+});
+
+app.post('/api/notifications/mark-read', (req, res) => {
+  const { ids, role } = req.body || {};
+  let notifs = readNotifications();
+
+  if (Array.isArray(ids)) {
+    notifs = notifs.map(n => ids.includes(n.id) ? { ...n, read: true } : n);
+  } else if (role) {
+    notifs = notifs.map(n => (n.role === role || n.role === 'all') ? { ...n, read: true } : n);
+  } else {
+    notifs = notifs.map(n => ({ ...n, read: true }));
+  }
+
+  writeNotifications(notifs);
+  res.json({ success: true });
+});
+
+app.post('/api/notifications/dispatch', (req, res) => {
+  const { role, title, body, url, targetId } = req.body || {};
+  if (!title || !body) {
+    return res.status(400).json({ success: false, message: 'Title and body are required' });
+  }
+
+  const notif = pushServerNotification({ role: role || 'admin', title, body, url, targetId });
+  res.json({ success: true, notification: notif });
 });
 
 // API: AI Assistant / Studio Bot (NO PRICES)

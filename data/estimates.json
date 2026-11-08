@@ -1,5 +1,35 @@
 [
   {
+    "id": "PLAN-MW7TS3WJ",
+    "projectTitle": "Autonomous AI Multi-Model Pipeline",
+    "projectType": "AI Solutions & Autonomous Agents",
+    "architectureComplexity": "MVP Standard",
+    "recommendedSquad": "AI/ML Engineer + Backend Architect + QA",
+    "estimatedTimeline": "6 Weeks (3 Agile Sprints)",
+    "sprintCadence": "Bi-Weekly Live Demos & Continuous Deployment",
+    "ipOwnership": "100% Client Transferred with Full NDA",
+    "warranty": "6 Months Comprehensive Post-Launch SLA",
+    "selectedFeatures": [],
+    "advancedStack": {},
+    "company": "Not specified",
+    "address": "Mardan, KPK, Pakistan",
+    "whatsapp": "+923433885835",
+    "budgetTier": "Scaling Product / Growth Release",
+    "notes": "Need a high-performance RAG agent with vector database and OpenAI/Gemini integration.",
+    "attachments": [
+      {}
+    ],
+    "contactInfo": {
+      "name": "Kamran Katana",
+      "email": "kamrankatana@gmail.com",
+      "phone": "+923433885835",
+      "whatsapp": "+923433885835",
+      "address": "Mardan, KPK, Pakistan",
+      "company": "Not specified"
+    },
+    "generatedAt": "2026-11-08T12:45:28.387Z"
+  },
+  {
     "id": "PLAN-MW0MF69G",
     "projectType": "AI Solutions & Autonomous Agents",
     "architectureComplexity": "Growth Ready",

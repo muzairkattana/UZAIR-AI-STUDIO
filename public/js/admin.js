@@ -90,6 +90,18 @@ document.addEventListener('DOMContentLoaded', () => {
   initConsultationsManager();
   initSettingsManager();
   initQrTester();
+
+  // Initialize Real-Time System Notifications for Admin Hub
+  if (window.UzairNotifications) {
+    window.UzairNotifications.initBell({
+      bellBtnId: 'notifBellBtnAdmin',
+      badgeId: 'notifBadgeCountAdmin',
+      dropdownId: 'notifCenterAdmin',
+      role: 'admin'
+    });
+    window.UzairNotifications.startPolling('admin');
+  }
+
   const defaultInternView = localStorage.getItem('admin_intern_view') || 'cards';
   if (window.switchCandidateView) window.switchCandidateView(defaultInternView);
   if (window.innerWidth <= 768) {

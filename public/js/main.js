@@ -22,6 +22,17 @@ document.addEventListener('DOMContentLoaded', () => {
   initStatsCounter();
   initCanvasParticles();
   initInternshipModule();
+
+  // Initialize Real-Time Notification Bell & Engine
+  if (window.UzairNotifications) {
+    window.UzairNotifications.initBell({
+      bellBtnId: 'notifBellBtn',
+      badgeId: 'notifBadgeCount',
+      dropdownId: 'notifCenterDropdown',
+      role: 'client'
+    });
+    window.UzairNotifications.startPolling('client');
+  }
 });
 
 /* ============================================================
@@ -104,78 +115,23 @@ function initArchitecturePlanner() {
   if (!estimator) return;
 
   const typeConfig = {
-    web: { name: 'Modern Web Platform / SaaS', baseSprints: 2, squad: 'Lead Full-Stack + UI/UX + QA Automation' },
-    mobile: { name: 'Mobile Application (iOS & Android)', baseSprints: 3, squad: 'Mobile Engineer + Backend Architect + QA' },
-    ai: { name: 'Autonomous AI & Intelligent Agents', baseSprints: 3, squad: 'AI/ML Specialist + Cloud Architect + QA' },
-    software: { name: 'Custom Enterprise Software / ERP', baseSprints: 4, squad: 'Senior Solution Architect + 2 Full-Stack + QA' },
-    fullsuite: { name: 'Full Digital Ecosystem', baseSprints: 6, squad: 'Full Squad: Lead Architect + 3 Engineers + UI/UX + QA' }
+    web: 'Web Platform & SaaS',
+    mobile: 'Mobile App (iOS & Android)',
+    ai: 'Autonomous AI & Intelligent Agents',
+    software: 'Enterprise Software / ERP',
+    fullsuite: 'Full Digital Ecosystem'
   };
 
-  const featureLabels = {
-    auth: '🔐 User Auth & RBAC',
-    payment: '💳 Global Payments',
-    ai_agent: '🧠 AI Copilot / Agent',
-    realtime_chat: '⚡ Real-Time Data Sync',
-    admin_dashboard: '📊 Admin Telemetry',
-    cloud_devops: '🚀 Cloud DevOps & CI/CD',
-    vector_rag: '🔍 Vector Search & RAG',
-    security_audit: '🔒 Security & Compliance'
-  };
+  let selectedPlatform = 'web';
+  let attachedFiles = [];
 
-  let currentType = 'web';
-  let selectedFeatures = ['auth', 'ai_agent', 'admin_dashboard'];
-  let currentSpeed = 'standard';
-  let currentMode = 'quick';
-  let advancedStack = {
-    aiModel: 'OpenAI GPT-4o',
-    database: 'PostgreSQL / Supabase',
-    cloud: 'Amazon Web Services (AWS)',
-    design: 'Figma Ready'
-  };
-
-  // Mode Switcher Controls
-  const btnModeQuick = document.getElementById('btnModeQuick');
-  const btnModeAdvanced = document.getElementById('btnModeAdvanced');
-  const advancedTray = document.getElementById('plannerAdvancedTray');
-  const btnToggleAdvancedTray = document.getElementById('btnToggleAdvancedTray');
-  const advancedToggleText = document.getElementById('advancedToggleText');
-
-  if (btnModeQuick && btnModeAdvanced && advancedTray) {
-    btnModeQuick.addEventListener('click', () => {
-      btnModeQuick.classList.add('active');
-      btnModeAdvanced.classList.remove('active');
-      currentMode = 'quick';
-      advancedTray.style.display = 'none';
-      if (advancedToggleText) advancedToggleText.textContent = 'Expand All Specs ▾';
-    });
-
-    btnModeAdvanced.addEventListener('click', () => {
-      btnModeAdvanced.classList.add('active');
-      btnModeQuick.classList.remove('active');
-      currentMode = 'advanced';
-      advancedTray.style.display = 'block';
-      if (advancedToggleText) advancedToggleText.textContent = 'Collapse Specs ▴';
-    });
-
-    if (btnToggleAdvancedTray) {
-      btnToggleAdvancedTray.addEventListener('click', () => {
-        const isHidden = advancedTray.style.display === 'none';
-        advancedTray.style.display = isHidden ? 'block' : 'none';
-        if (advancedToggleText) {
-          advancedToggleText.textContent = isHidden ? 'Collapse Specs ▴' : 'Expand All Specs ▾';
-        }
-      });
-    }
-  }
-
-  // Project Type Selection (Single Select)
-  const typeCards = estimator.querySelectorAll('.type-select-card');
-  typeCards.forEach(card => {
-    card.addEventListener('click', () => {
-      typeCards.forEach(c => c.classList.remove('selected'));
-      card.classList.add('selected');
-      currentType = card.dataset.type;
-      recalculate();
+  // 1. Platform Pills
+  const platformPills = estimator.querySelectorAll('.intake-pill-btn');
+  platformPills.forEach(pill => {
+    pill.addEventListener('click', () => {
+      platformPills.forEach(p => p.classList.remove('active'));
+      pill.classList.add('active');
+      selectedPlatform = pill.dataset.type || 'web';
     });
   });
 
@@ -184,150 +140,155 @@ function initArchitecturePlanner() {
     link.addEventListener('click', () => {
       const targetType = link.dataset.planTarget;
       if (targetType && typeConfig[targetType]) {
-        const matchingCard = estimator.querySelector(`.type-select-card[data-type="${targetType}"]`);
-        if (matchingCard) {
-          typeCards.forEach(c => c.classList.remove('selected'));
-          matchingCard.classList.add('selected');
-          currentType = targetType;
-          recalculate();
+        const matchingPill = estimator.querySelector(`.intake-pill-btn[data-type="${targetType}"]`);
+        if (matchingPill) {
+          platformPills.forEach(p => p.classList.remove('active'));
+          matchingPill.classList.add('active');
+          selectedPlatform = targetType;
         }
       }
     });
   });
 
-  // Feature Modules Selection (Multi-Select Toggle)
-  const featureCards = estimator.querySelectorAll('.feature-select-card');
-  featureCards.forEach(card => {
-    card.addEventListener('click', () => {
-      card.classList.toggle('selected');
-      const feat = card.dataset.feature;
-      if (card.classList.contains('selected')) {
-        if (!selectedFeatures.includes(feat)) selectedFeatures.push(feat);
+  // 2. Project Title Select & Custom Fill-in-blanks Toggle
+  const titleSelect = document.getElementById('plannerProjectTitleSelect');
+  const titleCustom = document.getElementById('plannerProjectTitleCustom');
+  if (titleSelect && titleCustom) {
+    titleSelect.addEventListener('change', () => {
+      if (titleSelect.value === 'custom') {
+        titleCustom.style.display = 'block';
+        titleCustom.focus();
       } else {
-        selectedFeatures = selectedFeatures.filter(f => f !== feat);
+        titleCustom.style.display = 'none';
       }
-      recalculate();
     });
-  });
-
-  // Advanced Tech Stack Chips (Single Select within each group)
-  const chipGroups = estimator.querySelectorAll('.planner-chip-group');
-  chipGroups.forEach(group => {
-    const groupName = group.dataset.stackGroup;
-    const chips = group.querySelectorAll('.planner-chip');
-    chips.forEach(chip => {
-      chip.addEventListener('click', () => {
-        chips.forEach(c => c.classList.remove('selected'));
-        chip.classList.add('selected');
-        if (groupName && chip.dataset.value) {
-          advancedStack[groupName] = chip.dataset.value;
-        }
-        recalculate();
-      });
-    });
-  });
-
-  // Timeline Speed Radio Selection
-  const speedCards = estimator.querySelectorAll('.speed-option-card');
-  const speedRadios = estimator.querySelectorAll('input[name="timelineSpeed"]');
-  speedRadios.forEach(radio => {
-    radio.addEventListener('change', (e) => {
-      currentSpeed = e.target.value;
-      speedCards.forEach(card => {
-        const r = card.querySelector('input[type="radio"]');
-        if (r && r.checked) card.classList.add('selected');
-        else card.classList.remove('selected');
-      });
-      recalculate();
-    });
-  });
-
-  // Dynamic Recalculation Engine
-  function recalculate() {
-    const config = typeConfig[currentType] || typeConfig.web;
-    let sprints = config.baseSprints;
-
-    if (selectedFeatures.length > 3) sprints += 1;
-    if (selectedFeatures.length > 5) sprints += 1;
-    if (selectedFeatures.length > 7) sprints += 1;
-
-    let weeks = sprints * 2;
-    let timelineText = `${weeks} Weeks (${sprints} Sprints)`;
-
-    if (currentSpeed === 'express') {
-      const fastWeeks = Math.max(2, Math.round(weeks * 0.7));
-      timelineText = `${fastWeeks} Weeks (Fast-Track Dedicated Cadence)`;
-    } else if (currentSpeed === 'relaxed') {
-      timelineText = `${weeks + 2} Weeks (Phased Milestones)`;
-    }
-
-    const complexity = selectedFeatures.length > 5 
-      ? 'Enterprise Scale' 
-      : (selectedFeatures.length > 2 ? 'Growth Ready' : 'MVP Standard');
-
-    const architectureEl = document.getElementById('calcArchitectureTier');
-    const squadEl = document.getElementById('calcSquad');
-    const timeEl = document.getElementById('calcTimeline');
-    const cloudEl = document.getElementById('calcModulesCloud');
-
-    if (architectureEl) architectureEl.textContent = complexity;
-    if (squadEl) squadEl.textContent = config.squad;
-    if (timeEl) timeEl.textContent = timelineText;
-
-    // Render Active Module Tags in Real-Time
-    if (cloudEl) {
-      if (selectedFeatures.length === 0) {
-        cloudEl.innerHTML = '<span style="font-size:0.75rem; color:#64748B;">No optional modules selected (Core baseline build only)</span>';
-      } else {
-        cloudEl.innerHTML = selectedFeatures.map(feat => {
-          const label = featureLabels[feat] || feat;
-          return `<span class="cockpit-module-tag">${label}</span>`;
-        }).join('');
-      }
-    }
   }
 
-  // Initial Calculation
-  recalculate();
+  // 3. Drag and Drop File Upload Zone
+  const dropzone = document.getElementById('plannerDropzone');
+  const fileInput = document.getElementById('plannerFileInput');
+  const filesList = document.getElementById('plannerFilesList');
 
-  // Helper: Build Full Structured Blueprint Text
-  function generateBlueprintDocument() {
-    const architectureTier = document.getElementById('calcArchitectureTier')?.textContent || 'Growth Ready';
-    const timelineRange = document.getElementById('calcTimeline')?.textContent || '4 Weeks';
-    const squadInfo = document.getElementById('calcSquad')?.textContent || typeConfig[currentType].squad;
-    const clientName = document.getElementById('plannerClientName')?.value.trim() || 'Prospective Partner';
-    const clientCompany = document.getElementById('plannerClientCompany')?.value.trim() || 'Undisclosed';
+  function renderFileList() {
+    if (!filesList) return;
+    if (attachedFiles.length === 0) {
+      filesList.innerHTML = '';
+      return;
+    }
+    filesList.innerHTML = attachedFiles.map((f, i) => {
+      const sizeStr = (f.size / (1024 * 1024)).toFixed(2) + ' MB';
+      return `
+        <div class="attached-file-chip">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline></svg>
+          <span class="file-name" title="${f.name}">${f.name} (${sizeStr})</span>
+          <button type="button" class="btn-remove-file" data-file-idx="${i}" title="Remove file">✕</button>
+        </div>
+      `;
+    }).join('');
+
+    filesList.querySelectorAll('.btn-remove-file').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const idx = parseInt(btn.dataset.fileIdx, 10);
+        attachedFiles.splice(idx, 1);
+        renderFileList();
+      });
+    });
+  }
+
+  if (dropzone && fileInput) {
+    dropzone.addEventListener('click', () => fileInput.click());
+
+    fileInput.addEventListener('change', (e) => {
+      if (e.target.files && e.target.files.length) {
+        Array.from(e.target.files).forEach(file => {
+          if (!attachedFiles.some(af => af.name === file.name && af.size === file.size)) {
+            attachedFiles.push(file);
+          }
+        });
+        renderFileList();
+      }
+    });
+
+    ['dragenter', 'dragover'].forEach(eventName => {
+      dropzone.addEventListener(eventName, (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        dropzone.classList.add('drag-over');
+      });
+    });
+
+    ['dragleave', 'drop'].forEach(eventName => {
+      dropzone.addEventListener(eventName, (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        dropzone.classList.remove('drag-over');
+      });
+    });
+
+    dropzone.addEventListener('drop', (e) => {
+      const dt = e.dataTransfer;
+      if (dt && dt.files && dt.files.length) {
+        Array.from(dt.files).forEach(file => {
+          if (!attachedFiles.some(af => af.name === file.name && af.size === file.size)) {
+            attachedFiles.push(file);
+          }
+        });
+        renderFileList();
+      }
+    });
+  }
+
+  // 4. Helper: Compile Structured Project Brief Text
+  function compileBriefText(refId) {
+    const name = document.getElementById('plannerClientName')?.value.trim() || 'Prospective Partner';
+    const wa = document.getElementById('plannerClientWhatsapp')?.value.trim() || 'Direct Inquiry';
+    const email = document.getElementById('plannerClientEmail')?.value.trim() || 'Undisclosed';
+    const address = document.getElementById('plannerClientAddress')?.value.trim() || 'Global';
+    const pref = document.getElementById('plannerContactPref')?.value || 'WhatsApp';
+    
+    let title = document.getElementById('plannerProjectTitleSelect')?.value || 'Custom Web Application';
+    if (title === 'custom') {
+      title = document.getElementById('plannerProjectTitleCustom')?.value.trim() || 'Custom Engineered Solution';
+    }
     const budget = document.getElementById('plannerBudgetTier')?.value || 'Flexible';
-    const notes = document.getElementById('plannerClientNotes')?.value.trim() || 'Standard enterprise delivery scope.';
+    const notes = document.getElementById('plannerClientNotes')?.value.trim() || 'Direct client consultation scope.';
+    const fileNames = attachedFiles.map(f => f.name).join(', ') || 'None attached';
 
-    const modulesText = selectedFeatures.map(f => featureLabels[f] || f).join(', ') || 'Core Platform';
-
-    return `*UZAIR AI STUDIO — TECHNICAL ARCHITECTURE BLUEPRINT*
+    return `*UZAIR AI STUDIO — CLIENT CONSULTATION & ARCHITECTURE BRIEF*
 ==================================================
-Project Category: ${typeConfig[currentType].name}
-Client / Entity: ${clientName} (${clientCompany})
-Architecture Tier: ${architectureTier}
-Target Delivery: ${timelineRange}
-Recommended Squad: ${squadInfo}
-Target Investment: ${budget}
+${refId ? `Reference ID: ${refId}\n` : ''}Platform Category: ${typeConfig[selectedPlatform] || selectedPlatform}
+Project Title / Field: ${title}
+Target Investment Tier: ${budget}
+Preferred Contact: ${pref}
 
-*ACTIVE CAPABILITY MODULES:*
-${modulesText}
+*CLIENT DETAILS:*
+• Client Name: ${name}
+• WhatsApp / Call: ${wa}
+• Work Email: ${email}
+• Address / Location: ${address}
 
-*ADVANCED INFRASTRUCTURE SPECIFICATIONS:*
-• AI Model Foundation: ${advancedStack.aiModel || 'OpenAI GPT-4o'}
-• Primary Database: ${advancedStack.database || 'PostgreSQL'}
-• Cloud Infrastructure: ${advancedStack.cloud || 'Amazon AWS'}
-• Design Status: ${advancedStack.design || 'Figma Ready'}
-
-*PROJECT REQUIREMENTS & SCOPE:*
+*SPECIFICATIONS & PROJECT VISION:*
 ${notes}
 
-IP Transfer: 100% Client Ownership with Full NDA
-Endorsed by: Muhammad Uzair (Founder & Lead Architect)`;
+*ATTACHMENTS / SPECS:*
+${fileNames}
+
+IP Handover: 100% Client Ownership with NDA
+Recipient: Muhammad Uzair (Founder & Lead Architect)`;
   }
 
-  // 1. Direct Architecture Brief Submission (Async Fetch, Zero Reload, Non-Restrictive)
+  // 5. Direct WhatsApp Discuss Button
+  const btnPlannerWhatsApp = document.getElementById('btnPlannerWhatsApp');
+  if (btnPlannerWhatsApp) {
+    btnPlannerWhatsApp.addEventListener('click', () => {
+      const briefText = compileBriefText();
+      const waUrl = `https://wa.me/923433885835?text=${encodeURIComponent(briefText)}`;
+      window.open(waUrl, '_blank');
+    });
+  }
+
+  // 6. Direct Intake Brief Submission (Async Fetch, Non-Restrictive, Audio Chime)
   const plannerForm = document.getElementById('plannerClientForm');
   const btnPlannerSubmit = document.getElementById('btnPlannerSubmit');
   const successBox = document.getElementById('plannerSuccessBox');
@@ -340,27 +301,36 @@ Endorsed by: Muhammad Uzair (Founder & Lead Architect)`;
       e.preventDefault();
 
       const name = document.getElementById('plannerClientName')?.value.trim();
-      const contact = document.getElementById('plannerClientContact')?.value.trim();
-      const company = document.getElementById('plannerClientCompany')?.value.trim();
+      const whatsapp = document.getElementById('plannerClientWhatsapp')?.value.trim();
+      const email = document.getElementById('plannerClientEmail')?.value.trim();
+      const address = document.getElementById('plannerClientAddress')?.value.trim();
+      const pref = document.getElementById('plannerContactPref')?.value || 'WhatsApp';
+
+      let projectTitle = document.getElementById('plannerProjectTitleSelect')?.value || 'Custom Web Application';
+      if (projectTitle === 'custom') {
+        projectTitle = document.getElementById('plannerProjectTitleCustom')?.value.trim() || 'Custom Engineering Project';
+      }
+
       const budgetTier = document.getElementById('plannerBudgetTier')?.value;
       const notes = document.getElementById('plannerClientNotes')?.value.trim();
 
       const origText = btnPlannerSubmit.innerHTML;
       btnPlannerSubmit.disabled = true;
-      btnPlannerSubmit.innerHTML = '<span>⚡ Dispatching Blueprint...</span>';
+      btnPlannerSubmit.innerHTML = '<span>Dispatching Brief...</span>';
 
       try {
         const payload = {
-          projectType: currentType,
-          features: selectedFeatures,
-          timelineSpeed: currentSpeed,
           name: name || 'Prospective Client',
-          email: contact || 'client@architecture.direct',
-          phone: contact || 'Not provided',
-          company: company || 'Not specified',
+          whatsapp: whatsapp || '',
+          phone: whatsapp || '',
+          email: email || '',
+          address: address || '',
+          projectTitle: projectTitle,
+          projectType: selectedPlatform,
           budgetTier: budgetTier,
           notes: notes,
-          advancedStack: advancedStack
+          preferredContact: pref,
+          attachments: attachedFiles.map(f => f.name)
         };
 
         const res = await fetch('/api/estimate', {
@@ -370,31 +340,54 @@ Endorsed by: Muhammad Uzair (Founder & Lead Architect)`;
         });
 
         const data = await res.json();
+        const refId = (data && data.data && data.data.id) ? data.data.id : ('REF-' + Date.now().toString(36).toUpperCase());
 
-        if (data && data.success) {
-          const refId = (data.data && data.data.id) ? data.data.id : 'PLAN-REGISTERED';
-          plannerForm.style.display = 'none';
-          if (successBox) successBox.style.display = 'block';
-          if (successRefId) successRefId.textContent = refId;
-
-          // Wire up WhatsApp direct button with refId
-          if (btnSuccessWaChat) {
-            btnSuccessWaChat.onclick = () => {
-              const waText = encodeURIComponent(`Hi Muhammad Uzair, I just submitted an Architecture Blueprint on your site (Ref: ${refId}). Let's discuss development sprints!\n\nCategory: ${typeConfig[currentType].name}\nModules: ${selectedFeatures.join(', ')}`);
-              window.open(`https://wa.me/923169300645?text=${waText}`, '_blank');
-            };
-          }
-
-          showToast(`🎯 Architecture Blueprint registered! Reference ID: ${refId}`);
-        } else {
-          showToast('⚠️ Notice: Inquiry recorded! Muhammad Uzair will review your specifications.');
+        // Play audio notification chime
+        if (window.UzairNotifications && typeof window.UzairNotifications.playChime === 'function') {
+          window.UzairNotifications.playChime();
         }
-      } catch (err) {
-        // Graceful fallback
+
         plannerForm.style.display = 'none';
         if (successBox) successBox.style.display = 'block';
-        if (successRefId) successRefId.textContent = 'PLAN-' + Date.now().toString(36).toUpperCase();
-        showToast('🎯 Architecture Blueprint recorded! Muhammad Uzair has been notified.');
+        if (successRefId) successRefId.textContent = refId;
+
+        // Wire up direct WhatsApp discussion button with reference ID
+        if (btnSuccessWaChat) {
+          btnSuccessWaChat.onclick = () => {
+            const briefWithRef = compileBriefText(refId);
+            const waUrl = `https://wa.me/923433885835?text=${encodeURIComponent(briefWithRef)}`;
+            window.open(waUrl, '_blank');
+          };
+        }
+
+        if (window.UzairNotifications && typeof window.UzairNotifications.showInAppToast === 'function') {
+          window.UzairNotifications.showInAppToast({
+            title: 'Brief Received!',
+            body: `Your project consultation (Ref: ${refId}) is registered. Muhammad Uzair will reach out within 2 hours.`,
+            type: 'success'
+          });
+        } else {
+          showToast(`Project Brief registered! Reference ID: ${refId}`);
+        }
+
+      } catch (err) {
+        // Non-restrictive fallback: even if server is offline, confirm recorded
+        const fallbackRefId = 'REF-' + Date.now().toString(36).toUpperCase();
+        if (window.UzairNotifications && typeof window.UzairNotifications.playChime === 'function') {
+          window.UzairNotifications.playChime();
+        }
+        plannerForm.style.display = 'none';
+        if (successBox) successBox.style.display = 'block';
+        if (successRefId) successRefId.textContent = fallbackRefId;
+
+        if (btnSuccessWaChat) {
+          btnSuccessWaChat.onclick = () => {
+            const briefWithRef = compileBriefText(fallbackRefId);
+            const waUrl = `https://wa.me/923433885835?text=${encodeURIComponent(briefWithRef)}`;
+            window.open(waUrl, '_blank');
+          };
+        }
+        showToast(`Project Brief recorded! Reference: ${fallbackRefId}`);
       } finally {
         btnPlannerSubmit.disabled = false;
         btnPlannerSubmit.innerHTML = origText;
@@ -403,84 +396,14 @@ Endorsed by: Muhammad Uzair (Founder & Lead Architect)`;
 
     if (btnResetPlannerForm) {
       btnResetPlannerForm.addEventListener('click', () => {
+        plannerForm.reset();
+        attachedFiles = [];
+        renderFileList();
+        if (titleCustom) titleCustom.style.display = 'none';
         plannerForm.style.display = 'block';
         if (successBox) successBox.style.display = 'none';
       });
     }
-  }
-
-  // 2. Direct WhatsApp Discuss Button
-  const btnPlannerWhatsApp = document.getElementById('btnPlannerWhatsApp');
-  if (btnPlannerWhatsApp) {
-    btnPlannerWhatsApp.addEventListener('click', () => {
-      const blueprint = generateBlueprintDocument();
-      const waUrl = `https://wa.me/923169300645?text=${encodeURIComponent(blueprint)}`;
-      window.open(waUrl, '_blank');
-    });
-  }
-
-  // 3. Copy Technical Blueprint Specs Button
-  const btnPlannerCopy = document.getElementById('btnPlannerCopy');
-  if (btnPlannerCopy) {
-    btnPlannerCopy.addEventListener('click', async () => {
-      const blueprint = generateBlueprintDocument();
-      try {
-        await navigator.clipboard.writeText(blueprint);
-        const orig = btnPlannerCopy.innerHTML;
-        btnPlannerCopy.innerHTML = '<span>✓ Copied Specs!</span>';
-        showToast('📋 Architecture Blueprint copied to clipboard!');
-        setTimeout(() => { btnPlannerCopy.innerHTML = orig; }, 3000);
-      } catch (e) {
-        showToast('📋 Technical specifications prepared!');
-      }
-    });
-  }
-
-  // 4. "Fill Full Form Below" Link (#btnApplyEstimate)
-  const btnApplyEstimate = document.getElementById('btnApplyEstimate');
-  if (btnApplyEstimate) {
-    btnApplyEstimate.addEventListener('click', () => {
-      const architectureTier = document.getElementById('calcArchitectureTier')?.textContent || 'Growth Ready';
-      const timelineRange = document.getElementById('calcTimeline')?.textContent || '4 Weeks';
-      const squadInfo = document.getElementById('calcSquad')?.textContent || typeConfig[currentType].squad;
-      
-      const serviceSelect = document.getElementById('formService');
-      const scaleSelect = document.getElementById('formProjectScale');
-      const messageTextarea = document.getElementById('formMessage');
-
-      if (serviceSelect) {
-        if (currentType === 'web') serviceSelect.value = 'Website & E-Commerce';
-        else if (currentType === 'mobile') serviceSelect.value = 'Mobile App Development';
-        else if (currentType === 'ai') serviceSelect.value = 'AI & Autonomous Agents';
-        else if (currentType === 'software') serviceSelect.value = 'Custom Software Engineering';
-        else serviceSelect.value = 'Full Digital Suite';
-      }
-
-      if (scaleSelect) {
-        if (architectureTier.includes('Enterprise')) scaleSelect.value = 'Enterprise Transformation';
-        else if (architectureTier.includes('Growth')) scaleSelect.value = 'Scaling Product / Growth';
-        else scaleSelect.value = 'Startup / Rapid Prototype';
-      }
-
-      if (messageTextarea) {
-        messageTextarea.value = `Hi Muhammad Uzair & Team, I configured an Architecture Blueprint on your website.
-Category: ${typeConfig[currentType].name}
-Complexity: ${architectureTier}
-Recommended Squad: ${squadInfo}
-Target Delivery: ${timelineRange}
-Selected Modules: ${selectedFeatures.map(f => featureLabels[f] || f).join(', ')}.
-AI Model: ${advancedStack.aiModel || 'Standard'}
-Database: ${advancedStack.database || 'PostgreSQL'}
-Cloud: ${advancedStack.cloud || 'AWS'}
-Please review our specifications and prepare a formal statement of work.`;
-      }
-
-      const contactSec = document.getElementById('contact');
-      if (contactSec) {
-        contactSec.scrollIntoView({ behavior: 'smooth' });
-        showToast('🎯 Architecture Blueprint applied to consultation form below!');
-      }
-    });
   }
 }
 
@@ -639,7 +562,7 @@ function initAiAssistant() {
 
   if (!openBtn || !chatDrawer) return;
 
-  // Keep WhatsApp-like stationary header & pinned input above mobile virtual keyboard
+  // WhatsApp-like stationary header & pinned input above mobile virtual keyboard
   function syncMobileChatViewport() {
     if (window.innerWidth > 768) {
       chatDrawer.style.top = '';
@@ -650,14 +573,16 @@ function initAiAssistant() {
     }
     if (!chatDrawer.classList.contains('open')) return;
 
+    // Header strictly stays fixed at top: 0 like WhatsApp
+    chatDrawer.style.top = '0px';
     if (window.visualViewport) {
-      const vv = window.visualViewport;
-      // When keyboard is visible, top is clamped to visual viewport top, height fits exactly
-      const topOffset = Math.max(0, vv.offsetTop);
-      chatDrawer.style.top = `${topOffset}px`;
-      chatDrawer.style.height = `${vv.height}px`;
-      chatDrawer.style.maxHeight = `${vv.height}px`;
+      const vh = window.visualViewport.height;
+      chatDrawer.style.height = `${vh}px`;
+      chatDrawer.style.maxHeight = `${vh}px`;
       chatDrawer.style.bottom = 'auto';
+    } else {
+      chatDrawer.style.height = '100dvh';
+      chatDrawer.style.maxHeight = '100dvh';
     }
 
     if (messagesBox) {
@@ -1051,7 +976,7 @@ function initHeroInteractive() {
         { val: '< 1.2s', lbl: 'Load Velocity' },
         { val: '3.4x', lbl: 'Conversion Lift' }
       ],
-      tags: ['▲ Next.js 15 & React 19', '☁️ Cloud Native AWS', '🐘 PostgreSQL', '🐳 Docker CI/CD', '🛡️ SOC2 Security'],
+      tags: ['Next.js 15 & React 19', 'AWS Cloud Native', 'PostgreSQL / Supabase', 'Docker & Kubernetes', 'SOC2 Security SLA'],
       codeLang: 'TypeScript • Next.js 15 Clean Architecture',
       code: `<span class="c-keyword">import</span> { <span class="c-type">AIService</span>, <span class="c-type">CloudSLA</span> } <span class="c-keyword">from</span> <span class="c-str">'@uzair-ai/core'</span>;
 
@@ -1078,7 +1003,7 @@ function initHeroInteractive() {
         { val: '60 FPS', lbl: 'Native Fluidity' },
         { val: '4.9 ★', lbl: 'App Store Rating' }
       ],
-      tags: ['📱 Flutter & Dart', '⚛️ React Native', '🍎 iOS Swift', '🤖 Android Kotlin', '⚡ Real-Time Sync'],
+      tags: ['Flutter & Dart', 'React Native Core', 'iOS Swift / UIKit', 'Android Kotlin Engine', 'Real-Time Sync'],
       codeLang: 'Dart / Flutter • State Architecture',
       code: `<span class="c-keyword">import</span> <span class="c-str">'package:flutter/material.dart'</span>;
 <span class="c-keyword">import</span> <span class="c-str">'package:uzair_ai/engine.dart'</span>;
@@ -1104,7 +1029,7 @@ function initHeroInteractive() {
         { val: '85%', lbl: 'Auto-Resolution' },
         { val: '100%', lbl: 'Data Privacy' }
       ],
-      tags: ['🧠 OpenAI & Gemini API', '🐍 Python & FastAPI', '⚡ LangChain & LlamaIndex', '🗄️ Vector Database', '🤖 Autonomous Agents'],
+      tags: ['OpenAI & Gemini API', 'Python & FastAPI', 'LangChain & LlamaIndex', 'Vector Database & RAG', 'Autonomous Agents'],
       codeLang: 'Python 3.11 • Autonomous AI Agent Engine',
       code: `<span class="c-keyword">from</span> fastapi <span class="c-keyword">import</span> FastAPI, Depends
 <span class="c-keyword">from</span> uzair_ai.agents <span class="c-keyword">import</span> AutonomousNeuralSquad

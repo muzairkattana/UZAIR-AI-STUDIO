@@ -1,0 +1,26 @@
+[
+  {
+    "id": "NOTIF-MW7TS3WV-683",
+    "role": "client",
+    "targetId": null,
+    "title": "✅ Project Blueprint Dispatched",
+    "body": "Your project brief (PLAN-MW7TS3WJ) was delivered directly to Founder Muhammad Uzair. We will contact you within 2 hours.",
+    "url": "#planner",
+    "tag": "client_confirm",
+    "read": false,
+    "timestamp": 1794141928399,
+    "createdAt": "2026-11-08T12:45:28.399Z"
+  },
+  {
+    "id": "NOTIF-MW7TS3WR-751",
+    "role": "admin",
+    "targetId": null,
+    "title": "🚀 New Client Project Intake",
+    "body": "Kamran Katana submitted project: Autonomous AI Multi-Model Pipeline. WhatsApp: +923433885835. Location: Mardan, KPK, Pakistan",
+    "url": "/admin#tabConsultations",
+    "tag": "client_lead",
+    "read": true,
+    "timestamp": 1794141928395,
+    "createdAt": "2026-11-08T12:45:28.395Z"
+  }
+]
