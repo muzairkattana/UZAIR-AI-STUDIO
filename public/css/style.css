@@ -5914,3 +5914,102 @@ img, svg, video, canvas, audio, iframe {
     gap: 6px;
   }
 }
+
+
+/* Mobile view footer centering */
+@media (max-width: 820px) {
+  .site-footer {
+    text-align: center !important;
+  }
+  .footer-grid {
+    text-align: center !important;
+    justify-items: center;
+  }
+  .footer-about {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    text-align: center !important;
+  }
+  .footer-about .brand-logo {
+    justify-content: center !important;
+    margin: 0 auto !important;
+  }
+  .footer-about-text {
+    text-align: center !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    max-width: 480px !important;
+  }
+  .footer-contact-list {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    text-align: center !important;
+    padding-left: 0 !important;
+    list-style: none !important;
+  }
+  .footer-contact-item {
+    margin: 4px auto !important;
+    justify-content: center !important;
+    text-align: center !important;
+  }
+  .social-links {
+    justify-content: center !important;
+    margin: 12px auto !important;
+  }
+  .footer-links-duo {
+    text-align: center !important;
+    width: 100% !important;
+  }
+  .footer-links-col {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    text-align: center !important;
+  }
+  .footer-col-title {
+    text-align: center !important;
+    width: 100% !important;
+  }
+  .footer-links-list {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    padding-left: 0 !important;
+    list-style: none !important;
+  }
+  .footer-links-list a {
+    justify-content: center !important;
+    text-align: center !important;
+  }
+  .newsletter-card {
+    text-align: center !important;
+    margin: 0 auto !important;
+  }
+  .newsletter-card-header {
+    justify-content: center !important;
+    text-align: center !important;
+  }
+  .newsletter-card-header .brand-logo {
+    justify-content: center !important;
+    margin: 0 auto 8px auto !important;
+  }
+  .newsletter-card p {
+    text-align: center !important;
+  }
+  .newsletter-form {
+    justify-content: center !important;
+  }
+  .footer-bottom-inner {
+    flex-direction: column !important;
+    gap: 12px !important;
+    text-align: center !important;
+    justify-content: center !important;
+    align-items: center !important;
+  }
+  .footer-legal-links {
+    justify-content: center !important;
+    text-align: center !important;
+  }
+}

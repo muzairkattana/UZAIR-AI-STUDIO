@@ -1244,11 +1244,11 @@ function initInternshipModule() {
       const gender = document.querySelector('input[name="internGender"]:checked')?.value;
       const dob = document.getElementById('internDob')?.value;
       const city = (document.getElementById('internCity')?.value || '').trim();
-      const qualification = document.querySelector('input[name="internQualification"]:checked')?.value;
+      const qualification = (document.getElementById('internQualification')?.value || document.querySelector('input[name="internQualification"]:checked')?.value || '').trim();
       const institute = (document.getElementById('internInstitute')?.value || '').trim();
       const degree = document.getElementById('internDegree')?.value;
-      const domain = document.querySelector('input[name="internDomain"]:checked')?.value;
-      const trackDuration = document.querySelector('input[name="internDuration"]:checked')?.value || '2 Months';
+      const domain = (document.getElementById('internDomain')?.value || document.querySelector('input[name="internDomain"]:checked')?.value || '').trim();
+      const trackDuration = (document.getElementById('internDuration')?.value || document.querySelector('input[name="internDuration"]:checked')?.value || '2 Months').trim();
       const joinedWa = document.querySelector('input[name="internJoinedWa"]:checked')?.value || 'No';
       const confirmed = document.getElementById('internConfirmPolicy')?.checked;
 
