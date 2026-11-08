@@ -11,8 +11,9 @@ document.addEventListener('DOMContentLoaded', () => {
   initConsultationsManager();
   initSettingsManager();
   initQrTester();
+  const defaultInternView = localStorage.getItem('admin_intern_view') || 'cards';
+  if (window.switchCandidateView) window.switchCandidateView(defaultInternView);
   if (window.innerWidth <= 768) {
-    if (window.switchCandidateView) window.switchCandidateView('cards');
     if (window.switchConsultationView) window.switchConsultationView('cards');
   }
 });
@@ -213,8 +214,9 @@ function initAdminAuth() {
     } catch (e) {}
 
     loadAllAdminData();
+    const defaultInternView = localStorage.getItem('admin_intern_view') || 'cards';
+    if (window.switchCandidateView) window.switchCandidateView(defaultInternView);
     if (window.innerWidth <= 768) {
-      if (window.switchCandidateView) window.switchCandidateView('cards');
       if (window.switchConsultationView) window.switchConsultationView('cards');
     }
   }
@@ -642,20 +644,23 @@ function filterAndRenderInterns() {
   }
 }
 
-// Candidate View Switcher (Table vs Cards)
+// Candidate View Switcher (Cards is Default, Table when converted)
 window.switchCandidateView = function(mode) {
   const tableBox = document.getElementById('internsTableBox');
   const cardGrid = document.getElementById('internsMobileGrid');
   const btnTable = document.getElementById('btnViewTable');
   const btnCards = document.getElementById('btnViewCards');
 
-  if (mode === 'cards') {
+  const targetMode = mode === 'table' ? 'table' : 'cards';
+  try { localStorage.setItem('admin_intern_view', targetMode); } catch(e) {}
+
+  if (targetMode === 'cards') {
     if (tableBox) {
       tableBox.style.display = 'none';
       tableBox.classList.add('hide-on-mobile-cards');
     }
     if (cardGrid) {
-      cardGrid.style.display = 'flex';
+      cardGrid.style.display = 'grid';
     }
     if (btnCards) btnCards.classList.add('active');
     if (btnTable) btnTable.classList.remove('active');

@@ -1089,12 +1089,24 @@
       box-shadow: 0 1px 4px rgba(15, 23, 42, 0.08);
     }
 
-    /* Mobile Candidate Cards Grid */
-    .candidate-mobile-grid, .consultation-mobile-grid {
+    /* Candidate Cards Grid (Default Responsive Grid) */
+    .candidate-mobile-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+      gap: 16px;
+      margin-top: 14px;
+    }
+    .consultation-mobile-grid {
       display: none;
       flex-direction: column;
       gap: 12px;
       margin-top: 14px;
+    }
+    @media (max-width: 768px) {
+      .candidate-mobile-grid {
+        grid-template-columns: 1fr;
+        gap: 12px;
+      }
     }
     .cand-card {
       background: #FFFFFF;
@@ -1731,16 +1743,6 @@
             <p class="admin-page-subtitle" id="pageSubtitleHeading">2-Month Training Program applicants, offer letters, recommendations & official verification</p>
           </div>
         </div>
-
-        <div class="topbar-right">
-          <div class="status-badge-cloud" id="cloudStatusBadge">
-            <span class="pulse-dot-green"></span>
-            <span>Cloud Sync Active</span>
-          </div>
-          <a href="https://wa.me/923433885835" target="_blank" class="btn btn-whatsapp btn-sm" id="topbarWaBtn" title="Direct WhatsApp Coordinator">
-            <span>💬 WhatsApp Coordinator</span>
-          </a>
-        </div>
       </header>
 
       <!-- Dynamic Content Canvas -->
@@ -1817,17 +1819,20 @@
               Showing <span id="candidateCountVisible" style="color:#0F172A; font-weight:800;">0</span> Candidate Records
             </div>
             <div class="view-switcher-bar">
-              <button type="button" class="view-btn active" id="btnViewTable" onclick="window.switchCandidateView && window.switchCandidateView('table')">
-                <span>📋 Table View</span>
-              </button>
-              <button type="button" class="view-btn" id="btnViewCards" onclick="window.switchCandidateView && window.switchCandidateView('cards')">
+              <button type="button" class="view-btn active" id="btnViewCards" onclick="window.switchCandidateView && window.switchCandidateView('cards')">
                 <span>📱 Card View</span>
+              </button>
+              <button type="button" class="view-btn" id="btnViewTable" onclick="window.switchCandidateView && window.switchCandidateView('table')">
+                <span>📋 Table View</span>
               </button>
             </div>
           </div>
 
-          <!-- Interns Data Table -->
-          <div class="table-responsive-box" id="internsTableBox">
+          <!-- Candidate Cards Grid (Default View) -->
+          <div class="candidate-mobile-grid" id="internsMobileGrid" style="display:grid;"></div>
+
+          <!-- Interns Data Table (Displayed when switching to Table View) -->
+          <div class="table-responsive-box" id="internsTableBox" style="display:none;">
             <table class="admin-data-table" id="internsTable">
               <thead>
                 <tr>
@@ -1851,9 +1856,6 @@
               </tbody>
             </table>
           </div>
-
-          <!-- Mobile Candidate Cards Grid (Default on Phones/Tablets) -->
-          <div class="candidate-mobile-grid" id="internsMobileGrid"></div>
 
         </section>
 
