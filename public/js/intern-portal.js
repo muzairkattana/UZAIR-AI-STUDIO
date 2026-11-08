@@ -2145,14 +2145,20 @@
     if (nextBtn) nextBtn.disabled = index === MIT_COURSE_LECTURES.length - 1;
 
     // Highlight in list
-    document.querySelectorAll('.mit-lecture-item').forEach((item, idx) => {
-      if (parseInt(item.dataset.index, 10) === index) {
+    document.querySelectorAll('.mit-lecture-item').forEach((item) => {
+      const idx = parseInt(item.dataset.index, 10);
+      const isCurrent = idx === index;
+      if (isCurrent) {
+        item.classList.add('active');
         item.style.background = '#F1F5F9';
         item.style.borderColor = '#0F172A';
+        item.style.boxShadow = '0 4px 12px rgba(15, 23, 42, 0.08)';
         item.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
       } else {
+        item.classList.remove('active');
         item.style.background = '#FFFFFF';
         item.style.borderColor = '#E2E8F0';
+        item.style.boxShadow = 'none';
       }
     });
   }
@@ -2162,44 +2168,57 @@
     if (!listContainer) return;
 
     listContainer.innerHTML = '';
+    let renderedCount = 0;
 
     MIT_COURSE_LECTURES.forEach((lec, idx) => {
       const matches = !filterQuery || lec.title.toLowerCase().includes(filterQuery) || lec.desc.toLowerCase().includes(filterQuery) || lec.module.toLowerCase().includes(filterQuery);
       if (!matches) return;
+      renderedCount++;
 
       const isCurrent = idx === currentMitLectureIndex;
 
       const item = document.createElement('div');
-      item.className = 'mit-lecture-item';
+      item.className = 'mit-lecture-item' + (isCurrent ? ' active' : '');
       item.dataset.index = idx;
-      item.style.padding = '10px 12px';
-      item.style.marginBottom = '6px';
-      item.style.borderRadius = '10px';
+      item.style.padding = '12px 14px';
+      item.style.marginBottom = '8px';
+      item.style.borderRadius = '12px';
       item.style.border = isCurrent ? '1.5px solid #0F172A' : '1px solid #E2E8F0';
       item.style.background = isCurrent ? '#F1F5F9' : '#FFFFFF';
+      item.style.boxShadow = isCurrent ? '0 4px 12px rgba(15, 23, 42, 0.08)' : 'none';
       item.style.cursor = 'pointer';
-      item.style.transition = 'all 0.15s ease';
+      item.style.transition = 'all 0.18s cubic-bezier(0.16, 1, 0.3, 1)';
 
       item.innerHTML = `
-        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;">
-          <span style="font-size:0.7rem; font-weight:800; color:#475569; background:#E2E8F0; padding:1px 6px; border-radius:4px;">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:5px;">
+          <span style="font-size:0.68rem; font-weight:800; color:${isCurrent ? '#0F172A' : '#475569'}; background:${isCurrent ? '#E2E8F0' : '#F1F5F9'}; padding:2px 7px; border-radius:5px; letter-spacing:0.02em;">
             LEC ${lec.id}
           </span>
-          <span style="font-size:0.7rem; color:#64748B; font-weight:600;">${lec.duration}</span>
+          <span style="font-size:0.72rem; color:#64748B; font-weight:600; display:inline-flex; align-items:center; gap:4px;">
+            <span>⏱️</span> ${lec.duration}
+          </span>
         </div>
-        <div style="font-size:0.825rem; font-weight:700; color:#0F172A; line-height:1.3; margin-bottom:2px;">
+        <div style="font-size:0.84rem; font-weight:800; color:#0F172A; line-height:1.35; margin-bottom:3px;">
           ${lec.title}
         </div>
-        <div style="font-size:0.72rem; color:#64748B; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">
+        <div style="font-size:0.73rem; color:#64748B; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; line-height:1.4;">
           ${lec.desc}
         </div>
       `;
 
       item.addEventListener('mouseenter', () => {
-        if (idx !== currentMitLectureIndex) item.style.background = '#F8FAFC';
+        if (idx !== currentMitLectureIndex) {
+          item.style.background = '#F8FAFC';
+          item.style.borderColor = '#CBD5E1';
+          item.style.transform = 'translateY(-1px)';
+        }
       });
       item.addEventListener('mouseleave', () => {
-        if (idx !== currentMitLectureIndex) item.style.background = '#FFFFFF';
+        if (idx !== currentMitLectureIndex) {
+          item.style.background = '#FFFFFF';
+          item.style.borderColor = '#E2E8F0';
+          item.style.transform = 'none';
+        }
       });
       item.addEventListener('click', () => {
         loadMitLecture(idx);
@@ -2208,9 +2227,14 @@
       listContainer.appendChild(item);
     });
 
-    if (listContainer.children.length === 0) {
-      listContainer.innerHTML = '<div style="padding:16px; text-align:center; color:#94A3B8; font-size:0.8rem;">No lectures matching search query.</div>';
+    // Update count badge
+    const countBadge = document.getElementById('mitLecturesCountBadge');
+    if (countBadge) {
+      countBadge.textContent = filterQuery ? `${renderedCount} found` : '24 Sessions';
+    }
+
+    if (renderedCount === 0) {
+      listContainer.innerHTML = '<div style="padding:28px 16px; text-align:center; color:#94A3B8; font-size:0.825rem;"><span style="font-size:1.4rem; display:block; margin-bottom:6px;">🔍</span>No lecture topics matching "'+filterQuery+'"</div>';
     }
   }
-
   document.addEventListener("DOMContentLoaded", initMitCoursePlayer);
