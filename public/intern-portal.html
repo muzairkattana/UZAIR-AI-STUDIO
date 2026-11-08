@@ -2085,6 +2085,10 @@
           <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
           <span>Curriculum &amp; Tasks</span>
         </button>
+        <button type="button" class="header-nav-btn" data-view="viewMitCourse" onclick="switchPortalView('viewMitCourse')">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 2 7 12 12 22 7 12 2"></polygon><polyline points="2 17 12 22 22 17"></polyline><polyline points="2 12 12 17 22 12"></polyline></svg>
+          <span>MIT AI Course</span>
+        </button>
         <button type="button" class="header-nav-btn" data-view="viewVault" onclick="switchPortalView('viewVault')">
           <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path></svg>
           <span>Document Vault</span>
@@ -2409,6 +2413,116 @@
         <div class="curriculum-wrap" id="curriculumContainer">
           <!-- Dynamically populated 8-week cards -->
         </div>
+      </div>
+
+      <!-- VIEW: MIT AI COURSE STUDIO HUB & VIDEO PLAYER -->
+      <div id="viewMitCourse" class="portal-view-pane" style="display:none;">
+        
+        <!-- Header Banner -->
+        <div style="background:linear-gradient(135deg, #090D16 0%, #0F172A 50%, #1E1B4B 100%); border-radius:20px; padding:26px 30px; margin-bottom:24px; color:#FFFFFF; border:1.5px solid rgba(255,255,255,0.12); box-shadow:0 16px 36px -10px rgba(15,23,42,0.35);">
+          <div style="display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:16px;">
+            <div style="max-width:720px;">
+              <div style="display:flex; align-items:center; gap:8px; margin-bottom:10px;">
+                <span style="background:rgba(239,68,68,0.2); color:#FCA5A5; border:1px solid rgba(239,68,68,0.35); font-size:0.75rem; font-weight:800; padding:3px 12px; border-radius:999px;">MIT OPENCOURSEWARE 6.034</span>
+                <span style="background:rgba(16,185,129,0.2); color:#A7F3D0; border:1px solid rgba(16,185,129,0.35); font-size:0.75rem; font-weight:700; padding:3px 12px; border-radius:999px;">Direct In-Portal Stream</span>
+              </div>
+              <h1 style="font-size:1.6rem; font-weight:900; margin:0 0 8px 0; color:#FFFFFF; letter-spacing:-0.01em;">
+                MIT Artificial Intelligence Course
+              </h1>
+              <p style="font-size:0.9rem; color:#CBD5E1; margin:0 0 14px 0; line-height:1.55;">
+                Taught by the legendary <strong>Prof. Patrick Henry Winston</strong>. This comprehensive course covers Reasoning, Search, Heuristic Problem Solving, Constraint Propagation, Neural Networks, Deep Learning, Support Vector Machines, Boosting, Natural Language, and Cognitive Architectures.
+              </p>
+              <div style="display:flex; align-items:center; gap:16px; flex-wrap:wrap; font-size:0.8rem; color:#94A3B8;">
+                <span>🎓 <strong>Instructor:</strong> Prof. Patrick H. Winston</span>
+                <span>🏛️ <strong>Institution:</strong> MIT EECS</span>
+                <span>📚 <strong>Lectures:</strong> 24 Core Sessions</span>
+                <span>⚡ <strong>Format:</strong> High-Definition In-Portal Streaming</span>
+              </div>
+            </div>
+
+            <!-- Offline Cloud Storage Card -->
+            <div style="background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.15); border-radius:14px; padding:16px 20px; min-width:260px; text-align:center;">
+              <div style="font-size:0.75rem; color:#A5B4FC; font-weight:800; text-transform:uppercase; letter-spacing:0.05em; margin-bottom:4px;">Offline Course Files</div>
+              <div style="font-size:1rem; font-weight:800; color:#FFFFFF; margin-bottom:8px;">Full Archive Download</div>
+              <p style="font-size:0.78rem; color:#94A3B8; margin-bottom:12px; line-height:1.4;">
+                Download all lecture recordings, slides &amp; assignments to your device for offline study.
+              </p>
+              <a href="https://mega.nz/folder/2joFkDqI#HSLl8mP_Os0KXGuIZZhiPA" target="_blank" rel="noopener noreferrer" class="btn btn-sm" style="display:inline-flex; align-items:center; justify-content:center; gap:8px; width:100%; background:linear-gradient(135deg, #DC2626, #EF4444); color:#FFFFFF; font-weight:800; padding:9px 16px; border-radius:9px; text-decoration:none; box-shadow:0 4px 14px rgba(239,68,68,0.35);">
+                <span>☁️ Open MEGA Cloud Folder</span>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- In-Portal Interactive Lecture Theater -->
+        <div style="display:grid; grid-template-columns:1fr 360px; gap:22px; margin-bottom:30px;" id="mitCourseTheaterGrid">
+          
+          <!-- Left Main Video Player -->
+          <div style="background:#0F172A; border-radius:18px; border:1px solid #1E293B; overflow:hidden; box-shadow:0 12px 30px rgba(0,0,0,0.12);">
+            <div style="position:relative; padding-bottom:56.25%; height:0; overflow:hidden; background:#000000;">
+              <iframe 
+                id="mitVideoPlayerFrame" 
+                src="https://www.youtube-nocookie.com/embed/TjZBTDzGeGg?autoplay=0&rel=0&modestbranding=1" 
+                title="MIT 6.034 Artificial Intelligence Lecture" 
+                frameborder="0" 
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                allowfullscreen 
+                style="position:absolute; top:0; left:0; width:100%; height:100%; border:none;">
+              </iframe>
+            </div>
+
+            <!-- Video Info Bar -->
+            <div style="padding:18px 22px; background:#0F172A; color:#FFFFFF; border-top:1px solid #1E293B;">
+              <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; margin-bottom:8px;">
+                <span id="mitCurrentLectureBadge" style="background:#3B82F6; color:#FFFFFF; font-size:0.75rem; font-weight:800; padding:3px 12px; border-radius:6px; letter-spacing:0.04em;">
+                  LECTURE 1 OF 24
+                </span>
+                <span style="font-size:0.8rem; color:#94A3B8;" id="mitCurrentModuleText">Module 1: Reasoning, Search &amp; Constraints</span>
+              </div>
+              <h2 id="mitCurrentLectureTitle" style="font-size:1.25rem; font-weight:800; margin:0 0 6px 0; color:#FFFFFF;">
+                1. Introduction and Scope
+              </h2>
+              <p id="mitCurrentLectureDesc" style="font-size:0.85rem; color:#94A3B8; margin:0; line-height:1.5;">
+                Introduction to the foundational ideas of computational intelligence, historical perspectives, and the vision of engineering intelligent reasoning agents.
+              </p>
+
+              <div style="margin-top:14px; padding-top:14px; border-top:1px solid #1E293B; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
+                <div style="display:flex; gap:8px;">
+                  <button type="button" id="btnMitPrevLecture" class="btn btn-outline btn-sm" style="background:#1E293B; color:#CBD5E1; border-color:#334155; padding:6px 14px; font-size:0.8rem;">
+                    &larr; Previous Lecture
+                  </button>
+                  <button type="button" id="btnMitNextLecture" class="btn btn-outline btn-sm" style="background:#1E293B; color:#CBD5E1; border-color:#334155; padding:6px 14px; font-size:0.8rem;">
+                    Next Lecture &rarr;
+                  </button>
+                </div>
+                <a id="btnMitWatchExternal" href="https://www.youtube.com/watch?v=TjZBTDzGeGg&list=PLUl4u3cNGP63gFHB6xb-kVBiQHYe_4hSi" target="_blank" rel="noopener noreferrer" style="font-size:0.8rem; color:#60A5FA; text-decoration:none; font-weight:700;">
+                  Open on YouTube &nearr;
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right Playlist / Lecture Syllabus Drawer -->
+          <div style="background:#FFFFFF; border-radius:18px; border:1px solid #E2E8F0; display:flex; flex-direction:column; overflow:hidden; box-shadow:0 4px 16px rgba(15,23,42,0.05); max-height:680px;">
+            <div style="padding:16px 18px; background:#F8FAFC; border-bottom:1px solid #E2E8F0;">
+              <div style="display:flex; justify-content:space-between; align-items:center;">
+                <strong style="font-size:0.95rem; color:#0F172A; font-weight:800;">Course Syllabus &amp; Lectures</strong>
+                <span style="font-size:0.75rem; background:#E2E8F0; color:#475569; font-weight:700; padding:2px 8px; border-radius:999px;">24 Lectures</span>
+              </div>
+              <input 
+                type="text" 
+                id="mitLectureSearchInput" 
+                placeholder="Search topic (e.g. Search, Neural Nets, SVM)..." 
+                style="width:100%; margin-top:10px; padding:7px 12px; font-size:0.8rem; border-radius:8px; border:1px solid #CBD5E1; outline:none; background:#FFFFFF;">
+            </div>
+
+            <div id="mitLecturesListContainer" style="overflow-y:auto; flex:1; padding:8px;">
+              <!-- Dynamically populated via JS -->
+            </div>
+          </div>
+
+        </div>
+
       </div>
 
       <!-- VIEW 3: DOCUMENT RECOVERY VAULT -->

@@ -1850,3 +1850,344 @@
   initPortal();
 
 })();
+
+
+  // ==========================================
+  // MIT ARTIFICIAL INTELLIGENCE COURSE HUB (6.034)
+  // ==========================================
+  const MIT_PLAYLIST_ID = 'PLUl4u3cNGP63gFHB6xb-kVBiQHYe_4hSi';
+  const MIT_COURSE_LECTURES = [
+    {
+      id: 1,
+      module: 'Module 1: Reasoning, Search & Constraints',
+      title: '1. Introduction and Scope',
+      videoId: 'TjZBTDzGeGg',
+      duration: '49 min',
+      desc: 'Introduction to foundational ideas of artificial intelligence, representations that enable reasoning, and course roadmap.'
+    },
+    {
+      id: 2,
+      module: 'Module 1: Reasoning, Search & Constraints',
+      title: '2. Reasoning: Goal Trees and Problem Solving',
+      videoId: 'PNKj529yY5c',
+      duration: '51 min',
+      desc: 'Symbolic integration, safe and heuristic transformations, goal trees, and decomposing problems into solvable subproblems.'
+    },
+    {
+      id: 3,
+      module: 'Module 1: Reasoning, Search & Constraints',
+      title: '3. Reasoning: Goal Trees and Rule-Based Expert Systems',
+      videoId: 'leXa7EKUPFk',
+      duration: '48 min',
+      desc: 'Forward chaining, backward chaining, deduction systems, and capturing domain knowledge with rule-based models.'
+    },
+    {
+      id: 4,
+      module: 'Module 1: Reasoning, Search & Constraints',
+      title: '4. Search: Depth-First, Hill Climbing, Beam',
+      videoId: 'j1H3jAAGlEA',
+      duration: '50 min',
+      desc: 'Uninformed and heuristic search algorithms, tree traversals, local search, hill climbing pitfalls, and beam search width.'
+    },
+    {
+      id: 5,
+      module: 'Module 1: Reasoning, Search & Constraints',
+      title: '5. Search: Optimal, Branch and Bound, A*',
+      videoId: 'gGQ-vAmdAOI',
+      duration: '47 min',
+      desc: 'Finding guaranteed optimal paths, branch and bound, admissible heuristics, dynamic programming principle, and the A* search algorithm.'
+    },
+    {
+      id: 6,
+      module: 'Module 1: Reasoning, Search & Constraints',
+      title: '6. Search: Games, Minimax, and Alpha-Beta',
+      videoId: 'STjW3eH0Cik',
+      duration: '52 min',
+      desc: 'Adversarial games, minimax evaluation of game trees, progressive deepening, and alpha-beta pruning optimization.'
+    },
+    {
+      id: 7,
+      module: 'Module 1: Reasoning, Search & Constraints',
+      title: '7. Constraints: Interpreting Line Drawings',
+      videoId: 'l-tzjenXrvI',
+      duration: '46 min',
+      desc: 'Constraint propagation in computer vision, Huffman-Clowes labeling, edge classifications, and impossible object detection.'
+    },
+    {
+      id: 8,
+      module: 'Module 1: Reasoning, Search & Constraints',
+      title: '8. Constraints: Search, Domain Reduction',
+      videoId: 'd1KyYyLmGpA',
+      duration: '49 min',
+      desc: 'Constraint Satisfaction Problems (CSPs), map coloring, domain reduction, arc consistency, and variable ordering heuristics.'
+    },
+    {
+      id: 9,
+      module: 'Module 1: Reasoning, Search & Constraints',
+      title: '9. Constraints: Visual Object Recognition',
+      videoId: 'gvmfbePC2pc',
+      duration: '50 min',
+      desc: 'Recognizing geometric shapes and 3D objects through constraint satisfaction and alignment techniques.'
+    },
+    {
+      id: 10,
+      module: 'Module 2: Machine Learning Fundamentals',
+      title: '10. Introduction to Learning, Nearest Neighbors',
+      videoId: '09mb78oiPkA',
+      duration: '49 min',
+      desc: 'Supervised classification foundations, Euclidean metrics, decision boundaries, and k-Nearest Neighbors (k-NN).'
+    },
+    {
+      id: 11,
+      module: 'Module 2: Machine Learning Fundamentals',
+      title: '11. Learning: Identification Trees, Disorder',
+      videoId: 'SXBG3RGr_Rc',
+      duration: '51 min',
+      desc: 'Decision tree induction, Shannon entropy, calculating average disorder, information gain, and building compact trees.'
+    },
+    {
+      id: 12,
+      module: 'Module 2: Machine Learning Fundamentals',
+      title: '12A. Neural Nets',
+      videoId: 'uXt8qF2Zzfo',
+      duration: '48 min',
+      desc: 'Biological neurons, perceptrons, multi-layer feedforward neural networks, sigmoid activations, and backpropagation gradient descent.'
+    },
+    {
+      id: 13,
+      module: 'Module 2: Machine Learning Fundamentals',
+      title: '12B. Deep Neural Nets',
+      videoId: 'VrMHA3yX_QI',
+      duration: '54 min',
+      desc: 'Modern deep neural network architectures, convolutional networks, representation learning, and computer vision breakthroughs.'
+    },
+    {
+      id: 14,
+      module: 'Module 2: Machine Learning Fundamentals',
+      title: '13. Learning: Genetic Algorithms',
+      videoId: 'kHyNqSnzP8Y',
+      duration: '50 min',
+      desc: 'Evolutionary computing, chromosome representations, fitness evaluation functions, crossover operators, and stochastic search.'
+    },
+    {
+      id: 15,
+      module: 'Module 2: Machine Learning Fundamentals',
+      title: '14. Learning: Sparse Spaces, Phonology',
+      videoId: 'L73hY1pBcQI',
+      duration: '45 min',
+      desc: 'Working with sparse high-dimensional data, phonological rules, pattern classification in linguistics, and nearest neighbor subtleties.'
+    },
+    {
+      id: 16,
+      module: 'Module 2: Machine Learning Fundamentals',
+      title: '15. Learning: Near Misses, Felicity Conditions',
+      videoId: 'sh3EPjhhd40',
+      duration: '47 min',
+      desc: 'Winston structural concept learning, learning from positive examples and near-misses, heuristic model refinement, and teacher-learner dynamics.'
+    },
+    {
+      id: 17,
+      module: 'Module 2: Machine Learning Fundamentals',
+      title: '16. Learning: Support Vector Machines (SVMs)',
+      videoId: '_PwhiWxHK8o',
+      duration: '49 min',
+      desc: 'Maximum margin hyperplanes, convex quadratic optimization, Lagrange multipliers, support vectors, and non-linear kernel transformations.'
+    },
+    {
+      id: 18,
+      module: 'Module 2: Machine Learning Fundamentals',
+      title: '17. Learning: Boosting (AdaBoost)',
+      videoId: 'UHBmv7qCey4',
+      duration: '52 min',
+      desc: 'Ensemble learning, converting weak learners into strong classifiers, sample weighting updates, and the AdaBoost training algorithm.'
+    },
+    {
+      id: 19,
+      module: 'Module 3: Representations, Architectures & Probabilistic AI',
+      title: '18. Representations: Classes, Trajectories, Transitions',
+      videoId: 'kY9v4W98Xok',
+      duration: '48 min',
+      desc: 'Representing knowledge, frames, inheritance hierarchies, trajectories, and symbolic transitions for physical reasoning.'
+    },
+    {
+      id: 20,
+      module: 'Module 3: Representations, Architectures & Probabilistic AI',
+      title: '19. Architectures: GPS, SOAR, Subsumption, Society of Mind',
+      videoId: 'O1p4ZgK-8t8',
+      duration: '50 min',
+      desc: 'Classic cognitive architectures: General Problem Solver (GPS), SOAR, Rodney Brooks subsumption reactive robotics, and Marvin Minsky Society of Mind.'
+    },
+    {
+      id: 21,
+      module: 'Module 3: Representations, Architectures & Probabilistic AI',
+      title: '21. Probabilistic Inference I',
+      videoId: 'A6Ud6oUCRak',
+      duration: '49 min',
+      desc: 'Conditional probabilities, prior and posterior distributions, joint tables, Bayes Theorem, and independence assumptions.'
+    },
+    {
+      id: 22,
+      module: 'Module 3: Representations, Architectures & Probabilistic AI',
+      title: '22. Probabilistic Inference II',
+      videoId: 'EC6bf8JCpDQ',
+      duration: '51 min',
+      desc: 'Bayesian belief networks, directed acyclic graphs, causal reasoning, d-separation, and inference algorithms.'
+    },
+    {
+      id: 23,
+      module: 'Module 3: Representations, Architectures & Probabilistic AI',
+      title: '23. Model Merging, Cross-Modal Coupling, Course Summary',
+      videoId: 'XPEJg_6Cg6o',
+      duration: '53 min',
+      desc: 'Multimodal perception, vision and language integration, story comprehension systems, and closing perspectives on human-level artificial intelligence.'
+    },
+    {
+      id: 24,
+      module: 'Module 3: Representations, Architectures & Probabilistic AI',
+      title: 'Special Recitation: Problem Solving Mega-Session',
+      videoId: 'TjZBTDzGeGg',
+      duration: '55 min',
+      desc: 'Comprehensive review of examination problems, search heuristics, constraint satisfaction proofs, and decision boundaries.'
+    }
+  ];
+
+  let currentMitLectureIndex = 0;
+
+  function initMitCoursePlayer() {
+    renderMitLectureList();
+    loadMitLecture(0);
+
+    const searchInput = document.getElementById('mitLectureSearchInput');
+    if (searchInput) {
+      searchInput.addEventListener('input', (e) => {
+        const query = e.target.value.toLowerCase().trim();
+        renderMitLectureList(query);
+      });
+    }
+
+    const prevBtn = document.getElementById('btnMitPrevLecture');
+    const nextBtn = document.getElementById('btnMitNextLecture');
+
+    if (prevBtn) {
+      prevBtn.addEventListener('click', () => {
+        if (currentMitLectureIndex > 0) {
+          loadMitLecture(currentMitLectureIndex - 1);
+        }
+      });
+    }
+
+    if (nextBtn) {
+      nextBtn.addEventListener('click', () => {
+        if (currentMitLectureIndex < MIT_COURSE_LECTURES.length - 1) {
+          loadMitLecture(currentMitLectureIndex + 1);
+        }
+      });
+    }
+  }
+
+  function loadMitLecture(index) {
+    if (index < 0 || index >= MIT_COURSE_LECTURES.length) return;
+    currentMitLectureIndex = index;
+    const lecture = MIT_COURSE_LECTURES[index];
+
+    // Update iframe player
+    const frame = document.getElementById('mitVideoPlayerFrame');
+    if (frame) {
+      frame.src = `https://www.youtube-nocookie.com/embed/${lecture.videoId}?autoplay=1&rel=0&modestbranding=1`;
+    }
+
+    // Update text details
+    const badge = document.getElementById('mitCurrentLectureBadge');
+    if (badge) badge.textContent = `LECTURE ${lecture.id} OF ${MIT_COURSE_LECTURES.length}`;
+
+    const moduleText = document.getElementById('mitCurrentModuleText');
+    if (moduleText) moduleText.textContent = lecture.module;
+
+    const titleEl = document.getElementById('mitCurrentLectureTitle');
+    if (titleEl) titleEl.textContent = lecture.title;
+
+    const descEl = document.getElementById('mitCurrentLectureDesc');
+    if (descEl) descEl.textContent = lecture.desc;
+
+    const extBtn = document.getElementById('btnMitWatchExternal');
+    if (extBtn) {
+      extBtn.href = `https://www.youtube.com/watch?v=${lecture.videoId}&list=${MIT_PLAYLIST_ID}`;
+    }
+
+    // Update Previous / Next button states
+    const prevBtn = document.getElementById('btnMitPrevLecture');
+    if (prevBtn) prevBtn.disabled = index === 0;
+
+    const nextBtn = document.getElementById('btnMitNextLecture');
+    if (nextBtn) nextBtn.disabled = index === MIT_COURSE_LECTURES.length - 1;
+
+    // Highlight in list
+    document.querySelectorAll('.mit-lecture-item').forEach((item, idx) => {
+      if (parseInt(item.dataset.index, 10) === index) {
+        item.style.background = '#F1F5F9';
+        item.style.borderColor = '#0F172A';
+        item.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      } else {
+        item.style.background = '#FFFFFF';
+        item.style.borderColor = '#E2E8F0';
+      }
+    });
+  }
+
+  function renderMitLectureList(filterQuery = '') {
+    const listContainer = document.getElementById('mitLecturesListContainer');
+    if (!listContainer) return;
+
+    listContainer.innerHTML = '';
+
+    MIT_COURSE_LECTURES.forEach((lec, idx) => {
+      const matches = !filterQuery || lec.title.toLowerCase().includes(filterQuery) || lec.desc.toLowerCase().includes(filterQuery) || lec.module.toLowerCase().includes(filterQuery);
+      if (!matches) return;
+
+      const isCurrent = idx === currentMitLectureIndex;
+
+      const item = document.createElement('div');
+      item.className = 'mit-lecture-item';
+      item.dataset.index = idx;
+      item.style.padding = '10px 12px';
+      item.style.marginBottom = '6px';
+      item.style.borderRadius = '10px';
+      item.style.border = isCurrent ? '1.5px solid #0F172A' : '1px solid #E2E8F0';
+      item.style.background = isCurrent ? '#F1F5F9' : '#FFFFFF';
+      item.style.cursor = 'pointer';
+      item.style.transition = 'all 0.15s ease';
+
+      item.innerHTML = `
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;">
+          <span style="font-size:0.7rem; font-weight:800; color:#475569; background:#E2E8F0; padding:1px 6px; border-radius:4px;">
+            LEC ${lec.id}
+          </span>
+          <span style="font-size:0.7rem; color:#64748B; font-weight:600;">${lec.duration}</span>
+        </div>
+        <div style="font-size:0.825rem; font-weight:700; color:#0F172A; line-height:1.3; margin-bottom:2px;">
+          ${lec.title}
+        </div>
+        <div style="font-size:0.72rem; color:#64748B; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">
+          ${lec.desc}
+        </div>
+      `;
+
+      item.addEventListener('mouseenter', () => {
+        if (idx !== currentMitLectureIndex) item.style.background = '#F8FAFC';
+      });
+      item.addEventListener('mouseleave', () => {
+        if (idx !== currentMitLectureIndex) item.style.background = '#FFFFFF';
+      });
+      item.addEventListener('click', () => {
+        loadMitLecture(idx);
+      });
+
+      listContainer.appendChild(item);
+    });
+
+    if (listContainer.children.length === 0) {
+      listContainer.innerHTML = '<div style="padding:16px; text-align:center; color:#94A3B8; font-size:0.8rem;">No lectures matching search query.</div>';
+    }
+  }
+
+  document.addEventListener("DOMContentLoaded", initMitCoursePlayer);
