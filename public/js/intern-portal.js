@@ -404,15 +404,23 @@
   function switchPortalView(targetViewId) {
     if (!targetViewId) return;
 
+    // Ensure dashboardSection is visible when switching portal views
+    const dashSec = document.getElementById('dashboardSection');
+    if (dashSec) {
+      dashSec.style.setProperty('display', 'block', 'important');
+    }
+
     // Hide all portal view panes
     document.querySelectorAll('.portal-view-pane').forEach(v => {
-      v.style.display = 'none';
+      v.style.setProperty('display', 'none', 'important');
     });
     
     // Show target view
     const target = document.getElementById(targetViewId);
     if (target) {
-      target.style.display = 'block';
+      target.style.setProperty('display', 'block', 'important');
+      target.style.visibility = 'visible';
+      target.style.opacity = '1';
     }
 
     // Update Desktop Header Nav Buttons
@@ -432,6 +440,17 @@
         item.classList.remove('active');
       }
     });
+
+    // Dynamically repopulate view if needed
+    try {
+      if (targetViewId === 'viewVault' && typeof populateDocumentVault === 'function') {
+        populateDocumentVault();
+      } else if (targetViewId === 'viewSettings' && typeof populateSettingsView === 'function') {
+        populateSettingsView();
+      }
+    } catch (viewErr) {
+      console.warn('[Intern Portal] View refresh notice:', viewErr);
+    }
 
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
@@ -467,7 +486,7 @@
     document.getElementById('profileModalDomain').textContent = currentIntern.domain || '-';
     
     const trackDuration = currentIntern.trackDuration || (currentIntern.duration && currentIntern.duration.includes('6') ? '6 Months (24 Weeks)' : '2 Months (8 Weeks)');
-    document.getElementById('profileModalTrack').textContent = `${trackDuration} • ${currentIntern.isCompleted ? 'Completed' : `${currentIntern.daysRemaining || 60} Days Remaining`}`;
+    document.getElementById('profileModalTrack').textContent = `${trackDuration} • ${currentIntern.isCompleted ? 'Completed' : `${internDays || 60} Days Remaining`}`;
     
     document.getElementById('profileModalInstitute').textContent = currentIntern.institute || 'N/A';
     document.getElementById('profileModalDegree').textContent = currentIntern.degree || 'N/A';
@@ -634,7 +653,7 @@
     document.getElementById('statProgressPct').textContent = `${progressPct}% Completed`;
     document.getElementById('statProgressBar').style.width = `${progressPct}%`;
 
-    document.getElementById('statDaysRemaining').textContent = isCompleted ? 'Completed' : `${currentIntern.daysRemaining} Days`;
+    document.getElementById('statDaysRemaining').textContent = isCompleted ? 'Completed' : `${internDays} Days`;
     document.getElementById('statTimelineTarget').textContent = `Target: ${currentIntern.completionDate}`;
 
     const completedTasksCount = (currentIntern.tasksProgress && currentIntern.tasksProgress.completedTasks) ? currentIntern.tasksProgress.completedTasks.length : 0;
@@ -697,7 +716,9 @@
 
   // Populate Document Vault Cards
   function populateDocumentVault() {
-    const isCompleted = currentIntern.isCompleted;
+    if (!currentIntern) return;
+    const isCompleted = Boolean(currentIntern.isCompleted);
+    const internDays = (internDays !== undefined && internDays !== null) ? internDays : (currentIntern.isCompleted ? 0 : 60);
 
     // Offer Letter
     const btnOffer = document.getElementById('btnVaultOffer');
@@ -729,14 +750,14 @@
       };
     } else {
       badgeLor.className = 'vault-card-badge badge-locked';
-      badgeLor.textContent = `🔒 Time-Locked (${currentIntern.daysRemaining} days remaining)`;
-      descLor.textContent = `Unlocks automatically upon completing your 8-week curriculum (${currentIntern.daysRemaining} days remaining).`;
+      badgeLor.textContent = `🔒 Time-Locked (${internDays} days remaining)`;
+      descLor.textContent = `Unlocks automatically upon completing your 8-week curriculum (${internDays} days remaining).`;
       btnLor.className = 'vault-btn locked';
       btnLor.removeAttribute('href');
       btnLor.innerHTML = '<span>🔒 Locked Until Program Completion</span>';
       btnLor.onclick = (e) => {
         e.preventDefault();
-        alert(`🔒 Letter of Recommendation Notice:\n\nOfficial Letters of Recommendation are awarded exclusively upon successful completion of your 8-week internship curriculum.\n\n• Candidate: ${currentIntern.fullName}\n• Days Remaining: ${currentIntern.daysRemaining}\n• Target Completion: ${currentIntern.completionDate}`);
+        alert(`🔒 Letter of Recommendation Notice:\n\nOfficial Letters of Recommendation are awarded exclusively upon successful completion of your 8-week internship curriculum.\n\n• Candidate: ${currentIntern.fullName}\n• Days Remaining: ${internDays}\n• Target Completion: ${currentIntern.completionDate}`);
       };
     }
 
@@ -758,14 +779,14 @@
       };
     } else {
       badgeCert.className = 'vault-card-badge badge-locked';
-      badgeCert.textContent = `🔒 Time-Locked (${currentIntern.daysRemaining} days remaining)`;
-      descCert.textContent = `Unlocks automatically upon completing your 8-week curriculum (${currentIntern.daysRemaining} days remaining).`;
+      badgeCert.textContent = `🔒 Time-Locked (${internDays} days remaining)`;
+      descCert.textContent = `Unlocks automatically upon completing your 8-week curriculum (${internDays} days remaining).`;
       btnCert.className = 'vault-btn locked';
       btnCert.removeAttribute('href');
       btnCert.innerHTML = '<span>🔒 Locked Until Program Completion</span>';
       btnCert.onclick = (e) => {
         e.preventDefault();
-        alert(`🔒 Certificate of Completion Notice:\n\nOfficial graduation certificates are unlocked exclusively upon completing your full 8-week duration.\n\n• Days Remaining: ${currentIntern.daysRemaining}\n• Target Date: ${currentIntern.completionDate}`);
+        alert(`🔒 Certificate of Completion Notice:\n\nOfficial graduation certificates are unlocked exclusively upon completing your full 8-week duration.\n\n• Days Remaining: ${internDays}\n• Target Date: ${currentIntern.completionDate}`);
       };
     }
 
@@ -790,14 +811,14 @@
       };
     } else if (isSixMonthTrack) {
       badgeExp.className = 'vault-card-badge badge-locked';
-      badgeExp.textContent = `🔒 Time-Locked (${currentIntern.daysRemaining || 180} days remaining)`;
-      descExp.textContent = `Unlocks automatically upon completing your full 6-month (24-week) Fellowship Track (${currentIntern.daysRemaining || 180} days remaining).`;
+      badgeExp.textContent = `🔒 Time-Locked (${internDays || 180} days remaining)`;
+      descExp.textContent = `Unlocks automatically upon completing your full 6-month (24-week) Fellowship Track (${internDays || 180} days remaining).`;
       btnExp.className = 'vault-btn locked';
       btnExp.removeAttribute('href');
       btnExp.innerHTML = '<span>🔒 Locked Until 6th Month Completion</span>';
       btnExp.onclick = (e) => {
         e.preventDefault();
-        alert(`🔒 6-Month Experience Letter Notice:\n\nExperience letters substantiate 6-month software engineering contributions and unlock automatically upon completing your 6-month duration.\n\n• Days Remaining: ${currentIntern.daysRemaining || 180}\n• Target Completion: ${currentIntern.completionDate || '6 Months'}`);
+        alert(`🔒 6-Month Experience Letter Notice:\n\nExperience letters substantiate 6-month software engineering contributions and unlock automatically upon completing your 6-month duration.\n\n• Days Remaining: ${internDays || 180}\n• Target Completion: ${currentIntern.completionDate || '6 Months'}`);
       };
     } else {
       // 2-Month sprint track - not enrolled in 6-month fellowship
@@ -816,15 +837,20 @@
 
   // Populate Settings View
   function populateSettingsView() {
-    document.getElementById('settingsCurrentEmail').textContent = currentIntern.email;
-    document.getElementById('profName').textContent = currentIntern.fullName;
-    document.getElementById('profId').textContent = currentIntern.id;
-    document.getElementById('profDomain').textContent = currentIntern.domain;
-    document.getElementById('profInstitute').textContent = currentIntern.institute || 'N/A';
-    document.getElementById('profDegree').textContent = currentIntern.degree || 'N/A';
-    document.getElementById('profWa').textContent = currentIntern.whatsapp || 'N/A';
-    document.getElementById('profStartDate').textContent = currentIntern.startDate;
-    document.getElementById('profEndDate').textContent = currentIntern.completionDate;
+    if (!currentIntern) return;
+    const setSafeText = (id, val, fallback = 'N/A') => {
+      const el = document.getElementById(id);
+      if (el) el.textContent = (val !== undefined && val !== null && val !== '') ? val : fallback;
+    };
+    setSafeText('settingsCurrentEmail', currentIntern.email, '-');
+    setSafeText('profName', currentIntern.fullName, '-');
+    setSafeText('profId', currentIntern.id, '-');
+    setSafeText('profDomain', currentIntern.domain, '-');
+    setSafeText('profInstitute', currentIntern.institute, 'N/A');
+    setSafeText('profDegree', currentIntern.degree, 'N/A');
+    setSafeText('profWa', currentIntern.whatsapp, 'N/A');
+    setSafeText('profStartDate', currentIntern.startDate, '-');
+    setSafeText('profEndDate', currentIntern.completionDate, '-');
   }
 
   // Settings Forms Listeners
@@ -2093,7 +2119,7 @@
     // Update iframe player
     const frame = document.getElementById('mitVideoPlayerFrame');
     if (frame) {
-      frame.src = `https://www.youtube-nocookie.com/embed/${lecture.videoId}?autoplay=1&rel=0&modestbranding=1`;
+      frame.src = `https://www.youtube-nocookie.com/embed/${lecture.videoId}?autoplay=0&rel=0&modestbranding=1`;
     }
 
     // Update text details
@@ -2109,10 +2135,7 @@
     const descEl = document.getElementById('mitCurrentLectureDesc');
     if (descEl) descEl.textContent = lecture.desc;
 
-    const extBtn = document.getElementById('btnMitWatchExternal');
-    if (extBtn) {
-      extBtn.href = `https://www.youtube.com/watch?v=${lecture.videoId}&list=${MIT_PLAYLIST_ID}`;
-    }
+    // External link removed per design specification
 
     // Update Previous / Next button states
     const prevBtn = document.getElementById('btnMitPrevLecture');
