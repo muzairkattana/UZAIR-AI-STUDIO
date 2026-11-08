@@ -105,7 +105,7 @@
     }, 3800);
   }
 
-  window.directPrintDocument = function(rawUrl, docTitle, candidateName, shouldAutoPrint = false) {
+  window.directPrintDocument = function(rawUrl, docTitle, candidateName, shouldAutoPrint = false, showToast = true) {
     if (!rawUrl || rawUrl === '#' || rawUrl.endsWith('#')) {
       showPortalToast('Document link is not ready yet.', 'warning');
       return;
@@ -187,7 +187,9 @@
       iframe.removeAttribute('srcdoc');
       iframe.src = `${rawUrl}${sep}ts=${Date.now()}`;
     }
-    showPortalToast(`Rendering ${cleanTitle}...`, 'info');
+    if (showToast) {
+      showPortalToast(`Rendering ${cleanTitle}...`, 'info');
+    }
   };
 
   // Dedicated in-portal HTML document print trigger (Offline-ready)
@@ -1570,7 +1572,7 @@
     };
 
     const taskDocUrl = `/task-assignment?data=${encodeURIComponent(JSON.stringify(taskPayload))}`;
-    window.directPrintDocument(taskDocUrl, `Task Assignment - Week ${weekNum}: ${task.title}`, intern.fullName, false);
+    window.directPrintDocument(taskDocUrl, `Task Assignment - Week ${weekNum}: ${task.title}`, intern.fullName, false, false);
   };
   window.printTaskGuidePdf = window.viewTaskAssignmentDoc;
 
