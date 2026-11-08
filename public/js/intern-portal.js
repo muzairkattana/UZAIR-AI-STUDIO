@@ -380,42 +380,53 @@
   setupPasswordToggle('btnToggleNewPass', 'inputNewPassword');
 
   // ============================================================
-  // 3. NAVIGATION VIEW SWITCHER (DESKTOP TABS & MOBILE APP BAR)
+  // 3. NAVIGATION VIEW SWITCHER (HEADER DESKTOP NAV & MOBILE APP BAR)
   // ============================================================
   function switchPortalView(targetViewId) {
-    // Hide all views
-    document.querySelectorAll('.portal-view-pane').forEach(v => v.style.display = 'none');
+    if (!targetViewId) return;
+
+    // Hide all portal view panes
+    document.querySelectorAll('.portal-view-pane').forEach(v => {
+      v.style.display = 'none';
+    });
     
     // Show target view
     const target = document.getElementById(targetViewId);
-    if (target) target.style.display = 'block';
+    if (target) {
+      target.style.display = 'block';
+    }
 
     // Update Desktop Header Nav Buttons
     document.querySelectorAll('.header-nav-btn').forEach(btn => {
-      if (btn.dataset.view === targetViewId) btn.classList.add('active');
-      else btn.classList.remove('active');
-    });
-
-    // Update Desktop Tabs
-    document.querySelectorAll('.dash-tab-btn').forEach(btn => {
-      if (btn.dataset.view === targetViewId) btn.classList.add('active');
-      else btn.classList.remove('active');
+      if (btn.dataset.view === targetViewId) {
+        btn.classList.add('active');
+      } else {
+        btn.classList.remove('active');
+      }
     });
 
     // Update Mobile App Bar Items
     document.querySelectorAll('.app-bar-item').forEach(item => {
-      if (item.dataset.view === targetViewId) item.classList.add('active');
-      else item.classList.remove('active');
+      if (item.dataset.view === targetViewId) {
+        item.classList.add('active');
+      } else {
+        item.classList.remove('active');
+      }
     });
 
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
-  document.querySelectorAll('.header-nav-btn, .dash-tab-btn, .app-bar-item').forEach(el => {
-    el.addEventListener('click', () => {
-      const view = el.dataset.view;
-      if (view) switchPortalView(view);
-    });
+  // Expose globally so onclick="switchPortalView('...')" works immediately
+  window.switchPortalView = switchPortalView;
+
+  // Global delegation for all nav triggers
+  document.addEventListener('click', (e) => {
+    const navBtn = e.target.closest('.header-nav-btn, .dash-tab-btn, .app-bar-item');
+    if (navBtn && navBtn.dataset.view) {
+      e.preventDefault();
+      switchPortalView(navBtn.dataset.view);
+    }
   });
 
   // ============================================================
