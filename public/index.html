@@ -1744,16 +1744,27 @@
           <img src="/assets/uzairaistudio.png" alt="Uzair AI Studio Logo" class="brand-icon">
           <div class="brand-text-block">
             <span class="brand-name">Uzair <span>AI Studio</span></span>
-            <span class="brand-sub">Software House & AI Lab</span>
+            <span class="brand-sub">Software House &amp; AI Lab</span>
           </div>
         </a>
-        <p>
+        <p class="footer-about-text">
           Uzair AI Studio is a next-generation software house founded by <strong>Muhammad Uzair</strong> in Mardan, KPK, Pakistan. We engineer high-impact digital solutions: custom software, mobile apps, modern web platforms, and autonomous AI systems.
         </p>
-        <div style="font-size:0.85rem; line-height:1.6; margin-bottom:16px;">
-          <p>📍 Mardan, KPK, Pakistan</p>
-          <p>📞 WhatsApp / Call: <a href="https://wa.me/923433885835" target="_blank" style="color:var(--primary); font-weight:700;">+92 343 3885835</a></p>
-          <p>✉️ Email: <a href="mailto:kmuzairkhan123@gmail.com" style="color:var(--primary); font-weight:700;">kmuzairkhan123@gmail.com</a></p>
+
+        <!-- Touch-Friendly Contact Badges -->
+        <div class="footer-contact-list">
+          <div class="footer-contact-item">
+            <span class="footer-contact-icon">📍</span>
+            <span>Mardan, KPK, Pakistan</span>
+          </div>
+          <a href="https://wa.me/923433885835" target="_blank" class="footer-contact-item footer-contact-link">
+            <span class="footer-contact-icon">📞</span>
+            <span>WhatsApp / Direct: <strong>+92 343 3885835</strong></span>
+          </a>
+          <a href="mailto:kmuzairkhan123@gmail.com" class="footer-contact-item footer-contact-link">
+            <span class="footer-contact-icon">✉️</span>
+            <span>Email: <strong>kmuzairkhan123@gmail.com</strong></span>
+          </a>
         </div>
         
         <!-- Official Vector SVG Social Media Buttons -->
@@ -1780,19 +1791,19 @@
       </div>
 
       <!-- Col 2: Navigation Links -->
-      <div>
+      <div class="footer-links-col">
         <h4 class="footer-col-title">Capabilities</h4>
         <ul class="footer-links-list">
           <li><a href="#services">Custom Software Engineering</a></li>
           <li><a href="#services">Mobile App Development (iOS/Android)</a></li>
-          <li><a href="#services">Modern Web Platforms & E-Commerce</a></li>
-          <li><a href="#services">AI Models & Autonomous Agents</a></li>
-          <li><a href="#services">Cloud DevOps & AWS Infrastructure</a></li>
+          <li><a href="#services">Modern Web Platforms &amp; E-Commerce</a></li>
+          <li><a href="#services">AI Models &amp; Autonomous Agents</a></li>
+          <li><a href="#services">Cloud DevOps &amp; AWS Infrastructure</a></li>
         </ul>
       </div>
 
       <!-- Col 3: Company & Direct Contact -->
-      <div>
+      <div class="footer-links-col">
         <h4 class="footer-col-title">Studio Links</h4>
         <ul class="footer-links-list">
           <li><a href="#internship" style="color:var(--primary); font-weight:700;">🎓 2-Month Internship Program</a></li>
@@ -1806,26 +1817,34 @@
       </div>
 
       <!-- Col 4: Newsletter -->
-      <div>
-        <h4 class="footer-col-title">Studio Newsletter</h4>
-        <p style="font-size:0.875rem; color:var(--text-muted); margin-bottom:14px; line-height:1.5;">
-          Get our monthly breakdown on emerging AI architectures and software design patterns.
-        </p>
-        <form class="newsletter-box" id="newsletterForm">
-          <input type="email" id="newsletterEmail" placeholder="your@email.com" required>
-          <button type="submit" class="btn btn-primary btn-sm">Join</button>
-        </form>
+      <div class="footer-newsletter-col">
+        <div class="newsletter-card">
+          <div class="newsletter-card-header">
+            <span style="font-size:1.1rem;">📬</span>
+            <h4 class="footer-col-title" style="margin-bottom:0;">Studio Newsletter</h4>
+          </div>
+          <p class="newsletter-desc">
+            Get our monthly engineering breakdown on emerging AI architectures, scalable cloud systems, and design patterns.
+          </p>
+          <form class="newsletter-box" id="newsletterForm">
+            <input type="email" id="newsletterEmail" placeholder="your@email.com" required>
+            <button type="submit" class="btn btn-primary btn-sm">Join</button>
+          </form>
+          <span class="newsletter-sub-note">🔒 Zero spam. Unsubscribe anytime.</span>
+        </div>
       </div>
     </div>
 
     <!-- Bottom Bar -->
     <div class="footer-bottom-bar">
-      <div class="container" style="display:flex; justify-content:space-between; align-items:center; width:100%; flex-wrap:wrap; gap:12px;">
-        <p>&copy; 2026 <strong>Uzair AI Studio</strong>. All Rights Reserved. Founded by <strong>Muhammad Uzair</strong>.</p>
-        <div style="display:flex; gap:16px;">
-          <a href="#" style="color:var(--text-muted);">Privacy Policy</a>
-          <a href="#" style="color:var(--text-muted);">Terms of Service</a>
-          <a href="#" style="color:var(--text-muted);">Security & NDA</a>
+      <div class="container footer-bottom-inner">
+        <p class="footer-copyright">&copy; 2026 <strong>Uzair AI Studio</strong>. All Rights Reserved. Founded by <strong>Muhammad Uzair</strong>.</p>
+        <div class="footer-legal-links">
+          <a href="#">Privacy Policy</a>
+          <span class="legal-dot">•</span>
+          <a href="#">Terms of Service</a>
+          <span class="legal-dot">•</span>
+          <a href="#">Security &amp; NDA</a>
         </div>
       </div>
     </div>
