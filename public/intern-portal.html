@@ -2749,42 +2749,44 @@
         </div>
 
         <!-- Verified Digital Badge Hologram Card -->
-        <div style="background:#FFFFFF; border:2px solid #86EFAC; border-radius:16px; padding:22px; margin-bottom:24px; box-shadow:var(--shadow-md);">
-          <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; border-bottom:1px solid #DCFCE7; padding-bottom:14px; margin-bottom:16px;">
-            <div style="display:flex; align-items:center; gap:10px;">
-              <div style="width:38px; height:38px; background:#10B981; color:#fff; border-radius:50%; display:flex; align-items:center; justify-content:center; font-weight:800; font-size:1.2rem; box-shadow:0 2px 8px rgba(16,185,129,0.3);">✓</div>
-              <div>
-                <strong style="font-size:1.05rem; color:#065F46; letter-spacing:0.3px; display:block;">OFFICIAL VERIFIED CANDIDATE BADGE</strong>
-                <small style="font-size:0.75rem; color:#047857;">Autonomous Public Verification &bull; Uzair AI Studio</small>
-              </div>
+        <div style="background:#FFFFFF; border:2px solid #86EFAC; border-radius:16px; padding:24px 20px; margin-bottom:24px; box-shadow:var(--shadow-md); text-align:center;">
+          <!-- Centered Header & Badge Title -->
+          <div style="display:flex; flex-direction:column; align-items:center; justify-content:center; gap:10px; border-bottom:1px solid #DCFCE7; padding-bottom:16px; margin-bottom:18px;">
+            <div style="width:44px; height:44px; background:#10B981; color:#fff; border-radius:50%; display:flex; align-items:center; justify-content:center; font-weight:800; font-size:1.35rem; box-shadow:0 3px 10px rgba(16,185,129,0.35); margin:0 auto;">✓</div>
+            <div>
+              <strong style="font-size:1.1rem; color:#065F46; letter-spacing:0.3px; display:block;">OFFICIAL VERIFIED CANDIDATE BADGE</strong>
+              <small style="font-size:0.78rem; color:#047857; display:block; margin-top:3px;">Autonomous Public Verification &bull; Uzair AI Studio</small>
             </div>
-            <div id="badgeQrCodeBox" style="padding:4px; background:#FFFFFF; border:1px solid #E2E8F0; border-radius:8px;"></div>
+            <!-- Centered QR Code Box -->
+            <div id="badgeQrCodeBox" style="padding:6px; background:#FFFFFF; border:1px solid #CBD5E1; border-radius:10px; display:inline-flex; align-items:center; justify-content:center; margin:8px auto 0; box-shadow:0 2px 8px rgba(0,0,0,0.05);"></div>
           </div>
 
-          <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(200px, 1fr)); gap:12px; font-size:0.85rem;">
-            <div>
-              <span style="color:#64748B; font-size:0.75rem; display:block;">Candidate Name:</span>
-              <strong id="badgeName" style="color:#0F172A; font-size:1rem;">-</strong>
+          <!-- Centered Candidate Details Grid -->
+          <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(180px, 1fr)); gap:14px; font-size:0.85rem; text-align:center; max-width:760px; margin:0 auto 18px;">
+            <div style="padding:8px; background:#F8FAFC; border-radius:8px; border:1px solid #F1F5F9;">
+              <span style="color:#64748B; font-size:0.75rem; display:block; margin-bottom:2px;">Candidate Name:</span>
+              <strong id="badgeName" style="color:#0F172A; font-size:1rem; display:block;">-</strong>
             </div>
-            <div>
-              <span style="color:#64748B; font-size:0.75rem; display:block;">Registration ID:</span>
-              <strong id="badgeId" style="font-family:var(--font-mono); color:#0F172A;">-</strong>
+            <div style="padding:8px; background:#F8FAFC; border-radius:8px; border:1px solid #F1F5F9;">
+              <span style="color:#64748B; font-size:0.75rem; display:block; margin-bottom:2px;">Registration ID:</span>
+              <strong id="badgeId" style="font-family:var(--font-mono); color:#0F172A; font-size:0.92rem; display:block;">-</strong>
             </div>
-            <div>
-              <span style="color:#64748B; font-size:0.75rem; display:block;">Domain / Track:</span>
-              <strong id="badgeDomain" style="color:#0F172A;">-</strong>
+            <div style="padding:8px; background:#F8FAFC; border-radius:8px; border:1px solid #F1F5F9;">
+              <span style="color:#64748B; font-size:0.75rem; display:block; margin-bottom:2px;">Domain / Track:</span>
+              <strong id="badgeDomain" style="color:#0F172A; font-size:0.95rem; display:block;">-</strong>
             </div>
-            <div>
-              <span style="color:#64748B; font-size:0.75rem; display:block;">Supervisor:</span>
-              <strong style="color:#0F172A;">Muhammad Uzair (Founder)</strong>
+            <div style="padding:8px; background:#F8FAFC; border-radius:8px; border:1px solid #F1F5F9;">
+              <span style="color:#64748B; font-size:0.75rem; display:block; margin-bottom:2px;">Supervisor:</span>
+              <strong style="color:#0F172A; font-size:0.92rem; display:block;">Muhammad Uzair (Founder)</strong>
             </div>
           </div>
 
-          <div style="margin-top:16px; display:flex; gap:10px; flex-wrap:wrap;">
-            <a id="btnBadgeVerifyLink" href="#" target="_blank" class="vault-btn primary" style="width:auto; padding:8px 16px; font-size:0.8rem;">
+          <!-- Centered Action Buttons -->
+          <div style="margin-top:16px; display:flex; gap:10px; justify-content:center; align-items:center; flex-wrap:wrap;">
+            <a id="btnBadgeVerifyLink" href="#" target="_blank" class="vault-btn primary" style="width:auto; padding:9px 18px; font-size:0.82rem;">
               <span>🛡️ Open Live Verification Page</span>
             </a>
-            <button type="button" id="btnCopyBadgeLink" class="vault-btn" style="width:auto; background:#F8FAFC; border:1px solid #CBD5E1; color:#334155; padding:8px 16px; font-size:0.8rem;">
+            <button type="button" id="btnCopyBadgeLink" class="vault-btn" style="width:auto; background:#F8FAFC; border:1px solid #CBD5E1; color:#334155; padding:9px 18px; font-size:0.82rem;">
               <span>📋 Copy Verification Link</span>
             </button>
           </div>

@@ -6,7 +6,7 @@
  * Pre-caches shells, offline document templates, and assets.
  */
 
-const CACHE_NAME = 'uzair-studio-v24';
+const CACHE_NAME = 'uzair-studio-v25';
 
 const PRECACHE_URLS = [
   // App Shells
