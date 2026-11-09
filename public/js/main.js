@@ -2075,12 +2075,7 @@ function initInternshipModule() {
                 </div>
               </div>
 
-              <!-- Verified Candidate Status Endorsement -->
-              <div style="display:flex; gap:10px; flex-wrap:wrap; align-items:center; justify-content:flex-start;">
-                <a href="https://wa.me/923433885835?text=${encodeURIComponent(`Hi Coordinator, checking registration status for ${app.fullName} (${app.id})`)}" target="_blank" class="btn btn-whatsapp btn-sm">
-                  <span>💬 Coordinator WhatsApp</span>
-                </a>
-              </div>
+
             </div>
           </div>
         `;
