@@ -1867,12 +1867,22 @@ function initInternshipModule() {
       return;
     }
 
-    // Provide immediate user feedback
+    // Provide immediate user feedback & disable button
     showToast('🔍 Analyzing uploaded QR image with optical engine...');
     if (btnUploadQr) {
       btnUploadQr.disabled = true;
-      btnUploadQr.dataset.origHtml = btnUploadQr.innerHTML;
-      btnUploadQr.innerHTML = '<span>Scanning...</span>';
+      if (!btnUploadQr.dataset.origHtml) {
+        btnUploadQr.dataset.origHtml = btnUploadQr.innerHTML;
+      }
+      btnUploadQr.innerHTML = '<span style="display:inline-flex; align-items:center; gap:6px;"><span style="display:inline-block; width:12px; height:12px; border:2px solid #0F172A; border-top-color:transparent; border-radius:50%; animation:spin 0.8s linear infinite;"></span> Scanning...</span>';
+    }
+
+    function resetButton() {
+      if (btnUploadQr && btnUploadQr.dataset.origHtml) {
+        btnUploadQr.disabled = false;
+        btnUploadQr.innerHTML = btnUploadQr.dataset.origHtml;
+      }
+      if (qrFileInput) qrFileInput.value = '';
     }
 
     const reader = new FileReader();
@@ -1880,38 +1890,38 @@ function initInternshipModule() {
       const dataUrl = re.target.result;
       const img = new Image();
       img.onload = async () => {
-        const decoded = await decodeQrFromImageElement(img, dataUrl);
-        if (guideText) guideText.textContent = prevGuide;
-
-        if (decoded) {
-          handleDetectedQr(decoded);
-        } else {
-          showToast('⚠️ No valid QR code detected in image. Please ensure the QR code is clear, or enter your Registration ID below.');
-          const targetInput = statusInput || document.getElementById('statusLookupQuery');
-          if (targetInput) {
-            targetInput.scrollIntoView({ behavior: 'smooth', block: 'center' });
-            setTimeout(() => {
-              targetInput.focus();
-              targetInput.style.boxShadow = '0 0 0 4px rgba(37, 99, 235, 0.35)';
-              setTimeout(() => { targetInput.style.boxShadow = ''; }, 3000);
-            }, 450);
+        try {
+          const decoded = await decodeQrFromImageElement(img, dataUrl);
+          if (decoded) {
+            handleDetectedQr(decoded);
+          } else {
+            showToast('⚠️ No valid QR code detected in image. Please ensure the QR code is clear, or enter your Registration ID below.');
+            const targetInput = statusInput || document.getElementById('statusLookupQuery');
+            if (targetInput) {
+              targetInput.scrollIntoView({ behavior: 'smooth', block: 'center' });
+              setTimeout(() => {
+                targetInput.focus();
+                targetInput.style.boxShadow = '0 0 0 4px rgba(37, 99, 235, 0.35)';
+                setTimeout(() => { targetInput.style.boxShadow = ''; }, 3000);
+              }, 450);
+            }
           }
+        } catch (err) {
+          console.error('QR decode exception:', err);
+          showToast('⚠️ Error analyzing QR image. Please enter your Registration ID manually below.');
+        } finally {
+          resetButton();
         }
-        if (btnUploadQr && btnUploadQr.dataset.origHtml) {
-          btnUploadQr.disabled = false;
-          btnUploadQr.innerHTML = btnUploadQr.dataset.origHtml;
-        }
-        if (qrFileInput) qrFileInput.value = '';
       };
       img.onerror = () => {
-        if (btnUploadQr && btnUploadQr.dataset.origHtml) {
-          btnUploadQr.disabled = false;
-          btnUploadQr.innerHTML = btnUploadQr.dataset.origHtml;
-        }
+        resetButton();
         showToast('⚠️ Failed to load image file. Please try another image or enter Registration ID manually.');
-        if (qrFileInput) qrFileInput.value = '';
       };
       img.src = dataUrl;
+    };
+    reader.onerror = () => {
+      resetButton();
+      showToast('⚠️ Could not read file from your device.');
     };
     reader.readAsDataURL(file);
   }
