@@ -78,6 +78,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 let serverPng = null;
 let serverJpeg = null;
 let serverJsQR = null;
+let serverZXing = null;
 try {
   serverPng = require('pngjs').PNG;
 } catch (e) {}
@@ -86,6 +87,9 @@ try {
 } catch (e) {}
 try {
   serverJsQR = require(path.join(__dirname, 'public', 'js', 'jsqr.min.js'));
+} catch (e) {}
+try {
+  serverZXing = require('@zxing/library');
 } catch (e) {}
 
 // Ensure data directory and files exist
@@ -1178,6 +1182,28 @@ function decodeQrFromImageBuffer(buffer) {
       text = scanBuf(scaled, sW, sH);
       if (text) return text;
     }
+  }
+
+  // Pass 6: ZXing Multi-Format Decoding Engine
+  if (serverZXing) {
+    try {
+      const luminances = new Uint8ClampedArray(W * H);
+      for (let i = 0; i < luminances.length; i++) {
+        luminances[i] = ((data[i * 4] * 299 + data[i * 4 + 1] * 587 + data[i * 4 + 2] * 114) / 1000);
+      }
+      const lumSource = new serverZXing.RGBLuminanceSource(luminances, W, H);
+      const reader = new serverZXing.QRCodeReader();
+      try {
+        const hybridBmp = new serverZXing.BinaryBitmap(new serverZXing.HybridBinarizer(lumSource));
+        const zxRes = reader.decode(hybridBmp);
+        if (zxRes && zxRes.getText()) return zxRes.getText();
+      } catch (e) {}
+      try {
+        const globalBmp = new serverZXing.BinaryBitmap(new serverZXing.GlobalHistogramBinarizer(lumSource));
+        const zxRes2 = reader.decode(globalBmp);
+        if (zxRes2 && zxRes2.getText()) return zxRes2.getText();
+      } catch (e) {}
+    } catch (zxErr) {}
   }
 
   return null;

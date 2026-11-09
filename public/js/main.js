@@ -1876,10 +1876,13 @@ function initInternshipModule() {
       return;
     }
 
-    // Temporary HUD status
-    const guideText = qrContainer ? qrContainer.querySelector('.scanner-alignment-guide') : null;
-    const prevGuide = guideText ? guideText.textContent : '';
-    if (guideText) guideText.textContent = '⚡ Analyzing uploaded image...';
+    // Provide immediate user feedback
+    showToast('🔍 Analyzing uploaded QR image with optical engine...');
+    if (btnUploadQr) {
+      btnUploadQr.disabled = true;
+      btnUploadQr.dataset.origHtml = btnUploadQr.innerHTML;
+      btnUploadQr.innerHTML = '<span>Scanning...</span>';
+    }
 
     const reader = new FileReader();
     reader.onload = (re) => {
@@ -1892,23 +1895,29 @@ function initInternshipModule() {
         if (decoded) {
           handleDetectedQr(decoded);
         } else {
-          // Failure Guidance: non-blocking audio, toast, and auto-focus manual search field
-          playBeepSound('error');
-          showToast('⚠️ No valid QR code detected. Please ensure the QR code is clearly visible, or enter your Registration ID manually below.');
-          if (refIdInput) {
-            refIdInput.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          showToast('⚠️ No valid QR code detected in image. Please ensure the QR code is clear, or enter your Registration ID below.');
+          const targetInput = statusInput || document.getElementById('statusLookupQuery');
+          if (targetInput) {
+            targetInput.scrollIntoView({ behavior: 'smooth', block: 'center' });
             setTimeout(() => {
-              refIdInput.focus();
-              refIdInput.style.boxShadow = '0 0 0 4px rgba(37, 99, 235, 0.35)';
-              setTimeout(() => { refIdInput.style.boxShadow = ''; }, 3000);
+              targetInput.focus();
+              targetInput.style.boxShadow = '0 0 0 4px rgba(37, 99, 235, 0.35)';
+              setTimeout(() => { targetInput.style.boxShadow = ''; }, 3000);
             }, 450);
           }
+        }
+        if (btnUploadQr && btnUploadQr.dataset.origHtml) {
+          btnUploadQr.disabled = false;
+          btnUploadQr.innerHTML = btnUploadQr.dataset.origHtml;
         }
         if (qrFileInput) qrFileInput.value = '';
       };
       img.onerror = () => {
-        if (guideText) guideText.textContent = prevGuide;
-        showToast('⚠️ Failed to load image. Please try another file or enter Registration ID manually.');
+        if (btnUploadQr && btnUploadQr.dataset.origHtml) {
+          btnUploadQr.disabled = false;
+          btnUploadQr.innerHTML = btnUploadQr.dataset.origHtml;
+        }
+        showToast('⚠️ Failed to load image file. Please try another image or enter Registration ID manually.');
         if (qrFileInput) qrFileInput.value = '';
       };
       img.src = dataUrl;
