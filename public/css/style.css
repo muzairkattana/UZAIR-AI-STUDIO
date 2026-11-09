@@ -2746,34 +2746,12 @@ img, svg, video, canvas, audio, iframe {
   }
 }
 
-/* Toast Message */
+/* Toast Message - Hidden on main page */
 .toast-alert {
-  position: fixed;
-  bottom: 24px;
-  left: 50%;
-  transform: translateX(-50%) translateY(100px);
-  background: #0F172A;
-  color: #FFFFFF;
-  padding: 12px 22px;
-  border-radius: 10px;
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.28);
-  font-weight: 600;
-  font-size: 0.875rem;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  z-index: 1000;
-  opacity: 0;
-  transition: all var(--transition-normal);
-  pointer-events: none;
-  max-width: 90vw;
-  text-align: center;
-}
-
-.toast-alert.show {
-  transform: translateX(-50%) translateY(0);
-  opacity: 1;
-  pointer-events: auto;
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
 }
 
 /* ============================================================

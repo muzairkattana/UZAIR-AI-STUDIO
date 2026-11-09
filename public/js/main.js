@@ -886,23 +886,11 @@ function initCanvasParticles() {
 }
 
 /* ============================================================
-   TOAST HELPER
+   TOAST HELPER (DISABLED ON MAIN PAGE PER USER REQUEST)
    ============================================================ */
 function showToast(text) {
-  let toast = document.getElementById('globalToast');
-  if (!toast) {
-    toast = document.createElement('div');
-    toast.id = 'globalToast';
-    toast.className = 'toast-alert';
-    document.body.appendChild(toast);
-  }
-
-  toast.textContent = text;
-  toast.classList.add('show');
-
-  setTimeout(() => {
-    toast.classList.remove('show');
-  }, 4200);
+  // Notification toasts disabled on main page
+  return;
 }
 
 /* ============================================================
