@@ -2781,14 +2781,14 @@ img, svg, video, canvas, audio, iframe {
    ============================================================ */
 .ai-chat-launcher {
   position: fixed;
-  bottom: 24px;
-  right: 24px;
+  bottom: 20px;
+  right: 16px;
   z-index: 900;
 }
 
 .btn-ai-chat-round {
-  width: 54px;
-  height: 54px;
+  width: 50px;
+  height: 50px;
   border-radius: 50%;
   background: linear-gradient(135deg, #090D16 0%, #0F172A 50%, #1E293B 100%);
   color: #FFFFFF;
@@ -2821,8 +2821,8 @@ img, svg, video, canvas, audio, iframe {
 /* Floating Back to Top Button */
 .btn-back-to-top {
   position: fixed;
-  bottom: 88px;
-  right: 24px;
+  bottom: 78px;
+  right: 19px;
   width: 44px;
   height: 44px;
   border-radius: 50%;
@@ -2856,9 +2856,17 @@ img, svg, video, canvas, audio, iframe {
 }
 
 @media (max-width: 640px) {
+  .ai-chat-launcher {
+    bottom: 16px;
+    right: 14px;
+  }
+  .btn-ai-chat-round {
+    width: 46px;
+    height: 46px;
+  }
   .btn-back-to-top {
-    bottom: 78px;
-    right: 20px;
+    bottom: 70px;
+    right: 17px;
     width: 40px;
     height: 40px;
   }
@@ -3774,7 +3782,7 @@ img, svg, video, canvas, audio, iframe {
   
   .ai-chat-launcher {
     bottom: 16px;
-    right: 16px;
+    right: 14px;
   }
   
   body.chat-open-mobile {
