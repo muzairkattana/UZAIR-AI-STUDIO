@@ -106,6 +106,8 @@
   }
 
   window.directPrintDocument = function(rawUrl, docTitle, candidateName, shouldAutoPrint = false, showToast = true) {
+    // Explicitly enforce no auto-trigger print; candidate uses the document preview toolbar / print button
+    shouldAutoPrint = false;
     if (!rawUrl || rawUrl === '#' || rawUrl.endsWith('#')) {
       showPortalToast('Document link is not ready yet.', 'warning');
       return;
@@ -740,7 +742,7 @@
       btnOffer.innerHTML = '<span>🖨️ Direct Print Offer Letter</span>';
       btnOffer.onclick = (e) => {
         e.preventDefault();
-        window.directPrintDocument(offerUrl, 'Internship Offer Letter', currentIntern.fullName, true);
+        window.directPrintDocument(offerUrl, 'Internship Offer Letter', currentIntern.fullName, false);
       };
     }
 
@@ -758,7 +760,7 @@
       btnLor.innerHTML = '<span>🖨️ Direct Print LOR</span>';
       btnLor.onclick = (e) => {
         e.preventDefault();
-        window.directPrintDocument(lorUrl, 'Letter of Recommendation (LOR)', currentIntern.fullName, true);
+        window.directPrintDocument(lorUrl, 'Letter of Recommendation (LOR)', currentIntern.fullName, false);
       };
     } else {
       badgeLor.className = 'vault-card-badge badge-locked';
@@ -787,7 +789,7 @@
       btnCert.innerHTML = '<span>🖨️ Direct Print Certificate</span>';
       btnCert.onclick = (e) => {
         e.preventDefault();
-        window.directPrintDocument(certUrl, 'Certificate of Completion', currentIntern.fullName, true);
+        window.directPrintDocument(certUrl, 'Certificate of Completion', currentIntern.fullName, false);
       };
     } else {
       badgeCert.className = 'vault-card-badge badge-locked';
@@ -819,7 +821,7 @@
       btnExp.innerHTML = '<span>🖨️ Direct Print Experience Letter</span>';
       btnExp.onclick = (e) => {
         e.preventDefault();
-        window.directPrintDocument(expUrl, 'Experience Letter', currentIntern.fullName, true);
+        window.directPrintDocument(expUrl, 'Experience Letter', currentIntern.fullName, false);
       };
     } else if (isEligibleLongTrack) {
       badgeExp.className = 'vault-card-badge badge-locked';

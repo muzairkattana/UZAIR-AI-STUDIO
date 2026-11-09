@@ -2336,7 +2336,119 @@
       stroke: #0F172A !important;
     }
 
-  </style>
+  
+    /* Ultra-Responsive Mobile Refinements */
+    @media (max-width: 640px) {
+      .welcome-card-v2 {
+        padding: 18px 14px !important;
+        border-radius: 16px !important;
+        flex-direction: column !important;
+        align-items: stretch !important;
+        gap: 14px !important;
+      }
+      .welcome-meta-v2 {
+        min-width: 0 !important;
+        width: 100% !important;
+      }
+      .welcome-candidate-badge-row {
+        gap: 6px !important;
+      }
+      .badge-role-tag,
+      .welcome-pill-v2 {
+        font-size: 0.68rem !important;
+        padding: 3px 8px !important;
+      }
+      .welcome-greeting-title {
+        font-size: 1.25rem !important;
+        margin-bottom: 6px !important;
+      }
+      .welcome-sub-desc {
+        font-size: 0.78rem !important;
+        gap: 6px !important;
+      }
+      .welcome-actions-v2 {
+        width: 100% !important;
+        display: flex !important;
+        flex-direction: row !important;
+        gap: 8px !important;
+      }
+      .btn-welcome-wa,
+      .btn-welcome-profile {
+        flex: 1 1 0 !important;
+        min-width: 0 !important;
+        padding: 9px 8px !important;
+        font-size: 0.78rem !important;
+        justify-content: center !important;
+        box-sizing: border-box !important;
+        white-space: nowrap !important;
+      }
+      .btn-welcome-wa svg,
+      .btn-welcome-profile svg {
+        width: 15px !important;
+        height: 15px !important;
+        flex-shrink: 0 !important;
+      }
+      
+      /* Week Card & Task Assignment Layout on Small Screens */
+      .week-card {
+        border-radius: 12px !important;
+      }
+      .week-header {
+        padding: 12px 12px !important;
+        gap: 8px !important;
+      }
+      .week-title-box {
+        gap: 8px !important;
+        flex: 1 !important;
+        min-width: 0 !important;
+      }
+      .week-title-box h3 {
+        font-size: 0.88rem !important;
+        line-height: 1.25 !important;
+        word-break: break-word !important;
+      }
+      .week-title-box p {
+        font-size: 0.72rem !important;
+        line-height: 1.3 !important;
+      }
+      .week-num-badge {
+        width: 28px !important;
+        height: 28px !important;
+        min-width: 28px !important;
+        font-size: 0.75rem !important;
+        flex-shrink: 0 !important;
+      }
+      .week-header .vault-card-badge {
+        font-size: 0.68rem !important;
+        padding: 2px 6px !important;
+        flex-shrink: 0 !important;
+        white-space: nowrap !important;
+      }
+      .week-body {
+        padding: 14px 12px !important;
+      }
+      .task-item {
+        padding: 10px !important;
+      }
+      .task-top-row {
+        gap: 8px !important;
+      }
+      .task-actions-row {
+        flex-direction: column !important;
+        align-items: stretch !important;
+        gap: 6px !important;
+      }
+      .btn-view-task-assignment,
+      .btn-view-task-guide {
+        width: 100% !important;
+        justify-content: center !important;
+        padding: 8px 10px !important;
+        font-size: 0.75rem !important;
+        box-sizing: border-box !important;
+      }
+    }
+
+</style>
 </head>
 <body>
 
@@ -2706,26 +2818,8 @@
       <!-- VIEW: MIT AI COURSE STUDIO HUB & VIDEO PLAYER -->
       <div id="viewMitCourse" class="portal-view-pane" style="display:none;">
         
-        <!-- Header Banner -->
-        <div class="mit-course-header-banner" style="background:linear-gradient(135deg, #090D16 0%, #0F172A 50%, #1E1B4B 100%); border-radius:20px; padding:28px 24px; margin-bottom:24px; color:#FFFFFF; border:1.5px solid rgba(255,255,255,0.12); box-shadow:0 16px 36px -10px rgba(15,23,42,0.35); text-align:center;">
-          <div style="max-width:880px; margin:0 auto; text-align:center;">
-            <h1 class="mit-course-title" style="font-size:1.65rem; font-weight:900; margin:0 auto 10px; color:#FFFFFF; letter-spacing:-0.01em; text-align:center;">
-              MIT Artificial Intelligence Course
-            </h1>
-            <p style="font-size:0.9rem; color:#CBD5E1; margin:0 auto 16px; line-height:1.6; max-width:820px; text-align:center;">
-              Taught by the legendary <strong>Prof. Patrick Henry Winston</strong>. This comprehensive course covers Reasoning, Search, Heuristic Problem Solving, Constraint Propagation, Neural Networks, Deep Learning, Support Vector Machines, Boosting, Natural Language, and Cognitive Architectures.
-            </p>
-            <div class="mit-course-meta-pills" style="display:flex; align-items:center; justify-content:center; gap:16px; flex-wrap:wrap; font-size:0.8rem; color:#94A3B8; text-align:center;">
-              <span>🎓 <strong>Instructor:</strong> Prof. Patrick H. Winston</span>
-              <span>🏛️ <strong>Institution:</strong> MIT EECS</span>
-              <span>📚 <strong>Lectures:</strong> 24 Core Sessions</span>
-              <span>⚡ <strong>Format:</strong> High-Definition In-Portal Streaming</span>
-            </div>
-          </div>
-        </div>
-
-        <!-- In-Portal Interactive Lecture Theater -->
-        <div style="display:grid; grid-template-columns:1fr 360px; gap:22px; margin-bottom:30px;" class="mit-course-theater-grid" id="mitCourseTheaterGrid">
+        <!-- Top Lecture Theater: Direct High-Impact Video Player First -->
+        <div style="display:grid; grid-template-columns:1fr 360px; gap:22px; margin-bottom:24px;" class="mit-course-theater-grid" id="mitCourseTheaterGrid">
           
           <!-- Left Main Video Player -->
           <div class="mit-video-player-card">
@@ -2745,7 +2839,7 @@
             </div>
 
             <!-- Video Info Bar -->
-            <div class="mit-video-info-bar" style="background:#0F172A; color:#FFFFFF; border-top:1px solid #1E293B;">
+            <div class="mit-video-info-bar">
               <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; margin-bottom:8px;">
                 <span id="mitCurrentLectureBadge" style="background:#3B82F6; color:#FFFFFF; font-size:0.75rem; font-weight:800; padding:3px 12px; border-radius:6px; letter-spacing:0.04em;">
                   LECTURE 1 OF 24
@@ -2799,6 +2893,24 @@
             </div>
           </div>
 
+        </div>
+
+        <!-- Clean Compact Course Synopsis Footer Banner (Extra clutter stripped, positioned at bottom) -->
+        <div class="mit-course-header-banner" style="background:linear-gradient(135deg, #090D16 0%, #0F172A 50%, #1E1B4B 100%); border-radius:16px; padding:20px 22px; margin-top:14px; margin-bottom:28px; color:#FFFFFF; border:1px solid rgba(255,255,255,0.1); box-shadow:0 12px 28px -10px rgba(15,23,42,0.3); text-align:center;">
+          <div style="max-width:820px; margin:0 auto; text-align:center;">
+            <h3 class="mit-course-title" style="font-size:1.15rem; font-weight:800; margin:0 auto 6px; color:#FFFFFF; letter-spacing:-0.01em;">
+              MIT Artificial Intelligence Course (6.034)
+            </h3>
+            <p style="font-size:0.825rem; color:#94A3B8; margin:0 auto 10px; line-height:1.5; max-width:760px;">
+              Taught by <strong>Prof. Patrick Henry Winston</strong> (MIT EECS). Curriculum covers Reasoning, Search, Heuristics, Neural Networks, Deep Learning, SVMs, and Cognitive Architectures.
+            </p>
+            <div class="mit-course-meta-pills" style="display:flex; align-items:center; justify-content:center; gap:12px; flex-wrap:wrap; font-size:0.75rem; color:#CBD5E1;">
+              <span>🎓 Prof. Patrick H. Winston</span>
+              <span>🏛️ MIT EECS</span>
+              <span>📚 24 Core Sessions</span>
+              <span>⚡ Full In-Portal Stream</span>
+            </div>
+          </div>
         </div>
 
       </div>
