@@ -7,7 +7,7 @@
 
   var UzairQrBadge = {
     // Generate a branded executive badge canvas (480x640 High-Res)
-    generateBadgeCanvas: function(candidate, qrCanvas) {
+    generateBadgeCanvas: function(candidate, qrCanvas, logoImg) {
       var canvas = document.createElement('canvas');
       canvas.width = 480;
       canvas.height = 640;
@@ -30,25 +30,47 @@
       ctx.lineWidth = 2;
       ctx.strokeRect(1, 1, 478, 638);
 
-      // Organization Header
-      ctx.fillStyle = '#0F172A';
-      ctx.font = 'bold 20px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
-      ctx.textAlign = 'center';
-      ctx.fillText('UZAIR AI STUDIO', 240, 50);
+      // Draw Official Logo if available
+      if (logoImg && logoImg.complete && logoImg.naturalWidth > 0) {
+        try {
+          ctx.drawImage(logoImg, 32, 28, 48, 48);
+          // Organization Header (Offset next to logo)
+          ctx.fillStyle = '#0F172A';
+          ctx.font = 'bold 20px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
+          ctx.textAlign = 'left';
+          ctx.fillText('UZAIR AI STUDIO', 92, 48);
 
-      ctx.fillStyle = '#64748B';
-      ctx.font = '600 11px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
-      ctx.fillText('OFFICIAL DIGITAL CREDENTIAL & VERIFICATION BADGE', 240, 70);
+          ctx.fillStyle = '#64748B';
+          ctx.font = '600 10.5px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
+          ctx.fillText('OFFICIAL DIGITAL CREDENTIAL & VERIFICATION BADGE', 92, 66);
+        } catch(e) {
+          drawFallbackHeader();
+        }
+      } else {
+        drawFallbackHeader();
+      }
+
+      function drawFallbackHeader() {
+        ctx.fillStyle = '#0F172A';
+        ctx.font = 'bold 20px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
+        ctx.textAlign = 'center';
+        ctx.fillText('UZAIR AI STUDIO', 240, 50);
+
+        ctx.fillStyle = '#64748B';
+        ctx.font = '600 11px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
+        ctx.fillText('OFFICIAL DIGITAL CREDENTIAL & VERIFICATION BADGE', 240, 70);
+      }
 
       // Divider line
       ctx.strokeStyle = '#F1F5F9';
       ctx.lineWidth = 1;
       ctx.beginPath();
-      ctx.moveTo(40, 84);
-      ctx.lineTo(440, 84);
+      ctx.moveTo(32, 86);
+      ctx.lineTo(448, 86);
       ctx.stroke();
 
       // Candidate Name
+      ctx.textAlign = 'center';
       ctx.fillStyle = '#0F172A';
       ctx.font = 'bold 22px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
       ctx.fillText(candidate.fullName || 'Candidate Record', 240, 118);
@@ -134,13 +156,30 @@
         }
       }
 
-      var badgeCanvas = this.generateBadgeCanvas(candidate, qrCanvas);
-      var link = document.createElement('a');
-      link.download = (candidate.id || 'UZ-INT') + '-Official-QR-Badge.png';
-      link.href = badgeCanvas.toDataURL('image/png');
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
+      var self = this;
+      var logoImg = new Image();
+      logoImg.crossOrigin = 'anonymous';
+      logoImg.src = '/assets/uzairaistudio.png';
+
+      function triggerDownload(logo) {
+        var badgeCanvas = self.generateBadgeCanvas(candidate, qrCanvas, logo);
+        var link = document.createElement('a');
+        link.download = (candidate.id || 'UZ-INT') + '-Official-QR-Badge.png';
+        link.href = badgeCanvas.toDataURL('image/png');
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      }
+
+      if (logoImg.complete && logoImg.naturalWidth > 0) {
+        triggerDownload(logoImg);
+      } else {
+        logoImg.onload = function() { triggerDownload(logoImg); };
+        logoImg.onerror = function() { triggerDownload(null); };
+        setTimeout(function() {
+          if (!logoImg.complete) triggerDownload(null);
+        }, 600);
+      }
     },
 
     // Download standalone raw QR code PNG

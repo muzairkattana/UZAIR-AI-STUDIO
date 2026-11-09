@@ -438,22 +438,17 @@
         </div>
       </div>
 
+      <!-- Protected Documents Notice -->
+      <div style="background:#F8FAFC; border:1px solid #E2E8F0; border-radius:12px; padding:14px 16px; margin-bottom:20px; text-align:center;">
+        <span style="font-size:0.8rem; color:#475569; display:inline-flex; align-items:center; gap:6px; font-weight:600;">
+          🔒 <strong>Confidentiality Protection:</strong> Official candidate documents (Offer Letter, Recommendation Letter, Certificate) are protected and accessible exclusively via Candidate Authentication in the Intern Portal or Administrator Dashboard.
+        </span>
+      </div>
+
       <!-- Action Buttons (Zero-Overflow Responsive Layout) -->
       <div class="verify-actions">
         <a href="/intern-portal" class="btn btn-primary" style="background:linear-gradient(135deg, #10B981, #059669); border:none; box-shadow:0 4px 12px rgba(16, 185, 129, 0.35);">
-          <span>🔐 Sign In to Intern Portal &rarr;</span>
-        </a>
-        <a id="btnViewCert" href="#" target="_blank" class="btn btn-primary" style="display:none; background:linear-gradient(135deg, #F59E0B, #D97706); border:none; box-shadow:0 4px 12px rgba(245, 158, 11, 0.35);">
-          <span>🎓 View Certificate of Completion</span>
-        </a>
-        <a id="btnViewOfferLetter" href="#" target="_blank" class="btn btn-primary">
-          <span>📄 View Offer Letter</span>
-        </a>
-        <a id="btnViewLor" href="#" target="_blank" class="btn btn-outline" style="border-color:#2563EB; color:#1D4ED8;">
-          <span>📜 View Recommendation</span>
-        </a>
-        <a id="btnViewExpLetter" href="#" target="_blank" class="btn btn-outline" style="display:none; border-color:#8B5CF6; color:#6D28D9;">
-          <span>💼 View Experience Letter</span>
+          <span>🔐 Candidate Sign In (Document Vault) &rarr;</span>
         </a>
         <a id="btnWhatsAppCoord" href="https://wa.me/923433885835?text=Hello%20Uzair%20AI%20Studio,%20I%20am%20verifying%20intern%20credential" target="_blank" class="btn btn-whatsapp">
           <span>💬 Coordinator WhatsApp</span>
@@ -885,53 +880,6 @@
         document.getElementById('vProgressFill').style.width = `${Math.max(10, d.progressPercent || 20)}%`;
       }
 
-      // Document Links
-      document.getElementById('btnViewOfferLetter').href = `/offer-letter/${encodeURIComponent(d.id)}`;
-      
-      const btnCert = document.getElementById('btnViewCert');
-      if (btnCert) {
-        if (isCompleted) {
-          btnCert.style.display = 'inline-flex';
-          btnCert.href = `/certificate/${encodeURIComponent(d.id)}`;
-        } else {
-          btnCert.style.display = 'none';
-        }
-      }
-
-      const btnLor = document.getElementById('btnViewLor');
-      if (isCompleted) {
-        btnLor.href = `/recommendation-letter/${encodeURIComponent(d.id)}`;
-        btnLor.innerHTML = '<span>📜 View Recommendation</span>';
-        btnLor.className = 'btn btn-outline';
-        btnLor.style.borderColor = '#2563EB';
-        btnLor.style.color = '#1D4ED8';
-        btnLor.style.background = '';
-        btnLor.title = 'Official Letter of Recommendation issued';
-        btnLor.onclick = null;
-      } else {
-        btnLor.href = 'javascript:void(0)';
-        btnLor.innerHTML = `<span>🔒 Recommendation (Locked • ${daysLeft}d Left)</span>`;
-        btnLor.className = 'btn btn-outline';
-        btnLor.style.borderColor = '#CBD5E1';
-        btnLor.style.color = '#64748B';
-        btnLor.style.background = '#F8FAFC';
-        btnLor.title = `Letter of Recommendation unlocks upon internship completion on ${d.completionDate}`;
-        btnLor.onclick = (e) => {
-          e.preventDefault();
-          alert(`🔒 Letter of Recommendation Policy:\n\nUzair AI Studio issues official Letters of Recommendation exclusively upon completion of your full 2-month internship curriculum.\n\n• Candidate: ${d.fullName} (${d.id})\n• Completion Date: ${d.completionDate}\n• Days Remaining: ${daysLeft} Days\n\nYour Official Offer Letter is ready and available to view now!`);
-        };
-      }
-
-      const btnExp = document.getElementById('btnViewExpLetter');
-      if (btnExp) {
-        if (isCompleted) {
-          btnExp.style.display = 'inline-flex';
-          btnExp.href = `/experience-letter/${encodeURIComponent(d.id)}`;
-        } else {
-          btnExp.style.display = 'none';
-        }
-      }
-      
       const waCoord = document.getElementById('btnWhatsAppCoord');
       if (waCoord) {
         waCoord.href = `https://wa.me/923433885835?text=${encodeURIComponent(`Hello Uzair AI Studio, I am verifying intern credential: ${d.fullName} (${d.id})`)}`;
