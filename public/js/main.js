@@ -2075,17 +2075,8 @@ function initInternshipModule() {
                 </div>
               </div>
 
-              <!-- Action Buttons (Portal Sign-in & Verified Public Credentials) -->
-              <div style="display:flex; gap:10px; flex-wrap:wrap; align-items:center;">
-                <a href="/intern-portal" class="btn btn-primary" style="display:inline-flex; align-items:center; gap:8px; padding:10px 20px; font-weight:700; background:linear-gradient(135deg, #4338CA, #6366F1); box-shadow:0 4px 14px rgba(79,70,229,0.3);">
-                  <span>🔐 Sign In to Intern Portal &rarr;</span>
-                </a>
-                <a href="/verify?id=${encodeURIComponent(app.id)}" target="_blank" class="btn btn-outline btn-sm" style="border-color:#4F46E5; color:#4338CA; font-weight:700;">
-                  <span>🛡️ Full Verification Sheet</span>
-                </a>
-                <button type="button" class="btn btn-outline btn-sm" id="btnStatusDownloadBadge" style="border-color:#4F46E5; color:#4338CA; font-weight:700;">
-                  <span>🖼️ Save Verified Badge (PNG)</span>
-                </button>
+              <!-- Verified Candidate Status Endorsement -->
+              <div style="display:flex; gap:10px; flex-wrap:wrap; align-items:center; justify-content:flex-start;">
                 <a href="https://wa.me/923433885835?text=${encodeURIComponent(`Hi Coordinator, checking registration status for ${app.fullName} (${app.id})`)}" target="_blank" class="btn btn-whatsapp btn-sm">
                   <span>💬 Coordinator WhatsApp</span>
                 </a>
