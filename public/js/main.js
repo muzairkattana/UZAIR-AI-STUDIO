@@ -23,16 +23,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initCanvasParticles();
   initInternshipModule();
 
-  // Initialize Real-Time Notification Bell & Engine
-  if (window.UzairNotifications) {
-    window.UzairNotifications.initBell({
-      bellBtnId: 'notifBellBtn',
-      badgeId: 'notifBadgeCount',
-      dropdownId: 'notifCenterDropdown',
-      role: 'client'
-    });
-    window.UzairNotifications.startPolling('client');
-  }
+
 });
 
 /* ============================================================
