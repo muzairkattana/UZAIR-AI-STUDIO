@@ -5548,23 +5548,38 @@ img, svg, video, canvas, audio, iframe {
   top: calc(100% + 10px);
   right: 0;
   width: 340px;
-  max-width: calc(100vw - 28px);
+  max-width: calc(100vw - 24px);
   background: #FFFFFF;
   border: 1px solid #E2E8F0;
   border-radius: 16px;
   box-shadow: 0 16px 40px -4px rgba(15, 23, 42, 0.18), 0 0 0 1px rgba(15, 23, 42, 0.08);
-  z-index: 9999;
+  z-index: 999999;
   opacity: 0;
   visibility: hidden;
+  pointer-events: none;
   transform: translateY(-8px) scale(0.98);
   transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
   overflow: hidden;
 }
 
+@media (max-width: 640px) {
+  .uzair-notif-dropdown {
+    position: fixed !important;
+    top: 60px !important;
+    left: 10px !important;
+    right: 10px !important;
+    width: auto !important;
+    max-width: none !important;
+    border-radius: 14px !important;
+    box-shadow: 0 20px 48px rgba(15, 23, 42, 0.28) !important;
+  }
+}
+
 .uzair-notif-dropdown.open {
-  opacity: 1;
-  visibility: visible;
-  transform: translateY(0) scale(1);
+  opacity: 1 !important;
+  visibility: visible !important;
+  pointer-events: auto !important;
+  transform: translateY(0) scale(1) !important;
 }
 
 .notif-dropdown-header {

@@ -1589,21 +1589,23 @@
       transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
       overflow: hidden;
     }
-    @media (max-width: 480px) {
+    @media (max-width: 640px) {
       .uzair-notif-dropdown {
-        position: fixed;
-        top: 56px;
-        right: 12px;
-        left: 12px;
-        width: auto;
-        max-width: none;
+        position: fixed !important;
+        top: 60px !important;
+        left: 10px !important;
+        right: 10px !important;
+        width: auto !important;
+        max-width: none !important;
+        border-radius: 14px !important;
+        box-shadow: 0 20px 48px rgba(15, 23, 42, 0.28) !important;
       }
     }
     .uzair-notif-dropdown.open {
-      opacity: 1;
-      visibility: visible;
-      pointer-events: auto;
-      transform: translateY(0) scale(1);
+      opacity: 1 !important;
+      visibility: visible !important;
+      pointer-events: auto !important;
+      transform: translateY(0) scale(1) !important;
     }
     .notif-dropdown-header {
       display: flex;

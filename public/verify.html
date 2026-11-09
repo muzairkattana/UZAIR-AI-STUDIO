@@ -288,19 +288,42 @@
     /* Responsive Adjustments for Mobile & Tablet */
     @media (max-width: 600px) {
       body.verify-body {
-        padding: 16px 10px;
+        padding: 12px 8px 32px;
       }
       .credential-card {
-        padding: 22px 16px;
+        padding: 18px 14px;
         border-radius: 16px;
       }
       .candidate-name-hero {
-        font-size: 1.4rem;
+        font-size: 1.3rem;
+        line-height: 1.25;
+      }
+      .candidate-ref-badge {
+        font-size: 0.78rem;
+        padding: 3px 8px;
+        margin-bottom: 14px;
+      }
+      .card-top-seal {
+        display: none !important;
+      }
+      .verify-header {
+        gap: 12px;
+        padding-bottom: 14px;
+        margin-bottom: 16px;
+      }
+      .verify-header-logo {
+        width: 44px;
+        height: 44px;
       }
       .cred-grid {
         grid-template-columns: 1fr;
         gap: 10px;
-        padding: 14px;
+        padding: 12px 14px;
+        margin-bottom: 14px;
+      }
+      .timeline-card {
+        padding: 14px 12px;
+        margin-bottom: 14px;
       }
       .timeline-top {
         flex-direction: column;
@@ -309,19 +332,36 @@
       }
       .countdown-tag {
         align-self: flex-start;
+        font-size: 0.72rem;
+        padding: 3px 10px;
       }
       .timeline-dates-row {
         flex-direction: column;
         gap: 4px;
+        font-size: 0.72rem;
       }
       .qr-showcase-box {
         flex-direction: column;
         text-align: center;
         gap: 12px;
         padding: 14px 10px;
+        margin-bottom: 16px;
+      }
+      .qr-canvas-wrap {
+        margin: 0 auto;
+      }
+      .qr-desc strong {
+        font-size: 0.88rem;
+      }
+      .qr-desc p {
+        font-size: 0.76rem;
       }
       .verify-actions {
         grid-template-columns: 1fr;
+      }
+      .verify-actions .btn {
+        min-height: 42px;
+        font-size: 0.8rem;
       }
     }
 
@@ -447,19 +487,9 @@
 
       <!-- Action Buttons (Zero-Overflow Responsive Layout) -->
       <div class="verify-actions">
-        <a href="/intern-portal" class="btn btn-primary" style="background:linear-gradient(135deg, #10B981, #059669); border:none; box-shadow:0 4px 12px rgba(16, 185, 129, 0.35);">
-          <span>🔐 Candidate Sign In (Document Vault) &rarr;</span>
-        </a>
-        <a id="btnWhatsAppCoord" href="https://wa.me/923433885835?text=Hello%20Uzair%20AI%20Studio,%20I%20am%20verifying%20intern%20credential" target="_blank" class="btn btn-whatsapp">
-          <span>💬 Coordinator WhatsApp</span>
-        </a>
         <button type="button" onclick="window.print()" class="btn btn-outline">
           <span>🖨️ Print Credential</span>
         </button>
-      </div>
-
-      <div style="margin-top:16px; text-align:center;">
-        <a href="/" style="font-size:0.8rem; color:#64748B; font-weight:600; text-decoration:none;">&larr; Return to Uzair AI Studio Homepage</a>
       </div>
     </div>
 

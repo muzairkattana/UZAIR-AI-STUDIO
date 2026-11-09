@@ -128,54 +128,8 @@
   // Floating In-App Toast
   let activeToastTimer = null;
   function showInAppToast(title, body, url = null) {
-    let toast = document.getElementById('uzairGlobalNotifToast');
-    if (!toast) {
-      toast = document.createElement('div');
-      toast.id = 'uzairGlobalNotifToast';
-      toast.className = 'uzair-notif-toast';
-      document.body.appendChild(toast);
-    }
-
-    toast.innerHTML = `
-      <div class="notif-toast-icon">
-        <img src="/assets/uzairaistudio.png" alt="Uzair AI Studio">
-      </div>
-      <div class="notif-toast-content">
-        <strong class="notif-toast-title">${escapeHtml(title)}</strong>
-        <p class="notif-toast-body">${escapeHtml(body)}</p>
-      </div>
-      <button type="button" class="notif-toast-close" aria-label="Close">&times;</button>
-    `;
-
-    toast.querySelector('.notif-toast-close').onclick = (e) => {
-      e.stopPropagation();
-      toast.classList.remove('show');
-    };
-
-    if (url) {
-      toast.onclick = () => {
-        toast.classList.remove('show');
-        if (url.startsWith('#')) {
-          const target = document.querySelector(url);
-          if (target) target.scrollIntoView({ behavior: 'smooth' });
-        } else {
-          window.location.href = url;
-        }
-      };
-      toast.style.cursor = 'pointer';
-    } else {
-      toast.style.cursor = 'default';
-    }
-
-    // Trigger animation
-    requestAnimationFrame(() => {
-      toast.classList.add('show');
-    });
-
-    if (activeToastTimer) clearTimeout(activeToastTimer);
-    activeToastTimer = setTimeout(() => {
-      toast.classList.remove('show');
-    }, 6000);
+    // Suppress intrusive full-screen popups on portal and admin pages
+    return;
   }
 
   function escapeHtml(str) {
@@ -258,13 +212,21 @@
 
       if (!bellBtn || !dropdown) return;
 
-      // Request permission on first bell interaction
-      bellBtn.addEventListener('click', (e) => {
-        e.stopPropagation();
+      // Handle Bell Click & Touch
+      const handleToggle = (e) => {
+        if (e) {
+          e.preventDefault();
+          e.stopPropagation();
+        }
         requestNotificationPermission();
-        dropdown.classList.toggle('open');
-        this.renderDropdownContent(dropdown, badge, role);
-      });
+        const willOpen = !dropdown.classList.contains('open');
+        dropdown.classList.toggle('open', willOpen);
+        if (willOpen) {
+          this.renderDropdownContent(dropdown, badge, role);
+        }
+      };
+
+      bellBtn.onclick = handleToggle;
 
       // Auto close when clicking outside
       document.addEventListener('click', (e) => {
